@@ -95,5 +95,5 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans
   .demo .replay,.demo-tools>button{min-height:36px}
   .pattern>.kw::before{flex-basis:100%;margin-bottom:2px}
 }
-@media (max-width:379px){.dnav .brand .b2{display:none}}
+@media (max-width:379px){.dnav-in{padding:0 8px 0 14px}.dnav .brand{font-size:14px;gap:7px}.dnav-btn{padding:0 7px;font-size:13.5px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

@@ -30,7 +30,7 @@ const Dict = (() => {
   const nav = document.querySelector('nav.dnav');
   if (nav) {
     nav.setAttribute('aria-label', 'Pattern groups');
-    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Pattern Dictionary — home"><span>Pattern<span class="b2"> Dictionary</span></span></a>' +
+    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Pattern Dictionary — home"><span>Pattern Dictionary</span></a>' +
       DICT_GROUPS.map((g, gi) => {
         const items = DICT_PAGES.filter(p => p.group === g);
         const cur = items.find(p => p === page);
