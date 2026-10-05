@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Layout — Pattern Dictionary</title>
 <meta name="description" content="Six common web page layouts on a 12-column grid: centered hero, split hero, bento grid, asymmetric grid, full-bleed and card grid.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Layout — Pattern Dictionary">
+<meta property="og:description" content="Six common web page layouts on a 12-column grid: centered hero, split hero, bento grid, asymmetric grid, full-bleed and card grid.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/layout.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/layout.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -30,7 +40,7 @@
 .demo .mbtn{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:999px;font-size:12.5px;font-weight:600;border:0;cursor:default}
 /* on enter: blocks appear staggered */
 .demo [data-a]{opacity:0;transform:translateY(16px)}
-.demo.play [data-a]{animation:inUp .7s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0) * 90ms)}
+.demo.play [data-a]{animation:inUp .4s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0) * 90ms)}
 @keyframes inUp{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -87,7 +97,7 @@
 #bento-grid .top p{font-size:12px;color:#777;max-width:280px;text-align:right}
 #bento-grid .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:12px;padding:0 var(--pad);height:262px;position:relative}
 #bento-grid .t{border-radius:16px;background:#fff;padding:16px;position:relative;overflow:hidden;font-size:12px;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
-#bento-grid .t:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+#bento-grid .t:hover,#bento-grid .t:active{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
 #bento-grid .t h4{font-size:15px;line-height:1.25;font-weight:800;letter-spacing:-.01em}
 #bento-grid .t p{color:#777;margin-top:4px;line-height:1.45}
 #bento-grid .rank{position:absolute;top:12px;right:12px;font:500 10.5px/1 var(--mono);padding:4px 7px;border-radius:999px;background:#f2f1ee;color:#555}
@@ -157,7 +167,7 @@
 #card-grid .f[aria-pressed="true"]{background:#191919;color:#fff;border-color:#191919}
 #card-grid .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:0 var(--pad) 24px}
 #card-grid .c{background:#fff;border:1px solid #ececec;border-radius:12px;overflow:hidden;transition:transform .3s,box-shadow .3s,opacity .3s}
-#card-grid .c:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07)}
+#card-grid .c:hover,#card-grid .c:active{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07)}
 #card-grid .c .th{aspect-ratio:16/8;background:var(--g)}
 #card-grid .c .bd{padding:10px 12px 12px}
 #card-grid .c .cat{font:500 10px/1 var(--mono);color:#888;text-transform:uppercase;letter-spacing:.08em}
@@ -431,17 +441,23 @@
     b.setAttribute('aria-pressed', on);
   }));
 
+  // Replay also clears the card-grid filter
+  const resetFilter = a => { const all = a.querySelector('.f[data-f="all"]'); if (all) all.click(); };
+
   // Play the enter animation when scrolled into view + Replay button
   const play = d => { d.classList.remove('play'); void d.offsetWidth; d.classList.add('play'); };
   document.querySelectorAll('article.pattern').forEach(a => {
     const d = a.querySelector('.demo'), m = d.querySelector('.mini');
     Dict.onView(d, () => play(d));
-    Dict.replay(a.id, () => { if (m) m.scrollTop = 0; play(d); });
+    Dict.replay(a.id, () => { if (m) { m.scrollTop = 0; m.dispatchEvent(new Event('scroll')); } resetFilter(a); play(d); });
   });
 
   // Full-bleed: hide the hint once scrolled
   const fb = document.querySelector('#full-bleed .mini'), hint = document.querySelector('#full-bleed .hint');
   fb.addEventListener('scroll', () => { hint.style.opacity = fb.scrollTop > 20 ? 0 : 1; }, { passive: true });
+
+  // lets iOS Safari apply :active on tap
+  document.addEventListener('touchstart', () => {}, { passive: true });
 
   // Card grid: filters
   const cg = document.getElementById('card-grid');

@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Dark patterns — Pattern Dictionary</title>
 <meta name="description" content="Seven common dark patterns, each with a demo that compares a deceptive version with an honest one, how to spot it, and what to do instead.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Dark patterns — Pattern Dictionary">
+<meta property="og:description" content="Seven common dark patterns, each with a demo that compares a deceptive version with an honest one, how to spot it, and what to do instead.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/dark-patterns.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/dark-patterns.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -114,7 +124,8 @@
 #forced-continuity .demo .log{justify-self:stretch;align-self:stretch;background:#fff;border:1px solid #e4e1da;border-radius:16px;padding:16px;display:flex;flex-direction:column;min-height:0}
 #forced-continuity .demo .log h4{font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 #forced-continuity .demo .log ol{overflow-y:auto;flex:1;display:grid;gap:6px;align-content:start}
-#forced-continuity .demo .log li{display:grid;grid-template-columns:54px 1fr;gap:8px;font-size:12.5px;line-height:1.45;padding:7px 8px;border-radius:8px;background:#f7f6f3;animation:dpPop .3s ease-out}
+#forced-continuity .demo .log li{display:grid;grid-template-columns:54px 1fr;gap:8px;font-size:12.5px;line-height:1.45;padding:7px 8px;border-radius:8px;background:#f7f6f3}
+#forced-continuity .demo .log li.new{animation:dpPop .3s ease-out}
 #forced-continuity .demo .log li span{font:500 11px/1.6 var(--mono);color:#999}
 #forced-continuity .demo .log li.charge{background:#fdeceb;color:#8c1d16;font-weight:600}
 #forced-continuity .demo .log li.mail{background:#eaf4ff;color:#1d4f91}
@@ -385,7 +396,8 @@
       $('.no', sc).addEventListener('click', () => close(dark
         ? '<b>Technique:</b> to close the dialog, the user has to tap “I prefer being unproductive”.'
         : '<b>Better:</b> declining ends the request, with no blame and no follow-up prompt.'));
-      $('.x', sc)?.addEventListener('click', () => close('<b>Better:</b> closing with × is handled the same as “No thanks”.'));
+      $('.x', sc)?.addEventListener('click', () => close('<b>Better:</b> closing with × or Esc is handled the same as “No thanks”.'));
+      if (!dark) $('.card', sc).addEventListener('keydown', e => { if (e.key === 'Escape') $('.x', sc).click(); });
     };
     open(false);
   });
@@ -446,10 +458,10 @@
         <button type="button" class="btn hot go" data-to="pro" data-c="up">Upgrade to Pro · $12/mo</button>`,
       pro: () => dark
         ? `<h3 tabindex="-1">Your plan</h3>${proBox()}<p class="muted">Unlimited devices · 100 GB · 1-year version history</p>
-           <div class="row" style="margin-top:14px"><button type="button" class="btn pri">Invite members</button></div>
+           <div class="row" style="margin-top:14px"><button type="button" class="btn pri decoy">Invite members</button></div>
            <p style="margin-top:22px"><button type="button" class="lnk go" data-to="manage" data-c="down">Manage plan</button></p>`
-        : `<h3 tabindex="-1">Your plan</h3>${proBox()}<div class="row"><button type="button" class="btn">Change plan</button><button type="button" class="btn go" data-to="confirm" data-c="down">Cancel plan</button></div>`,
-      manage: () => `<h3 tabindex="-1">Manage plan</h3>${proBox()}<div class="row"><button type="button" class="btn">Change payment method</button><button type="button" class="btn">Download invoices</button></div>
+        : `<h3 tabindex="-1">Your plan</h3>${proBox()}<div class="row"><button type="button" class="btn decoy">Change plan</button><button type="button" class="btn go" data-to="confirm" data-c="down">Cancel plan</button></div>`,
+      manage: () => `<h3 tabindex="-1">Manage plan</h3>${proBox()}<div class="row"><button type="button" class="btn decoy">Change payment method</button><button type="button" class="btn decoy">Download invoices</button></div>
         <p style="margin-top:22px;text-align:right"><button type="button" class="lnk go" data-to="sure" data-c="down">I want to stop using this service</button></p>`,
       sure: () => `<h3 tabindex="-1">Are you sure you want to cancel?</h3><p class="wall">You will lose access to 2,340 synced notes, your entire version history and every member you invited.</p>
         <div class="row"><button type="button" class="btn pri go" data-to="pro">Keep Pro</button><button type="button" class="lnk go" data-to="why" data-c="down">Continue canceling</button></div>`,
@@ -484,6 +496,7 @@
         if (b.dataset.c === 'up') { up = 1; down = 0; } else if (b.dataset.c === 'down') down++;
         state = b.dataset.to; render(true);
       }));
+      $$('.decoy', sc).forEach(b => b.addEventListener('click', () => say(`This button is not part of the demo. ${dark ? 'Find the way to cancel.' : 'Tap Cancel plan.'}`)));
       $$('input[name=rm-why]', sc).forEach(r => r.addEventListener('change', () => { $('.go[data-to=offer]', sc).disabled = false; }));
     };
     render(false);
@@ -498,10 +511,11 @@
     sc.innerHTML = `<div class="card"></div><section class="log" aria-label="Billing and email history"><h4>Card &amp; inbox <span class="day"></span></h4><ol aria-live="polite"></ol></section>`;
     const card = $('.card', sc), ol = $('ol', sc), dayEl = $('.day', sc);
     const push = (cls, txt) => { log.push([cls, `${date(day)}`, txt]); };
+    let shown = 0;
     const drawLog = () => {
       dayEl.textContent = day ? `Day ${day}` : '';
-      ol.innerHTML = log.length ? log.map(([c, d, t]) => `<li class="${c}"><span>${d}</span>${t}</li>`).join('') : '<li class="empty">No charges or emails yet.</li>';
-      ol.scrollTop = ol.scrollHeight;
+      ol.innerHTML = log.length ? log.map(([c, d, t], i) => `<li class="${c}${i >= shown ? ' new' : ''}"><span>${d}</span>${t}</li>`).join('') : '<li class="empty">No charges or emails yet.</li>';
+      shown = log.length; ol.scrollTop = ol.scrollHeight;
     };
     const draw = (focus) => {
       if (!day) {
@@ -510,7 +524,7 @@
              <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn hot start" style="width:100%">Start free</button>
              <p class="fine">*After the trial period, your plan renews automatically at $19.99/mo until canceled. Cancel in Settings › Account › Billing › More.</p>`
           : `<h3 tabindex="-1">7-day Pro trial</h3>
-             <p class="sum">Today: <b>$0.00</b><br>From <b>Oct 12, 2026</b>: <b>$19.99/mo</b> unless you cancel<br>Reminder email on <b>Oct 10</b>.</p>
+             <p class="sum">Today: <b>$0.00</b><br>From <b>Oct 12, 2026</b>: <b>$19.99/mo</b> unless you cancel<br>Reminder emails on <b>Oct 10</b> and <b>Oct 11</b>.</p>
              <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn pri start" style="width:100%">Start trial</button>`;
       } else {
         const trial = day <= 7 && !cancelled;
@@ -556,8 +570,11 @@
         ${dark
           ? `<p class="scar">Only 2 spots left at this price!</p><p class="watch"><span class="n">37</span> people are viewing this course</p>`
           : `<p class="muted">November cohort: <b>18 of 40</b> seats open</p><div class="bar2" aria-hidden="true"><i style="--w:55%"></i></div><p class="muted">After Oct 31 the price returns to $99. Enrollment stays open.</p>`}
-        <div class="acts"><button type="button" class="btn ${dark ? 'hot' : 'pri'}">${dark ? 'Buy now before it’s gone!' : 'Enroll'}</button>
+        <div class="acts"><button type="button" class="btn buy ${dark ? 'hot' : 'pri'}">${dark ? 'Buy now before it’s gone!' : 'Enroll'}</button>
         <button type="button" class="btn reload">↻ Reload page</button></div></div>`;
+      $('.buy', sc).addEventListener('click', () => say(dark
+        ? '<b>Technique:</b> purchase simulated. The pressure to buy came from a timer that resets on every visit.'
+        : '<b>Better:</b> enrollment simulated. The price holds until Oct 31 whether the user enrolls now or later.'));
       $('.reload', sc).addEventListener('click', () => {
         reloads++; if (dark) left = 600; render();
         $('.reload', sc).focus({ preventScroll: true });
@@ -568,11 +585,16 @@
     };
     render();
     say(dark ? '<b>Technique:</b> a countdown timer and an “only 2 spots left” message pressure the user to buy now. Tap Reload page.' : '<b>Better:</b> the deadline is a fixed date and the seat count comes from real data. There is no countdown timer.');
-    if (dark) {
+    /* run the timers only while the demo is on screen (same 200px margin as .is-off in dict.js) */
+    const stop = () => { clearInterval(timer); clearInterval(watch); timer = watch = null; };
+    const start = () => {
+      if (timer) return;
       timer = setInterval(() => { left = Math.max(0, left - 1); const c = $('.clock', sc); if (c) c.textContent = mmss(left); }, 1000);
       watch = setInterval(() => { const n = $('.n', sc); if (n) n.textContent = 30 + Math.floor(Math.random() * 16); }, 2600);
-    }
-    return () => { clearInterval(timer); clearInterval(watch); };
+    };
+    const io = dark ? new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop(), { rootMargin: '200px 0px' }) : null;
+    io?.observe(sc.closest('.demo'));
+    return () => { io?.disconnect(); stop(); };
   });
 
   /* ---------- 6. Sneak into basket ---------- */
@@ -589,6 +611,12 @@
         <label class="opt${dark ? ' tiny' : ''}"><input type="checkbox" class="mkt"${dark ? ' checked' : ''}><span>${dark ? 'I agree to receive offers from partners by email, text message and phone.' : 'Send me promotional emails (1 per week at most)'}</span></label>
         <div class="ln tot"><span>Total</span><span class="sum"></span></div>
         <button type="button" class="btn pri pay"></button></div>`;
+      $('.pay', sc).addEventListener('click', () => {
+        const extra = (insLine ? INS : 0) + $$('input[data-v]', sc).filter(i => i.checked).reduce((a, i) => a + +i.dataset.v, 0);
+        say(dark && extra
+          ? `<b>Technique:</b> payment simulated. The user paid ${usd(BASE + extra)}, including ${usd(extra)} in extras they never chose.`
+          : `<b>${dark ? 'Technique' : 'Better'}:</b> payment simulated. The user paid ${usd(BASE + extra)} for exactly what they selected.`);
+      });
       $('.rm', sc)?.addEventListener('click', () => { insLine = false; draw(); $('.pay', sc).focus({ preventScroll: true }); });
       $$('input', sc).forEach(i => i.addEventListener('change', upd));
       upd();

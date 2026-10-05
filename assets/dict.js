@@ -100,7 +100,10 @@ const Dict = (() => {
   $$('.replay').forEach(fixReplay);
   document.addEventListener('click', e => {
     const b = e.target.closest('.demo .replay'); if (!b) return;
-    replays[b.closest('.pattern').id]?.();
+    const a = b.closest('.pattern');
+    replays[a.id]?.();
+    /* the demo may have been rebuilt: keep keyboard focus on its Replay button */
+    if (!b.isConnected || document.activeElement === document.body) a.querySelector('.demo .replay')?.focus({ preventScroll: true });
   });
   const replay = (id, fn) => { replays[id] = fn; };
 
@@ -122,6 +125,10 @@ const Dict = (() => {
       a.classList.remove('on'); void a.offsetWidth; a.classList.add('on'); mount();
     });
   };
+
+  /* ---------- pause CSS animations in demos that are off screen (saves CPU/battery, smoother scrolling) ---------- */
+  const offIO = new IntersectionObserver(es => es.forEach(x => x.target.classList.toggle('is-off', !x.isIntersecting)), { rootMargin: '200px 0px' });
+  $$('.demo').forEach(d => offIO.observe(d));
 
   return { RM, pages: DICT_PAGES, page, copy, onView, replay, demo };
 })();

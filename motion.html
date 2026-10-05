@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Motion — Pattern Dictionary</title>
 <meta name="description" content="11 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Each has a live demo and prompt keywords.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Motion — Pattern Dictionary">
+<meta property="og:description" content="11 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Each has a live demo and prompt keywords.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/motion.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/motion.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -37,16 +47,19 @@
   #scrollytelling .step p{margin:0;color:#aab4c0;font-size:15px;max-width:340px}
   #scrollytelling .visual{position:sticky;top:0;height:380px;display:grid;place-items:center}
   #scrollytelling .chart{position:relative;width:260px;height:240px}
-  #scrollytelling .bar{position:absolute;bottom:60px;left:100px;width:60px;height:60px;border-radius:50%;background:#3b4652;
-    transition:left .7s cubic-bezier(.6,.0,.2,1),height .7s cubic-bezier(.6,.0,.2,1),border-radius .7s,background .7s,bottom .7s}
+  /* bars keep a fixed box; position = transform, shape = clip-path (no layout work per frame) */
+  #scrollytelling .bar{position:absolute;bottom:40px;left:0;width:60px;height:190px;background:#3b4652;
+    --x:100px;--y:-20px;--h:60px;--r:30px;
+    transform:translate(var(--x),var(--y));clip-path:inset(calc(190px - var(--h)) 0 0 0 round var(--r));
+    transition:transform .4s cubic-bezier(.2,.8,.2,1),clip-path .4s cubic-bezier(.2,.8,.2,1),background .4s ease-out}
   #scrollytelling .cap{position:absolute;left:0;right:0;bottom:0;text-align:center;font-family:var(--mono);font-size:12px;color:#7d8996}
   #scrollytelling [data-scene="1"] .bar{background:var(--acc)}
-  #scrollytelling [data-scene="2"] .bar{border-radius:8px;height:110px;bottom:40px}
-  #scrollytelling [data-scene="2"] .b1{left:20px}#scrollytelling [data-scene="2"] .b3{left:180px}
-  #scrollytelling [data-scene="3"] .bar{border-radius:8px;bottom:40px}
-  #scrollytelling [data-scene="3"] .b1{left:20px;height:70px}
-  #scrollytelling [data-scene="3"] .b2{height:120px}
-  #scrollytelling [data-scene="3"] .b3{left:180px;height:190px;background:var(--acc)}
+  #scrollytelling [data-scene="2"] .bar{--r:8px;--h:110px;--y:0px}
+  #scrollytelling [data-scene="2"] .b1{--x:20px}#scrollytelling [data-scene="2"] .b3{--x:180px}
+  #scrollytelling [data-scene="3"] .bar{--r:8px;--y:0px}
+  #scrollytelling [data-scene="3"] .b1{--x:20px;--h:70px}
+  #scrollytelling [data-scene="3"] .b2{--h:120px}
+  #scrollytelling [data-scene="3"] .b3{--x:180px;--h:190px;background:var(--acc)}
   @media (prefers-reduced-motion: reduce){ #scrollytelling .bar,#scrollytelling .step{transition:none} }
 
   /* ---------- 2. Pin / Sticky ---------- */
@@ -76,9 +89,9 @@
   #scrub .right h3{font-size:24px;margin-bottom:10px}
   #scrub .right p{margin:0 0 16px;color:#4a4f73;font-size:15px}
   #scrub .bar{height:10px;border-radius:5px;background:#dfe3ff;overflow:hidden}
-  #scrub .bar i{display:block;height:100%;width:calc(var(--scrub-p)*1%);background:#3346ff}
-  #scrub .car{margin-top:18px;height:40px;position:relative}
-  #scrub .car span{position:absolute;left:calc(var(--scrub-p)*1% - var(--scrub-p)*.4px);top:0;width:40px;height:40px;border-radius:8px;background:var(--acc);rotate:calc(var(--scrub-p)*3.6deg)}
+  #scrub .bar i{display:block;height:100%;background:#3346ff;transform-origin:left;transform:scaleX(calc(var(--scrub-p) / 100))}
+  #scrub .car{margin-top:18px;height:40px;position:relative;container-type:inline-size}
+  #scrub .car span{position:absolute;left:0;translate:calc(var(--scrub-p) * (100cqw - 40px) / 100) 0;top:0;width:40px;height:40px;border-radius:8px;background:var(--acc);rotate:calc(var(--scrub-p)*3.6deg)}
   @keyframes scrub-p{from{--scrub-p:0}to{--scrub-p:100}}
   @media (prefers-reduced-motion: no-preference){
     #scrub .stage{animation:scrub-p linear both;animation-timeline:--scrub}
@@ -166,7 +179,7 @@
     33%{border-radius:18px;rotate:45deg}
     66%{border-radius:70% 30% 60% 40% / 40% 60% 40% 60%;rotate:120deg}}
   @media (prefers-reduced-motion: no-preference){ #morph .blob{animation:morph-blob 6s ease-in-out infinite} }
-  @media (prefers-reduced-motion: reduce){ #morph .send,#morph .burger i,#morph .send::after{transition:none} #morph .send.loading::before{animation:none} }
+  @media (prefers-reduced-motion: reduce){ #morph .send,#morph .send .t,#morph .burger i,#morph .send::after{transition:none} #morph .send.loading::before{animation:none} }
 
   /* ---------- 8. Marquee ---------- */
   #marquee .demo{background:#161616;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:26px}
@@ -184,6 +197,10 @@
     #marquee .big .move{animation:mq-left 22s linear infinite}
     #marquee .logos .move{animation:mq-left 30s linear infinite reverse}
     #marquee .row:hover .move,#marquee .row.paused .move{animation-play-state:paused}
+  }
+  #marquee .row{cursor:pointer}
+  #marquee .row:focus-visible{outline:2px solid var(--acc);outline-offset:-2px;border-radius:6px}
+  @media (prefers-reduced-motion: no-preference){
   }
   @media (prefers-reduced-motion: reduce){ #marquee .row{overflow-x:auto} }
 
@@ -239,11 +256,10 @@
   @keyframes mi-burst{0%{opacity:1;transform:rotate(var(--a)) translateY(0)}100%{opacity:0;transform:rotate(var(--a)) translateY(-26px)}}
   #micro .count{display:inline-block;min-width:2ch;font-variant-numeric:tabular-nums}
   #micro .switch{width:64px;height:36px;border-radius:18px;border:0;background:#d6d3cc;position:relative;cursor:pointer;transition:background .25s}
-  #micro .switch::after{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.3,1.5,.5,1),width .2s}
-  #micro .switch:active::after{width:34px}
+  #micro .switch::after{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.3,1.5,.5,1),scale .2s ease-out;transform-origin:left center}
+  #micro .switch:active::after{scale:1.21 1}
   #micro .switch[aria-checked="true"]{background:#14a06a}
-  #micro .switch[aria-checked="true"]::after{transform:translateX(28px)}
-  #micro .switch[aria-checked="true"]:active::after{transform:translateX(22px)}
+  #micro .switch[aria-checked="true"]::after{transform:translateX(28px);transform-origin:right center}
   #micro .check{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:600;user-select:none}
   #micro .check input{position:absolute;opacity:0;pointer-events:none}
   #micro .box{width:30px;height:30px;border:2px solid #161616;border-radius:8px;display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
@@ -263,7 +279,7 @@
   #micro .copy.ok .i1{opacity:0;transform:scale(.4)}
   #micro .copy.ok .i2{opacity:1;transform:none}
   @media (prefers-reduced-motion: reduce){
-    #micro *{transition:none !important;animation:none !important}
+    #micro *,#micro *::before,#micro *::after{transition:none !important;animation:none !important}
   }
 
   /* ---------- mobile (≤760px): stacked layouts, sticky graphic at the top of the frame ---------- */
@@ -273,7 +289,7 @@
 
     #scrollytelling .demo .grid{grid-template-columns:1fr}
     #scrollytelling .demo .grid>div:last-child{display:contents}
-    #scrollytelling .demo .visual{order:-1;align-self:start;z-index:2;height:228px;padding-top:40px;box-sizing:border-box;background:linear-gradient(#101418 92%,rgba(16,20,24,0))}
+    #scrollytelling .demo .visual{order:-1;align-self:start;z-index:2;height:240px;padding-top:54px;box-sizing:border-box;background:linear-gradient(#101418 92%,rgba(16,20,24,0))}
     #scrollytelling .demo .chart{zoom:.74}
     #scrollytelling .demo .steps{padding:0 20px 40px}
     #scrollytelling .demo .step{height:260px;justify-content:flex-start;padding-top:24px}
@@ -344,7 +360,7 @@
     #micro .demo .cell:nth-of-type(n+3){border-bottom:0}
     #micro .demo .cap{max-width:150px}
     #micro .demo .check{min-height:44px}
-    #micro .demo .copy{min-width:0;padding:11px 14px}
+    #micro .demo .copy{min-width:0;padding:11px 12px;gap:8px;white-space:nowrap;font-size:14px}
   }
 </style>
 </head>
@@ -529,11 +545,11 @@
     <p class="vi"><b>A strip that scrolls continuously.</b> Text or logos move horizontally without stopping and loop with no visible seam. Hover or tap a strip to pause it.</p>
     <div class="demo">
       <span class="rm-note">Reduced motion: strips stay still; scroll sideways to see more.</span>
-      <div class="row big"><div class="move">
+      <div class="row big" tabindex="0" role="button" aria-pressed="false" aria-label="Pause text strip"><div class="move">
         <div class="set"><span>Design</span><span class="dot">✦</span><span class="o">Motion</span><span class="dot">✦</span><span>Layout</span><span class="dot">✦</span><span class="o">Color</span><span class="dot">✦</span></div>
         <div class="set" aria-hidden="true"><span>Design</span><span class="dot">✦</span><span class="o">Motion</span><span class="dot">✦</span><span>Layout</span><span class="dot">✦</span><span class="o">Color</span><span class="dot">✦</span></div>
       </div></div>
-      <div class="row logos"><div class="move">
+      <div class="row logos" tabindex="0" role="button" aria-pressed="false" aria-label="Pause logo strip"><div class="move">
         <div class="set"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
         <div class="set" aria-hidden="true"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
       </div></div>
@@ -679,7 +695,8 @@ replay.parallax = () => toTop('parallax');
 // 7 Morph
 {
   const send = $('#morph .send'), burger = $('#morph .burger');
-  let timers = [];
+  let timers = [], bt = []; // send timers / burger timers
+  const setX = on => { burger.classList.toggle('x', on); burger.setAttribute('aria-label', on ? 'Close menu' : 'Open menu'); };
   const run = () => {
     timers.forEach(clearTimeout); send.className = 'send';
     void send.offsetWidth;
@@ -687,8 +704,8 @@ replay.parallax = () => toTop('parallax');
     timers = [setTimeout(() => { send.classList.replace('loading', 'done'); }, 1600)];
   };
   send.addEventListener('click', () => { if (send.classList.contains('done')) { send.className = 'send'; return; } if (!send.classList.contains('loading')) run(); });
-  burger.addEventListener('click', () => { burger.classList.toggle('x'); burger.setAttribute('aria-label', burger.classList.contains('x') ? 'Close menu' : 'Open menu'); });
-  replay.morph = () => { run(); burger.classList.remove('x'); setTimeout(() => burger.classList.add('x'), 600); setTimeout(() => burger.classList.remove('x'), 1800); };
+  burger.addEventListener('click', () => { bt.forEach(clearTimeout); setX(!burger.classList.contains('x')); });
+  replay.morph = () => { run(); bt.forEach(clearTimeout); setX(false); bt = [setTimeout(() => setX(true), 600), setTimeout(() => setX(false), 1800)]; };
   onView($('#morph .demo'), replay.morph);
 }
 
@@ -720,12 +737,17 @@ replay.parallax = () => toTop('parallax');
 // 10 View transitions
 {
   const root = $('#viewtransitions'), grid = $('.grid', root), detail = $('.detail', root);
-  const dImg = $('.img', detail), dTitle = $('h3', detail);
+  const dImg = $('.img', detail), dTitle = $('h3', detail), back = $('.back', root);
   const can = !!document.startViewTransition && !reduce;
   $('.support', root).textContent = document.startViewTransition
     ? 'document.startViewTransition: supported' : 'View Transitions not supported; screens change instantly (fallback)';
   let current = null;
-  const go = update => can ? document.startViewTransition(update) : update();
+  const go = update => {
+    if (!can) return update();
+    const t = document.startViewTransition(update);
+    t.ready.catch(() => {}); // a rapid second tap skips the running transition; that is expected, not an error
+    return t;
+  };
   const name = (el, n) => { el.style.viewTransitionName = n; };
   $$('.vcard', root).forEach(card => card.addEventListener('click', () => {
     current = card;
@@ -736,17 +758,21 @@ replay.parallax = () => toTop('parallax');
       dTitle.textContent = $('.tt', card).firstChild.textContent;
       name(dImg, 'vt-hero'); name(dTitle, 'vt-title');
       grid.hidden = true; detail.hidden = false;
+      back.focus({ preventScroll: true });
     });
   }));
-  $('.back', root).addEventListener('click', () => {
-    const card = current;
+  const close = () => {
+    const card = current; if (!card || detail.hidden) return;
     go(() => {
       name(dImg, ''); name(dTitle, '');
       name($('.img', card), 'vt-hero'); name($('.tt', card), 'vt-title');
       detail.hidden = true; grid.hidden = false;
-    }).finished?.then(() => { name($('.img', card), ''); name($('.tt', card), ''); });
+      card.focus({ preventScroll: true });
+    })?.finished?.then(() => { name($('.img', card), ''); name($('.tt', card), ''); });
     if (!can) { name($('.img', card), ''); name($('.tt', card), ''); }
-  });
+  };
+  back.addEventListener('click', close);
+  root.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 }
 
 // 11 Micro-interactions
@@ -772,7 +798,11 @@ replay.parallax = () => toTop('parallax');
   });
 }
 // 8 Marquee: tap to pause/resume (touch devices have no hover)
-$$('#marquee .row').forEach(r => r.addEventListener('click', () => r.classList.toggle('paused')));
+$$('#marquee .row').forEach(r => {
+  const t = () => r.setAttribute('aria-pressed', r.classList.toggle('paused'));
+  r.addEventListener('click', t);
+  r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+});
 
 Object.entries(replay).forEach(([id, fn]) => Dict.replay(id, fn));
 </script>

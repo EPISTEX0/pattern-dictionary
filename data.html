@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Data display — Pattern Dictionary</title>
 <meta name="description" content="6 data display patterns: data table, accordion, carousel, activity feed, comparison table, faceted search. Each has an interactive demo and prompt keywords.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Data display — Pattern Dictionary">
+<meta property="og:description" content="6 data display patterns: data table, accordion, carousel, activity feed, comparison table, faceted search. Each has an interactive demo and prompt keywords.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/data.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/data.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,6 +26,10 @@
 :where(.pattern>.demo) :where(ul,ol){list-style:none}
 :where(.pattern>.demo) :where(button,input,select){font:inherit;color:inherit}
 :where(.pattern>.demo) :where(.sr){position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+/* Dict.demo mounts each demo when it is 35% in view; fade the content in instead of showing half-rendered markup that pops */
+.pattern:not(.on)>.demo>*{opacity:0}
+.pattern.on>.demo>*{animation:demo-in .3s ease-out}
+@keyframes demo-in{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){
   :where(.pattern>.demo) *,:where(.pattern>.demo) *::before,:where(.pattern>.demo) *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
@@ -600,12 +614,12 @@
       if (e.target.matches('input')) toggle(id, e.target.checked);
       else toggle(id, !sel.has(id));
     });
-    all.addEventListener('change', () => vis.forEach(p => toggle(p.id, all.checked)));
+    all.addEventListener('change', () => { const on = all.checked; vis.forEach(p => toggle(p.id, on)); }); // read once: toggle() → sync() rewrites all.checked
     q.addEventListener('input', render);
     stSel.addEventListener('change', render);
     $('.unsel', d).addEventListener('click', () => { [...sel].forEach(id => toggle(id, false)); all.focus(); });
     $('.exp', d).addEventListener('click', () => {
-      toast.textContent = `Exported ${sel.size} rows to CSV (simulated)`;
+      toast.textContent = `Exported ${sel.size} ${sel.size === 1 ? 'row' : 'rows'} to CSV (simulated)`;
       toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 1800);
     });
     render();
@@ -665,7 +679,7 @@
     });
     $$('.use', d).forEach(b => b.addEventListener('click', () => { b.textContent = 'Added ✓'; }));
     // Autoplay: only when the user turns it on; pauses on hover/focus inside
-    const tick = () => { if (!hold) go(i + 1); };
+    const tick = () => { if (!hold && !d.classList.contains('is-off') && !document.hidden) go(i + 1); }; // no advancing while off screen or in a background tab
     const setPlay = on => {
       clearInterval(timer); timer = on ? setInterval(tick, 4000) : null;
       play.setAttribute('aria-pressed', on);

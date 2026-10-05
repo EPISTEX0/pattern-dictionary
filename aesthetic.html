@@ -6,13 +6,23 @@
 <meta name="color-scheme" content="only light">
 <title>Visual styles — Pattern Dictionary</title>
 <meta name="description" content="Eight common visual styles in web design, shown on the same content: Swiss, brutalism, retro, editorial, glassmorphism, neumorphism, bento grid and dark mode tech.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Visual styles — Pattern Dictionary">
+<meta property="og:description" content="Eight common visual styles in web design, shown on the same content: Swiss, brutalism, retro, editorial, glassmorphism, neumorphism, bento grid and dark mode tech.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/aesthetic.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/aesthetic.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&family=VT323&family=Fraunces:ital,wght@0,600;0,900;1,900&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
 /* reduced motion for this page's demos */
-@media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ============ 1. SWISS ============ */
 #swiss .stage{background:#fff;color:#111;font-family:'Inter',sans-serif;padding:26px 32px 30px;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr auto;column-gap:16px}
@@ -26,7 +36,7 @@
 #swiss .stage .sw-desc{grid-column:3/7;grid-row:3;font-size:14px;line-height:1.5;margin:0;align-self:end}
 #swiss .stage .sw-price{grid-column:7/10;grid-row:3;font-size:28px;font-weight:700;letter-spacing:-.02em;align-self:end;line-height:1.15}
 #swiss .stage .sw-btn{grid-column:10/13;grid-row:3;align-self:end;background:#111;color:#fff;font-weight:500;font-size:14px;padding:13px 16px;text-decoration:none;display:flex;justify-content:space-between}
-#swiss .stage .sw-btn:hover{background:#e3120b}
+#swiss .stage .sw-btn:hover,#swiss .stage .sw-btn:focus-visible{background:#e3120b}
 
 /* ============ 2. BRUTALISM ============ */
 #brutal .stage{background:#f0eee4;color:#000;font-family:'Space Grotesk',sans-serif;overflow:hidden}
@@ -39,7 +49,7 @@
 #brutal .stage .br-card p{margin:0 0 16px;font:400 13px/1.5 'Space Mono',monospace}
 #brutal .stage .br-price{position:absolute;top:-24px;right:-18px;background:#ffe500;border:3px solid #000;font-weight:700;font-size:22px;padding:4px 10px;transform:rotate(6deg)}
 #brutal .stage .br-btn{display:inline-block;background:#0038ff;color:#fff;border:3px solid #000;box-shadow:5px 5px 0 #000;font-weight:700;font-size:18px;padding:10px 18px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:none}
-#brutal .stage .br-btn:hover{background:#ff2e00}
+#brutal .stage .br-btn:hover,#brutal .stage .br-btn:focus-visible{background:#ff2e00}
 #brutal .stage .br-btn:active{transform:translate(5px,5px);box-shadow:none}
 #brutal .stage .br-link{margin-left:14px;font:16px 'Times New Roman',serif;color:#0000ee;text-decoration:underline}
 #brutal .stage .br-ascii{position:absolute;right:40px;bottom:18px;font:400 12px/1.2 'Space Mono',monospace;color:#000}
@@ -87,6 +97,7 @@
 #glass .stage .b4{width:90px;height:90px;left:26%;bottom:40px;background:#a855f7}
 @keyframes glF{to{transform:translate(40px,30px) scale(1.08)}}
 #glass .stage .gc{position:absolute;left:50%;top:50%;width:330px;margin:-130px 0 0 -165px;padding:22px 24px;border-radius:22px;background:rgba(255,255,255,.14);backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);border:1px solid rgba(255,255,255,.38);box-shadow:0 24px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.4);color:#fff;cursor:grab;touch-action:none;user-select:none}
+#glass .stage .gc{touch-action:none}
 #glass .stage .gc:active{cursor:grabbing}
 #glass .stage .gc-pill{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3)}
 #glass .stage .gc h4{margin:12px 0 4px;font-size:26px;font-weight:700;line-height:1.2}
@@ -120,7 +131,7 @@
 /* ============ 7. BENTO ============ */
 #bento .stage{background:#efece6;padding:14px;display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:12px;font-family:'Be Vietnam Pro',sans-serif}
 #bento .stage .t{border-radius:20px;padding:14px 18px;background:#fff;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
-#bento .stage .t:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+#bento .stage .t:hover,#bento .stage .t:active{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
 #bento .stage .t small{display:block;font-size:12px;color:#7a746b;line-height:1.4}
 #bento .stage .t1{grid-column:1/3;grid-row:1/4;background:#1f2430;color:#eef1f6;padding:24px 26px}
 #bento .stage .t1 small{color:#9aa6b8}
@@ -354,7 +365,7 @@
   <p class="vi">Glassmorphism: a translucent card blurs whatever is behind it (backdrop blur), with a thin white border, set on a background of vivid color shapes.</p>
   <div class="demo"><div class="stage">
     <div class="bl b1" aria-hidden="true"></div><div class="bl b2" aria-hidden="true"></div><div class="bl b3" aria-hidden="true"></div><div class="bl b4" aria-hidden="true"></div>
-    <div class="gc">
+    <div class="gc" tabindex="0" aria-label="Glass card. Drag it, or use the arrow keys to move it.">
       <span class="gc-pill">Offer · 3 days left</span>
       <h4>Pro plan</h4>
       <p>Unlimited projects, sync on every device. Cancel anytime.</p>
@@ -380,10 +391,10 @@
         <h4>Pro plan</h4>
         <div class="n-price">$19/mo · choose a term and number of users</div>
         <div class="n-row">
-          <div class="n-seg" aria-label="Term (months)"><button>1</button><button class="on">6</button><button>12</button></div>
+          <div class="n-seg" role="group" aria-label="Term (months)"><button aria-pressed="false">1</button><button class="on" aria-pressed="true">6</button><button aria-pressed="false">12</button></div>
           <div class="n-step"><button class="m" aria-label="Remove a user">−</button><span class="q">1</span><button class="p" aria-label="Add a user">+</button></div>
         </div>
-        <button class="n-cta">Subscribe</button>
+        <button class="n-cta" aria-pressed="false">Subscribe</button>
       </div>
     </div>
     <div class="hint">Tap the term, the user count and Subscribe to see raised and pressed states.</div>
@@ -462,18 +473,28 @@ inits.retro = s => {
 
 inits.glass = s => {
   const c = s.querySelector('.gc'); let x = 0, y = 0, sx, sy, drag = false;
+  // keep the card inside the frame
+  const move = (nx, ny) => {
+    const l = c.offsetLeft, t = c.offsetTop;
+    x = Math.max(-l, Math.min(s.clientWidth - l - c.offsetWidth, nx));
+    y = Math.max(-t, Math.min(s.clientHeight - t - c.offsetHeight, ny));
+    c.style.transform = `translate(${x}px,${y}px)`;
+  };
   c.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; drag = true; sx = e.clientX - x; sy = e.clientY - y; try { c.setPointerCapture(e.pointerId); } catch (_) {} });
-  c.addEventListener('pointermove', e => { if (!drag) return; x = e.clientX - sx; y = e.clientY - sy; c.style.transform = `translate(${x}px,${y}px)`; });
+  c.addEventListener('pointermove', e => { if (drag) move(e.clientX - sx, e.clientY - sy); });
   c.addEventListener('pointerup', () => drag = false);
+  c.addEventListener('pointercancel', () => drag = false);
+  const keys = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] };
+  c.addEventListener('keydown', e => { const k = keys[e.key]; if (!k || e.target !== c) return; e.preventDefault(); move(x + k[0], y + k[1]); });
 };
 
 inits.neu = s => {
-  s.querySelectorAll('.n-seg button').forEach(b => b.onclick = () => { s.querySelectorAll('.n-seg button').forEach(o => o.classList.toggle('on', o === b)); });
+  s.querySelectorAll('.n-seg button').forEach(b => b.onclick = () => { s.querySelectorAll('.n-seg button').forEach(o => { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', o === b); }); });
   const q = s.querySelector('.q');
   s.querySelector('.m').onclick = () => q.textContent = Math.max(1, +q.textContent - 1);
   s.querySelector('.p').onclick = () => q.textContent = Math.min(9, +q.textContent + 1);
   const cta = s.querySelector('.n-cta');
-  cta.onclick = () => { const p = cta.classList.toggle('pressed'); cta.textContent = p ? 'Subscribed ✓' : 'Subscribe'; };
+  cta.onclick = () => { const p = cta.classList.toggle('pressed'); cta.setAttribute('aria-pressed', p); cta.textContent = p ? 'Subscribed ✓' : 'Subscribe'; };
 };
 
 inits.tech = s => {
@@ -487,6 +508,10 @@ inits.tech = s => {
 };
 
 document.querySelectorAll('article.pattern').forEach(a => { const f = inits[a.id]; Dict.demo(a.id, f && (d => f(d.querySelector('.stage')))); });
+// links inside demos are placeholders: keep the page where it is
+document.addEventListener('click', e => { if (e.target.closest('.demo .stage a[href^="#"]')) e.preventDefault(); });
+// lets iOS Safari apply :active on tap (pressed states in brutalism, neumorphism, bento)
+document.addEventListener('touchstart', () => {}, { passive: true });
 </script>
 </body>
 </html>

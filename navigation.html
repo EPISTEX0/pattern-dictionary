@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Navigation — Pattern Dictionary</title>
 <meta name="description" content="Seven navigation patterns with interactive demos: hamburger menu, mega menu, breadcrumbs, sidebar, bottom tab bar, pagination, infinite scroll, and load more.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Navigation — Pattern Dictionary">
+<meta property="og:description" content="Seven navigation patterns with interactive demos: hamburger menu, mega menu, breadcrumbs, sidebar, bottom tab bar, pagination, infinite scroll, and load more.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/navigation.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/navigation.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -969,15 +979,20 @@
       nL += BATCH; outL.textContent = `${nL} / ${TOTAL}`;
     };
     addL();
-    const io = new IntersectionObserver(es => {
-      if (!es.some(x => x.isIntersecting) || busy || nL >= TOTAL) return;
+    // load when the sentinel is within 60px of the bottom; re-check after each batch so a fast flick never stalls
+    const scL = $('.sc', L), sent = $('.sent', L);
+    const near = () => sent.getBoundingClientRect().top < scL.getBoundingClientRect().bottom + 60;
+    const loadL = () => {
+      if (busy || nL >= TOTAL || !near()) return;
       busy = true; feed.setAttribute('aria-busy', 'true'); ld.hidden = false;
       later(() => {
         addL(); busy = false; feed.setAttribute('aria-busy', 'false'); ld.hidden = true;
-        if (nL >= TOTAL) { io.disconnect(); $('.endnote', L).hidden = false; }
+        if (nL >= TOTAL) $('.endnote', L).hidden = false; else loadL();
       }, 750);
-    }, { root: $('.sc', L), rootMargin: '0px 0px 60px 0px' });
-    io.observe($('.sent', L));
+    };
+    scL.addEventListener('scroll', loadL, { passive: true, signal: ac.signal });
+    const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) loadL(); }, { root: scL, rootMargin: '0px 0px 60px 0px' });
+    io.observe(sent);
 
     // load more
     const R = $('[data-mode=more]', d), list = $('.list', R), btn = $('.more', R), outR = $('output', R);

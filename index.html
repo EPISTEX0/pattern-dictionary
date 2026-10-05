@@ -11,6 +11,11 @@
 <meta property="og:title" content="Pattern Dictionary">
 <meta property="og:description" content="UI/UX patterns with interactive demos, standard names and keywords for writing AI prompts.">
 <meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pattern Dictionary: see the pattern, know its name">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/">
 <meta name="theme-color" content="#f6f5f2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
@@ -88,7 +93,7 @@ h1,h2,h3,p{margin:0}
 @keyframes fadeUp{from{opacity:.001;translate:0 14px}}
 
 /* ---------- Marquee ---------- */
-.mq{margin-top:120px;display:grid;gap:14px;overflow:clip;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq{margin-top:120px;min-height:96px;display:grid;gap:14px;overflow:clip;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .mq-row{display:flex;width:max-content}
 .mq-row ul{display:flex;gap:10px;margin:0;padding:0 10px 0 0;list-style:none}
 .mq-row li{font:500 15px/1 var(--mono);white-space:nowrap;padding:12px 18px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink)}
@@ -104,7 +109,8 @@ h1,h2,h3,p{margin:0}
 /* ---------- Scroll-triggered reveal (stagger qua --i) ---------- */
 .js .rv{opacity:0;translate:0 28px;transition:opacity .8s var(--out),translate 1.1s var(--spring);transition-delay:calc(var(--i,0) * 80ms)}
 .js .rv.in{opacity:1;translate:none}
-@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;translate:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;translate:none;transition:none}
+  .step,.frame,.tag,.prompt-card,.wow,.lnav,.lnav-in::before,.card,.card::after,.chips button,.btn,.btn .ar{transition:none}}
 
 /* ---------- Scrollytelling ---------- */
 .story{display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:start}
@@ -156,7 +162,7 @@ h1,h2,h3,p{margin:0}
 .cluster+.cluster{margin-top:72px}
 .cl-h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .cl-h h3{font-size:26px;font-weight:800;letter-spacing:-.02em}
-.cl-h h3 span{font-weight:400;color:var(--mute);margin-left:10px;font-size:18px;letter-spacing:0}
+.cl-h h3 span{font-weight:400;color:var(--mute);margin-left:5px;font-size:18px;letter-spacing:0}
 .cl-h small{font:500 13px/1 var(--mono);color:var(--mute)}
 .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .card{grid-column:span var(--span,2);position:relative;display:flex;flex-direction:column;border-radius:22px;background:var(--card);border:1px solid var(--line);padding:10px 10px 22px;color:var(--ink);text-decoration:none;isolation:isolate;transition:translate .6s var(--spring)}
@@ -179,8 +185,8 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 
 /* Animated preview per group (transform/opacity only; paused when off screen) */
 .pv{position:relative;height:168px;border-radius:14px;background:#f4f3ef;overflow:hidden}
-.card:not(.live) .pv *,.card:not(.live) .pv::before,.card:not(.live) .pv::after{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){.pv *,.pv::before,.pv::after{animation:none!important}}
+.card:not(.live) .pv *,.card:not(.live) .pv *::before,.card:not(.live) .pv *::after,.card:not(.live) .pv::before,.card:not(.live) .pv::after{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.pv *,.pv *::before,.pv *::after,.pv::before,.pv::after{animation:none!important}}
 .pv .c{position:absolute;inset:0;display:grid;place-items:center}
 /* Visual styles: three styles for the same "Aa" */
 .pv-aes .s{position:absolute;inset:26px 30%;display:grid;place-items:center;border-radius:12px;font-size:44px;animation:aes 7.5s var(--out) infinite;animation-delay:calc(var(--i) * -2.5s)}
@@ -297,7 +303,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 .pb-out mark{background:none;color:#fff;border-bottom:1.5px solid var(--acc)}
 .pb-act{display:flex;gap:10px;flex-wrap:wrap}
 .pb-act .btn{height:46px;font-size:15px}
-.pb-act .copy{background:var(--acc);color:#fff}
+.pb-act .copy{background:var(--acc);color:#fff;min-width:152px;justify-content:center}
 .pb-act .copy:hover{background:#ff6f3b}
 .pb-act .clear{background:transparent;color:#bdb8b0;border-color:#3a3836}
 .pb-act .clear:hover{color:#fff;background:#222}
@@ -319,7 +325,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 /* ---------- Responsive ---------- */
 @media (max-width:1100px){.note-hand{left:15%;top:calc(100% - .05em)}.hero .lead{margin-top:84px}}
 @media (max-width:900px){
-  .story{grid-template-columns:1fr;gap:0}
+  .story{grid-template-columns:1fr;gap:0;padding-top:48px}
   .panel{top:80px;height:270px;z-index:2;order:-1}
   .panel::before{content:"";position:absolute;inset:-84px -24px -16px;background:var(--bg);z-index:-1}
   .steps{padding:24px 0 24vh}.step{min-height:44vh;justify-content:flex-start}
@@ -342,7 +348,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   .pv{height:132px}.pv-dark .c{grid-template-columns:1fr;gap:12px}.pv-dark{height:200px}
   .pb-l,.pb-r{padding:24px 20px}
   .tabs .grp{grid-template-columns:1fr}.tabs .tg{line-height:1;padding:4px 12px 6px}
-  .mq{margin-top:88px}.mq-row li{font-size:13px;padding:10px 14px}
+  .mq{margin-top:88px;min-height:84px}.mq-row li{font-size:13px;padding:10px 14px}
   .end{padding:120px 0 104px}
   .foot .lw{grid-template-columns:1fr}.foot ul{columns:2}
 }
@@ -355,6 +361,8 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   .pv-dark .modal small{font-size:12px}
   .cl-h h3 span{display:block;margin:6px 0 0}
   .card .cnt{white-space:nowrap}
+  .pb-act{display:grid;grid-template-columns:1fr 1fr}
+  .pb-act .btn,.pb-act .copy{min-width:0;padding:0 12px;justify-content:center}
   .foot li{padding:0}
   .foot a,.foot li span{display:flex;align-items:center;min-height:36px}
 }
@@ -382,7 +390,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
       <a class="btn btn-ink" href="aesthetic.html" data-first>Open the dictionary <span class="ar">→</span></a>
       <a class="btn btn-ghost" href="#prompt">Build a prompt</a>
     </div>
-    <p class="stats" id="stats" hidden></p>
+    <p class="stats" id="stats"><b>76</b> patterns with demos · <b>11</b> groups available</p>
   </div>
   <div class="mq" id="mq" aria-hidden="true"></div>
 </section>
@@ -546,7 +554,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   };
   $('#clusters').innerHTML = DICT_GROUPS.map(g => {
     const ps = pages.filter(p => p.group === g), n = ps.reduce((s, p) => s + p.count, 0);
-    return `<div class="cluster"><div class="cl-h rv"><h3>${esc(g)}<span>${SUB[g] || ''}</span></h3><small>${ps.length} groups${n ? ` · ${n} patterns` : ''}</small></div>` +
+    return `<div class="cluster"><div class="cl-h rv"><h3>${esc(g)}<span> ${SUB[g] || ''}</span></h3><small>${ps.length} groups${n ? ` · ${n} patterns` : ''}</small></div>` +
       `<div class="bento">${ps.map((p, i) => card(p, i, g)).join('')}</div></div>`;
   }).join('');
 
@@ -590,7 +598,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const copyBtn = $('#copy');
   copyBtn.addEventListener('click', async () => {
     const ok = await Dict.copy(out.textContent);
-    copyBtn.textContent = ok ? 'Copied ✓' : 'Couldn’t copy';
+    copyBtn.textContent = ok ? 'Copied ✓' : 'Copy failed';
     clearTimeout(copyBtn._t); copyBtn._t = setTimeout(() => copyBtn.textContent = 'Copy prompt', 1600);
   });
   showTab(cur); render();

@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>UX components — Pattern Dictionary</title>
 <meta name="description" content="Eight common UX components with interactive demos: floating nav, sticky CTA, social proof, pricing table, feature tabs, command palette, empty state, and skeleton loading.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="UX components — Pattern Dictionary">
+<meta property="og:description" content="Eight common UX components with interactive demos: floating nav, sticky CTA, social proof, pricing table, feature tabs, command palette, empty state, and skeleton loading.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/ux.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/ux.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -255,6 +265,8 @@
 #command-palette .open-btn{font:600 12.5px/1 var(--sans);border:1px solid rgba(128,128,128,.35);background:transparent;padding:8px 12px;border-radius:8px;cursor:pointer;color:inherit}
 #command-palette .scrim{position:absolute;inset:0;z-index:20;background:rgba(10,10,12,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s}
 #command-palette .pal{position:absolute;z-index:21;left:50%;top:34px;width:520px;transform:translate(-50%,-8px) scale(.97);opacity:0;pointer-events:none;transition:opacity .18s,transform .22s cubic-bezier(.2,.9,.3,1.2);background:#fff;color:#1b1b1b;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);overflow:hidden}
+#command-palette .pal{visibility:hidden;transition:opacity .18s ease-out,transform .22s cubic-bezier(.2,.9,.3,1.2),visibility 0s .22s}
+#command-palette .open .pal{visibility:visible;transition-delay:0s}
 #command-palette .open .scrim{opacity:1;pointer-events:auto}
 #command-palette .open .pal{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 #command-palette .pal input{width:100%;border:0;border-bottom:1px solid #eee;padding:16px 18px 16px 44px;font:400 15px/1.2 var(--sans);outline:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 18px 50% no-repeat}
@@ -645,19 +657,26 @@
     const root = $('#social-proof'), cnt = $('.count', root), slides = $$('.slide', root), dots = $$('.dots button', root);
     let i = 0, timer;
     const fmt = v => Math.round(v).toLocaleString('en-US');
+    let run = 0; // token: a new count (Replay) cancels the previous loop
     const count = () => {
-      const to = +cnt.dataset.to;
+      const to = +cnt.dataset.to, id = ++run;
       if (reduce) { cnt.textContent = fmt(to); return; }
       const t0 = performance.now(), d = 1400;
-      const step = t => { const p = Math.min(1, (t - t0) / d); cnt.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+      const step = t => { if (id !== run) return; const p = Math.min(1, (t - t0) / d); cnt.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
       requestAnimationFrame(step);
     };
     const go = k => { i = (k + slides.length) % slides.length; slides.forEach((s, j) => s.classList.toggle('on', j === i)); dots.forEach((d, j) => d.setAttribute('aria-current', j === i)); };
-    const auto = () => { clearInterval(timer); if (!reduce) timer = setInterval(() => go(i + 1), 4500); };
+    const demo = $('.demo', root), card = root.querySelector('.tcard');
+    const auto = () => { clearInterval(timer); if (!reduce && !demo.classList.contains('is-off')) timer = setInterval(() => go(i + 1), 4500); };
     dots.forEach((d, j) => d.addEventListener('click', () => { go(j); auto(); }));
-    root.querySelector('.tcard').addEventListener('mouseenter', () => clearInterval(timer));
-    root.querySelector('.tcard').addEventListener('mouseleave', auto);
-    onView($('.demo', root), () => { count(); auto(); });
+    card.addEventListener('mouseenter', () => clearInterval(timer));
+    card.addEventListener('mouseleave', auto);
+    card.addEventListener('focusin', () => clearInterval(timer));
+    card.addEventListener('focusout', auto);
+    // stop rotating while the demo is off screen, resume when it returns
+    new MutationObserver(() => { if (demo.classList.contains('is-off')) clearInterval(timer); else if (started) auto(); }).observe(demo, { attributes: true, attributeFilter: ['class'] });
+    let started = false;
+    onView(demo, () => { started = true; count(); auto(); });
     Dict.replay(root.id, () => { cnt.textContent = '0'; go(0); count(); auto(); });
   }
 
@@ -671,9 +690,10 @@
         const v = $('.v', pl), bill = $('.bill', pl);
         const from = +v.textContent, to = +v.dataset[yearly ? 'y' : 'm'];
         if (+v.dataset.m > 0) bill.textContent = yearly ? 'billed $' + (to * 12).toLocaleString('en-US') + ' per year' : 'billed monthly, cancel anytime';
+        const id = v._run = (v._run || 0) + 1; // a newer toggle cancels the running animation
         if (reduce || from === to) { v.textContent = to; return; }
         const t0 = performance.now(), d = 450;
-        const step = t => { const p = Math.min(1, (t - t0) / d); v.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+        const step = t => { if (id !== v._run) return; const p = Math.min(1, (t - t0) / d); v.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
         requestAnimationFrame(step);
       });
     };
@@ -746,7 +766,7 @@
       const a = $('.it.act', list); if (a) a.scrollIntoView({ block: 'nearest' });
     };
     const open = () => { lastFocus = document.activeElement; demo.classList.add('open'); input.value = ''; act = 0; render(); setTimeout(() => input.focus(), 30); };
-    const close = () => { demo.classList.remove('open'); demo.focus(); };
+    const close = () => { demo.classList.remove('open'); (lastFocus && lastFocus.isConnected && lastFocus !== input ? lastFocus : demo).focus(); };
     const run = i => {
       const c = shown[i]; if (!c) return;
       close();
@@ -760,6 +780,7 @@
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); demo.classList.contains('open') ? close() : open(); return; }
       if (!demo.classList.contains('open')) return;
       if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'Tab') e.preventDefault(); // keep focus inside the palette
       else if (e.key === 'ArrowDown') { e.preventDefault(); if (shown.length) { act = (act + 1) % shown.length; render(); } }
       else if (e.key === 'ArrowUp') { e.preventDefault(); if (shown.length) { act = (act - 1 + shown.length) % shown.length; render(); } }
       else if (e.key === 'Enter') { e.preventDefault(); run(act); }

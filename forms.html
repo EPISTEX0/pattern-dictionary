@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Forms &amp; input — Pattern Dictionary</title>
 <meta name="description" content="Six form and input patterns: inline validation, multi-step form, combobox, date picker, password strength meter and input mask, with demos that work with the keyboard.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Forms &amp; input — Pattern Dictionary">
+<meta property="og:description" content="Six form and input patterns: inline validation, multi-step form, combobox, date picker, password strength meter and input mask, with demos that work with the keyboard.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/forms.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/forms.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -80,7 +90,7 @@
 #multi-step-form .demo .rail .ttl{font-weight:800;color:#fff;font-size:15px}
 #multi-step-form .demo .rail .cnt{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#8d93a5;margin-top:6px}
 #multi-step-form .demo .rail .bar{height:4px;border-radius:2px;background:#353b4d;margin:14px 0 22px;overflow:hidden}
-#multi-step-form .demo .rail .bar i{display:block;height:100%;width:33.33%;background:#7c9bff;border-radius:2px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+#multi-step-form .demo .rail .bar i{display:block;height:100%;background:#7c9bff;border-radius:2px;transform:scaleX(.3333);transform-origin:left;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 #multi-step-form .demo .steps{list-style:none;display:grid;gap:4px;position:relative}
 #multi-step-form .demo .steps li{position:relative}
 #multi-step-form .demo .steps li:not(:last-child)::after{content:"";position:absolute;left:23px;top:38px;bottom:-8px;width:2px;background:#353b4d}
@@ -297,7 +307,7 @@
 <!-- 1 -->
 <article class="pattern" id="inline-validation">
   <h2>Inline validation</h2>
-  <p class="vi"><b>Reports errors at the field, at the right moment.</b> Instead of waiting for submit and then listing every error, the form checks each field when the user <b>leaves</b> it and removes the message as soon as the value is valid. The two forms in the demo are identical except for when they report errors. Type an email without “@” and press Tab in both forms, then try the username “alexm”, which is already taken.</p>
+  <p class="vi"><b>Reports errors at the field, at the right moment.</b> Instead of waiting for submit and then listing every error, the form checks each field when the user <b>leaves</b> it and removes the message as soon as the value is valid. The two forms in the demo are identical except for when they report errors. Type an email without “@” in both forms and move to the next field, then try the username “alexm”, which is already taken.</p>
   <div class="demo">
     <p class="cap">One form, <b>two error timings</b></p>
     <div class="cmp">
@@ -310,7 +320,7 @@
         <div class="done" role="status"><i>✓</i><b>Account created</b><span></span></div>
       </form>
       <form class="card" data-mode="live" novalidate>
-        <p class="tag"><i>B</i>Shown on blur, cleared when fixed</p>
+        <p class="tag"><i>B</i>Errors shown on leaving a field</p>
         <div class="fld"><label for="iv-b-email">Email</label><div class="box"><input class="inp" id="iv-b-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-b-email-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-email-err" aria-live="polite"></p></div>
         <div class="fld"><label for="iv-b-user">Username</label><div class="box"><input class="inp" id="iv-b-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-b-user-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-user-err" aria-live="polite"></p></div>
         <button class="btn">Create account</button>
@@ -392,13 +402,13 @@
 <!-- 3 -->
 <article class="pattern" id="autocomplete-combobox" data-toc="Autocomplete / Combobox">
   <h2>Autocomplete / Combobox</h2>
-  <p class="vi"><b>A text input with a list of suggestions.</b> As the user types, the list narrows to matching items; the user chooses one with a pointer, touch, or ↑ ↓ Enter. Matching ignores case, accents and spaces, so “sao paulo”, “saopaulo” and “São Paulo” return the same result. Type “zurich”, “saigon” or “san”, then choose a result with the keyboard.</p>
+  <p class="vi"><b>A text input with a list of suggestions.</b> As the user types, the list narrows to matching items; the user chooses one with a pointer, touch, or ↑ ↓ Enter. Matching ignores case, accents and spaces, so “sao paulo”, “saopaulo” and “São Paulo” return the same result. Type “zurich”, “saigon” or “san”, then select a result.</p>
   <div class="demo">
     <div class="ac">
       <div class="main">
         <label class="lab" for="cb-in" id="cb-lab">Delivery city</label>
         <div class="cb">
-          <input id="cb-in" class="inp" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" spellcheck="false" placeholder="Type a city; accents are optional">
+          <input id="cb-in" class="inp" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" spellcheck="false" placeholder="Search for a city">
           <button type="button" class="clr" aria-label="Clear city" hidden>×</button>
           <ul id="cb-list" role="listbox" aria-labelledby="cb-lab" hidden></ul>
         </div>
@@ -424,7 +434,7 @@
 <!-- 4 -->
 <article class="pattern" id="date-picker">
   <h2>Date picker</h2>
-  <p class="vi"><b>Picks a date from a month calendar.</b> The date field accepts typed input (MM/DD/YYYY) and has a button that opens a month view, which marks today and disables dates that cannot be chosen. Next to it (below it on mobile) is the browser’s native date input for comparison. Select the calendar icon, then choose a date by tapping or with the arrow keys, Page Up, Page Down, Enter and Esc.</p>
+  <p class="vi"><b>Picks a date from a month calendar.</b> The date field accepts typed input (MM/DD/YYYY) and has a button that opens a month view, which marks today and disables dates that cannot be chosen. Next to it (below it on mobile) is the browser’s native date input for comparison. Select the calendar icon, then tap a date, or move with the arrow keys and Page Up / Page Down and press Enter.</p>
   <div class="demo">
     <div class="dp">
       <div class="col">
@@ -511,9 +521,9 @@
   <div class="demo">
     <div class="im">
       <form class="card" novalidate>
-        <div class="fld wide"><label for="im-tel">Phone number</label><div class="box"><input class="inp" id="im-tel" type="tel" inputmode="tel" autocomplete="tel-national" data-mask="tel" aria-describedby="im-tel-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-tel-err" aria-live="polite"></p></div>
-        <div class="fld"><label for="im-cc">Card number</label><div class="box"><input class="inp" id="im-cc" type="text" inputmode="numeric" autocomplete="cc-number" data-mask="cc" aria-describedby="im-cc-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-cc-err" aria-live="polite"></p></div>
-        <div class="fld"><label for="im-exp">Expiry <span class="hint">(MM/YY)</span></label><div class="box"><input class="inp" id="im-exp" type="text" inputmode="numeric" autocomplete="cc-exp" data-mask="exp" aria-describedby="im-exp-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-exp-err" aria-live="polite"></p></div>
+        <div class="fld wide"><label for="im-tel">Phone number</label><div class="box"><input class="inp" id="im-tel" type="tel" inputmode="tel" autocomplete="tel-national" data-mask="tel" aria-describedby="im-tel-err"><span class="ghost" aria-hidden="true"><i></i>(000) 000-0000</span></div><p class="err" id="im-tel-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-cc">Card number</label><div class="box"><input class="inp" id="im-cc" type="text" inputmode="numeric" autocomplete="cc-number" data-mask="cc" aria-describedby="im-cc-err"><span class="ghost" aria-hidden="true"><i></i>0000 0000 0000 0000</span></div><p class="err" id="im-cc-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-exp">Expiry <span class="hint">(MM/YY)</span></label><div class="box"><input class="inp" id="im-exp" type="text" inputmode="numeric" autocomplete="cc-exp" data-mask="exp" aria-describedby="im-exp-err"><span class="ghost" aria-hidden="true"><i></i>MM/YY</span></div><p class="err" id="im-exp-err" aria-live="polite"></p></div>
       </form>
       <div class="side">
         <div class="raw">
@@ -645,7 +655,7 @@ Dict.demo('multi-step-form', d => {
   const form = $('form', d), steps = $$('.step', form), lis = $$('.steps li', d);
   const back = $('.back', form), next = $('.next', form), live = $('.live', form), nav = $('.nav', form);
   const NAMES = ['Account', 'Workspace', 'Review'];
-  let cur = 0, reached = 0;
+  let cur = 0, reached = 0, lockUntil = 0;
   const v = {
     email: x => ivRule.email(x),
     pw: x => !x ? 'Create a password.' : x.length < 8 ? `Use at least 8 characters (currently ${x.length}).` : '',
@@ -677,7 +687,7 @@ Dict.demo('multi-step-form', d => {
       $('button', li).disabled = done || i === cur || i > reached;
     });
     $('.rail .cnt', d).innerHTML = done ? 'Complete' : `Step <b>${cur + 1}</b> of 3`;
-    $('.rail .bar i', d).style.width = done ? '100%' : ((cur + 1) / 3 * 100) + '%';
+    $('.rail .bar i', d).style.transform = `scaleX(${done ? 1 : (cur + 1) / 3})`;
     back.hidden = cur === 0 || done;
     nav.hidden = done;
     next.textContent = cur === 2 ? 'Create workspace' : (reached === 2 ? 'Save and review →' : `Next: ${cur === 0 ? 'Workspace' : 'Review'} →`);
@@ -692,6 +702,7 @@ Dict.demo('multi-step-form', d => {
   };
   const go = (i) => {
     form.dataset.dir = i > cur ? 'fwd' : 'back';
+    lockUntil = performance.now() + 350; // ignore a double tap on Next while the step changes
     cur = i; reached = Math.max(reached, Math.min(i, 2));
     /* restart the step entrance animation */
     steps[cur].style.animation = 'none'; void steps[cur].offsetWidth; steps[cur].style.animation = '';
@@ -699,6 +710,7 @@ Dict.demo('multi-step-form', d => {
   };
   form.addEventListener('submit', e => {
     e.preventDefault();
+    if (performance.now() < lockUntil) return;
     if (!validate(cur)) return;
     if (cur === 2) return go(3);
     go(reached === 2 ? 2 : cur + 1);

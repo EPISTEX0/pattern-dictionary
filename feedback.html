@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Feedback &amp; overlays — Pattern Dictionary</title>
 <meta name="description" content="Seven feedback and overlay patterns: modal dialog, drawer, toast, tooltip, popover, confirmation dialog and progress indicator, each with a demo, usage conditions and prompt keywords.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Feedback &amp; overlays — Pattern Dictionary">
+<meta property="og:description" content="Seven feedback and overlay patterns: modal dialog, drawer, toast, tooltip, popover, confirmation dialog and progress indicator, each with a demo, usage conditions and prompt keywords.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/feedback.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/feedback.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -138,9 +148,9 @@
 #tooltip .demo .tb button:hover{background:#f1f1ee}
 #tooltip .demo .tb button[aria-pressed=true]{background:#e8eeff;color:var(--p)}
 #tooltip .demo .tb .sep{width:1px;height:20px;background:#e6e5e0;margin:0 6px}
-#tooltip .demo .tip{--dx:0px;position:absolute;z-index:20;left:calc(50% + var(--dx));top:calc(100% + 8px);width:max-content;max-width:240px;padding:7px 10px;border-radius:8px;background:#1f2129;color:#f2f2f4;font-size:12.5px;line-height:1.4;display:flex;align-items:center;gap:8px;opacity:0;visibility:hidden;transform:translate(-50%,-4px);transition:opacity .12s,transform .12s,visibility 0s .12s;pointer-events:none}
+#tooltip .demo .tip{--dx:0px;position:absolute;z-index:20;left:calc(50% + var(--dx));top:calc(100% + 8px);width:max-content;max-width:240px;padding:7px 10px;border-radius:8px;background:#1f2129;color:#f2f2f4;font-size:12.5px;line-height:1.4;display:flex;align-items:center;gap:8px;opacity:0;visibility:hidden;transform:translate(-50%,-4px);transition:opacity .15s ease-out,transform .15s ease-out,visibility 0s .15s;pointer-events:none}
 #tooltip .demo .tip::before{content:"";position:absolute;left:calc(50% - var(--dx));top:-4px;width:9px;height:9px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px 0 0 0}
-#tooltip .demo .tip.on{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .12s,transform .12s;pointer-events:auto}
+#tooltip .demo .tip.on{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .15s ease-out,transform .15s ease-out;pointer-events:auto}
 #tooltip .demo .tip kbd{border-color:rgba(255,255,255,.3);color:#c9cbd3;font-size:10.5px}
 #tooltip .demo .tip.up{top:auto;bottom:calc(100% + 8px);transform:translate(-50%,4px)}
 #tooltip .demo .tip.up.on{transform:translate(-50%,0)}
@@ -385,7 +395,7 @@
 <!-- 2 -->
 <article class="pattern" id="drawer" data-toc="Drawer / Side sheet">
   <h2>Drawer / Side sheet</h2>
-  <p class="vi"><b>A panel that slides in from the edge of the screen.</b> A drawer spans the full height of the viewport, slides in from the right and holds the details or edit form for the selected item. The list behind it stays visible. Select a task name, change its status and save; press <kbd>Esc</kbd> or click outside the drawer to close it.</p>
+  <p class="vi"><b>A panel that slides in from the edge of the screen.</b> A drawer spans the full height of the viewport, slides in from the right and holds the details or edit form for the selected item. The list behind it stays visible. Select a task name, change its status and save; press <kbd>Esc</kbd> or tap outside the drawer to close it.</p>
   <div class="demo">
     <div class="app">
       <div class="bar"><h3>Tasks <small>Sprint 14</small></h3></div>
@@ -425,7 +435,7 @@
   <p class="vi"><b>A short message that dismisses itself after a few seconds.</b> A toast appears in a corner of the screen after an action completes. It does not block interaction and hides after a few seconds. With an <b>Undo</b> button, delete and archive actions can run immediately without a confirmation step. Archive a few messages, then select Undo or press <kbd>Z</kbd>; hover over or touch and hold a toast to pause its timer.</p>
   <div class="demo">
     <div class="app">
-      <div class="bar"><h3>Inbox <small>4 unread</small></h3></div>
+      <div class="bar"><h3>Inbox <small>4 messages</small></h3></div>
       <ul class="list" aria-label="Messages"></ul>
     </div>
     <section class="toasts" aria-label="Notifications"></section>
@@ -534,7 +544,7 @@
       </section>
       <section class="pane" aria-labelledby="cf-b">
         <p class="tag" id="cf-b"><i>B</i>Act now, offer Undo</p>
-        <ul class="nl" aria-label="Notes"></ul>
+        <ul class="nl" aria-label="Notes"><li data-i="0"><span>Workshop ideas</span><button type="button" class="del" aria-label="Delete note: Workshop ideas"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li><li data-i="1"><span>Interview questions</span><button type="button" class="del" aria-label="Delete note: Interview questions"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li><li data-i="2"><span>Support team meeting notes</span><button type="button" class="del" aria-label="Delete note: Support team meeting notes"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li><li data-i="3"><span>To-dos before the holidays</span><button type="button" class="del" aria-label="Delete note: To-dos before the holidays"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li></ul>
         <div class="ub" hidden><span></span><button type="button">Undo</button></div>
         <p class="sr live" role="status"></p>
         <p class="why">Small, frequent and recoverable → do not ask, act immediately.</p>
@@ -645,6 +655,20 @@ function layer(dlg, { under, scrim, onClose }) {
   };
   return { open, close, stop: () => clearTimeout(timer) };
 }
+/* Timers that freeze while their demo is off screen (dict.js sets .is-off more than 200px away) and resume where they stopped. */
+const offWatch = (d, cb) => { const mo = new MutationObserver(() => cb(d.classList.contains('is-off'))); mo.observe(d, { attributes: true, attributeFilter: ['class'] }); return () => mo.disconnect(); };
+function clock(d) {
+  const all = new Set();
+  let off = d.classList.contains('is-off');
+  const run = t => { t.start = performance.now(); t.id = setTimeout(() => { all.delete(t); t.fn(); }, t.left); };
+  const unwatch = offWatch(d, o => {
+    if (o === off) return; off = o;
+    all.forEach(t => { if (off) { clearTimeout(t.id); t.left = Math.max(0, t.left - (performance.now() - t.start)); } else run(t); });
+  });
+  const later = (fn, ms) => { const t = { fn, left: ms }; all.add(t); if (!off) run(t); return t; };
+  const cancel = t => { if (t) { clearTimeout(t.id); all.delete(t); } };
+  return { later, cancel, stop: () => { all.forEach(t => clearTimeout(t.id)); all.clear(); unwatch(); } };
+}
 const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
 /* ---------- 1. Modal dialog ---------- */
@@ -723,7 +747,7 @@ Dict.demo('toast-notification', d => {
     `<button type="button" class="arch" aria-label="Archive message: ${esc(it.m[1])}"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="14" height="4" rx="1"/><path d="M4.5 8v7.5a1 1 0 001 1h9a1 1 0 001-1V8M8 11.5h4" stroke-linecap="round"/></svg><span>Archive</span></button></li>`;
   const draw = () => {
     const vis = items.filter(x => x.on);
-    list.innerHTML = vis.length ? vis.map(li).join('') : '<li class="empty">Your inbox is empty. Undo to restore a message.</li>';
+    list.innerHTML = vis.length ? vis.map(li).join('') : '<li class="empty">Your inbox is empty. Select Replay to restore it.</li>';
     $('.bar small', d).textContent = vis.length ? `${vis.length} message${vis.length > 1 ? 's' : ''}` : 'Empty';
   };
   draw();
@@ -736,6 +760,7 @@ Dict.demo('toast-notification', d => {
     const back = t.contains(document.activeElement);
     if (now || Dict.RM) t.remove(); else { t.classList.add('out'); t.addEventListener('animationend', () => t.remove(), { once: true }); }
     if (back) ($('.arch', list) || list).focus?.();
+    if (!box.contains(document.activeElement)) release('focus');  // a removed toast fires no focusout
   };
   const arm = t => {
     t._start = performance.now();
@@ -744,10 +769,14 @@ Dict.demo('toast-notification', d => {
     t._bar.style.transition = `transform ${t._left}ms linear`; t._bar.style.transform = 'scaleX(0)';
     t._t = setTimeout(() => kill(t), t._left); timers.add(t._t);
   };
+  const holds = new Set();
+  const hold = why => { holds.add(why); pause(); };
+  const release = why => { holds.delete(why); if (!holds.size) resume(); };
   const pause = () => { if (paused) return; paused = true; $$('.toast', box).forEach(t => { clearTimeout(t._t); t._left -= performance.now() - t._start; const s = getComputedStyle(t._bar).transform; t._bar.style.transition = 'none'; t._bar.style.transform = s; }); };
   const resume = () => { if (!paused) return; paused = false; $$('.toast', box).forEach(t => { t._left = Math.max(t._left, 1200); arm(t); }); };
-  box.addEventListener('pointerenter', pause); box.addEventListener('pointerleave', () => { if (!box.contains(document.activeElement)) resume(); });
-  box.addEventListener('focusin', pause); box.addEventListener('focusout', e => { if (!box.contains(e.relatedTarget) && !box.matches(':hover')) resume(); });
+  box.addEventListener('pointerenter', () => hold('pointer')); box.addEventListener('pointerleave', () => release('pointer'));
+  box.addEventListener('focusin', () => hold('focus')); box.addEventListener('focusout', e => { if (!box.contains(e.relatedTarget)) release('focus'); });
+  const unwatch = offWatch(d, off => off ? hold('off') : release('off'));
   const toast = (msg, undo) => {
     const t = document.createElement('div'); t.className = 'toast';
     t.innerHTML = `<span>${msg}</span>${undo ? '<button type="button" class="undo">Undo</button>' : ''}<button type="button" class="x" aria-label="Dismiss notification">×</button><i aria-hidden="true"></i>`;
@@ -769,6 +798,7 @@ Dict.demo('toast-notification', d => {
   list.addEventListener('click', e => {
     const b = e.target.closest('.arch'); if (!b) return;
     const r = b.closest('li'), it = items[+r.dataset.i];
+    if (r.dataset.leaving) return; r.dataset.leaving = '1';  // a double tap archives once
     const sib = r.nextElementSibling || r.previousElementSibling;
     const nextI = sib?.dataset.i;
     const finish = () => {
@@ -791,7 +821,7 @@ Dict.demo('toast-notification', d => {
     restore(it);
   };
   d.addEventListener('keydown', onKey);
-  return () => { d.removeEventListener('keydown', onKey); timers.forEach(clearTimeout); };
+  return () => { d.removeEventListener('keydown', onKey); timers.forEach(clearTimeout); unwatch(); };
 });
 
 /* ---------- 4. Tooltip ---------- */
@@ -893,10 +923,15 @@ Dict.demo('popover', d => {
     pop.style.left = Math.max(8, Math.min(r.right - pop.offsetWidth, innerWidth - pop.offsetWidth - 8)) + 'px';
   };
   const onScroll = () => [fp, sp].forEach(p => p.matches(':popover-open') && p.hidePopover());
-  [[fp, bf], [sp, $('.bs', d)]].forEach(([p, b]) => p.addEventListener('toggle', e => {
-    b.setAttribute('aria-expanded', e.newState === 'open');
-    if (!ANCHOR && e.newState === 'open') place(p, b);
-  }));
+  [[fp, bf], [sp, $('.bs', d)]].forEach(([p, b]) => {
+    /* closing with focus inside (Esc, Apply): return focus to the trigger unless it already moved elsewhere */
+    p.addEventListener('beforetoggle', e => { p._ret = e.newState === 'closed' && p.contains(document.activeElement); });
+    p.addEventListener('toggle', e => {
+      b.setAttribute('aria-expanded', e.newState === 'open');
+      if (!ANCHOR && e.newState === 'open') place(p, b);
+      if (e.newState === 'closed' && p._ret && b.isConnected && (!document.activeElement || document.activeElement === document.body || p.contains(document.activeElement))) b.focus({ preventScroll: true });
+    });
+  });
   if (!ANCHOR) addEventListener('scroll', onScroll, { passive: true });
   return () => { clearTimeout(ct); removeEventListener('scroll', onScroll); [fp, sp].forEach(p => p.matches(':popover-open') && p.hidePopover()); };
 });
@@ -921,6 +956,7 @@ Dict.demo('confirmation-dialog', d => {
   const nl = $('.nl', d), ub = $('.ub', d), live = $('.live', d);
   const on = NOTES.map(() => true);
   let last = -1, t;
+  const C = clock(d);
   const draw = () => {
     const rows = NOTES.map((x, i) => on[i] ? `<li data-i="${i}"><span>${esc(x)}</span><button type="button" class="del" aria-label="Delete note: ${esc(x)}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li>` : '').join('');
     nl.innerHTML = rows || '<li class="nil">No notes left.</li>';
@@ -935,21 +971,20 @@ Dict.demo('confirmation-dialog', d => {
     $('span', ub).textContent = `Deleted “${NOTES[i]}”`; ub.hidden = false;
     ub.style.animation = 'none'; void ub.offsetWidth; ub.style.animation = '';
     live.textContent = `Deleted note ${NOTES[i]}. Undo available.`;
-    clearTimeout(t); t = setTimeout(hideUb, 6000);
+    C.cancel(t); t = C.later(hideUb, 6000);
   });
   $('button', ub).addEventListener('click', () => {
     if (last < 0) return;
-    const i = last; on[i] = true; draw(); hideUb(); clearTimeout(t);
+    const i = last; on[i] = true; draw(); hideUb(); C.cancel(t);
     const r = $(`li[data-i="${i}"]`, nl); r.classList.add('back'); $('.del', r).focus({ preventScroll: true });
     live.textContent = `Restored ${NOTES[i]}.`;
   });
-  return () => { clearTimeout(t); L.stop(); };
+  return () => { C.stop(); L.stop(); };
 });
 
 /* ---------- 7. Progress indicator ---------- */
 Dict.demo('progress-indicator', d => {
-  const T = new Set();
-  const later = (fn, ms) => { const id = setTimeout(() => { T.delete(id); fn(); }, ms); T.add(id); return id; };
+  const { later, cancel, stop } = clock(d);
   /* A: upload, with an uneven speed like a real network */
   const up = $('.up', d), upS = $('.up-s', d), upB = $('.up-b', d), upSt = $('.up-st', d);
   let upT = null, upV = 0;
@@ -961,9 +996,9 @@ Dict.demo('progress-indicator', d => {
     if (upV >= 100) { up.classList.add('done'); upS.innerHTML = '<span class="ok">✓ Uploaded · 24 MB</span>'; upSt.textContent = 'Upload complete.'; upB.textContent = 'Upload again'; upT = null; return; }
     upT = later(upTick, 160);
   };
-  const upStart = () => { clearTimeout(upT); upV = 0; up.value = 0; up.classList.remove('done'); upSt.textContent = ''; upB.textContent = 'Cancel'; upTick(); };
+  const upStart = () => { cancel(upT); upV = 0; up.value = 0; up.classList.remove('done'); upSt.textContent = ''; upB.textContent = 'Cancel'; upTick(); };
   upB.addEventListener('click', () => {
-    if (upT) { clearTimeout(upT); T.delete(upT); upT = null; upS.textContent = `Canceled at ${Math.round(upV)}%`; upSt.textContent = 'Upload canceled.'; upB.textContent = 'Upload again'; }
+    if (upT) { cancel(upT); upT = null; upS.textContent = `Canceled at ${Math.round(upV)}%`; upSt.textContent = 'Upload canceled.'; upB.textContent = 'Upload again'; }
     else upStart();
   });
   upStart();
@@ -1017,7 +1052,7 @@ Dict.demo('progress-indicator', d => {
   };
   syB.addEventListener('click', () => { if (syB.getAttribute('aria-disabled') !== 'true') syStart(); });
   syStart();
-  return () => { T.forEach(clearTimeout); T.clear(); exRun++; syRun++; };
+  return () => { stop(); exRun++; syRun++; };
 });
 })();
 </script>

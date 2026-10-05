@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="only light">
 <title>Surfaces &amp; texture — Pattern Dictionary</title>
 <meta name="description" content="Six surface techniques in web design: grain, gradient mesh, halftone, hand-drawn annotation, device mockup and cursor spotlight.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pattern Dictionary">
+<meta property="og:title" content="Surfaces &amp; texture — Pattern Dictionary">
+<meta property="og:description" content="Six surface techniques in web design: grain, gradient mesh, halftone, hand-drawn annotation, device mockup and cursor spotlight.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/surface.html">
+<meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/surface.html">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;700&family=Patrick+Hand&family=Fraunces:ital,wght@0,600;0,900;1,900&display=swap" rel="stylesheet">
@@ -13,7 +23,7 @@
 <style>
 
 /* reduced motion for this page's demos */
-@media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 
 /* ============ 1. GRAIN ============ */
@@ -33,7 +43,7 @@
 
 /* ============ 2. AURORA ============ */
 #aurora .stage{background:#0a0a1a;overflow:hidden}
-#aurora .stage .blobs{position:absolute;inset:-20%;filter:blur(60px) saturate(140%);transition:filter .6s}
+#aurora .stage .blobs{position:absolute;inset:-20%;filter:blur(60px) saturate(140%);transition:filter .35s ease-out}
 #aurora.raw .blobs{filter:none}
 #aurora .stage .bb{position:absolute;border-radius:50%;mix-blend-mode:screen}
 #aurora .stage .x1{width:46%;height:60%;left:10%;top:15%;background:#ff5a1f;animation:au1 16s ease-in-out infinite alternate}
@@ -221,7 +231,7 @@
   <div class="demo"><div class="stage">
     <div class="blobs" aria-hidden="true"><div class="bb x1"></div><div class="bb x2"></div><div class="bb x3"></div><div class="bb x4"></div></div>
     <div class="at"><h3>Good morning</h3><p>You have 3 tasks to finish today.</p></div>
-    <button class="tog">Show original shapes (blur off)</button>
+    <button class="tog" aria-pressed="false">Show original shapes (blur off)</button>
   </div></div>
   <div class="notes">
     <p class="use"><b>Use when</b>a landing page hero, welcome screen or featured card needs a soft, modern atmosphere without using photos.</p>
@@ -315,7 +325,7 @@
       <div class="phone" aria-hidden="true"><div class="pscr">
         <div class="island"></div>
         <small>Notes · Today</small>
-        <h5>Monday team meeting</h5>
+        <h5>Monday standup</h5>
         <div class="p-img"></div>
         <div class="p-row"><span>3 tasks</span><span>★ 4.9</span></div>
         <div class="p-btn">Open note</div>
@@ -358,14 +368,18 @@ const inits = {};
 inits.aurora = s => {
   const a = s.closest('.pattern'), b = s.querySelector('.tog');
   a.classList.remove('raw');
-  b.onclick = () => { const r = a.classList.toggle('raw'); b.textContent = r ? 'Turn blur back on' : 'Show original shapes (blur off)'; };
+  b.onclick = () => { const r = a.classList.toggle('raw'); b.setAttribute('aria-pressed', r); b.textContent = r ? 'Turn blur back on' : 'Show original shapes (blur off)'; };
 };
 
 inits.halftone = s => {
   const src = s.querySelector('.src'), ht = s.querySelector('.ht'), rng = s.querySelector('input');
+  let lw = 0, lh = 0;
+  // rebuild both canvases whenever their size changes, so they never look stretched
+  const setup = () => {
   const dpr = devicePixelRatio || 1, w = src.clientWidth, h = src.clientHeight;
+  if (w === lw && h === lh) return; lw = w; lh = h;
   [src, ht].forEach(c => { c.width = w * dpr; c.height = h * dpr; });
-  const g = src.getContext('2d'); g.scale(dpr, dpr);
+  const g = src.getContext('2d', { willReadFrequently: true }); g.scale(dpr, dpr);
   // source image: a lit sphere on a tabletop
   let gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#fbe3c4'); gr.addColorStop(1, '#a8582f');
   g.fillStyle = gr; g.fillRect(0, 0, w, h);
@@ -387,6 +401,10 @@ inits.halftone = s => {
     }
   };
   rng.oninput = draw; draw();
+  };
+  setup();
+  const ro = new ResizeObserver(setup); ro.observe(src);
+  return () => ro.disconnect();
 };
 
 // Hand-drawn: scale the fixed-size composition down when the frame is narrower than it
@@ -405,26 +423,34 @@ inits.hand = s => {
 
 inits.spot = s => {
   const a = s.closest('.pattern'), cards = [...s.querySelectorAll('.c')];
-  let inside = false, raf, t0 = performance.now(), vis = true;
+  let inside = false, raf = 0, t0 = performance.now(), vis = false;
   const place = (x, y) => {
     s.style.setProperty('--x', x + 'px'); s.style.setProperty('--y', y + 'px');
     const sr = s.getBoundingClientRect();
     cards.forEach(c => { const r = c.getBoundingClientRect(); c.style.setProperty('--cx', (x + sr.left - r.left) + 'px'); c.style.setProperty('--cy', (y + sr.top - r.top) + 'px'); });
   };
-  s.addEventListener('pointermove', e => { inside = true; const r = s.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); });
+  const at = e => { inside = true; const r = s.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); };
+  s.addEventListener('pointermove', at);
+  s.addEventListener('pointerdown', at);
   s.addEventListener('pointerleave', () => { inside = false; });
   s.addEventListener('pointercancel', () => { inside = false; });
-  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; }); io.observe(s);
   const idle = now => {
-    if (!inside && vis) { const t = (now - t0) / 1000, w = s.clientWidth, h = s.clientHeight;
+    if (!inside) { const t = (now - t0) / 1000, w = s.clientWidth, h = s.clientHeight;
       place(w / 2 + Math.sin(t * .7) * w * .36, h / 2 + Math.sin(t * 1.1) * h * .28); }
-    raf = requestAnimationFrame(idle);
+    raf = vis ? requestAnimationFrame(idle) : 0;
   };
-  if (RM) place(s.clientWidth * .3, s.clientHeight * .4); else raf = requestAnimationFrame(idle);
-  return () => { cancelAnimationFrame(raf); io.disconnect(); };
+  // stop the loop off screen (same 200px margin as dict.js .is-off), restart when visible
+  const io = new IntersectionObserver(([e]) => {
+    vis = e.isIntersecting;
+    if (vis && !raf && !RM) raf = requestAnimationFrame(idle);
+  }, { rootMargin: '200px 0px' });
+  if (RM) place(s.clientWidth * .3, s.clientHeight * .4); else io.observe(s);
+  return () => { cancelAnimationFrame(raf); raf = 0; vis = false; io.disconnect(); };
 };
 
 document.querySelectorAll('article.pattern').forEach(a => { const f = inits[a.id]; Dict.demo(a.id, f && (d => f(d.querySelector('.stage')))); });
+// fit the hand-drawn composition right away, so it never shows oversized before the demo mounts
+inits.hand(document.querySelector('#hand .stage'));
 </script>
 </body>
 </html>

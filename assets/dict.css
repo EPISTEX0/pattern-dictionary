@@ -51,6 +51,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans
 .pattern>.vi b{color:var(--ink);font-weight:600}
 .demo{position:relative;height:var(--demo-h,380px);border-radius:16px;border:1px solid var(--line);overflow:hidden;background:#fff;isolation:isolate}
 .demo>.stage{position:absolute;inset:0}
+.demo.is-off,.demo.is-off *,.demo.is-off *::before,.demo.is-off *::after{animation-play-state:paused!important}
 .pattern>.notes{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;margin-top:22px;font-size:15.5px}
 .pattern>.notes p{margin:0}
 .pattern>.notes b{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
