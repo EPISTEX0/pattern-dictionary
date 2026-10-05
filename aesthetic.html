@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Phong cách — Từ điển pattern</title>
+<title>Phong cách thẩm mỹ — Từ điển pattern</title>
+<meta name="description" content="Tám phong cách thẩm mỹ phổ biến trong thiết kế web, minh hoạ trên cùng một nội dung: Swiss, brutalism, retro, editorial, glassmorphism, neumorphism, bento grid và dark mode tech.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&family=VT323&family=Fraunces:ital,wght@0,600;0,900;1,900&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -100,6 +101,7 @@
 #neu .stage .nc{display:flex;gap:30px;align-items:center;padding:30px 34px;border-radius:30px;background:#e3e7ee;box-shadow:var(--raise)}
 #neu .stage .n-ico{width:140px;height:140px;border-radius:50%;box-shadow:var(--inset);display:grid;place-items:center;flex:none}
 #neu .stage .n-ico svg{width:64px;height:64px}
+#neu .stage .nc-body{min-width:280px}
 #neu .stage h4{margin:0;font-size:24px;line-height:1.25;color:#38404f}
 #neu .stage .n-price{font-size:15px;margin:2px 0 16px}
 #neu .stage .n-row{display:flex;gap:18px;align-items:center;margin-bottom:18px}
@@ -159,6 +161,88 @@
 #tech .stage svg{display:block;width:100%;height:70px}
 #tech.on .spark{stroke-dasharray:1;stroke-dashoffset:1;animation:techDraw 1.6s .2s ease-out forwards}
 @keyframes techDraw{to{stroke-dashoffset:0}}
+
+/* ============ MOBILE (≤760px) ============ */
+@media (max-width:760px){
+  /* Swiss: lưới 6 cột, tiêu đề chiếm trọn bề ngang */
+  #swiss .stage{padding:20px 20px 22px;grid-template-columns:repeat(6,1fr);grid-template-rows:auto auto 1fr auto auto;column-gap:12px}
+  #swiss .stage .sw-top{grid-template-columns:repeat(6,1fr);column-gap:12px}
+  #swiss .stage .sw-top span:nth-child(1){grid-column:1/3}
+  #swiss .stage .sw-top span:nth-child(2){display:none}
+  #swiss .stage .sw-top span:nth-child(3){grid-column:4/7}
+  #swiss .stage .sw-num{grid-column:1/3;grid-row:2;margin-top:22px}
+  #swiss .stage .sw-red{grid-column:4/7;grid-row:2;width:76px;height:76px;margin-top:22px}
+  #swiss .stage h3{grid-column:1/-1;grid-row:3;font-size:clamp(44px,14vw,60px);margin:6px 0 0;align-self:start}
+  #swiss .stage .sw-desc{grid-column:1/-1;grid-row:4;margin-bottom:16px}
+  #swiss .stage .sw-price{grid-column:1/4;grid-row:5;align-self:center}
+  #swiss .stage .sw-btn{grid-column:4/7;grid-row:5;align-self:center}
+  /* Brutalism: tiêu đề trên, thẻ dưới, thu bóng đổ */
+  #brutal .demo{--demo-h-m:540px}
+  #brutal .stage h3{left:16px;top:50px;font-size:clamp(64px,21vw,96px)}
+  #brutal .stage .br-card{left:16px;right:22px;top:auto;bottom:58px;width:auto;box-shadow:6px 6px 0 #000;padding:26px 16px 16px}
+  #brutal .stage .br-card h4{font-size:22px}
+  #brutal .stage .br-price{top:-22px;right:-8px;font-size:20px}
+  #brutal .stage .br-link{display:inline-block;padding:9px 0;margin-left:12px}
+  #brutal .stage .br-ascii{left:16px;right:16px;bottom:16px}
+  /* Retro: CRT trên, tạp chí dưới */
+  #retro .demo{--demo-h-m:620px}
+  #retro .stage{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  #retro .stage .crt-wrap{padding:54px 14px 14px}
+  #retro .stage .crt pre{padding:16px 18px;font-size:18px}
+  #retro .stage .mag::before{width:440px;height:440px;bottom:-340px}
+  #retro .stage .mag h3{font-size:52px}
+  #retro .stage .mag-sub{top:116px;max-width:210px;font-size:16px}
+  #retro .stage .mag-badge{top:auto;bottom:46px;right:24px;width:88px;height:88px;font-size:15px}
+  #retro .stage .tag{font-size:12px}
+  /* Editorial: một cột, giữ drop cap và pull quote */
+  #editorial .demo{--demo-h-m:680px}
+  #editorial .stage{padding:16px 18px}
+  #editorial .stage .ed-mast{flex-wrap:wrap;gap:2px 12px}
+  #editorial .stage .ed-grid{grid-template-columns:1fr;gap:14px;margin-top:14px}
+  #editorial .stage h3{font-size:clamp(28px,8.4vw,34px)}
+  #editorial .stage .ed-deck{font-size:16px}
+  #editorial .stage .ed-kick,#editorial .stage .ed-by{font-size:12px}
+  #editorial .stage .ed-body{column-count:1}
+  #editorial .stage .ed-cap{display:none}
+  #editorial .stage .ed-quote{font-size:17px}
+  /* Glass: thẻ co theo khung */
+  #glass .stage .gc{left:16px;right:16px;width:auto;margin:-125px 0 0}
+  #glass .stage .b1{width:220px;height:220px;left:-8%}
+  #glass .stage .b2{width:200px;height:200px}
+  #glass .stage .hint{right:auto;background:rgba(10,6,30,.55);color:#fff;padding:6px 10px;border-radius:999px}
+  /* Neumorphism: biểu tượng trên, điều khiển dưới */
+  #neu .stage{padding:0 24px}
+  #neu .stage .nc{flex-direction:column;gap:16px;padding:22px 22px 24px;border-radius:26px;margin-bottom:34px}
+  #neu .stage .n-ico{width:84px;height:84px}
+  #neu .stage .n-ico svg{width:40px;height:40px}
+  #neu .stage .nc-body{min-width:0;width:100%}
+  #neu .stage .n-step button{width:36px;height:36px}
+  #neu .stage .n-seg button{height:34px;width:42px}
+  #neu .stage .hint{right:16px}
+  /* Bento: 2 cột, ô chính chiếm hàng đầu */
+  #bento .demo{--demo-h-m:580px}
+  #bento .stage{grid-template-columns:1fr 1fr;grid-template-rows:1.45fr 1fr 1fr auto;gap:10px;padding:12px}
+  #bento .stage .t1{grid-column:1/3;grid-row:1;padding:18px 20px}
+  #bento .stage .t1 h4{font-size:28px;max-width:none;margin:6px 0}
+  #bento .stage .t1 h4 br{display:none}
+  #bento .stage .t1 p{max-width:60%}
+  #bento .stage .t1 .pr{left:20px;bottom:16px;font-size:22px}
+  #bento .stage .orb{width:120px;height:120px;right:-24px;bottom:-34px}
+  #bento .stage .t2{grid-column:1;grid-row:2}
+  #bento .stage .t3{grid-column:2;grid-row:2/4}
+  #bento .stage .t4{grid-column:1;grid-row:3}
+  #bento .stage .t5{grid-column:1/3;grid-row:4}
+  #bento .stage .big,#bento .stage .t3 .big{font-size:28px}
+  #bento .stage .t5 b{font-size:15px}
+  /* Dark tech: chữ trên, bảng số liệu dưới */
+  #tech .demo{--demo-h-m:530px}
+  #tech .stage{grid-template-columns:1fr;gap:18px;padding:54px 18px 18px;align-content:start}
+  #tech .stage h3{font-size:clamp(30px,9vw,38px);margin:10px 0 8px}
+  #tech .stage p{font-size:14px;margin-bottom:16px}
+  #tech .stage .b1,#tech .stage .b2{min-height:40px}
+  #tech .stage .b1 kbd{font-size:12px}
+  #tech .stage svg{height:50px}
+}
 </style>
 </head>
 <body>
@@ -167,25 +251,25 @@
 <main class="wrap">
 <header class="head">
   <h1>Phong cách thẩm mỹ</h1>
-  <p>Cùng một nội dung — “Gói Pro” của một ứng dụng quản lý dự án — 8 cách ăn mặc khác nhau. Nội dung giữ nguyên để bạn chỉ thấy phong cách thay đổi.</p>
+  <p>Cùng một nội dung, Gói Pro của một ứng dụng quản lý dự án, được trình bày theo 8 phong cách thẩm mỹ. Nội dung giữ nguyên để so sánh riêng phần phong cách.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="swiss">
   <h2>Swiss / Minimalism</h2>
-  <p class="vi">Phong cách Thụy Sĩ / tối giản — lưới cột nghiêm ngặt, chữ không chân căn trái, nhiều khoảng trắng, chỉ một màu nhấn.</p>
+  <p class="vi">Phong cách Thuỵ Sĩ (International Typographic Style) và tối giản: lưới cột chặt chẽ, chữ không chân căn trái, nhiều khoảng trắng, một màu nhấn duy nhất.</p>
   <div class="demo"><div class="stage">
     <div class="sw-top"><span>Gói Pro</span><span>Quản lý dự án cho nhóm nhỏ</span><span>Bảng giá / 2026</span></div>
     <div class="sw-num">01 —</div>
     <h3>Gói Pro<br>cho nhóm</h3>
     <div class="sw-red" aria-hidden="true"></div>
-    <p class="sw-desc">Không giới hạn dự án, đồng bộ mọi thiết bị. Không quảng cáo, không rườm rà — chỉ còn việc cần làm.</p>
+    <p class="sw-desc">Không giới hạn dự án, đồng bộ trên mọi thiết bị, không quảng cáo. Chỉ giữ lại những việc cần làm.</p>
     <div class="sw-price">199.000đ</div>
     <a class="sw-btn" href="#swiss">Dùng thử <span>→</span></a>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Thương hiệu muốn sự rõ ràng, đáng tin, cao cấp kiểu “ít mà chất”; trang có nội dung mạnh tự nói lên được.</p>
-    <p class="avoid"><b>Tránh khi</b>Sản phẩm cần cảm xúc vui nhộn, ấm áp hay nội dung quá dày khiến khoảng trắng thành lãng phí.</p>
+    <p class="use"><b>Dùng khi</b>Thương hiệu cần hình ảnh rõ ràng, đáng tin và cao cấp; nội dung đủ mạnh để đứng một mình mà không cần trang trí.</p>
+    <p class="avoid"><b>Tránh khi</b>Sản phẩm cần cảm xúc vui tươi, ấm áp, hoặc nội dung dày đặc đến mức khoảng trắng trở thành lãng phí diện tích.</p>
   </div>
   <div class="kw"><button>swiss style</button><button>international typographic style</button><button>minimalist</button><button>strict 12-column grid</button><button>flush-left sans-serif</button><button>generous whitespace</button><button>single accent color</button></div>
 </article>
@@ -193,21 +277,21 @@
 <!-- 2 -->
 <article class="pattern" id="brutal">
   <h2>Brutalism</h2>
-  <p class="vi">Chủ nghĩa thô mộc — viền đen dày, bóng đổ cứng không mờ, màu chói, chữ to “hét”, cố ý trông thô và chưa được mài giũa.</p>
+  <p class="vi">Brutalism (chủ nghĩa thô mộc): viền đen dày, bóng đổ cứng không làm mờ, màu tương phản gắt, chữ cỡ rất lớn. Giao diện cố ý trông thô và chưa hoàn thiện.</p>
   <div class="demo"><div class="stage">
-    <div class="br-bar"><span class="br-track">QUẢN LÝ DỰ ÁN ✱ KHÔNG RƯỜM RÀ ✱ DÙNG THỬ 14 NGÀY ✱ HUỶ LÚC NÀO CŨNG ĐƯỢC ✱ QUẢN LÝ DỰ ÁN ✱ KHÔNG RƯỜM RÀ ✱ DÙNG THỬ 14 NGÀY ✱ HUỶ LÚC NÀO CŨNG ĐƯỢC ✱&nbsp;</span></div>
+    <div class="br-bar"><span class="br-track">QUẢN LÝ DỰ ÁN ✱ GỌN NHẸ ✱ DÙNG THỬ 14 NGÀY ✱ HUỶ BẤT CỨ LÚC NÀO ✱ QUẢN LÝ DỰ ÁN ✱ GỌN NHẸ ✱ DÙNG THỬ 14 NGÀY ✱ HUỶ BẤT CỨ LÚC NÀO ✱&nbsp;</span></div>
     <h3>Gói<br>Pro.</h3>
     <div class="br-card">
       <span class="br-price">199.000đ</span>
       <h4>Không giới hạn dự án</h4>
-      <p>ĐỒNG BỘ MỌI THIẾT BỊ / KHÔNG QUẢNG CÁO / HUỶ LÚC NÀO CŨNG ĐƯỢC.</p>
+      <p>ĐỒNG BỘ MỌI THIẾT BỊ / KHÔNG QUẢNG CÁO / HUỶ BẤT CỨ LÚC NÀO.</p>
       <button class="br-btn">Dùng thử</button><a class="br-link" href="#brutal">bang-gia.txt</a>
     </div>
-    <div class="br-ascii">[ bấm giữ nút để thấy nó “lún” ]</div>
+    <div class="br-ascii">[ Nhấn giữ nút để xem trạng thái nhấn. ]</div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Thương hiệu trẻ, nổi loạn, muốn khác biệt và gây nhớ ngay (agency, quỹ sáng tạo, sản phẩm Gen Z).</p>
-    <p class="avoid"><b>Tránh khi</b>Người dùng cần cảm giác an toàn, chỉn chu như ngân hàng, y tế hay sản phẩm cho người lớn tuổi.</p>
+    <p class="use"><b>Dùng khi</b>Thương hiệu trẻ cần khác biệt và dễ nhớ ngay lần đầu: agency, studio sáng tạo, sản phẩm hướng tới Gen Z.</p>
+    <p class="avoid"><b>Tránh khi</b>Người dùng cần cảm giác an toàn và chỉn chu: ngân hàng, y tế, sản phẩm cho người lớn tuổi.</p>
   </div>
   <div class="kw"><button>brutalist web design</button><button>neo-brutalism</button><button>thick black borders</button><button>hard offset drop shadow</button><button>clashing bold colors</button><button>raw default links</button><button>ticker marquee</button></div>
 </article>
@@ -215,20 +299,20 @@
 <!-- 3 -->
 <article class="pattern" id="retro">
   <h2>Retro</h2>
-  <p class="vi">Hoài cổ — mượn chất liệu một thời: bên trái màn hình CRT phát sáng xanh lá với vạch quét; bên phải bìa tạp chí thập niên 70 với tông đất và sọc mặt trời.</p>
+  <p class="vi">Retro (hoài cổ): mượn chất liệu thị giác của một thời kỳ cũ. Một nửa là màn hình CRT chữ xanh lá phát sáng với vạch quét; nửa còn lại là bìa tạp chí thập niên 70 với tông màu đất và hoạ tiết mặt trời.</p>
   <div class="demo"><div class="stage">
     <div class="crt-wrap"><div class="crt"><pre class="crt-out"></pre></div><span class="tag">CRT terminal</span></div>
     <div class="mag">
       <div class="mag-k">Số đặc biệt · Thu 1974</div>
       <h3>Gói Pro</h3>
-      <div class="mag-sub">Không giới hạn dự án — chỉ 199.000đ mỗi tháng!</div>
-      <div class="mag-badge">Mới<br>ra lò!</div>
-      <span class="tag">Tạp chí 70s</span>
+      <div class="mag-sub">Không giới hạn dự án. Chỉ 199.000đ mỗi tháng.</div>
+      <div class="mag-badge">Bản<br>mới</div>
+      <span class="tag">Tạp chí thập niên 70</span>
     </div>
   </div><button class="replay">↻ Xem lại</button></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Muốn gợi ký ức, cá tính riêng: sản phẩm cho dân lập trình (CRT) hay thương hiệu thủ công, ấm áp, hoài niệm (70s).</p>
-    <p class="avoid"><b>Tránh khi</b>Hiệu ứng (vạch quét, chữ phát sáng) làm giảm độ đọc của nội dung dài hoặc giao diện cần tính hiện đại, trung tính.</p>
+    <p class="use"><b>Dùng khi</b>Cần gợi ký ức và tạo cá tính riêng: sản phẩm cho lập trình viên (CRT), thương hiệu thủ công hoặc mang tính hoài niệm (thập niên 70).</p>
+    <p class="avoid"><b>Tránh khi</b>Nội dung dài, hoặc giao diện cần trung tính và hiện đại: vạch quét và chữ phát sáng làm giảm khả năng đọc.</p>
   </div>
   <div class="kw"><button>retro CRT terminal</button><button>phosphor green glow</button><button>scanlines</button><button>typewriter text effect</button><button>1970s retro magazine</button><button>warm earth tones</button><button>sunburst stripes</button><button>groovy serif</button></div>
 </article>
@@ -236,7 +320,7 @@
 <!-- 4 -->
 <article class="pattern" id="editorial">
   <h2>Editorial / Magazine</h2>
-  <p class="vi">Phong cách tòa soạn / tạp chí — tiêu đề chữ có chân lớn, chữ cái đầu thả (drop cap), chia cột, trích dẫn nổi, kẻ mảnh, dòng tác giả.</p>
+  <p class="vi">Phong cách toà soạn, tạp chí: tiêu đề chữ có chân cỡ lớn, chữ cái đầu đoạn phóng to (drop cap), văn bản chia cột, trích dẫn nổi (pull quote), đường kẻ mảnh và dòng tác giả.</p>
   <div class="demo"><div class="stage">
     <div class="ed-mast"><b>Tạp chí Làm Việc</b><span>Số 12 · Tháng 10, 2026</span></div>
     <div class="ed-grid">
@@ -249,15 +333,15 @@
       <div>
         <div class="ed-body">
           <p>Mỗi sáng thứ Hai, chị Hà lại mở bảy cửa sổ: email, bảng tính, ba nhóm chat và hai ứng dụng ghi chú. Không ai chắc việc nào đang trễ.</p>
-          <p>Mười tám tháng sau, cả nhóm chỉ còn một bảng dự án: ai làm gì, hạn khi nào, đã tới đâu.</p><p>Gói Pro có giá 199.000đ mỗi tháng. Họ nói thứ tiết kiệm được nhiều nhất là thời gian họp.</p>
+          <p>Mười tám tháng sau, cả nhóm chỉ còn một bảng dự án: ai làm gì, hạn khi nào, đã tới đâu.</p><p>Gói Pro có giá 199.000đ mỗi tháng. Theo nhóm, khoản tiết kiệm lớn nhất là thời gian họp.</p>
         </div>
         <p class="ed-quote">“Công cụ tốt nhất là công cụ cả nhóm chịu mở.”</p><p class="ed-cap">Ảnh: buổi họp đầu tuần, 9:00 sáng.</p>
       </div>
     </div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Nội dung là trọng tâm: blog, báo, trang kể chuyện thương hiệu, landing cần cảm giác sang và có chiều sâu.</p>
-    <p class="avoid"><b>Tránh khi</b>Giao diện thao tác dày đặc (dashboard, form) — cột chữ và drop cap chỉ làm chậm người dùng.</p>
+    <p class="use"><b>Dùng khi</b>Nội dung là trọng tâm: blog, báo điện tử, trang kể chuyện thương hiệu, landing page cần cảm giác sang trọng và có chiều sâu.</p>
+    <p class="avoid"><b>Tránh khi</b>Giao diện thao tác dày đặc như dashboard hoặc form: cột chữ và drop cap làm chậm người dùng.</p>
   </div>
   <div class="kw"><button>editorial layout</button><button>magazine style</button><button>high-contrast serif headline</button><button>drop cap</button><button>pull quote</button><button>multi-column text</button><button>kicker and byline</button><button>hairline rules</button></div>
 </article>
@@ -265,20 +349,20 @@
 <!-- 5 -->
 <article class="pattern" id="glass">
   <h2>Glassmorphism</h2>
-  <p class="vi">Hiệu ứng kính mờ — thẻ trong suốt làm mờ nền phía sau (backdrop blur), viền trắng mảnh, đặt trên nền nhiều màu rực.</p>
+  <p class="vi">Glassmorphism (hiệu ứng kính mờ): thẻ bán trong suốt làm mờ phần nền phía sau (backdrop blur), viền trắng mảnh, đặt trên nền nhiều mảng màu rực.</p>
   <div class="demo"><div class="stage">
-    <div class="bl b1"></div><div class="bl b2"></div><div class="bl b3"></div><div class="bl b4"></div>
+    <div class="bl b1" aria-hidden="true"></div><div class="bl b2" aria-hidden="true"></div><div class="bl b3" aria-hidden="true"></div><div class="bl b4" aria-hidden="true"></div>
     <div class="gc">
       <span class="gc-pill">Ưu đãi · Còn 3 ngày</span>
       <h4>Gói Pro</h4>
-      <p>Không giới hạn dự án, đồng bộ mọi thiết bị. Huỷ lúc nào cũng được.</p>
+      <p>Không giới hạn dự án, đồng bộ mọi thiết bị. Huỷ bất cứ lúc nào.</p>
       <div class="gc-row"><span class="gc-price">199.000đ</span><button class="gc-btn">Dùng thử</button></div>
     </div>
-    <div class="hint">Kéo thẻ đi khắp khung để thấy lớp kính làm mờ nền.</div>
+    <div class="hint">Kéo thẻ để xem lớp kính làm mờ nền.</div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Có nền giàu màu/ảnh và muốn lớp nổi (thẻ, thanh điều hướng, popup) trông nhẹ, hiện đại, có chiều sâu.</p>
-    <p class="avoid"><b>Tránh khi</b>Nền trơn hoặc chữ nhỏ dày đặc — kính mờ thành xám đục và tương phản chữ kém.</p>
+    <p class="use"><b>Dùng khi</b>Nền giàu màu sắc hoặc hình ảnh, cần lớp nổi (thẻ, thanh điều hướng, popup) trông nhẹ, hiện đại và có chiều sâu.</p>
+    <p class="avoid"><b>Tránh khi</b>Nền trơn hoặc chữ nhỏ dày đặc: lớp kính trở thành mảng xám đục và tương phản chữ kém.</p>
   </div>
   <div class="kw"><button>glassmorphism</button><button>frosted glass card</button><button>backdrop-filter blur</button><button>translucent white surface</button><button>1px white border</button><button>vibrant gradient blobs background</button></div>
 </article>
@@ -286,25 +370,25 @@
 <!-- 6 -->
 <article class="pattern" id="neu">
   <h2>Neumorphism</h2>
-  <p class="vi">Giao diện mềm nổi khối (soft UI) — mọi thứ cùng màu nền, nổi lên hoặc lún xuống nhờ cặp bóng sáng/tối, như được đúc từ nhựa mềm.</p>
+  <p class="vi">Neumorphism (soft UI): mọi phần tử cùng màu với nền, nổi lên hoặc lõm xuống nhờ cặp bóng sáng và tối, như được đúc liền từ một khối.</p>
   <div class="demo"><div class="stage">
     <div class="nc">
       <div class="n-ico"><svg viewBox="0 0 64 64" fill="none" stroke="#9aa3b2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 12 52 22 32 32 12 22z"/><path d="M12 32l20 10 20-10"/><path d="M12 42l20 10 20-10"/></svg></div>
-      <div style="min-width:280px">
+      <div class="nc-body">
         <h4>Gói Pro</h4>
-        <div class="n-price">199.000đ / tháng · số tháng · số người</div>
+        <div class="n-price">199.000đ/tháng · chọn kỳ hạn và số người dùng</div>
         <div class="n-row">
-          <div class="n-seg"><button>1</button><button class="on">6</button><button>12</button></div>
+          <div class="n-seg" aria-label="Kỳ hạn (tháng)"><button>1</button><button class="on">6</button><button>12</button></div>
           <div class="n-step"><button class="m" aria-label="Bớt">−</button><span class="q">1</span><button class="p" aria-label="Thêm">+</button></div>
         </div>
         <button class="n-cta">Đăng ký</button>
       </div>
     </div>
-    <div class="hint">Bấm số tháng, số người dùng và nút Đăng ký để thấy trạng thái nổi ↔ lún.</div>
+    <div class="hint">Nhấn kỳ hạn, số người dùng và nút Đăng ký để xem trạng thái nổi và lõm.</div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Giao diện ít phần tử, mang tính trình diễn: điều khiển nhà thông minh, máy nghe nhạc, mockup concept.</p>
-    <p class="avoid"><b>Tránh khi</b>Cần khả năng tiếp cận — tương phản thấp khiến khó phân biệt nút bấm với trang trí.</p>
+    <p class="use"><b>Dùng khi</b>Giao diện ít phần tử, mang tính trình diễn: điều khiển nhà thông minh, trình phát nhạc, mockup concept.</p>
+    <p class="avoid"><b>Tránh khi</b>Sản phẩm phải đáp ứng yêu cầu tiếp cận (accessibility): tương phản thấp khiến nút khó phân biệt với phần trang trí.</p>
   </div>
   <div class="kw"><button>neumorphism</button><button>soft UI</button><button>soft extruded shadows</button><button>inset pressed state</button><button>monochrome light gray background</button><button>low contrast</button></div>
 </article>
@@ -312,17 +396,17 @@
 <!-- 7 -->
 <article class="pattern" id="bento">
   <h2>Bento grid</h2>
-  <p class="vi">Lưới hộp cơm bento — các ô bo góc nhiều kích cỡ ghép khít nhau, mỗi ô một thông tin, ô lớn nhất cho điều quan trọng nhất.</p>
+  <p class="vi">Bento grid (lưới dạng hộp cơm bento): các ô bo góc nhiều kích thước ghép khít nhau, mỗi ô chứa một thông tin, ô lớn nhất dành cho nội dung quan trọng nhất.</p>
   <div class="demo"><div class="stage">
-    <div class="t t1"><small>Gói Pro · Mới nhất</small><h4>Gói Pro<br>cho nhóm</h4><p>Không giới hạn dự án, đồng bộ mọi thiết bị.</p><div class="pr">199.000đ</div><div class="orb"></div></div>
+    <div class="t t1"><small>Gói Pro · Mới nhất</small><h4>Gói Pro<br> cho nhóm</h4><p>Không giới hạn dự án, đồng bộ mọi thiết bị.</p><div class="pr">199.000đ</div><div class="orb" aria-hidden="true"></div></div>
     <div class="t t2"><small>Đánh giá</small><div class="big">4,9★</div><small>2.130 lượt</small></div>
     <div class="t t3"><small>Dùng thử miễn phí</small><div class="big">14<br>ngày</div><small>Không cần thẻ</small></div>
     <div class="t t4"><small>Đồng bộ</small><div class="big">5 thiết bị</div></div>
-    <div class="t t5"><div><small>Tính năng mới</small><b>Dòng thời gian — xem cả quý trong một màn</b></div><button>Dùng thử</button></div>
+    <div class="t t5"><div><small>Tính năng mới</small><b>Dòng thời gian: xem toàn bộ quý trên một màn hình</b></div><button>Dùng thử</button></div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Cần khoe nhiều tính năng/số liệu ngắn trong một màn hình: trang giới thiệu sản phẩm, portfolio, trang cá nhân.</p>
-    <p class="avoid"><b>Tránh khi</b>Nội dung là một dòng chảy tuần tự (bài viết, quy trình) — các ô rời rạc làm đứt mạch đọc.</p>
+    <p class="use"><b>Dùng khi</b>Cần trình bày nhiều tính năng hoặc số liệu ngắn trên một màn hình: trang giới thiệu sản phẩm, portfolio, trang cá nhân.</p>
+    <p class="avoid"><b>Tránh khi</b>Nội dung tuyến tính như bài viết hoặc quy trình từng bước: các ô rời rạc làm đứt mạch đọc.</p>
   </div>
   <div class="kw"><button>bento grid</button><button>bento box layout</button><button>modular tiles of varied sizes</button><button>rounded cards</button><button>feature grid</button><button>one hero tile</button></div>
 </article>
@@ -330,12 +414,12 @@
 <!-- 8 -->
 <article class="pattern" id="tech">
   <h2>Dark mode tech</h2>
-  <p class="vi">Phong cách công nghệ nền tối — nền gần đen, lưới mảnh, nhãn chữ đơn cách (mono), chữ chuyển sắc, ánh sáng phát nhẹ — kiểu các công cụ cho developer.</p>
+  <p class="vi">Phong cách công nghệ nền tối: nền gần đen, lưới mảnh, nhãn chữ đơn cách (monospace), tiêu đề chuyển sắc và ánh sáng phát nhẹ. Thường gặp ở công cụ dành cho developer.</p>
   <div class="demo"><div class="stage">
     <div>
       <div class="lbl">// pro-plan <i>v2.0</i> — sync engine</div>
       <h3>Đồng bộ tức thì</h3>
-      <p>Mọi dự án đồng bộ dưới 50 ms trên mọi thiết bị. Đo chính xác, không chờ. 199.000đ/tháng.</p>
+      <p>Dự án đồng bộ dưới 50 ms trên mọi thiết bị. 199.000đ/tháng.</p>
       <div class="btns"><button class="b1">Dùng thử<kbd>⌘ K</kbd></button><button class="b2">Xem thông số →</button></div>
     </div>
     <div class="panel">
@@ -350,8 +434,8 @@
     </div>
   </div><button class="replay">↻ Xem lại</button></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Sản phẩm cho developer, AI, fintech, hạ tầng — người dùng làm việc lâu và thích cảm giác chính xác, “pro”.</p>
-    <p class="avoid"><b>Tránh khi</b>Khách hàng phổ thông cần sự gần gũi, tươi sáng (ẩm thực gia đình, giáo dục trẻ em).</p>
+    <p class="use"><b>Dùng khi</b>Sản phẩm cho developer, AI, fintech, hạ tầng; người dùng làm việc nhiều giờ liền và cần cảm giác chính xác.</p>
+    <p class="avoid"><b>Tránh khi</b>Sản phẩm phổ thông cần sự gần gũi, tươi sáng, như ẩm thực gia đình hoặc giáo dục trẻ em.</p>
   </div>
   <div class="kw"><button>dark mode UI</button><button>developer tool aesthetic</button><button>subtle grid background</button><button>monospace labels</button><button>gradient text headline</button><button>soft glow accents</button><button>Linear / Vercel style</button></div>
 </article>
@@ -364,7 +448,7 @@ const inits = {};
 
 inits.retro = s => {
   const out = s.querySelector('.crt-out');
-  const text = 'PRO-OS v1.9  (c) 1984\n> ls goi/\nGOI_PRO .............. 199.000đ\n> kich-hoat --goi pro --ky 12\nĐang kích hoạt [##########] 100%\nOK. Chào mừng bạn lên Pro.\n> ';
+  const text = 'PRO-OS v1.9  (c) 1984\n> ls goi/\nGOI_PRO .............. 199.000đ\n> kich-hoat --goi pro --ky 12\nĐang kích hoạt [##########] 100%\nOK. Đã nâng cấp lên Pro.\n> ';
   const cur = '<span class="cur"></span>';
   if (RM) { out.innerHTML = text + cur; return; }
   let i = 0, t;

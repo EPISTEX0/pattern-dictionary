@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chuyển động — Từ điển pattern</title>
+<meta name="description" content="11 pattern chuyển động trong thiết kế web: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Có demo chạy trực tiếp và keyword để prompt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -181,7 +182,7 @@
   @media (prefers-reduced-motion: no-preference){
     #marquee .big .move{animation:mq-left 22s linear infinite}
     #marquee .logos .move{animation:mq-left 30s linear infinite reverse}
-    #marquee .row:hover .move{animation-play-state:paused}
+    #marquee .row:hover .move,#marquee .row.paused .move{animation-play-state:paused}
   }
   @media (prefers-reduced-motion: reduce){ #marquee .row{overflow-x:auto} }
 
@@ -263,6 +264,87 @@
   @media (prefers-reduced-motion: reduce){
     #micro *{transition:none !important;animation:none !important}
   }
+
+  /* ---------- mobile (≤760px): xếp chồng, hình minh hoạ sticky trên đầu khung ---------- */
+  @media (max-width:760px){
+    .pattern>.demo>.replay{padding:10px 14px}
+    .pattern>.demo>.hint{max-width:calc(100% - 140px)}
+
+    #scrollytelling .demo .grid{grid-template-columns:1fr}
+    #scrollytelling .demo .grid>div:last-child{display:contents}
+    #scrollytelling .demo .visual{order:-1;align-self:start;z-index:2;height:228px;padding-top:40px;box-sizing:border-box;background:linear-gradient(#101418 92%,rgba(16,20,24,0))}
+    #scrollytelling .demo .chart{zoom:.74}
+    #scrollytelling .demo .steps{padding:0 20px 40px}
+    #scrollytelling .demo .step{height:260px;justify-content:flex-start;padding-top:24px}
+    #scrollytelling .demo .step h3{font-size:20px}
+    #scrollytelling .demo .step p{font-size:15px}
+
+    #pin .demo .wrap{grid-template-columns:1fr;gap:8px;padding:56px 16px 0}
+    #pin .demo .pinned{z-index:2;height:auto;flex-direction:row;align-items:center;gap:12px;padding:12px;box-shadow:0 -64px 0 12px #faf8f4}
+    #pin .demo .pinned .img{flex:none;width:64px;height:64px}
+    #pin .demo .pinned h3{font-size:18px;margin-top:4px}
+    #pin .demo .after{padding:28px 16px 48px}
+
+    #scrub .demo .stage{height:458px;grid-template-columns:1fr;align-content:center;gap:20px;padding:56px 24px 16px}
+    #scrub .demo .ring{width:150px;height:150px}
+    #scrub .demo .ring::before{width:112px;height:112px}
+    #scrub .demo .num{font-size:30px}
+    #scrub .demo .right h3{font-size:20px;margin-bottom:6px}
+    #scrub .demo .right p{font-size:14.5px;margin-bottom:12px}
+
+    #reveal .demo .list{padding:60px 16px 100px;gap:16px}
+    #reveal .demo .intro{margin-bottom:180px}
+    #reveal .demo .card{padding:14px 16px;gap:14px}
+    #reveal .demo .card i{width:44px;height:44px}
+
+    #stagger .demo{padding:0 20px;gap:28px}
+    #stagger .demo .row{grid-template-columns:repeat(4,1fr);gap:10px}
+    #stagger .demo .tile{height:56px;border-radius:10px}
+
+    #parallax .demo .stage{height:458px}
+    #parallax .demo .title{left:20px;top:56px;font-size:26px}
+    #parallax .demo .sun{right:14%;top:56px;width:72px;height:72px}
+    #parallax .demo .sun .tag{left:auto;right:0;top:80px}
+    #parallax .demo .far{top:170px}
+    #parallax .demo .mid{top:240px}
+    #parallax .demo .near{top:330px}
+    #parallax .demo .near p{margin-top:64px;padding:0 14%;font-size:15px}
+    #parallax .demo .tag{font-size:12px}
+
+    #morph .demo{grid-template-columns:1fr 1fr;align-content:center;row-gap:36px;padding:40px 16px 24px}
+    #morph .demo .cell{grid-template-rows:auto auto;gap:14px}
+    #morph .demo .cell:nth-of-type(1){grid-column:1/-1}
+    #morph .demo .blob{width:96px;height:96px}
+    #morph .demo .cap{max-width:150px}
+    #morph .demo .cell:nth-of-type(1) .cap{max-width:none}
+
+    #marquee .demo{gap:22px;--demo-h-m:340px}
+    #marquee .demo .big span{font-size:44px}
+    #marquee .demo .big .set{gap:24px;padding-right:24px}
+    #marquee .demo .note{padding:0 20px}
+
+    #textreveal .demo{padding:0 20px}
+    #textreveal .demo .h{font-size:clamp(32px,10vw,60px)}
+    #textreveal .demo .sub{font-size:16px}
+    #textreveal .demo .cap{left:20px;right:130px;top:18px;line-height:1.4}
+
+    #viewtransitions .demo .grid{grid-template-columns:1fr 1fr;gap:12px;padding:52px 16px 16px}
+    #viewtransitions .demo .vcard .tt{padding:10px 12px;font-size:15px}
+    #viewtransitions .demo .support{left:16px;right:16px;top:14px;line-height:1.4}
+    #viewtransitions .demo .detail{grid-template-columns:1fr;grid-template-rows:42% 1fr}
+    #viewtransitions .demo .detail .body{padding:20px}
+    #viewtransitions .demo .detail h3{font-size:26px}
+    #viewtransitions .demo .detail p{font-size:14.5px}
+    #viewtransitions .demo .back{min-height:36px}
+
+    #micro .demo{grid-template-columns:1fr 1fr}
+    #micro .demo .cell{grid-template-rows:56px auto;gap:12px;padding:12px 8px;border-bottom:1px solid var(--line)}
+    #micro .demo .cell:nth-of-type(2n){border-right:0}
+    #micro .demo .cell:nth-of-type(n+3){border-bottom:0}
+    #micro .demo .cap{max-width:150px}
+    #micro .demo .check{min-height:44px}
+    #micro .demo .copy{min-width:0;padding:11px 14px}
+  }
 </style>
 </head>
 <body>
@@ -271,31 +353,31 @@
 <main class="wrap">
   <header class="head">
     <h1>Chuyển động</h1>
-    <p>Những cách trang web “động đậy” khi bạn cuộn, bấm hay chỉ nhìn vào nó. Cuộn, bấm thử từng khung để cảm nhận, rồi lấy keyword đem đi prompt.</p>
+    <p>Hiệu ứng chuyển động phản hồi thao tác cuộn, nhấn và di chuột, hoặc tự chạy khi nội dung xuất hiện. Mỗi khung demo chạy trực tiếp; keyword cuối mỗi mục dùng để mô tả hiệu ứng khi prompt.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="scrollytelling">
     <h2>Scrollytelling</h2>
-    <p class="vi"><b>Kể chuyện bằng cuộn.</b> Một hình minh hoạ đứng yên (pin) bên cạnh, các đoạn chữ trôi qua; mỗi đoạn tới giữa khung thì hình đổi sang “cảnh” tiếp theo.</p>
+    <p class="vi"><b>Kể chuyện theo thao tác cuộn.</b> Một hình minh hoạ được ghim (pin) trong khung nhìn, các đoạn chữ cuộn qua bên cạnh hoặc bên dưới. Khi một đoạn tới vùng giữa khung, hình chuyển sang cảnh tương ứng. Cuộn trong khung demo để xem.</p>
     <div class="demo">
-      <span class="hint">cuộn trong khung này ↓</span>
+      <span class="hint">Cuộn trong khung ↓</span>
       <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: cảnh đổi tức thì, không chuyển tiếp.</span>
+      <span class="rm-note">Giảm chuyển động: cảnh đổi tức thì, không có chuyển tiếp.</span>
       <div class="scroller">
         <div class="grid">
           <div class="steps">
-            <section class="step" data-step="1"><small>CẢNH 1</small><h3>Một khách hàng</h3><p>Mọi câu chuyện bắt đầu từ một điểm. Hình bên phải là một chấm duy nhất.</p></section>
-            <section class="step" data-step="2"><small>CẢNH 2</small><h3>Ba nhóm ngang nhau</h3><p>Cuộn tiếp: chấm tách thành ba cột bằng nhau — dữ liệu được chia nhóm.</p></section>
-            <section class="step" data-step="3"><small>CẢNH 3</small><h3>Một nhóm vượt lên</h3><p>Cảnh cuối: các cột lệch nhau, cột cam được nhấn mạnh. Người đọc hiểu kết luận mà không cần đọc bảng.</p></section>
+            <section class="step" data-step="1"><small>CẢNH 1</small><h3>Một khách hàng</h3><p>Câu chuyện bắt đầu từ một điểm dữ liệu. Hình minh hoạ hiển thị một chấm duy nhất.</p></section>
+            <section class="step" data-step="2"><small>CẢNH 2</small><h3>Ba nhóm ngang nhau</h3><p>Chấm tách thành ba cột bằng nhau: dữ liệu được chia thành ba nhóm.</p></section>
+            <section class="step" data-step="3"><small>CẢNH 3</small><h3>Một nhóm vượt lên</h3><p>Các cột chênh lệch nhau, cột màu cam được nhấn mạnh. Người đọc nắm được kết luận mà không cần đọc bảng số liệu.</p></section>
           </div>
           <div><div class="visual" data-scene="1"><div class="chart"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="cap">cảnh 1 / 3</div></div></div></div>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>cần giải thích một ý theo từng bước (báo cáo dữ liệu, giới thiệu sản phẩm, bài báo dài) và muốn người đọc tự điều khiển nhịp.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung ngắn hoặc người dùng cần tra nhanh — bắt họ cuộn qua cả câu chuyện sẽ gây khó chịu.</p>
+      <p class="use"><b>Dùng khi</b>cần trình bày một lập luận theo từng bước (báo cáo dữ liệu, giới thiệu sản phẩm, bài báo dài) và để người đọc tự điều khiển nhịp đọc.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung ngắn hoặc người dùng cần tra cứu nhanh: phải cuộn qua toàn bộ câu chuyện làm chậm việc tìm thông tin.</p>
     </div>
     <div class="kw"><button>scrollytelling</button><button>sticky graphic with scrolling text steps</button><button>step-based scroll narrative</button><button>scene changes on scroll</button></div>
   </article>
@@ -303,30 +385,30 @@
   <!-- 2 -->
   <article class="pattern" id="pin">
     <h2>Pin / Sticky</h2>
-    <p class="vi"><b>Ghim phần tử.</b> Một khối dính lại khi cuộn trong khi nội dung bên cạnh trôi qua, rồi được “thả” ra khi hết vùng chứa nó.</p>
+    <p class="vi"><b>Ghim phần tử khi cuộn.</b> Một khối giữ nguyên vị trí trong khung nhìn trong lúc nội dung liền kề cuộn qua, và được nhả ra khi phần tử cha kết thúc. Cuộn trong khung demo để xem.</p>
     <div class="demo">
-      <span class="hint">cuộn trong khung này ↓</span>
+      <span class="hint">Cuộn trong khung ↓</span>
       <button class="replay">↻ Xem lại</button>
       <div class="scroller">
         <div class="wrap">
           <div class="pinned"><div class="img"></div><div><code>position: sticky; top: 56px</code><h3>Tai nghe Aero</h3></div></div>
           <div class="specs">
-            <div class="spec"><h4>Chống ồn chủ động</h4><p>Khối bên trái đứng yên trong khi bạn đọc từng thông số.</p></div>
-            <div class="spec"><h4>Pin 40 giờ</h4><p>Người xem luôn thấy sản phẩm đang nói tới.</p></div>
-            <div class="spec"><h4>Sạc nhanh 10 phút</h4><p>Cột phải cuộn bình thường.</p></div>
+            <div class="spec"><h4>Chống ồn chủ động</h4><p>Khối ghim giữ nguyên vị trí trong lúc danh sách thông số cuộn qua.</p></div>
+            <div class="spec"><h4>Pin 40 giờ</h4><p>Người dùng luôn thấy sản phẩm đang được mô tả.</p></div>
+            <div class="spec"><h4>Sạc nhanh 10 phút</h4><p>Danh sách thông số cuộn bình thường.</p></div>
             <div class="spec"><h4>Kết nối 2 thiết bị</h4><p>Khối ghim chỉ dính trong phạm vi phần tử cha.</p></div>
-            <div class="spec"><h4>Chống nước IPX4</h4><p>Vẫn đang ghim.</p></div>
-            <div class="spec"><h4>Âm thanh không gian</h4><p>Vẫn đang ghim.</p></div>
-            <div class="spec"><h4>Nặng 240 g</h4><p>Gần hết danh sách…</p></div>
-            <div class="spec"><h4>Bảo hành 2 năm</h4><p>Hết cột → khối ghim bắt đầu trôi lên.</p></div>
+            <div class="spec"><h4>Chống nước IPX4</h4><p>Khối ghim vẫn giữ vị trí.</p></div>
+            <div class="spec"><h4>Âm thanh không gian</h4><p>Khối ghim vẫn giữ vị trí.</p></div>
+            <div class="spec"><h4>Nặng 240 g</h4><p>Danh sách sắp kết thúc.</p></div>
+            <div class="spec"><h4>Bảo hành 2 năm</h4><p>Phần tử cha kết thúc, khối ghim bắt đầu cuộn lên.</p></div>
           </div>
         </div>
-        <div class="after"><b>Hết vùng pin.</b> Khối bên trái đã được thả ra và trôi đi cùng trang.</div>
+        <div class="after"><b>Hết vùng ghim.</b> Khối ghim đã được nhả ra và cuộn cùng nội dung.</div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>cần giữ một thứ trong tầm mắt khi đọc phần liên quan: ảnh sản phẩm cạnh thông số, mục lục, thanh tiêu đề, nút mua.</p>
-      <p class="avoid"><b>Tránh khi</b>màn hình thấp (điện thoại ngang) — khối ghim chiếm hết chỗ đọc.</p>
+      <p class="use"><b>Dùng khi</b>cần giữ một thành phần trong tầm nhìn khi người dùng đọc phần liên quan: ảnh sản phẩm cạnh thông số, mục lục, thanh tiêu đề, nút mua.</p>
+      <p class="avoid"><b>Tránh khi</b>màn hình có chiều cao thấp (điện thoại xoay ngang): khối ghim chiếm phần lớn vùng đọc.</p>
     </div>
     <div class="kw"><button>sticky section</button><button>pinned element on scroll</button><button>position: sticky sidebar</button><button>sticky product image</button></div>
   </article>
@@ -334,25 +416,25 @@
   <!-- 3 -->
   <article class="pattern needs-sda" id="scrub">
     <h2>Scrub (scroll-linked)</h2>
-    <p class="vi"><b>Hoạt ảnh gắn chặt vào thanh cuộn.</b> Cuộn được bao nhiêu, hoạt ảnh chạy bấy nhiêu; dừng cuộn là dừng, <b>cuộn ngược là chạy ngược</b> — như kéo thanh tua video.</p>
+    <p class="vi"><b>Hoạt ảnh gắn với vị trí cuộn.</b> Tiến độ hoạt ảnh bằng tiến độ cuộn: dừng cuộn thì hoạt ảnh dừng, <b>cuộn ngược thì hoạt ảnh chạy ngược</b>, tương tự kéo thanh tua video. Cuộn xuống rồi cuộn ngược lên trong khung demo.</p>
     <div class="demo">
-      <span class="hint">cuộn trong khung này ↓ rồi cuộn ngược ↑</span>
+      <span class="hint">Cuộn xuống ↓ rồi ngược lên ↑</span>
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối (100%).</span>
-      <span class="nosda">Trình duyệt chưa hỗ trợ scroll-driven animation.</span>
+      <span class="nosda">Trình duyệt này chưa hỗ trợ scroll-driven animation.</span>
       <div class="scroller"><div class="track"><div class="stage">
         <div class="ring"><span class="num"></span></div>
         <div class="right">
           <h3>Tiến độ = vị trí cuộn</h3>
-          <p>Vòng tròn, thanh và khối cam đều đọc cùng một con số. Cuộn ngược ↑ và mọi thứ tua lại.</p>
+          <p>Vòng tròn, thanh tiến độ và khối màu cam cùng đọc một giá trị. Cuộn ngược lên để tua lại.</p>
           <div class="bar"><i></i></div>
           <div class="car"><span></span></div>
         </div>
       </div></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>muốn người dùng “điều khiển” hoạt ảnh bằng tay: xoay sản phẩm 3D, vẽ đường, thanh tiến độ đọc, video tua theo cuộn.</p>
-      <p class="avoid"><b>Tránh khi</b>hoạt ảnh cần chạy trọn vẹn mới có nghĩa — người dùng dừng giữa chừng sẽ thấy trạng thái dở dang.</p>
+      <p class="use"><b>Dùng khi</b>người dùng cần điều khiển trực tiếp hoạt ảnh: xoay sản phẩm 3D, vẽ dần đường kẻ, thanh tiến độ đọc, video tua theo cuộn.</p>
+      <p class="avoid"><b>Tránh khi</b>hoạt ảnh chỉ có nghĩa khi chạy trọn vẹn: người dùng dừng cuộn giữa chừng sẽ thấy trạng thái dở dang.</p>
     </div>
     <div class="kw"><button>scroll-linked animation</button><button>scrub on scroll</button><button>animation-timeline: scroll()</button><button>scroll progress indicator</button></div>
   </article>
@@ -360,23 +442,23 @@
   <!-- 4 -->
   <article class="pattern" id="reveal">
     <h2>Scroll-triggered reveal</h2>
-    <p class="vi"><b>Hiện ra khi chạm ngưỡng.</b> Phần tử chạy hoạt ảnh <i>theo thời gian</i> (0,7 giây) khi lọt vào khung nhìn, chạy hết dù bạn cuộn nhanh hay chậm. Khác Scrub: <b>cuộn ngược không làm nó ẩn lại</b>.</p>
+    <p class="vi"><b>Hiện ra khi vào khung nhìn.</b> Khi phần tử vượt ngưỡng hiển thị, hoạt ảnh chạy <i>theo thời gian</i> (0,7 giây) và chạy hết bất kể tốc độ cuộn. Khác với scrub, <b>cuộn ngược không làm phần tử ẩn lại</b>. Cuộn xuống rồi cuộn ngược lên trong khung demo.</p>
     <div class="demo">
-      <span class="hint">cuộn trong khung này ↓ rồi cuộn ngược ↑</span>
+      <span class="hint">Cuộn xuống ↓ rồi ngược lên ↑</span>
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: thẻ hiển thị sẵn, không hiệu ứng.</span>
       <div class="scroller"><div class="list">
-        <p class="intro"><b>Cuộn xuống.</b> Mỗi thẻ “bật” lên một lần khi tới ngưỡng 35% — sau đó đứng yên, cuộn ngược cũng không biến mất.</p>
-        <div class="card" style="--c:#ff5a1f"><i></i><div><h4>Thiết kế</h4><p>Chạm ngưỡng → chạy 0,7s.</p></div></div>
+        <p class="intro"><b>Cuộn xuống.</b> Mỗi thẻ chạy hoạt ảnh một lần khi 35% diện tích thẻ vào khung nhìn, sau đó giữ nguyên trạng thái kể cả khi cuộn ngược.</p>
+        <div class="card" style="--c:#ff5a1f"><i></i><div><h4>Thiết kế</h4><p>Vượt ngưỡng, hoạt ảnh chạy 0,7 giây.</p></div></div>
         <div class="card" style="--c:#3346ff"><i></i><div><h4>Phát triển</h4><p>Tốc độ cuộn không ảnh hưởng.</p></div></div>
-        <div class="card" style="--c:#14a06a"><i></i><div><h4>Kiểm thử</h4><p>Chạy một lần duy nhất.</p></div></div>
-        <div class="card" style="--c:#161616"><i></i><div><h4>Ra mắt</h4><p>Cuộn ngược ↑ để kiểm chứng.</p></div></div>
-        <div class="card" style="--c:#c48a00"><i></i><div><h4>Đo lường</h4><p>Bấm ↻ để chạy lại từ đầu.</p></div></div>
+        <div class="card" style="--c:#14a06a"><i></i><div><h4>Kiểm thử</h4><p>Chỉ chạy một lần.</p></div></div>
+        <div class="card" style="--c:#161616"><i></i><div><h4>Ra mắt</h4><p>Cuộn ngược lên để kiểm tra.</p></div></div>
+        <div class="card" style="--c:#c48a00"><i></i><div><h4>Đo lường</h4><p>Nhấn Xem lại để chạy lại từ đầu.</p></div></div>
       </div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>landing page, danh sách tính năng, portfolio — tạo cảm giác nội dung “xuất hiện” đúng lúc mà không bắt người dùng điều khiển.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung quan trọng cần đọc ngay (bảng giá, form) — chờ hiệu ứng làm chậm việc đọc.</p>
+      <p class="use"><b>Dùng khi</b>landing page, danh sách tính năng, portfolio: nội dung xuất hiện đúng lúc người dùng cuộn tới mà không cần thao tác thêm.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung cần đọc ngay (bảng giá, form): thời gian chờ hiệu ứng làm chậm việc đọc.</p>
     </div>
     <div class="kw"><button>reveal on scroll</button><button>scroll-triggered animation</button><button>fade-up on enter viewport</button><button>IntersectionObserver animate once</button></div>
   </article>
@@ -384,16 +466,16 @@
   <!-- 5 -->
   <article class="pattern" id="stagger">
     <h2>Stagger</h2>
-    <p class="vi"><b>Lệch nhịp.</b> Một nhóm phần tử xuất hiện lần lượt, mỗi cái trễ hơn cái trước vài chục mili-giây, tạo thành một “làn sóng” thay vì bật lên cùng lúc.</p>
+    <p class="vi"><b>Xuất hiện lệch nhịp.</b> Các phần tử trong một nhóm xuất hiện lần lượt, phần tử sau trễ hơn phần tử trước vài chục mili giây, tạo thành một chuỗi liên tục thay vì xuất hiện đồng thời. Nhấn Xem lại để so sánh hai hàng.</p>
     <div class="demo">
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối.</span>
-      <div><div class="row-label">không stagger — tất cả cùng lúc</div><div class="row"></div></div>
-      <div><div class="row-label">stagger — mỗi ô trễ 80ms</div><div class="row s"></div></div>
+      <div><div class="row-label">không stagger: tất cả xuất hiện cùng lúc</div><div class="row"></div></div>
+      <div><div class="row-label">stagger: mỗi ô trễ 80 ms</div><div class="row s"></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>hiện lưới thẻ, danh sách, menu, các chữ cái — mắt được dẫn theo thứ tự và giao diện có vẻ “sống”.</p>
-      <p class="avoid"><b>Tránh khi</b>danh sách dài hàng chục mục — tổng thời gian chờ quá lâu; giới hạn khoảng 6–10 mục đầu.</p>
+      <p class="use"><b>Dùng khi</b>hiển thị lưới thẻ, danh sách, menu hoặc từng chữ cái: thứ tự xuất hiện dẫn mắt người dùng theo cấu trúc nội dung.</p>
+      <p class="avoid"><b>Tránh khi</b>danh sách có vài chục mục: tổng thời gian chờ quá dài. Chỉ áp dụng cho khoảng 6–10 mục đầu.</p>
     </div>
     <div class="kw"><button>staggered animation</button><button>stagger delay 80ms</button><button>cascading entrance</button><button>sequential fade-in grid</button></div>
   </article>
@@ -401,23 +483,23 @@
   <!-- 6 -->
   <article class="pattern needs-sda" id="parallax">
     <h2>Parallax</h2>
-    <p class="vi"><b>Thị sai — nhiều lớp, nhiều tốc độ.</b> Lớp xa trôi chậm, lớp gần trôi nhanh khi cuộn, tạo cảm giác chiều sâu như nhìn qua cửa sổ xe.</p>
+    <p class="vi"><b>Thị sai: nhiều lớp chuyển động với tốc độ khác nhau.</b> Khi cuộn, lớp xa di chuyển chậm, lớp gần di chuyển nhanh, tạo cảm giác chiều sâu. Cuộn trong khung demo để xem.</p>
     <div class="demo">
-      <span class="hint">cuộn trong khung này ↓</span>
+      <span class="hint">Cuộn trong khung ↓</span>
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: các lớp đứng yên.</span>
-      <span class="nosda">Trình duyệt chưa hỗ trợ scroll-driven animation.</span>
+      <span class="nosda">Trình duyệt này chưa hỗ trợ scroll-driven animation.</span>
       <div class="scroller"><div class="track"><div class="stage">
         <div class="layer sun"><span class="tag">mặt trời: xuống chậm</span></div>
         <div class="title">Lớp xa chậm,<br>lớp gần nhanh.</div>
         <div class="layer far"><span class="tag">đồi xa · 0.25×</span></div>
         <div class="layer mid"><span class="tag">đồi giữa · 0.6×</span></div>
-        <div class="layer near"><span class="tag">lớp gần · 1×</span><p>Cùng một lần cuộn, ba lớp đi ba quãng đường khác nhau — đó là parallax.</p></div>
+        <div class="layer near"><span class="tag">lớp gần · 1×</span><p>Cùng một quãng cuộn, ba lớp di chuyển ba khoảng cách khác nhau.</p></div>
       </div></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>hero của landing page, trang kể chuyện thương hiệu, minh hoạ có nhiều lớp — cần thêm chiều sâu.</p>
-      <p class="avoid"><b>Tránh khi</b>trang nhiều chữ cần đọc — chuyển động lệch gây chóng mặt và rối mắt.</p>
+      <p class="use"><b>Dùng khi</b>hero của landing page, trang giới thiệu thương hiệu, hình minh hoạ nhiều lớp cần thêm chiều sâu.</p>
+      <p class="avoid"><b>Tránh khi</b>trang nhiều chữ cần đọc: chuyển động lệch tốc độ gây mỏi mắt và chóng mặt cho một số người dùng.</p>
     </div>
     <div class="kw"><button>parallax scrolling</button><button>multi-layer parallax hero</button><button>layered depth on scroll</button><button>background moves slower than foreground</button></div>
   </article>
@@ -425,17 +507,17 @@
   <!-- 7 -->
   <article class="pattern" id="morph">
     <h2>Morph</h2>
-    <p class="vi"><b>Biến hình.</b> Một phần tử đổi hình dạng mượt sang hình khác thay vì biến mất rồi hiện cái mới — người dùng thấy rõ “nó vẫn là nó, chỉ đổi trạng thái”.</p>
+    <p class="vi"><b>Biến hình.</b> Một phần tử chuyển hình dạng liên tục sang trạng thái mới thay vì biến mất và được thay bằng phần tử khác. Người dùng nhận ra đó vẫn là cùng một thành phần, chỉ đổi trạng thái. Nhấn nút Gửi đơn hoặc biểu tượng menu.</p>
     <div class="demo">
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: đổi trạng thái tức thì.</span>
-      <div class="cell"><button class="send"><span class="t">Gửi đơn</span></button><div class="cap">bấm: nút → vòng tải → dấu tích</div></div>
-      <div class="cell"><button class="burger" aria-label="Mở menu"><i></i><i></i><i></i></button><div class="cap">bấm: ☰ biến thành ✕</div></div>
-      <div class="cell"><div class="blob"></div><div class="cap">hình khối tự biến dạng</div></div>
+      <div class="cell"><button class="send"><span class="t">Gửi đơn</span></button><div class="cap">nhấn: nút → vòng tải → dấu tích</div></div>
+      <div class="cell"><button class="burger" aria-label="Mở menu"><i></i><i></i><i></i></button><div class="cap">nhấn: ☰ chuyển thành ✕</div></div>
+      <div class="cell"><div class="blob"></div><div class="cap">khối hình tự biến dạng liên tục</div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>nút chuyển trạng thái (gửi → đang xử lý → xong), icon menu/đóng, play/pause — giữ mạch liên tục giữa hai trạng thái.</p>
-      <p class="avoid"><b>Tránh khi</b>hai trạng thái không liên quan — biến hình giữa chúng chỉ gây khó hiểu.</p>
+      <p class="use"><b>Dùng khi</b>nút chuyển trạng thái (gửi → đang xử lý → hoàn tất), biểu tượng menu/đóng, phát/tạm dừng: giữ liên kết thị giác giữa hai trạng thái.</p>
+      <p class="avoid"><b>Tránh khi</b>hai trạng thái không liên quan về ý nghĩa: hiệu ứng biến hình tạo liên tưởng sai.</p>
     </div>
     <div class="kw"><button>shape morph</button><button>morphing button loading to success</button><button>hamburger to close icon morph</button><button>blob morph animation</button></div>
   </article>
@@ -443,9 +525,9 @@
   <!-- 8 -->
   <article class="pattern" id="marquee">
     <h2>Marquee / Ticker</h2>
-    <p class="vi"><b>Dải chạy vô tận.</b> Chữ hoặc logo trôi ngang liên tục, lặp không có điểm nối. Rê chuột vào một dải để dừng.</p>
+    <p class="vi"><b>Dải chạy liên tục.</b> Chữ hoặc logo trôi ngang không ngừng và lặp lại không có điểm nối. Di chuột hoặc chạm vào một dải để tạm dừng.</p>
     <div class="demo">
-      <span class="rm-note">Giảm chuyển động: dải đứng yên, kéo ngang để xem.</span>
+      <span class="rm-note">Giảm chuyển động: dải đứng yên, cuộn ngang để xem.</span>
       <div class="row big"><div class="move">
         <div class="set"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
         <div class="set" aria-hidden="true"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
@@ -454,11 +536,11 @@
         <div class="set"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
         <div class="set" aria-hidden="true"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
       </div></div>
-      <div class="note">rê chuột vào dải để dừng · hai dải chạy ngược chiều</div>
+      <div class="note">Di chuột hoặc chạm vào dải để tạm dừng · hai dải chạy ngược chiều</div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>dải logo khách hàng, tin nhanh, khẩu hiệu thương hiệu lớn — thứ người dùng không cần đọc hết.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung bắt buộc phải đọc hoặc bấm — chữ đang chạy rất khó đọc và khó nhắm.</p>
+      <p class="use"><b>Dùng khi</b>dải logo khách hàng, tin nhanh, khẩu hiệu thương hiệu cỡ lớn: nội dung người dùng không cần đọc hết.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung bắt buộc phải đọc hoặc nhấn: chữ đang chuyển động khó đọc và khó chạm trúng.</p>
     </div>
     <div class="kw"><button>infinite marquee</button><button>scrolling ticker</button><button>logo marquee loop</button><button>pause on hover</button></div>
   </article>
@@ -466,17 +548,17 @@
   <!-- 9 -->
   <article class="pattern" id="textreveal">
     <h2>Text reveal / Split text</h2>
-    <p class="vi"><b>Chữ hiện từng mảnh.</b> Tiêu đề được tách thành từng ký tự hoặc từng từ, mỗi mảnh trồi lên từ sau một “mặt nạ” theo nhịp lệch.</p>
+    <p class="vi"><b>Chữ xuất hiện theo từng phần.</b> Tiêu đề được tách thành từng ký tự hoặc từng từ; mỗi phần trượt lên từ sau một mặt nạ (mask) theo nhịp lệch. Nhấn Xem lại để chạy lại.</p>
     <div class="demo">
       <button class="replay">↻ Xem lại</button>
       <span class="rm-note">Giảm chuyển động: chữ hiển thị sẵn.</span>
-      <span class="cap">dòng 1: tách ký tự + mặt nạ · dòng 2: tách từ + mờ dần</span>
-      <h3 class="h" data-split="chars">Thiết kế biết <span class="acc">chuyển động</span>.</h3>
-      <p class="sub" data-split="words">Mỗi ký tự trồi lên từ sau một đường cắt vô hình, nối nhau như một làn sóng chữ.</p>
+      <span class="cap">Dòng 1: tách ký tự + mặt nạ. Dòng 2: tách từ + làm mờ.</span>
+      <h3 class="h" data-split="chars">Giao diện có <span class="acc">chuyển động</span>.</h3>
+      <p class="sub" data-split="words">Mỗi ký tự trượt lên từ sau một đường cắt ẩn, nối tiếp nhau theo nhịp lệch.</p>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tiêu đề hero, câu khẩu hiệu, màn mở đầu — một câu ngắn cần được “trình diễn”.</p>
-      <p class="avoid"><b>Tránh khi</b>đoạn văn dài hoặc chữ nội dung — tách chữ làm chậm việc đọc và làm rối trình đọc màn hình nếu không giữ aria-label.</p>
+      <p class="use"><b>Dùng khi</b>tiêu đề hero, khẩu hiệu, màn hình mở đầu: một câu ngắn cần được nhấn mạnh.</p>
+      <p class="avoid"><b>Tránh khi</b>đoạn văn dài hoặc chữ nội dung: tách chữ làm chậm việc đọc, và trình đọc màn hình đọc sai nếu không có aria-label.</p>
     </div>
     <div class="kw"><button>split text animation</button><button>text reveal</button><button>per-character stagger with mask</button><button>word-by-word blur in</button></div>
   </article>
@@ -484,7 +566,7 @@
   <!-- 10 -->
   <article class="pattern" id="viewtransitions">
     <h2>View transitions</h2>
-    <p class="vi"><b>Chuyển cảnh có phần tử chung.</b> Khi đổi màn hình, phần tử xuất hiện ở cả hai màn (ảnh, tiêu đề) bay mượt từ vị trí cũ sang vị trí mới thay vì nhảy cụt. Bấm một thẻ.</p>
+    <p class="vi"><b>Chuyển cảnh có phần tử chung.</b> Khi chuyển màn hình, phần tử có mặt ở cả hai màn (ảnh, tiêu đề) di chuyển liên tục từ vị trí cũ sang vị trí mới thay vì thay thế đột ngột. Nhấn vào một thẻ.</p>
     <div class="demo">
       <span class="support"></span>
       <span class="rm-note">Giảm chuyển động: đổi màn tức thì.</span>
@@ -496,12 +578,12 @@
       </div>
       <div class="detail" hidden>
         <div class="img"></div>
-        <div class="body"><h3></h3><p>Ảnh và tiêu đề vừa “bay” từ thẻ nhỏ sang đây. Trình duyệt chụp hai trạng thái rồi tự nội suy vị trí, kích thước.</p><button class="back">← Quay lại</button></div>
+        <div class="body"><h3></h3><p>Ảnh và tiêu đề vừa di chuyển từ thẻ nhỏ sang vị trí này. Trình duyệt chụp lại hai trạng thái và tự nội suy vị trí, kích thước.</p><button class="back">← Quay lại</button></div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>danh sách → chi tiết, ảnh thu nhỏ → ảnh lớn, đổi tab/trang trong app — giữ cho người dùng biết mình vừa đi từ đâu tới.</p>
-      <p class="avoid"><b>Tránh khi</b>hai màn không có phần tử chung — chỉ còn hiệu ứng mờ chéo, không thêm ý nghĩa.</p>
+      <p class="use"><b>Dùng khi</b>danh sách → chi tiết, ảnh thu nhỏ → ảnh lớn, chuyển tab hoặc trang trong ứng dụng: người dùng thấy rõ mình vừa chuyển từ đâu tới.</p>
+      <p class="avoid"><b>Tránh khi</b>hai màn hình không có phần tử chung: hiệu ứng chỉ còn là mờ chéo, không truyền thêm thông tin.</p>
     </div>
     <div class="kw"><button>View Transitions API</button><button>shared element transition</button><button>card expands to detail view</button><button>document.startViewTransition</button></div>
   </article>
@@ -509,29 +591,29 @@
   <!-- 11 -->
   <article class="pattern" id="micro">
     <h2>Micro-interactions</h2>
-    <p class="vi"><b>Phản hồi nhỏ cho từng thao tác.</b> Những chuyển động rất ngắn (dưới nửa giây) xác nhận “bạn vừa bấm, và nó đã có tác dụng”. Bấm thử cả bốn.</p>
+    <p class="vi"><b>Phản hồi ngắn cho từng thao tác.</b> Chuyển động rất ngắn (dưới 0,5 giây) xác nhận thao tác đã được ghi nhận và có kết quả. Nhấn vào từng thành phần trong khung demo.</p>
     <div class="demo">
       <span class="rm-note">Giảm chuyển động: trạng thái đổi tức thì.</span>
       <div class="cell">
         <button class="like" aria-pressed="false"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3.2 5 6.6 5c2.1 0 3.5 1.2 4.4 2.6h2c.9-1.4 2.3-2.6 4.4-2.6 3.4 0 5.4 3.6 4.1 6.8C19.5 16.4 12 21 12 21z"/></svg><span class="count">24</span></button>
-        <div class="cap">like: tim nảy + bắn hạt</div>
+        <div class="cap">like: biểu tượng tim nảy và bắn hạt</div>
       </div>
       <div class="cell">
         <button class="switch" role="switch" aria-checked="false" aria-label="Thông báo"></button>
-        <div class="cap">toggle: núm trượt có độ nảy, giãn khi nhấn giữ</div>
+        <div class="cap">toggle: núm trượt có độ nảy, giãn ra khi nhấn giữ</div>
       </div>
       <div class="cell">
         <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">Gửi báo cáo</span></label>
-        <div class="cap">checkbox: dấu tích được “vẽ” ra</div>
+        <div class="cap">checkbox: dấu tích được vẽ dần</div>
       </div>
       <div class="cell">
         <button class="copy"><span class="ic"><svg class="i1" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg class="i2" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="t">Copy mã</span></button>
-        <div class="cap">copy: icon đổi thành tích, chữ báo kết quả</div>
+        <div class="cap">copy: biểu tượng đổi thành dấu tích, nhãn báo kết quả</div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>mọi thao tác thường xuyên: thích, bật/tắt, đánh dấu, sao chép, gửi — người dùng cần biết ngay hành động đã thành công.</p>
-      <p class="avoid"><b>Tránh khi</b>hiệu ứng dài hoặc phô trương chặn thao tác tiếp theo — micro phải nhanh và không cản đường.</p>
+      <p class="use"><b>Dùng khi</b>thao tác lặp lại thường xuyên: thích, bật/tắt, đánh dấu, sao chép, gửi. Người dùng cần biết ngay thao tác đã thành công.</p>
+      <p class="avoid"><b>Tránh khi</b>hiệu ứng dài hoặc phô trương làm chặn thao tác tiếp theo: micro-interaction phải nhanh và không cản trở.</p>
     </div>
     <div class="kw"><button>micro-interactions</button><button>animated like button with particle burst</button><button>springy toggle switch</button><button>animated checkmark draw</button><button>copy button success state</button></div>
   </article>
@@ -557,7 +639,7 @@ const onView = (el, fn) => Dict.onView(el, fn, .5);
     const s = e.target.dataset.step;
     $$('.step', root).forEach(x => x.classList.toggle('on', x === e.target));
     vis.dataset.scene = s; cap.textContent = `cảnh ${s} / 3`;
-  }), { root: sc, rootMargin: '-45% 0px -45% 0px' });
+  }), { root: sc, rootMargin: matchMedia('(max-width:760px)').matches ? '-55% 0px -35% 0px' : '-45% 0px -45% 0px' }); // mobile: hình chiếm nửa trên, đổi cảnh khi chữ tới nửa dưới
   $$('.step', root).forEach(s => io.observe(s));
   $('.step', root).classList.add('on');
   replay.scrollytelling = () => toTop('scrollytelling');
@@ -640,7 +722,7 @@ replay.parallax = () => toTop('parallax');
   const dImg = $('.img', detail), dTitle = $('h3', detail);
   const can = !!document.startViewTransition && !reduce;
   $('.support', root).textContent = document.startViewTransition
-    ? 'document.startViewTransition: có hỗ trợ' : 'trình duyệt chưa hỗ trợ View Transitions → đổi màn tức thì (fallback)';
+    ? 'document.startViewTransition: có hỗ trợ' : 'Trình duyệt chưa hỗ trợ View Transitions; màn hình đổi tức thì (fallback)';
   let current = null;
   const go = update => can ? document.startViewTransition(update) : update();
   const name = (el, n) => { el.style.viewTransitionName = n; };
@@ -684,10 +766,13 @@ replay.parallax = () => toTop('parallax');
   copy.addEventListener('click', async () => {
     let ok = true;
     try { await navigator.clipboard.writeText('MOTION-2026'); } catch (e) { ok = false; }
-    copy.classList.toggle('ok', ok); ct.textContent = ok ? 'Đã copy!' : 'Không copy được';
+    copy.classList.toggle('ok', ok); ct.textContent = ok ? 'Đã copy' : 'Không copy được';
     clearTimeout(copy._t); copy._t = setTimeout(() => { copy.classList.remove('ok'); ct.textContent = 'Copy mã'; }, 1400);
   });
 }
+// 8 Marquee: chạm để dừng/chạy tiếp (thiết bị cảm ứng không có hover)
+$$('#marquee .row').forEach(r => r.addEventListener('click', () => r.classList.toggle('paused')));
+
 Object.entries(replay).forEach(([id, fn]) => Dict.replay(id, fn));
 </script>
 </body>

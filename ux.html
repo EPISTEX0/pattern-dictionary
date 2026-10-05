@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Thành phần UX — Từ điển pattern thiết kế web</title>
+<meta name="description" content="Tám thành phần UX phổ biến kèm demo tương tác: floating nav, sticky CTA, social proof, bảng giá, feature tabs, command palette, empty state và skeleton loading.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,6 +21,9 @@
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
+@media (max-width:760px){
+  .demo .hint{font-size:12px}
+}
 
 /* ===== 1. Floating / shrinking nav ===== */
 #floating-shrinking-nav .mini{background:#f3f1ec}
@@ -35,6 +39,19 @@
 #floating-shrinking-nav .hero p{color:#666;margin-top:10px;font-size:14px;max-width:460px}
 #floating-shrinking-nav .sec{margin:0 32px 18px;height:200px;border-radius:18px;display:flex;align-items:end;padding:22px;font-weight:800;font-size:20px;color:#fff;letter-spacing:-.01em}
 #floating-shrinking-nav .state{position:absolute;right:118px;bottom:16px;z-index:30;font:500 11px/1 var(--mono);background:#fff;border:1px solid var(--line);padding:6px 9px;border-radius:999px;color:var(--mute)}
+#floating-shrinking-nav .hdr .menu{display:none;width:36px;height:36px;place-items:center;border-radius:10px;color:#111}
+#floating-shrinking-nav .hdr .menu i{display:block;width:16px;height:2px;border-radius:2px;background:currentColor;box-shadow:0 -5px currentColor,0 5px currentColor}
+@media (max-width:760px){
+  #floating-shrinking-nav .hdr{padding:0 12px 0 16px;gap:10px;height:56px}
+  #floating-shrinking-nav .scroller{padding-top:56px}
+  #floating-shrinking-nav .hdr>span:not(.logo,.cta,.menu){display:none}
+  #floating-shrinking-nav .hdr .menu{display:grid}
+  #floating-shrinking-nav .hdr.shrunk{left:12px;right:12px;height:48px;padding:0 6px 0 18px}
+  #floating-shrinking-nav .hero{padding:28px 16px 22px}
+  #floating-shrinking-nav .hero h3{font-size:clamp(26px,8vw,34px)}
+  #floating-shrinking-nav .sec{margin:0 16px 14px;height:150px;font-size:18px;padding:18px}
+  #floating-shrinking-nav .state{right:auto;left:12px;bottom:56px;font-size:12px}
+}
 
 /* ===== 2. Sticky CTA ===== */
 #sticky-cta .mini{background:#fff;color:#151515}
@@ -64,6 +81,21 @@
 #sticky-cta .bar b{display:block;font-size:13.5px}
 #sticky-cta .bar span{color:#777;font-size:12px}
 #sticky-cta .bar .add{width:auto;padding:0 22px;height:40px;margin-left:auto}
+#sticky-cta .bar:not(.show){visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+@media (max-width:760px){
+  #sticky-cta .top{padding:0 16px;gap:16px}
+  #sticky-cta .prod{grid-template-columns:1fr;gap:18px;padding:16px}
+  #sticky-cta .ph{height:140px}
+  #sticky-cta .ph::after{width:76px;height:76px;border-width:10px}
+  #sticky-cta .hint{bottom:auto;left:auto;top:62px;right:12px}
+  #sticky-cta .info h3{font-size:22px}
+  #sticky-cta .long{padding:4px 16px 90px}
+  #sticky-cta .bar{padding:10px 12px;gap:10px}
+  #sticky-cta .bar .thumb{display:none}
+  #sticky-cta .bar>div{min-width:0}
+  #sticky-cta .bar b,#sticky-cta .bar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #sticky-cta .bar .add{padding:0 16px;flex:none}
+}
 
 /* ===== 3. Social proof ===== */
 #social-proof .mini{background:#0e0e10;color:#f2f2f2;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:36px 40px}
@@ -93,6 +125,23 @@
 #social-proof .dots button{width:22px;height:5px;border-radius:3px;border:0;background:#3a3a42;cursor:pointer;padding:0}
 #social-proof .dots button[aria-current="true"]{background:#fff;width:34px}
 #social-proof .dots button{transition:width .3s,background .3s}
+@media (max-width:760px){
+  #social-proof .demo{--demo-h-m:590px}
+  #social-proof .mini{grid-template-columns:1fr;align-content:start;gap:22px;padding:24px 18px}
+  #social-proof .rate .n{font-size:44px}
+  #social-proof .avs{margin-top:16px}
+  #social-proof .logos-l{font-size:12px;margin-top:20px}
+  #social-proof .logos{flex-wrap:wrap;gap:8px 20px;margin-top:10px}
+  #social-proof .logos span{font-size:16px}
+  #social-proof .tcard{height:auto;padding:20px 20px 64px}
+  #social-proof .slides{min-height:178px}
+  #social-proof .slide blockquote{font-size:16px}
+  #social-proof .who{font-size:12.5px}
+  #social-proof .dots{position:absolute;left:12px;bottom:12px;gap:2px}
+  #social-proof .dots button,#social-proof .dots button[aria-current="true"]{position:relative;width:40px;height:36px;background:none}
+  #social-proof .dots button::before{content:"";position:absolute;left:6px;right:6px;top:50%;height:5px;margin-top:-2.5px;border-radius:3px;background:#3a3a42;transition:background .3s}
+  #social-proof .dots button[aria-current="true"]::before{background:#fff}
+}
 
 /* ===== 4. Pricing table ===== */
 #pricing-table .mini{background:#f4f2ee;color:#151515;display:flex;flex-direction:column;align-items:center;padding-top:20px}
@@ -117,6 +166,27 @@
 #pricing-table .pl.rec .go{background:var(--acc);border-color:var(--acc);color:#fff}
 #pricing-table .pl.rec li::before{color:#7ee0a5}
 #pricing-table .badge{position:absolute;top:-11px;left:20px;background:var(--acc);color:#fff;font:600 11px/1 var(--sans);padding:6px 10px;border-radius:999px}
+/* mobile: cuộn ngang có snap thay vì xếp dọc. Ba thẻ xếp dọc cao ~900px, công tắc tháng/năm trôi khỏi tầm nhìn
+   khi đang xem giá; cuộn ngang giữ công tắc và giá trong một màn hình, thẻ kế bên ló ra để báo còn gói khác. */
+#pricing-table .swipe{display:none;font-size:12px;color:#888;margin-top:-6px}
+@media (max-width:760px){
+  #pricing-table .demo{--demo-h-m:470px}
+  #pricing-table .mini{padding-top:18px}
+  #pricing-table .tg{flex-wrap:wrap;justify-content:center;padding:0 12px;row-gap:6px}
+  #pricing-table .tg .lbl{padding:8px 2px}
+  #pricing-table .sw{width:54px;height:32px}
+  #pricing-table .sw::after{width:26px;height:26px}
+  #pricing-table .sw[aria-checked="true"]::after{transform:translateX(22px)}
+  #pricing-table .save{font-size:12px}
+  #pricing-table .plans{display:flex;width:100%;margin-top:6px;padding:20px 12% 22px;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
+  #pricing-table .plans::-webkit-scrollbar{display:none}
+  #pricing-table .pl{flex:0 0 76%;scroll-snap-align:center;font-size:13px;height:auto;min-height:276px}
+  #pricing-table .pl.rec{height:auto;min-height:306px}
+  #pricing-table .pl .bill{font-size:12px}
+  #pricing-table .pl .go{min-height:40px}
+  #pricing-table .badge{font-size:12px}
+  #pricing-table .swipe{display:block}
+}
 
 /* ===== 5. Feature tabs ===== */
 #feature-tabs .mini{background:#fff;color:#151515;display:grid;grid-template-columns:300px 1fr;gap:28px;padding:30px 36px}
@@ -143,6 +213,28 @@
 #feature-tabs .chart{display:flex;align-items:end;gap:10px;height:170px;padding-top:10px;border-bottom:1px solid #eee}
 #feature-tabs .chart i{flex:1;background:linear-gradient(#7aa7ff,#3f6fe8);border-radius:6px 6px 0 0;height:var(--h);transform-origin:bottom;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 #feature-tabs [role=tabpanel]:not(.on) .chart i{transform:scaleY(.1)}
+#feature-tabs .mail small{font-size:inherit}
+@media (max-width:760px){
+  #feature-tabs .demo{--demo-h-m:540px}
+  #feature-tabs .mini{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:12px;padding:14px}
+  #feature-tabs [role=tablist]{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding-bottom:46px;background:#f6f5f2;border-radius:12px;padding:4px 4px 50px}
+  #feature-tabs [role=tab]{position:static;text-align:center;padding:10px 4px;border-radius:9px;min-height:44px}
+  #feature-tabs [role=tab] b{font-size:13.5px;line-height:1.25}
+  #feature-tabs [role=tab][aria-selected="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  #feature-tabs [role=tab] span,#feature-tabs [role=tab][aria-selected="true"] span{pointer-events:none;position:absolute;left:12px;right:12px;bottom:6px;height:38px;max-height:none;margin:0;text-align:left;font-size:12.5px;line-height:1.5;display:flex;align-items:center}
+  #feature-tabs .ind{display:none}
+  #feature-tabs .stage{border-radius:12px}
+  #feature-tabs [role=tabpanel]{inset:10px;padding:14px}
+  #feature-tabs .cal{grid-template-columns:repeat(3,1fr);gap:6px}
+  #feature-tabs .cal i{height:auto;min-height:44px}
+  #feature-tabs .cal i.ev{font-size:12px;padding:6px 8px}
+  #feature-tabs .mail div{display:grid;grid-template-columns:26px 1fr auto;column-gap:10px;row-gap:1px}
+  #feature-tabs .mail div i{grid-row:span 2}
+  #feature-tabs .mail div b{font-size:13px}
+  #feature-tabs .mail div small{grid-column:2/4;font-size:12px}
+  #feature-tabs .mail div span{grid-row:1;grid-column:3;font-size:12px}
+  #feature-tabs .chart{height:200px;gap:6px}
+}
 
 /* ===== 6. Command palette ===== */
 #command-palette .demo{outline:none}
@@ -166,7 +258,7 @@
 #command-palette .open .pal{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 #command-palette .pal input{width:100%;border:0;border-bottom:1px solid #eee;padding:16px 18px 16px 44px;font:400 15px/1.2 var(--sans);outline:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 18px 50% no-repeat}
 #command-palette .list{max-height:228px;overflow-y:auto;padding:6px;scrollbar-width:thin}
-#command-palette .grp{font:500 10.5px/1 var(--mono);color:#999;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px 6px}
+#command-palette .grp{font:500 10.5px/1.3 var(--mono);color:#999;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px 6px}
 #command-palette .it{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13.5px;cursor:pointer}
 #command-palette .it .ic{width:22px;height:22px;border-radius:6px;background:#f1f0ed;display:grid;place-items:center;font-size:12px}
 #command-palette .it kbd{margin-left:auto;font-size:10.5px;color:#888;background:#fff}
@@ -178,6 +270,29 @@
 #command-palette .foot kbd{font-size:10px;padding:2px 5px}
 #command-palette .toast{position:absolute;z-index:25;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#1b1b1b;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;transition:opacity .25s,transform .35s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
 #command-palette .toast.on{opacity:1;transform:translate(-50%,0)}
+#command-palette .tap-hint,#command-palette .open-btn .m{display:none}
+@media (max-width:760px){
+  #command-palette .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  #command-palette .side{flex-direction:row;align-items:center;gap:2px;border-right:0;border-bottom:1px solid rgba(128,128,128,.18);padding:10px 12px;overflow:hidden}
+  #command-palette .side b{margin:0 8px 0 2px}
+  #command-palette .side span{white-space:nowrap}
+  #command-palette .side span:not(.cur){display:none}
+  #command-palette .doc{padding:20px 16px}
+  #command-palette .doc h3{font-size:22px}
+  #command-palette .kbd-hint{margin-top:22px}
+  #command-palette .kbd-hint>:not(.open-btn){display:none}
+  #command-palette .open-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 14px;border-radius:12px;font:400 15px/1 var(--sans);color:#888;background:rgba(128,128,128,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 14px 50% no-repeat;padding-left:40px;text-align:left}
+  #command-palette .open-btn .d{display:none}
+  #command-palette .open-btn .m{display:inline}
+  #command-palette .tap-hint{display:block;margin-top:8px;font-size:12.5px;color:#888}
+  #command-palette .pal{top:12px;width:calc(100% - 24px)}
+  #command-palette .pal input{font-size:16px}
+  #command-palette .list{max-height:300px}
+  #command-palette .grp{font-size:12px}
+  #command-palette .it{min-height:44px;font-size:15px}
+  #command-palette .it kbd{display:none}
+  #command-palette .foot{display:none}
+}
 
 /* ===== 7. Empty state ===== */
 #empty-state .mini{background:#f4f3f0;display:grid;place-items:center}
@@ -206,6 +321,21 @@
 #empty-state li .del{margin-left:auto;border:0;background:none;color:#bbb;cursor:pointer;font-size:16px;padding:0 4px}
 #empty-state li .del:hover{color:#d33}
 @keyframes liIn{from{opacity:0;transform:translateY(-6px)}}
+#empty-state li label{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
+@media (max-width:760px){
+  #empty-state .mini{place-items:stretch;padding:12px 12px 60px}
+  #empty-state .panel{width:auto;height:auto}
+  #empty-state .ph{padding:10px 12px 10px 16px}
+  #empty-state .ph .cnt{font-size:12px}
+  #empty-state .sbtn{min-height:36px;padding:0 14px}
+  #empty-state .pbtn{min-height:40px}
+  #empty-state .empty{padding:0 20px}
+  #empty-state ul{padding:6px}
+  #empty-state li{padding:2px 4px 2px 10px;font-size:14px}
+  #empty-state li label{min-height:44px}
+  #empty-state li input{width:18px;height:18px}
+  #empty-state li .del{width:40px;height:40px;font-size:20px;padding:0}
+}
 
 /* ===== 8. Skeleton loading ===== */
 #skeleton-loading .mini{background:#f4f3f0;padding:26px 36px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-content:start}
@@ -229,6 +359,15 @@
 #skeleton-loading .loaded .post:nth-child(2) .real{transition-delay:.08s}
 #skeleton-loading .loaded .post:nth-child(3) .real{transition-delay:.16s}
 #skeleton-loading .status{position:absolute;left:12px;bottom:12px;z-index:30;font:500 11px/1 var(--mono);background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--mute)}
+@media (max-width:760px){
+  #skeleton-loading .mini{grid-template-columns:1fr;padding:14px 14px 64px;gap:12px;overflow-y:auto;scrollbar-width:thin}
+  #skeleton-loading .post{height:300px}
+  #skeleton-loading .img{height:150px}
+  #skeleton-loading .name{font-size:14px}
+  #skeleton-loading .time,#skeleton-loading .meta{font-size:12px}
+  #skeleton-loading .txt{font-size:13.5px}
+  #skeleton-loading .status{font-size:12px;padding:10px 12px}
+}
 </style>
 </head>
 <body>
@@ -237,30 +376,30 @@
 <main class="wrap">
   <header class="head">
     <h1>Thành phần UX</h1>
-    <p>Những mảnh giao diện người dùng chạm vào: thanh điều hướng, nút mua, bảng giá, ô tìm lệnh. Mọi demo dưới đây đều bấm, gõ, cuộn được thật.</p>
+    <p>Các thành phần giao diện giúp người dùng thao tác và ra quyết định nhanh hơn: thanh điều hướng, nút hành động, bảng giá, bảng lệnh. Mọi demo trên trang đều tương tác được bằng chuột, bàn phím hoặc cảm ứng.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="floating-shrinking-nav">
     <h2>Floating / shrinking nav</h2>
-    <p class="vi"><b>Thanh điều hướng co lại thành viên thuốc.</b> Ở đầu trang, header trải hết chiều ngang. Khi bắt đầu cuộn, nó tách khỏi mép, thu nhỏ, bo tròn và nổi lên trên nội dung với nền mờ kính. Cuộn bên trong khung để thấy.</p>
+    <p class="vi"><b>Thanh điều hướng thu lại thành dạng pill.</b> Ở đầu trang, thanh điều hướng trải hết chiều ngang. Khi người dùng bắt đầu cuộn, thanh tách khỏi mép, thu nhỏ, bo tròn thành dạng pill và nổi trên nội dung với nền mờ (backdrop blur). Cuộn trong khung demo để xem.</p>
     <div class="demo">
       <div class="mini">
-        <header class="hdr"><span class="logo">Nhịp</span><span>Sản phẩm</span><span>Bảng giá</span><span>Blog</span><span class="cta">Dùng thử</span></header>
+        <header class="hdr"><span class="logo">Nhịp</span><span>Sản phẩm</span><span>Bảng giá</span><span>Blog</span><span class="cta">Dùng thử</span><span class="menu" aria-hidden="true"><i></i></span></header>
         <div class="scroller">
-          <div class="hero"><h3>Lịch làm việc tự sắp xếp theo nhịp của bạn</h3><p>Nhịp đọc lịch, việc và thói quen của bạn rồi xếp thời gian tập trung vào lúc bạn làm tốt nhất.</p></div>
+          <div class="hero"><h3>Lịch làm việc tự sắp xếp theo nhịp của bạn</h3><p>Nhịp phân tích lịch, công việc và thói quen của bạn, rồi xếp thời gian tập trung vào khung giờ bạn làm việc hiệu quả nhất.</p></div>
           <div class="sec" style="background:linear-gradient(135deg,#ff8a5c,#ff5a1f)">Tập trung sâu</div>
           <div class="sec" style="background:linear-gradient(135deg,#6c8cff,#3a55d8)">Họp ít hơn</div>
           <div class="sec" style="background:linear-gradient(135deg,#2f9e5b,#1d6b3c)">Nghỉ đúng lúc</div>
         </div>
       </div>
       <span class="state">trạng thái: full-width</span>
-      <span class="hint">↓ Cuộn trong khung</span>
+      <span class="hint">↓ Cuộn để xem</span>
       <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>landing page dài, người dùng cần điều hướng ở mọi điểm cuộn nhưng nội dung (ảnh, hero) cần được thở. Pill nổi chiếm ít chỗ hơn header full-width.</p>
-      <p class="avoid"><b>Tránh khi</b>app nhiều menu, cần thanh công cụ đầy đủ; pill quá hẹp sẽ phải giấu bớt mục quan trọng.</p>
+      <p class="use"><b>Dùng khi</b>landing page dài, khi người dùng cần truy cập điều hướng ở mọi vị trí cuộn nhưng ảnh và hero cần nhiều khoảng trống. Thanh dạng pill chiếm ít diện tích hơn thanh trải hết chiều ngang.</p>
+      <p class="avoid"><b>Tránh khi</b>ứng dụng có nhiều menu hoặc cần thanh công cụ đầy đủ: thanh dạng pill quá hẹp, buộc phải ẩn bớt các mục quan trọng.</p>
     </div>
     <div class="kw"><button>floating pill nav</button><button>shrinking header on scroll</button><button>detached navbar with backdrop blur</button><button>full-width → pill transition</button><button>spring easing</button></div>
   </article>
@@ -268,7 +407,7 @@
   <!-- 2 -->
   <article class="pattern" id="sticky-cta">
     <h2>Sticky CTA</h2>
-    <p class="vi"><b>Nút hành động bám theo.</b> Khi nút "Thêm vào giỏ" chính trôi khỏi màn hình, một thanh nhỏ trượt lên ở đáy mang theo tên, giá và cùng nút đó. Cuộn khung xuống để nó hiện, cuộn lên để nó ẩn. Bấm thử nút.</p>
+    <p class="vi"><b>Nút hành động cố định khi cuộn.</b> Khi nút “Thêm vào giỏ” chính ra khỏi màn hình, một thanh nhỏ trượt lên ở cạnh dưới, chứa tên sản phẩm, giá và cùng nút hành động đó. Thanh ẩn đi khi nút chính xuất hiện trở lại. Cuộn trong khung demo rồi nhấn “Thêm vào giỏ”.</p>
     <div class="demo">
       <div class="mini">
         <div class="scroller">
@@ -285,18 +424,18 @@
           </div>
           <div class="long">
             <h4>Âm thanh</h4><p>Màng loa 40mm, đáp ứng tần số 5Hz–40kHz. Chế độ EQ chỉnh trên app với 10 dải.</p>
-            <h4>Chống ồn</h4><p>Sáu micro lọc tiếng ồn ở văn phòng, máy bay, nơi công cộng. Chế độ xuyên âm để nghe người khác nói mà không cần tháo tai.</p>
-            <h4>Pin</h4><p>40 giờ khi tắt chống ồn, 30 giờ khi bật. Sạc 10 phút dùng 5 giờ.</p>
+            <h4>Chống ồn</h4><p>Sáu micro lọc tiếng ồn ở văn phòng, trên máy bay và nơi công cộng. Chế độ xuyên âm giúp nghe rõ người đối diện mà không cần tháo tai nghe.</p>
+            <h4>Pin</h4><p>40 giờ khi tắt chống ồn, 30 giờ khi bật. Sạc 10 phút để dùng 5 giờ.</p>
             <h4>Trong hộp</h4><p>Tai nghe, hộp đựng vải, cáp USB-C, cáp 3,5mm, sách hướng dẫn.</p>
           </div>
         </div>
         <div class="bar" aria-hidden="true"><span class="thumb"></span><div><b>Âm Studio 2</b><span>2.490.000đ · Cam</span></div><button class="add bar-add" tabindex="-1">Thêm vào giỏ</button></div>
       </div>
-      <span class="hint">↓ Cuộn trong khung</span>
+      <span class="hint">↓ Cuộn để xem</span>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>trang sản phẩm hoặc trang đăng ký dài, nơi người dùng đọc nhiều rồi mới quyết định; nút mua phải luôn trong tầm tay khi họ sẵn sàng.</p>
-      <p class="avoid"><b>Tránh khi</b>trang ngắn vừa một màn hình, hoặc đã có quá nhiều thứ dính ở đáy (chat bubble, banner cookie) chồng lên nhau.</p>
+      <p class="use"><b>Dùng khi</b>trang sản phẩm hoặc trang đăng ký dài, nơi người dùng đọc nhiều thông tin trước khi quyết định; nút mua cần luôn trong tầm với ở mọi vị trí cuộn.</p>
+      <p class="avoid"><b>Tránh khi</b>trang ngắn vừa một màn hình, hoặc cạnh dưới đã có nhiều thành phần cố định (bong bóng chat, banner cookie) dễ chồng lên nhau.</p>
     </div>
     <div class="kw"><button>sticky CTA bar</button><button>appears when primary CTA scrolls out of view</button><button>IntersectionObserver</button><button>bottom sticky add-to-cart</button><button>slide-up with blur backdrop</button></div>
   </article>
@@ -304,7 +443,7 @@
   <!-- 3 -->
   <article class="pattern" id="social-proof">
     <h2>Social proof</h2>
-    <p class="vi"><b>Bằng chứng từ người khác.</b> Điểm đánh giá, số người dùng, hàng avatar, logo khách hàng và lời chứng thực: những tín hiệu nói "người giống bạn đã tin cái này". Bấm vạch dưới thẻ để đổi lời chứng thực.</p>
+    <p class="vi"><b>Bằng chứng xã hội.</b> Các tín hiệu cho thấy người khác đã dùng và tin tưởng sản phẩm: điểm đánh giá, số người dùng, dãy avatar, logo khách hàng và lời chứng thực (testimonial). Lời chứng thực tự chuyển sau vài giây. Nhấn hoặc chạm các vạch dưới thẻ để chuyển lời chứng thực.</p>
     <div class="demo">
       <div class="mini">
         <div>
@@ -316,18 +455,18 @@
         <div class="tcard">
           <div class="tq">"</div>
           <div class="slides">
-            <div class="slide on"><blockquote>Từ khi chuyển sang đây, đội mình bớt được hai buổi họp mỗi tuần. Mọi thứ nằm ở một chỗ, ai cũng biết việc của mình.</blockquote><div class="who"><i style="--c:#ffb27a"></i><div><b>Lan Phạm</b>Trưởng nhóm sản phẩm, Fintech</div></div></div>
-            <div class="slide"><blockquote>Mình đã thử bốn công cụ trong một năm. Đây là cái đầu tiên cả đội kế toán chịu dùng mà không cần ép.</blockquote><div class="who"><i style="--c:#9fb6ff"></i><div><b>Minh Trần</b>COO, chuỗi bán lẻ 12 cửa hàng</div></div></div>
-            <div class="slide"><blockquote>Thiết lập mất mười phút. Đến cuối tuần đầu tiên, khách hàng đã khen báo cáo của mình gửi đi đẹp hơn.</blockquote><div class="who"><i style="--c:#8fe0b0"></i><div><b>Thảo Nguyễn</b>Freelancer thiết kế</div></div></div>
+            <div class="slide on"><blockquote>Từ khi chuyển sang công cụ này, nhóm chúng tôi bớt được hai buổi họp mỗi tuần. Mọi thông tin nằm ở một nơi, ai cũng nắm rõ việc của mình.</blockquote><div class="who"><i style="--c:#ffb27a"></i><div><b>Lan Phạm</b>Trưởng nhóm sản phẩm, Fintech</div></div></div>
+            <div class="slide"><blockquote>Chúng tôi đã thử bốn công cụ trong một năm. Đây là công cụ đầu tiên cả phòng kế toán dùng đều đặn mà không cần nhắc nhở.</blockquote><div class="who"><i style="--c:#9fb6ff"></i><div><b>Minh Trần</b>COO, chuỗi bán lẻ 12 cửa hàng</div></div></div>
+            <div class="slide"><blockquote>Thiết lập mất mười phút. Ngay tuần đầu tiên, khách hàng đã nhận xét báo cáo tôi gửi rõ ràng và chuyên nghiệp hơn.</blockquote><div class="who"><i style="--c:#8fe0b0"></i><div><b>Thảo Nguyễn</b>Freelancer thiết kế</div></div></div>
           </div>
-          <div class="dots" role="tablist" aria-label="Lời chứng thực"><button aria-current="true" aria-label="Lời 1"></button><button aria-current="false" aria-label="Lời 2"></button><button aria-current="false" aria-label="Lời 3"></button></div>
+          <div class="dots" role="tablist" aria-label="Lời chứng thực"><button aria-current="true" aria-label="Lời chứng thực 1"></button><button aria-current="false" aria-label="Lời chứng thực 2"></button><button aria-current="false" aria-label="Lời chứng thực 3"></button></div>
         </div>
       </div>
       <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>ngay dưới hero hoặc cạnh nút đăng ký/mua, đúng lúc người dùng đang do dự. Số cụ thể ("2.381 đánh giá") đáng tin hơn số tròn.</p>
-      <p class="avoid"><b>Tránh khi</b>số liệu còn nhỏ hoặc logo không thật: social proof giả bị phát hiện thì mất niềm tin nhanh hơn không có.</p>
+      <p class="use"><b>Dùng khi</b>ngay dưới hero hoặc cạnh nút đăng ký, nút mua, đúng thời điểm người dùng đang cân nhắc. Số cụ thể (2.381 đánh giá) đáng tin hơn số làm tròn.</p>
+      <p class="avoid"><b>Tránh khi</b>số liệu còn nhỏ hoặc logo chưa được khách hàng cho phép sử dụng: social proof sai sự thật, khi bị phát hiện, làm mất niềm tin nhiều hơn so với không hiển thị.</p>
     </div>
     <div class="kw"><button>social proof section</button><button>star rating + review count</button><button>avatar stack</button><button>grayscale logo cloud</button><button>testimonial carousel</button><button>animated counter</button></div>
   </article>
@@ -335,20 +474,21 @@
   <!-- 4 -->
   <article class="pattern" id="pricing-table">
     <h2>Pricing table</h2>
-    <p class="vi"><b>Bảng giá.</b> Các gói đặt cạnh nhau để so sánh, gói muốn bán nhiều nhất được làm nổi (to hơn, tối màu, có nhãn "Khuyên dùng"). Công tắc tháng/năm cho thấy khoản tiết kiệm. Bấm công tắc.</p>
+    <p class="vi"><b>Bảng giá.</b> Các gói dịch vụ được đặt cạnh nhau để so sánh; gói cần bán nhiều nhất được làm nổi bật bằng kích thước lớn hơn, nền tối và nhãn “Khuyên dùng”. Công tắc tháng/năm hiển thị khoản tiết kiệm khi thanh toán theo năm. Trên màn hình hẹp, các gói nằm trên một hàng cuộn ngang. Nhấn công tắc tháng/năm, hoặc vuốt ngang để xem các gói khác.</p>
     <div class="demo">
       <div class="mini">
         <div class="tg"><span class="lbl on" data-p="m">Theo tháng</span><button class="sw" role="switch" aria-checked="false" aria-label="Thanh toán theo năm"></button><span class="lbl" data-p="y">Theo năm</span><span class="save">tiết kiệm 20%</span></div>
         <div class="plans">
-          <div class="pl"><h4>Cơ bản</h4><div class="amt"><span class="v" data-m="0" data-y="0">0</span>k<small> /tháng</small></div><div class="bill">miễn phí mãi mãi</div><ul><li>3 dự án</li><li>1 thành viên</li><li>Lưu 7 ngày</li></ul><button class="go">Bắt đầu</button></div>
+          <div class="pl"><h4>Cơ bản</h4><div class="amt"><span class="v" data-m="0" data-y="0">0</span>k<small> /tháng</small></div><div class="bill">miễn phí, không giới hạn thời gian</div><ul><li>3 dự án</li><li>1 thành viên</li><li>Lưu lịch sử 7 ngày</li></ul><button class="go">Bắt đầu</button></div>
           <div class="pl rec"><span class="badge">★ Khuyên dùng</span><h4>Pro</h4><div class="amt"><span class="v" data-m="199" data-y="159">199</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Không giới hạn dự án</li><li>10 thành viên</li><li>Lưu lịch sử 1 năm</li><li>Hỗ trợ ưu tiên</li></ul><button class="go">Dùng thử 14 ngày</button></div>
-          <div class="pl"><h4>Doanh nghiệp</h4><div class="amt"><span class="v" data-m="499" data-y="399">499</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Mọi thứ trong Pro</li><li>SSO, phân quyền</li><li>Hợp đồng riêng</li></ul><button class="go">Liên hệ</button></div>
+          <div class="pl"><h4>Doanh nghiệp</h4><div class="amt"><span class="v" data-m="499" data-y="399">499</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Mọi thứ trong Pro</li><li>SSO, phân quyền</li><li>Hợp đồng riêng</li></ul><button class="go">Liên hệ tư vấn</button></div>
         </div>
+        <p class="swipe" aria-hidden="true">Vuốt ngang để so sánh các gói</p>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>sản phẩm có 2–4 gói rõ ràng và bạn muốn dẫn người dùng tới một gói cụ thể (thường là gói giữa, theo hiệu ứng "chim mồi").</p>
-      <p class="avoid"><b>Tránh khi</b>giá phụ thuộc nhiều tuỳ chọn (dùng máy tính giá), hoặc chỉ có một gói: bảng ba cột trống trải trông như ép.</p>
+      <p class="use"><b>Dùng khi</b>sản phẩm có 2–4 gói rõ ràng và cần dẫn người dùng tới một gói cụ thể, thường là gói ở giữa (hiệu ứng chim mồi, decoy effect).</p>
+      <p class="avoid"><b>Tránh khi</b>giá phụ thuộc vào nhiều tuỳ chọn (dùng công cụ tính giá), hoặc sản phẩm chỉ có một gói: bảng ba cột khi đó trống trải và thiếu thuyết phục.</p>
     </div>
     <div class="kw"><button>3-tier pricing table</button><button>highlighted recommended plan</button><button>"Most popular" badge</button><button>monthly / annual billing toggle</button><button>animated price change</button><button>decoy pricing</button></div>
   </article>
@@ -356,25 +496,25 @@
   <!-- 5 -->
   <article class="pattern" id="feature-tabs">
     <h2>Feature tabs</h2>
-    <p class="vi"><b>Tab tính năng.</b> Thay vì xếp ba tính năng thành ba khối dài, gom chúng vào một khung: bên trái là danh sách, bên phải là ảnh minh hoạ đổi theo mục đang chọn. Bấm từng tab, hoặc dùng phím ↑ ↓ khi tab đang focus.</p>
+    <p class="vi"><b>Tab tính năng.</b> Thay vì trình bày mỗi tính năng thành một khối dài, các tính năng được gom vào một khung: danh sách tab ở một bên, ảnh minh hoạ ở bên kia thay đổi theo tab đang chọn. Trên màn hình hẹp, tab xếp thành hàng ngang phía trên ảnh. Nhấn hoặc chạm từng tab; khi tab đang có focus, dùng phím mũi tên để chuyển.</p>
     <div class="demo">
       <div class="mini">
         <div role="tablist" aria-orientation="vertical" aria-label="Tính năng">
           <span class="ind"></span>
-          <button role="tab" id="ft-t1" aria-selected="true" aria-controls="ft-p1" tabindex="0"><b>Lịch thông minh</b><span>Tự tìm khung giờ trống chung cho cả nhóm, không cần nhắn qua lại.</span></button>
-          <button role="tab" id="ft-t2" aria-selected="false" aria-controls="ft-p2" tabindex="-1"><b>Hộp thư chung</b><span>Mọi email khách hàng về một chỗ, giao cho đúng người xử lý.</span></button>
-          <button role="tab" id="ft-t3" aria-selected="false" aria-controls="ft-p3" tabindex="-1"><b>Báo cáo tuần</b><span>Biểu đồ tự cập nhật, gửi email sáng thứ Hai cho cả nhóm.</span></button>
+          <button role="tab" id="ft-t1" aria-selected="true" aria-controls="ft-p1" tabindex="0"><b>Lịch thông minh</b><span>Tự tìm khung giờ trống chung cho cả nhóm, không cần trao đổi qua lại.</span></button>
+          <button role="tab" id="ft-t2" aria-selected="false" aria-controls="ft-p2" tabindex="-1"><b>Hộp thư chung</b><span>Gom mọi email của khách hàng về một nơi và giao cho đúng người xử lý.</span></button>
+          <button role="tab" id="ft-t3" aria-selected="false" aria-controls="ft-p3" tabindex="-1"><b>Báo cáo tuần</b><span>Biểu đồ tự cập nhật, gửi email cho cả nhóm vào sáng thứ Hai.</span></button>
         </div>
         <div class="stage">
           <div role="tabpanel" id="ft-p1" aria-labelledby="ft-t1" class="on"><h5>Tuần 41 · Nhóm Sản phẩm</h5><div class="cal"><i></i><i class="ev" style="--c:#ff7a45">Họp sprint<br>9:00</i><i></i><i></i><i class="ev" style="--c:#6c8cff">Demo<br>14:00</i><i class="ev" style="--c:#2f9e5b">1:1<br>10:30</i><i></i><i></i><i class="ev" style="--c:#ff7a45">Tập trung<br>8–11</i><i></i><i></i><i></i><i class="ev" style="--c:#c06cff">Phỏng vấn<br>15:00</i><i></i><i></i></div></div>
-          <div role="tabpanel" id="ft-p2" aria-labelledby="ft-t2"><h5>Hộp thư chung · 4 chưa xử lý</h5><div class="mail"><div><i style="--c:#ffb27a"></i><b>Cửa hàng Mây</b>Đơn #2048 chưa giao<span>2 phút</span></div><div><i style="--c:#9fb6ff"></i><b>Anh Quân</b>Xin hoá đơn VAT<span>18 phút</span></div><div><i style="--c:#8fe0b0"></i><b>Chị Hà</b>Đổi size áo<span>1 giờ</span></div><div><i style="--c:#ffd86b"></i><b>Studio Gạo</b>Hợp tác tháng 11<span>3 giờ</span></div></div></div>
+          <div role="tabpanel" id="ft-p2" aria-labelledby="ft-t2"><h5>Hộp thư chung · 4 chưa xử lý</h5><div class="mail"><div><i style="--c:#ffb27a"></i><b>Cửa hàng Mây</b><small>Đơn #2048 chưa giao</small><span>2 phút</span></div><div><i style="--c:#9fb6ff"></i><b>Anh Quân</b><small>Xin hoá đơn VAT</small><span>18 phút</span></div><div><i style="--c:#8fe0b0"></i><b>Chị Hà</b><small>Đổi size áo</small><span>1 giờ</span></div><div><i style="--c:#ffd86b"></i><b>Studio Gạo</b><small>Hợp tác tháng 11</small><span>3 giờ</span></div></div></div>
           <div role="tabpanel" id="ft-p3" aria-labelledby="ft-t3"><h5>Doanh thu 8 tuần gần nhất</h5><div class="chart"><i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:48%"></i><i style="--h:62%"></i><i style="--h:70%"></i><i style="--h:66%"></i><i style="--h:84%"></i><i style="--h:96%"></i></div></div>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>có 3–5 tính năng cùng cấp, mỗi cái cần một ảnh minh hoạ; muốn giữ trang ngắn mà người dùng vẫn tự khám phá được.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung trong tab là thứ ai cũng phải đọc: thứ ẩn sau tab thường bị bỏ qua.</p>
+      <p class="use"><b>Dùng khi</b>sản phẩm có 3–5 tính năng cùng cấp, mỗi tính năng cần một ảnh minh hoạ, và trang cần ngắn gọn mà vẫn cho người dùng tự khám phá.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung trong tab là thông tin mọi người dùng bắt buộc phải đọc: nội dung ẩn sau tab thường bị bỏ qua.</p>
     </div>
     <div class="kw"><button>feature tabs</button><button>vertical tab list with preview panel</button><button>sliding active indicator</button><button>crossfade panels</button><button>accessible tabs (role=tablist, arrow keys)</button></div>
   </article>
@@ -382,12 +522,13 @@
   <!-- 6 -->
   <article class="pattern" id="command-palette">
     <h2>Command palette</h2>
-    <p class="vi"><b>Bảng lệnh.</b> Một ô tìm kiếm nổi giữa màn hình, mở bằng phím tắt, gõ vài chữ là lọc ra lệnh hoặc trang cần tới. Bấm vào khung rồi nhấn <b>⌘K / Ctrl+K</b> (hoặc bấm nút), gõ "doi" hoặc "moi", dùng ↑ ↓ và Enter. Thử lệnh "Đổi giao diện tối".</p>
+    <p class="vi"><b>Bảng lệnh.</b> Một ô tìm kiếm nổi giữa màn hình, mở bằng phím tắt hoặc bằng nút; gõ vài ký tự để lọc ra lệnh hoặc trang cần mở, không phân biệt dấu. Trên máy tính, nhấn vào khung demo rồi nhấn <b>⌘K / Ctrl+K</b>, dùng ↑ ↓ và Enter để chọn. Trên điện thoại, chạm ô tìm kiếm trong khung demo. Gõ “doi” để tìm lệnh Đổi giao diện tối.</p>
     <div class="demo" tabindex="0" aria-label="Demo command palette, nhấn Ctrl+K để mở">
       <div class="app">
         <div class="side"><b>Sổ tay</b><span class="cur">Trang chủ</span><span>Dự án</span><span>Ghi chú họp</span><span>Cài đặt</span></div>
         <div class="doc"><h3>Kế hoạch quý 4</h3><div class="ln" style="width:90%"></div><div class="ln" style="width:76%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:52%"></div>
-          <div class="kbd-hint"><span>Mở bảng lệnh:</span><kbd>⌘</kbd><kbd>K</kbd><span>hoặc</span><kbd>Ctrl</kbd><kbd>K</kbd><button class="open-btn" type="button">Mở bảng lệnh</button></div></div>
+          <div class="kbd-hint"><span>Mở bảng lệnh:</span><kbd>⌘</kbd><kbd>K</kbd><span>hoặc</span><kbd>Ctrl</kbd><kbd>K</kbd><button class="open-btn" type="button"><span class="d">Mở bảng lệnh</span><span class="m">Tìm lệnh hoặc trang…</span></button></div>
+          <p class="tap-hint">Chạm ô tìm kiếm để mở bảng lệnh, chạm ra ngoài bảng để đóng.</p></div>
       </div>
       <div class="scrim"></div>
       <div class="pal" role="dialog" aria-label="Bảng lệnh">
@@ -398,8 +539,8 @@
       <div class="toast"></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>app có nhiều trang và hành động (công cụ làm việc, dashboard, trình soạn thảo) và người dùng quay lại hằng ngày; người dùng thạo phím sẽ đi nhanh hơn nhiều so với menu.</p>
-      <p class="avoid"><b>Tránh khi</b>trang marketing hoặc người dùng mới hoàn toàn: không ai biết để nhấn ⌘K, nên nó không thay được menu nhìn thấy được.</p>
+      <p class="use"><b>Dùng khi</b>ứng dụng có nhiều trang và hành động (công cụ làm việc, dashboard, trình soạn thảo) mà người dùng mở hằng ngày; người dùng quen bàn phím thao tác nhanh hơn nhiều so với dùng menu.</p>
+      <p class="avoid"><b>Tránh khi</b>trang marketing hoặc sản phẩm dành cho người dùng mới: phím tắt ⌘K không tự hiển thị, nên bảng lệnh không thay thế được menu nhìn thấy được. Trên mobile luôn cần một nút mở bảng lệnh.</p>
     </div>
     <div class="kw"><button>command palette</button><button>⌘K / Ctrl+K shortcut</button><button>fuzzy search, diacritic-insensitive</button><button>grouped results with keyboard navigation</button><button>cmdk-style modal</button></div>
   </article>
@@ -407,7 +548,7 @@
   <!-- 7 -->
   <article class="pattern" id="empty-state">
     <h2>Empty state</h2>
-    <p class="vi"><b>Trạng thái trống.</b> Khi chưa có dữ liệu, thay vì một màn hình trắng, ta cho minh hoạ nhỏ, một câu giải thích và một nút làm bước đầu tiên. Bấm "Tạo việc đầu tiên" hoặc "Dùng mẫu", rồi xoá hết để quay lại trạng thái trống.</p>
+    <p class="vi"><b>Trạng thái trống.</b> Khi chưa có dữ liệu, giao diện hiển thị một hình minh hoạ nhỏ, một câu giải thích và một hành động chính để bắt đầu, thay vì để vùng nội dung trống. Nhấn “Tạo việc đầu tiên” hoặc “Dùng mẫu”, sau đó nhấn “Xoá hết” để quay lại trạng thái trống.</p>
     <div class="demo">
       <div class="mini">
         <div class="panel">
@@ -417,7 +558,7 @@
             <div class="empty">
               <div class="ill"><i>+</i></div>
               <h4>Chưa có việc nào</h4>
-              <p>Ghi lại việc đầu tiên để bắt đầu. Hoặc dùng mẫu "Tuần làm việc" có sẵn 3 việc.</p>
+              <p>Thêm việc đầu tiên để bắt đầu, hoặc dùng mẫu Tuần làm việc gồm 3 việc có sẵn.</p>
               <div class="acts"><button class="pbtn add-one">Tạo việc đầu tiên</button><button class="sbtn add-tpl">Dùng mẫu</button></div>
             </div>
           </div>
@@ -426,8 +567,8 @@
       <div class="demo-tools"><button class="clear-all">Xoá hết</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>lần đầu dùng app, kết quả tìm kiếm rỗng, giỏ hàng trống, hộp thư đã dọn sạch. Đây là chỗ dạy người dùng bước tiếp theo.</p>
-      <p class="avoid"><b>Tránh khi</b>trống chỉ vì đang tải: lúc đó dùng Skeleton, nếu không người dùng tưởng dữ liệu đã mất.</p>
+      <p class="use"><b>Dùng khi</b>lần đầu dùng ứng dụng, tìm kiếm không có kết quả, giỏ hàng trống, hộp thư đã xử lý hết. Đây là vị trí hướng dẫn người dùng bước tiếp theo.</p>
+      <p class="avoid"><b>Tránh khi</b>vùng nội dung trống chỉ vì dữ liệu đang tải: khi đó dùng skeleton, nếu không người dùng sẽ hiểu nhầm là dữ liệu đã mất.</p>
     </div>
     <div class="kw"><button>empty state</button><button>friendly illustration + one-line explanation</button><button>primary action to create first item</button><button>starter template option</button><button>zero-data onboarding</button></div>
   </article>
@@ -435,22 +576,22 @@
   <!-- 8 -->
   <article class="pattern" id="skeleton-loading">
     <h2>Skeleton loading</h2>
-    <p class="vi"><b>Khung xương khi tải.</b> Trong lúc chờ dữ liệu, vẽ trước hình dạng xám của nội dung sắp tới với một vệt sáng lướt qua (shimmer). Người dùng thấy bố cục ngay, cảm giác chờ ngắn hơn spinner. Bấm "Tải lại".</p>
+    <p class="vi"><b>Khung chờ dạng skeleton.</b> Trong lúc chờ dữ liệu, giao diện vẽ trước hình dạng xám của nội dung sắp hiển thị, kèm một vệt sáng chạy ngang (shimmer). Người dùng thấy bố cục ngay, nên thời gian chờ có cảm giác ngắn hơn so với spinner. Nhấn “Tải lại” để xem lại quá trình tải.</p>
     <div class="demo">
       <div class="mini">
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:55%"></span><span class="sk ln" style="width:30%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:95%"></span><span class="sk ln" style="width:80%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#ffb27a"></span><div><div class="name">Linh Đặng</div><div class="time">12 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#ffd6a5,#ff7a45)"></span><div class="txt">Hoàng hôn ở Hội An hôm nay đẹp lạ. Ai đi phố cổ cuối tuần không?</div><div class="meta"><span>♥ 128</span><span>💬 14</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#ffb27a"></span><div><div class="name">Linh Đặng</div><div class="time">12 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#ffd6a5,#ff7a45)"></span><div class="txt">Hoàng hôn ở Hội An chiều nay, chụp từ cầu An Hội.</div><div class="meta"><span>♥ 128</span><span>💬 14</span></div></div></div>
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:50%"></span><span class="sk ln" style="width:28%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:90%"></span><span class="sk ln" style="width:70%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#9fb6ff"></span><div><div class="name">Quang Võ</div><div class="time">40 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#c9d6ff,#4c6ef5)"></span><div class="txt">Xong bản thiết kế app đặt lịch spa. Góp ý giúp mình phần màu nhé.</div><div class="meta"><span>♥ 64</span><span>💬 9</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#9fb6ff"></span><div><div class="name">Quang Võ</div><div class="time">40 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#c9d6ff,#4c6ef5)"></span><div class="txt">Hoàn thành bản thiết kế ứng dụng đặt lịch spa. Rất mong nhận góp ý về phần màu sắc.</div><div class="meta"><span>♥ 64</span><span>💬 9</span></div></div></div>
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:60%"></span><span class="sk ln" style="width:32%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:92%"></span><span class="sk ln" style="width:64%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#8fe0b0"></span><div><div class="name">Mai Hồ</div><div class="time">2 giờ trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#d3f9d8,#2f9e5b)"></span><div class="txt">Công thức bánh chuối nướng không đường, mềm và thơm hơn mình nghĩ.</div><div class="meta"><span>♥ 302</span><span>💬 41</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#8fe0b0"></span><div><div class="name">Mai Hồ</div><div class="time">2 giờ trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#d3f9d8,#2f9e5b)"></span><div class="txt">Công thức bánh chuối nướng không đường, mềm và thơm hơn mong đợi.</div><div class="meta"><span>♥ 302</span><span>💬 41</span></div></div></div>
       </div>
       <span class="status">đang tải…</span>
       <div class="demo-tools"><button class="reload">↻ Tải lại</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tải danh sách, feed, thẻ sản phẩm, bảng: những nội dung có hình dạng biết trước và thời gian chờ từ 0,3 đến vài giây.</p>
-      <p class="avoid"><b>Tránh khi</b>thao tác chạy nền lâu hoặc không biết trước hình dạng kết quả: dùng thanh tiến trình có thông báo rõ ràng.</p>
+      <p class="use"><b>Dùng khi</b>tải danh sách, feed, thẻ sản phẩm, bảng: nội dung có hình dạng biết trước và thời gian chờ từ 0,3 giây đến vài giây.</p>
+      <p class="avoid"><b>Tránh khi</b>tác vụ chạy nền lâu hoặc kết quả không có hình dạng biết trước: dùng thanh tiến trình kèm thông báo trạng thái.</p>
     </div>
     <div class="kw"><button>skeleton loading</button><button>shimmer placeholder</button><button>content-shaped placeholders</button><button>crossfade skeleton → content</button><button>perceived performance</button></div>
   </article>
@@ -528,7 +669,7 @@
       $$('.pl', root).forEach(pl => {
         const v = $('.v', pl), bill = $('.bill', pl);
         const from = +v.textContent, to = +v.dataset[yearly ? 'y' : 'm'];
-        if (+v.dataset.m > 0) bill.textContent = yearly ? 'trả ' + (to * 12 * 1000).toLocaleString('vi-VN') + 'đ mỗi năm' : 'trả theo tháng, huỷ lúc nào cũng được';
+        if (+v.dataset.m > 0) bill.textContent = yearly ? 'thanh toán ' + (to * 12 * 1000).toLocaleString('vi-VN') + 'đ mỗi năm' : 'thanh toán hằng tháng, huỷ bất cứ lúc nào';
         if (reduce || from === to) { v.textContent = to; return; }
         const t0 = performance.now(), d = 450;
         const step = t => { const p = Math.min(1, (t - t0) / d); v.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
@@ -538,6 +679,10 @@
     sw.addEventListener('click', () => set(sw.getAttribute('aria-checked') !== 'true'));
     lbls.forEach(l => l.addEventListener('click', () => set(l.dataset.p === 'y')));
     set(false);
+    // mobile: các gói nằm trên một hàng cuộn ngang, mở đầu ở gói được đề xuất
+    const plans = $('.plans', root), rec = $('.rec', root);
+    const center = () => { if (plans.scrollWidth > plans.clientWidth) plans.scrollLeft = rec.offsetLeft - (plans.clientWidth - rec.offsetWidth) / 2; };
+    document.fonts.ready.then(center);
   }
 
   // 5. Feature tabs
@@ -559,6 +704,8 @@
         else if (d) { e.preventDefault(); sel(tabs[(k + d + tabs.length) % tabs.length], true); }
       });
     });
+    const mq = matchMedia('(max-width:760px)'), orient = () => $('[role=tablist]', root).setAttribute('aria-orientation', mq.matches ? 'horizontal' : 'vertical');
+    mq.addEventListener('change', () => { orient(); place(tabs.find(t => t.getAttribute('aria-selected') === 'true')); }); orient();
     document.fonts.ready.then(() => sel(tabs[0]));
   }
 
@@ -631,7 +778,7 @@
     const sync = () => { const n = ul.children.length; empty.classList.toggle('gone', n > 0); cnt.textContent = n + ' việc'; };
     const add = t => {
       const li = document.createElement('li');
-      li.innerHTML = '<input type="checkbox" aria-label="Xong"><span></span><button class="del" aria-label="Xoá">×</button>';
+      li.innerHTML = '<label><input type="checkbox"><span></span></label><button class="del" aria-label="Xoá việc">×</button>';
       li.querySelector('span').textContent = t;
       li.querySelector('input').addEventListener('change', e => li.classList.toggle('done', e.target.checked));
       li.querySelector('.del').addEventListener('click', () => { li.remove(); sync(); });

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Onboarding — Từ điển pattern thiết kế web</title>
+<meta name="description" content="Bốn pattern onboarding kèm demo tương tác: coachmark và hotspot, progressive disclosure, onboarding checklist và product tour.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -29,7 +30,7 @@
 #coachmarks-hotspots .demo .share{height:36px;padding:0 16px;border:0;border-radius:9px;background:#3b5bdb;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
 #coachmarks-hotspots .demo .anc{position:relative;display:inline-flex}
 #coachmarks-hotspots .demo .outline{padding:14px 12px;border-right:1px solid #eee;background:#fafafb;font-size:13px}
-#coachmarks-hotspots .demo .outline h4{display:inline-flex;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:4px 6px}
+#coachmarks-hotspots .demo .outline h4{display:inline-flex;font:500 10.5px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:4px 6px}
 #coachmarks-hotspots .demo .outline li{padding:6px 8px;border-radius:7px;color:#555}
 #coachmarks-hotspots .demo .outline li:first-child{background:#eef1ff;color:#2a45c4;font-weight:600}
 #coachmarks-hotspots .demo .outline li.sub{padding-left:20px;font-size:12.5px}
@@ -49,7 +50,7 @@
 #coachmarks-hotspots .demo .cm[data-side=above]::before{bottom:-6px}
 #coachmarks-hotspots .demo .cm:popover-open{animation:cm-in .2s ease-out}
 @keyframes cm-in{from{opacity:0;transform:translateY(4px)}}
-#coachmarks-hotspots .demo .cm em{display:block;font:500 10px/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#ff9a6b;margin-bottom:8px}
+#coachmarks-hotspots .demo .cm em{display:block;font:500 10px/1.3 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#ff9a6b;margin-bottom:8px}
 #coachmarks-hotspots .demo .cm h4{font-size:15px;color:#fff;line-height:1.3;margin-bottom:4px}
 #coachmarks-hotspots .demo .cm p{color:#bdbdc4}
 #coachmarks-hotspots .demo .cm .ft{display:flex;justify-content:flex-end;margin-top:12px}
@@ -66,7 +67,16 @@
   #coachmarks-hotspots .demo .tb>.ib{display:none}
   #coachmarks-hotspots .demo .share{padding:0 12px}
   #coachmarks-hotspots .demo .doc{padding:18px}
-  #coachmarks-hotspots .demo .stat{left:18px;bottom:18px}
+  #coachmarks-hotspots .demo .stat{left:18px;bottom:18px;font-size:12px;padding:10px 12px}
+  #coachmarks-hotspots .demo .doc h3{font-size:22px}
+  #coachmarks-hotspots .demo .doc p{font-size:14px}
+  /* chấm vẫn nhỏ, nhưng vùng chạm 32px */
+  #coachmarks-hotspots .demo .hs,#coachmarks-hotspots .demo .hs.seen{width:32px;height:32px;top:-14px;right:-14px;border:0;background:radial-gradient(circle,#ff5a1f 0 6px,#fff 6.5px 9px,transparent 9.5px);box-shadow:none}
+  #coachmarks-hotspots .demo .hs.seen{background:radial-gradient(circle,#b9bccb 0 5px,#fff 5.5px 7px,transparent 7.5px)}
+  #coachmarks-hotspots .demo .hs::after{inset:7px}
+  #coachmarks-hotspots .demo .cm{width:min(268px,calc(100vw - 48px));font-size:13.5px}
+  #coachmarks-hotspots .demo .cm em{font-size:12px}
+  #coachmarks-hotspots .demo .cm button{height:36px}
   #coachmarks-hotspots .demo>.replay{bottom:16px;right:16px}
 }
 
@@ -105,7 +115,7 @@
 #progressive-disclosure .demo .opt>:is(input,select){margin-left:24px;height:32px}
 #progressive-disclosure .demo .foot{display:flex;justify-content:space-between;gap:8px;margin-top:16px}
 #progressive-disclosure .demo .meter{width:250px;font-size:13px}
-#progressive-disclosure .demo .meter h4{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+#progressive-disclosure .demo .meter h4{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
 #progressive-disclosure .demo .meter .big{font-size:30px;font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:14px;font-variant-numeric:tabular-nums}
 #progressive-disclosure .demo .meter .big small{font-size:14px;color:var(--mute);font-weight:600}
 #progressive-disclosure .demo .meter li{display:grid;grid-template-columns:26px 1fr;gap:2px 10px;padding:9px 0;border-top:1px solid #dfe2ea;color:#999;transition:color .25s}
@@ -114,7 +124,26 @@
 #progressive-disclosure .demo .meter li small{font-size:12px}
 #progressive-disclosure .demo .meter li.on{color:#161616}
 #progressive-disclosure .demo .meter li.on b{background:#3b5bdb}
-@media (max-width:760px){#progressive-disclosure .demo .meter,#progressive-disclosure .demo summary small{display:none}#progressive-disclosure .demo .card{width:100%;padding:14px}}
+/* mobile: bộ đếm thu thành một dòng phía trên thẻ */
+@media (max-width:760px){
+  #progressive-disclosure .demo{--demo-h-m:520px}
+  #progressive-disclosure .demo .lay{flex-direction:column-reverse;justify-content:flex-start;align-items:stretch;gap:10px;padding:12px}
+  #progressive-disclosure .demo .meter{width:auto;display:flex;align-items:baseline;gap:8px;padding:0 4px}
+  #progressive-disclosure .demo .meter h4{font-size:12px;margin:0}
+  #progressive-disclosure .demo .meter .big{font-size:18px;margin:0}
+  #progressive-disclosure .demo .meter .big small{font-size:13px}
+  #progressive-disclosure .demo .meter ul{display:none}
+  #progressive-disclosure .demo summary small{display:none}
+  #progressive-disclosure .demo .card{width:100%;padding:14px;flex:1;min-height:0}
+  #progressive-disclosure .demo :is(input[type=email],input[type=date],input[type=password],select),#progressive-disclosure .demo .btn{height:40px;font-size:16px}
+  #progressive-disclosure .demo .btn{font-size:14px}
+  #progressive-disclosure .demo .who i{font-size:12px}
+  #progressive-disclosure .demo .reveal{flex-wrap:wrap}
+  #progressive-disclosure .demo summary{min-height:40px}
+  #progressive-disclosure .demo .opt label{min-height:40px}
+  #progressive-disclosure .demo .opt>:is(input,select){margin-left:24px;height:40px}
+  #progressive-disclosure .demo .foot .btn{flex:1}
+}
 
 /* ===== 3. Onboarding checklist ===== */
 #onboarding-checklist .demo{background:#f3f4f7;color:#161616}
@@ -124,7 +153,7 @@
 #onboarding-checklist .demo .dash>p{font-size:13px;color:#777;margin-top:4px}
 #onboarding-checklist .demo .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
 #onboarding-checklist .demo .tile{min-height:92px;border-radius:14px;border:1.5px dashed #d3d6df;padding:12px 14px;font-size:12.5px;color:#999;display:flex;flex-direction:column;gap:6px;transition:background .3s,border-color .3s}
-#onboarding-checklist .demo .tile h4{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#9a9aa6}
+#onboarding-checklist .demo .tile h4{font:500 10.5px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#9a9aa6}
 #onboarding-checklist .demo .tile.ok{border-style:solid;border-color:#e3e5ec;background:#fff;color:#161616}
 #onboarding-checklist .demo .tile.ok{animation:ck-pop .45s cubic-bezier(.3,1.5,.5,1)}
 @keyframes ck-pop{from{transform:scale(.96);background:#eef6ff}}
@@ -171,11 +200,26 @@
 #onboarding-checklist .demo .yay button{margin-top:6px;height:34px;padding:0 14px;border-radius:9px;border:1px solid #d9dbe3;background:#fff;font-weight:600;cursor:pointer}
 #onboarding-checklist .demo .reopen{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:12.5px;cursor:pointer}
 #onboarding-checklist .demo>.replay{top:auto;bottom:14px;right:auto;left:20px}
+/* mobile: app thu thành lưới 2×2 phía trên, danh sách bên dưới */
 @media (max-width:760px){
-  #onboarding-checklist .demo .dash{display:none}
-  #onboarding-checklist .demo .lay{padding:52px 10px 10px}
-  #onboarding-checklist .demo .ck{width:100%}
-  #onboarding-checklist .demo>.replay{left:auto;right:12px;top:10px;bottom:auto}
+  #onboarding-checklist .demo{--demo-h-m:680px}
+  #onboarding-checklist .demo .lay{flex-direction:column;gap:12px;padding:12px}
+  #onboarding-checklist .demo .dash{flex:none;padding:2px 2px 0}
+  #onboarding-checklist .demo .dash h3{font-size:18px;padding-right:110px;line-height:36px}
+  #onboarding-checklist .demo .dash>p{display:none}
+  #onboarding-checklist .demo .tiles{gap:8px;margin-top:8px}
+  #onboarding-checklist .demo .tile{min-height:64px;padding:8px 10px;gap:3px;font-size:12px}
+  #onboarding-checklist .demo .tile h4{font-size:12px}
+  #onboarding-checklist .demo .tile b{font-size:13px}
+  #onboarding-checklist .demo .avs i{width:24px;height:24px;font-size:12px}
+  #onboarding-checklist .demo .ck{width:100%;flex:1;min-height:0;align-self:stretch}
+  #onboarding-checklist .demo .reopen{min-height:40px}
+  #onboarding-checklist .demo .min{width:40px;height:40px}
+  #onboarding-checklist .demo summary{min-height:44px}
+  #onboarding-checklist .demo summary small{font-size:12px}
+  #onboarding-checklist .demo .bd{font-size:13px}
+  #onboarding-checklist .demo .bd button,#onboarding-checklist .demo .yay button{height:40px}
+  #onboarding-checklist .demo>.replay{left:auto;right:12px;top:12px;bottom:auto}
 }
 
 /* ===== 4. Product tour ===== */
@@ -196,7 +240,7 @@
 #product-tour .demo .side li{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;color:#555;font-weight:600}
 #product-tour .demo .side li.on{background:#eef1ff;color:#2a45c4}
 #product-tour .demo .projects{margin-top:12px;padding:6px 0;border-radius:10px}
-#product-tour .demo .projects h4{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:6px 8px}
+#product-tour .demo .projects h4{font:500 10.5px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:6px 8px}
 #product-tour .demo .projects li{font-weight:400}
 #product-tour .demo .projects i{width:9px;height:9px;border-radius:3px;background:var(--c)}
 #product-tour .demo main{padding:18px 24px;overflow:hidden}
@@ -236,9 +280,14 @@
 #product-tour .demo .toast:not(.show){opacity:0;transform:translateY(8px);visibility:hidden;transition:opacity .3s,transform .3s,visibility 0s .3s}
 @media (max-width:760px){
   #product-tour .demo .app,#product-tour .demo .tour{inset:8px}
-  #product-tour .demo .app{grid-template-columns:0 1fr}
-  #product-tour .demo .side{padding:0;border:0;overflow:hidden}
-  #product-tour .demo .search{width:auto;flex:1;margin-left:0}
+  #product-tour .demo .app{grid-template-columns:minmax(0,1fr)}
+  #product-tour .demo .side{display:none}
+  #product-tour .demo .tasks li span{font-size:12px}
+  #product-tour .demo .tasks li{font-size:14px;gap:8px}
+  #product-tour .demo .ib{width:40px;height:40px}
+  #product-tour .demo .card .stp{font-size:12px}
+  #product-tour .demo .card button{height:36px}
+  #product-tour .demo .search{width:auto;flex:1;min-width:0;margin-left:0}
   #product-tour .demo .search kbd,#product-tour .demo .me{display:none}
   #product-tour .demo .tb .sp{display:none}
   #product-tour .demo main{padding:14px}
@@ -266,13 +315,13 @@
 <main class="wrap">
 <header class="head">
   <h1>Onboarding</h1>
-  <p>Những cách dẫn người mới từ lần mở đầu tiên tới lúc <b>thấy được giá trị</b>, mà không bắt họ đọc hướng dẫn. Bốn mức can thiệp từ nhẹ tới mạnh: chấm gợi ý, giấu bớt phần nâng cao, danh sách việc cần làm, và tour dẫn từng bước.</p>
+  <p>Các pattern dẫn người dùng mới từ lần mở đầu tiên tới thời điểm <b>nhận ra giá trị của sản phẩm</b>, không cần đọc tài liệu hướng dẫn. Bốn mức can thiệp, từ nhẹ tới mạnh: chấm gợi ý, ẩn bớt tuỳ chọn nâng cao, danh sách việc cần làm và tour hướng dẫn từng bước.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="coachmarks-hotspots">
   <h2>Coachmarks / Hotspots</h2>
-  <p class="vi"><b>Chấm gợi ý nhấp nháy.</b> Những chấm nhỏ đặt cạnh tính năng mới hoặc dễ bị bỏ qua. Người dùng tự chọn bấm vào lúc nào thì một bong bóng mẹo hiện ra; xem xong, chấm thôi nhấp nháy nhưng vẫn ở đó để xem lại. Bấm từng chấm cam (hoặc Tab tới rồi Space), đóng bằng “Đã hiểu”, Esc hoặc bấm ra ngoài.</p>
+  <p class="vi"><b>Chấm gợi ý và bong bóng mẹo.</b> Các chấm nhỏ nhấp nháy (hotspot) đặt cạnh tính năng mới hoặc dễ bị bỏ qua. Người dùng tự chọn thời điểm nhấn vào, khi đó một bong bóng mẹo (coachmark) hiện ra; sau khi xem, chấm ngừng nhấp nháy nhưng vẫn còn để xem lại. Nhấn hoặc chạm từng chấm cam (hoặc Tab tới chấm rồi nhấn Space), đóng bằng nút “Đã hiểu”, phím Esc hoặc nhấn ra ngoài.</p>
   <div class="demo">
     <div class="app">
       <div class="tb">
@@ -295,26 +344,26 @@
     </div>
     <div class="cm" id="cm-share" popover role="dialog" aria-labelledby="cm-share-t">
       <em>Mới</em><h4 id="cm-share-t">Chia sẻ có thời hạn</h4>
-      <p>Giờ bạn có thể đặt ngày hết hạn cho link chia sẻ. Hợp với tài liệu gửi đối tác bên ngoài.</p>
+      <p>Đặt ngày hết hạn cho liên kết chia sẻ, phù hợp với tài liệu gửi đối tác bên ngoài.</p>
       <div class="ft"><button type="button" popovertarget="cm-share" popovertargetaction="hide">Đã hiểu</button></div>
     </div>
     <div class="cm" id="cm-hist" popover role="dialog" aria-labelledby="cm-hist-t">
-      <em>Mẹo</em><h4 id="cm-hist-t">Quay về bản cũ bất cứ lúc nào</h4>
-      <p>Mọi thay đổi được lưu thành phiên bản. Mở Lịch sử để so sánh hoặc khôi phục.</p>
+      <em>Mẹo</em><h4 id="cm-hist-t">Khôi phục phiên bản cũ</h4>
+      <p>Mọi thay đổi được lưu thành phiên bản. Mở Lịch sử phiên bản để so sánh hoặc khôi phục.</p>
       <div class="ft"><button type="button" popovertarget="cm-hist" popovertargetaction="hide">Đã hiểu</button></div>
     </div>
     <div class="cm" id="cm-toc" popover role="dialog" aria-labelledby="cm-toc-t">
       <em>Mẹo</em><h4 id="cm-toc-t">Mục lục tự cập nhật</h4>
-      <p>Mỗi tiêu đề bạn viết sẽ tự xuất hiện ở đây. Bấm để nhảy tới đúng đoạn.</p>
+      <p>Mỗi tiêu đề trong tài liệu tự động xuất hiện ở đây. Nhấn vào một mục để chuyển tới đoạn tương ứng.</p>
       <div class="ft"><button type="button" popovertarget="cm-toc" popovertargetaction="hide">Đã hiểu</button></div>
     </div>
     <p class="stat" aria-live="polite">Đã xem 0/3 mẹo</p>
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giới thiệu tính năng mới cho người dùng cũ, hoặc chỉ ra 2–4 chỗ dễ bỏ sót trong một màn hình phức tạp. Người dùng tự chọn lúc xem nên không cắt ngang việc họ đang làm.</p>
-    <p class="avoid"><b>Tránh khi</b>rải chấm khắp màn hình (mỗi màn tối đa vài cái), hoặc nội dung là bước bắt buộc phải làm theo thứ tự: lúc đó dùng Product tour hay Onboarding checklist. Đừng để chấm nhấp nháy mãi sau khi người dùng đã xem.</p>
-    <p class="tip">Mẹo prompt: phân biệt “hotspot” (chấm, người dùng tự bấm) với “tooltip tour” (tự bật lần lượt). Yêu cầu “dismiss on Esc and outside click, remember seen state”.</p>
+    <p class="use"><b>Dùng khi</b>giới thiệu tính năng mới cho người dùng hiện tại, hoặc chỉ ra 2–4 vị trí dễ bị bỏ sót trong một màn hình phức tạp. Người dùng tự chọn thời điểm xem nên công việc không bị gián đoạn.</p>
+    <p class="avoid"><b>Tránh khi</b>đặt quá nhiều chấm trên một màn hình (tối đa vài chấm), hoặc nội dung là các bước bắt buộc theo thứ tự: khi đó dùng product tour hoặc onboarding checklist. Chấm cần ngừng nhấp nháy sau khi người dùng đã xem.</p>
+    <p class="tip">Mẹo prompt: phân biệt hotspot (chấm, người dùng tự nhấn) với tooltip tour (các bước tự hiện lần lượt). Yêu cầu “dismiss on Esc and outside click, remember seen state”.</p>
   </div>
   <div class="kw"><button>hotspot beacon</button><button>pulsing dot on new feature</button><button>coachmark tooltip with arrow</button><button>popover API (light dismiss, Esc)</button><button>"Got it" dismiss, remember seen state</button><button>non-blocking feature discovery</button></div>
 </article>
@@ -322,7 +371,7 @@
 <!-- 2 -->
 <article class="pattern" id="progressive-disclosure">
   <h2>Progressive disclosure</h2>
-  <p class="vi"><b>Hé lộ dần.</b> Chỉ cho thấy những lựa chọn mà đa số người cần; phần còn lại chỉ hiện khi người dùng chọn một tuỳ chọn liên quan, hoặc tự mở mục “nâng cao”. Màn hình bớt đáng sợ với người mới mà người thạo vẫn đủ công cụ. Đổi “Quyền truy cập chung”, mở “Tuỳ chọn nâng cao”, bật hạn chót hay mật khẩu, rồi xem bộ đếm bên phải.</p>
+  <p class="vi"><b>Hiển thị dần theo nhu cầu.</b> Giao diện chỉ hiển thị các tuỳ chọn mà đa số người dùng cần; phần còn lại xuất hiện khi người dùng chọn một tuỳ chọn liên quan hoặc mở mục nâng cao. Người dùng mới không bị quá tải, người dùng thành thạo vẫn có đủ công cụ. Đổi “Quyền truy cập chung”, mở “Tuỳ chọn nâng cao”, bật hạn chót hoặc mật khẩu, rồi theo dõi bộ đếm điều khiển.</p>
   <div class="demo">
     <div class="lay">
       <form class="card" onsubmit="return false" aria-labelledby="pd-t">
@@ -352,7 +401,7 @@
         <h4>Đang hiện</h4>
         <p class="big"><span class="n">5</span> <small>/ <span class="m">11</span> điều khiển</small></p>
         <ul>
-          <li data-l="1" class="on"><b>1</b><span>Luôn hiện</span><small>việc ai cũng làm: mời, chọn quyền</small></li>
+          <li data-l="1" class="on"><b>1</b><span>Luôn hiện</span><small>thao tác phổ biến: mời, chọn quyền</small></li>
           <li data-l="2"><b>2</b><span>Hiện theo lựa chọn</span><small>chỉ khi chọn “Ai có liên kết”</small></li>
           <li data-l="3"><b>3</b><span>Nâng cao</span><small>giấu sau một mục mở/đóng</small></li>
         </ul>
@@ -360,9 +409,9 @@
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>một màn hình phục vụ cả người mới lẫn người thạo: form cài đặt, hộp thoại chia sẻ, bộ lọc tìm kiếm, trình chỉnh sửa. 80% người dùng chỉ cần 20% tuỳ chọn.</p>
-    <p class="avoid"><b>Tránh khi</b>tuỳ chọn bị giấu là thứ đa số cần, hoặc có tác động lớn (quyền riêng tư, chi phí): giấu đi là lừa người dùng. Đừng lồng quá hai lớp “nâng cao”.</p>
-    <p class="tip">Mẹo prompt: chỉ rõ lớp nào luôn hiện, lớp nào hiện theo điều kiện. Với phần nâng cao, xin dùng <code>&lt;details&gt;</code> native để có sẵn bàn phím và trạng thái mở/đóng cho trình đọc màn hình.</p>
+    <p class="use"><b>Dùng khi</b>một màn hình phục vụ cả người dùng mới lẫn người dùng thành thạo: form cài đặt, hộp thoại chia sẻ, bộ lọc tìm kiếm, trình chỉnh sửa. Khoảng 80% người dùng chỉ cần 20% số tuỳ chọn.</p>
+    <p class="avoid"><b>Tránh khi</b>tuỳ chọn bị ẩn là thứ đa số người dùng cần, hoặc có tác động lớn (quyền riêng tư, chi phí): ẩn các tuỳ chọn đó khiến người dùng hiểu sai. Không lồng quá hai lớp nâng cao.</p>
+    <p class="tip">Mẹo prompt: nêu rõ lớp nào luôn hiển thị, lớp nào hiển thị theo điều kiện. Với phần nâng cao, yêu cầu dùng <code>&lt;details&gt;</code> native để có sẵn hỗ trợ bàn phím và trạng thái mở/đóng cho trình đọc màn hình.</p>
   </div>
   <div class="kw"><button>progressive disclosure</button><button>"Advanced options" collapsible section</button><button>conditional fields revealed on selection</button><button>native details / summary</button><button>sensible defaults, hide rarely used settings</button><button>animate height with interpolate-size</button></div>
 </article>
@@ -370,7 +419,7 @@
 <!-- 3 -->
 <article class="pattern" id="onboarding-checklist">
   <h2>Onboarding checklist</h2>
-  <p class="vi"><b>Danh sách việc để bắt đầu.</b> Một khung nhỏ liệt kê 3–6 việc đưa người mới tới “khoảnh khắc thấy giá trị”, kèm thanh tiến độ. Việc đầu tiên đã được đánh dấu xong sẵn để tạo đà. Mỗi việc làm xong thì app bên trái đổi theo và việc kế tiếp tự mở ra. Bấm nút xanh trong từng việc, thử “Bỏ qua” ở việc tuỳ chọn, thu nhỏ khung bằng nút mũi tên.</p>
+  <p class="vi"><b>Danh sách việc cần làm để bắt đầu.</b> Một khung nhỏ liệt kê 3–6 việc đưa người dùng mới tới thời điểm nhận ra giá trị sản phẩm, kèm thanh tiến độ. Việc đầu tiên được đánh dấu hoàn thành sẵn để tạo đà. Mỗi việc hoàn thành sẽ cập nhật giao diện ứng dụng và tự mở việc kế tiếp. Nhấn nút xanh trong từng việc, thử “Bỏ qua” ở việc tuỳ chọn, và thu nhỏ khung bằng nút mũi tên.</p>
   <div class="demo">
     <div class="lay">
       <div class="dash">
@@ -393,11 +442,11 @@
         </div>
         <div class="ckb" id="ob-body">
           <details name="ob" class="done" data-k="account"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo tài khoản</span><small>Xong</small></summary>
-            <div class="bd">Đã xong khi bạn đăng ký. Một việc đã xong rồi đấy!</div></details>
+            <div class="bd">Hoàn tất khi bạn đăng ký tài khoản.</div></details>
           <details name="ob" open data-k="project"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo dự án đầu tiên</span><small>1 phút</small></summary>
             <div class="bd">Dự án gom việc, tệp và người liên quan vào một chỗ.<div class="acts"><button class="pri" type="button" data-do>Tạo dự án</button></div></div></details>
           <details name="ob" data-k="team"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Mời một đồng đội</span><small>1 phút</small></summary>
-            <div class="bd">Làm cùng ai đó là lúc ứng dụng có ích nhất. Một người là đủ để bắt đầu.<div class="acts"><button class="pri" type="button" data-do>Gửi lời mời</button></div></div></details>
+            <div class="bd">Ứng dụng phát huy tác dụng rõ nhất khi làm việc nhóm. Chỉ cần mời một người để bắt đầu.<div class="acts"><button class="pri" type="button" data-do>Gửi lời mời</button></div></div></details>
           <details name="ob" data-k="cal"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Kết nối lịch</span><small>30 giây</small></summary>
             <div class="bd">Hạn chót sẽ hiện ngay trong lịch bạn đang dùng.<div class="acts"><button class="pri" type="button" data-do>Kết nối</button></div></div></details>
           <details name="ob" data-k="mobile"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Cài ứng dụng di động</span><small>tuỳ chọn</small></summary>
@@ -406,7 +455,7 @@
         <div class="yay" hidden>
           <span class="big"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
           <b>Mọi thứ đã sẵn sàng</b>
-          <p>Bạn đã xong phần bắt đầu. Danh sách này có thể mở lại trong mục Trợ giúp.</p>
+          <p>Bạn đã hoàn tất các bước bắt đầu. Có thể mở lại danh sách này trong mục Trợ giúp.</p>
           <button type="button" class="hide">Ẩn danh sách</button>
         </div>
       </section>
@@ -414,8 +463,8 @@
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>sản phẩm cần người dùng tự làm vài việc cài đặt mới thấy giá trị (tạo dự án, mời người, kết nối dữ liệu). Hiệu ứng “đã xong một phần” (Zeigarnik, endowed progress) kéo họ làm nốt.</p>
-    <p class="avoid"><b>Tránh khi</b>sản phẩm dùng được ngay không cần cài đặt, hoặc danh sách dài quá 6–7 việc. Đừng bắt buộc theo thứ tự cứng, đừng để khung chiếm chỗ mãi: cho thu nhỏ, bỏ qua và ẩn hẳn khi xong.</p>
+    <p class="use"><b>Dùng khi</b>sản phẩm cần người dùng tự hoàn tất vài bước cài đặt mới thấy giá trị (tạo dự án, mời thành viên, kết nối dữ liệu). Tiến độ có sẵn (endowed progress, hiệu ứng Zeigarnik) thúc đẩy người dùng hoàn tất các bước còn lại.</p>
+    <p class="avoid"><b>Tránh khi</b>sản phẩm dùng được ngay mà không cần cài đặt, hoặc danh sách dài hơn 6–7 việc. Không ép thứ tự cứng và không để khung chiếm chỗ lâu dài: cho phép thu nhỏ, bỏ qua và ẩn hẳn khi hoàn tất.</p>
   </div>
   <div class="kw"><button>onboarding checklist</button><button>getting started widget with progress bar</button><button>endowed progress (first step pre-completed)</button><button>accordion steps with inline CTA</button><button>skip optional step</button><button>completion celebration + dismiss</button></div>
 </article>
@@ -423,7 +472,7 @@
 <!-- 4 -->
 <article class="pattern" id="product-tour">
   <h2>Product tour</h2>
-  <p class="vi"><b>Tour dẫn từng bước.</b> Lần đầu vào app, một chuỗi thẻ ngắn lần lượt chiếu sáng từng khu vực chính (phần còn lại tối đi) và giải thích một câu. Luôn có “Bỏ qua”, cho quay lại bước trước, biết mình đang ở bước mấy. Bấm “Bắt đầu”, đi bằng nút hoặc phím ← →, Esc để thoát. Nút <b>?</b> trên thanh trên cùng mở lại tour.</p>
+  <p class="vi"><b>Tour hướng dẫn từng bước.</b> Lần đầu vào ứng dụng, một chuỗi thẻ ngắn lần lượt làm nổi bật từng khu vực chính (phần còn lại bị làm tối) và giải thích bằng một câu. Tour luôn có nút Bỏ qua, cho phép quay lại bước trước và hiển thị bước hiện tại. Nhấn “Bắt đầu”, chuyển bước bằng nút hoặc phím ← →, nhấn Esc để thoát; nút <b>?</b> trên thanh trên cùng mở lại tour.</p>
   <div class="demo">
     <div class="app">
       <div class="tb">
@@ -473,9 +522,9 @@
     <p class="toast" role="status"></p>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giao diện có vài khu vực không tự giải thích được, và người dùng mới cần biết chúng ở đâu trước khi bắt đầu. Ngắn (3–5 bước), mỗi bước một ý, chạy một lần và mở lại được.</p>
-    <p class="avoid"><b>Tránh khi</b>dùng tour để chữa một giao diện khó hiểu, hoặc tour dài 10 bước mà người dùng chỉ bấm “Tiếp” cho xong. Không bao giờ bỏ nút “Bỏ qua”. Thường thì làm thật (checklist) dạy tốt hơn xem giới thiệu.</p>
-    <p class="tip">Mẹo prompt: yêu cầu “spotlight cutout overlay”, “step counter 2/4”, “Skip / Back / Next”, “arrow keys and Esc”, “focus moves into tour card”, và “relaunch from help menu”.</p>
+    <p class="use"><b>Dùng khi</b>giao diện có vài khu vực không tự giải thích được và người dùng mới cần biết vị trí của chúng trước khi bắt đầu. Tour ngắn (3–5 bước), mỗi bước một ý, chỉ chạy một lần và mở lại được.</p>
+    <p class="avoid"><b>Tránh khi</b>dùng tour để bù cho một giao diện khó hiểu, hoặc tour dài 10 bước khiến người dùng chỉ nhấn “Tiếp” cho xong. Luôn giữ nút “Bỏ qua”. Thông thường, để người dùng tự thao tác (checklist) hiệu quả hơn xem giới thiệu.</p>
+    <p class="tip">Mẹo prompt: yêu cầu “spotlight cutout overlay”, “step counter 2/4”, “Skip / Back / Next”, “arrow keys and Esc”, “focus moves into tour card” và “relaunch from help menu”.</p>
   </div>
   <div class="kw"><button>product tour</button><button>step-by-step walkthrough</button><button>spotlight overlay with cutout</button><button>tooltip card anchored to element</button><button>Skip / Back / Next + step counter</button><button>welcome modal → guided steps</button><button>relaunch tour from help button</button></div>
 </article>
@@ -624,7 +673,7 @@
       { t: 'Chào mừng tới Workspace', p: 'Xem nhanh các điểm chính, mất chưa tới 30 giây. Bạn có thể bỏ qua bất cứ lúc nào.' },
       { el: '.search', t: 'Tìm mọi thứ', p: 'Gõ tên việc, tệp hay người. Nhấn phím / ở bất kỳ đâu để mở nhanh.' },
       { el: '.new', t: 'Tạo nhanh', p: 'Tạo việc, tài liệu hoặc dự án mới từ một nút duy nhất.' },
-      { el: '.projects', t: 'Dự án của bạn', p: 'Mọi dự án bạn tham gia nằm ở đây. Kéo để sắp xếp, ghim cái hay dùng lên đầu.' },
+      { el: '.projects', t: 'Dự án của bạn', p: 'Mọi dự án bạn tham gia nằm ở đây. Kéo để sắp xếp, ghim dự án thường dùng lên đầu.' },
       { el: '.bell', t: 'Thông báo', p: 'Khi ai đó nhắc tới bạn hoặc giao việc, chấm đỏ sẽ hiện ở đây.' },
     ];
     // bỏ bước có đích bị ẩn (vd. sidebar trên màn hẹp) để không chiếu sáng một vùng rỗng
@@ -664,7 +713,7 @@
       tour.hidden = true; app.inert = false;
       const help = $('.help', app);
       help.classList.remove('ping'); void help.offsetWidth; help.classList.add('ping');
-      toast.innerHTML = 'Xem lại hướng dẫn bất cứ lúc nào bằng nút <b>?</b> trên thanh trên cùng.'; toast.classList.add('show');
+      toast.innerHTML = 'Mở lại hướng dẫn bất cứ lúc nào bằng nút <b>?</b> trên thanh trên cùng.'; toast.classList.add('show');
       clearTimeout(toastT); toastT = setTimeout(() => { toast.classList.remove('show'); }, 4000);
       focus(help);
     };

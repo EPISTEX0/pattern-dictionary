@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Form &amp; nhập liệu — Từ điển pattern thiết kế web</title>
+<meta name="description" content="Sáu pattern form và nhập liệu: kiểm lỗi tại chỗ, form nhiều bước, combobox, date picker, thước đo mật khẩu và input mask, kèm demo dùng được bằng bàn phím.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -257,6 +258,23 @@
   #input-mask .demo .im{align-items:start}
   #input-mask .demo form{grid-template-columns:1fr 1fr}
 }
+/* ===== màn hình hẹp: chữ ≥12px, vùng chạm ≥32px (đặt cuối để thắng quy tắc từng demo) ===== */
+@media (max-width:760px){
+  :where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo :is(.side h4,kbd){font-size:12px}
+  #inline-validation .demo .tag i{font-size:12px}
+  #inline-validation .demo .sum a{display:inline-flex;align-items:center;min-height:32px}
+  #multi-step-form .demo .rail .cnt{font-size:12px}
+  #autocomplete-combobox .demo .clr{width:32px;height:32px;top:4px;right:4px}
+  #autocomplete-combobox .demo .keys{gap:10px 12px}
+  #date-picker .demo th{font-size:12px}
+  #date-picker .demo td button{width:100%;height:36px;font-size:14px}
+  #date-picker .demo .ph button{width:36px;height:36px}
+  #date-picker .demo .pf{font-size:12px}
+  #date-picker .demo .pf button{min-height:32px;padding:4px 8px}
+  #date-picker .demo .col:has(>.pop:not([hidden])){min-height:480px}
+  #password-strength-meter .demo .eye{height:32px;top:4px}
+  #password-strength-meter .demo .try button{min-height:34px;padding:8px 10px}
+}
 </style>
 </head>
 <body>
@@ -265,18 +283,18 @@
 <main class="wrap">
 <header class="head">
   <h1>Form &amp; nhập liệu</h1>
-  <p>Ô nhập là chỗ người dùng <b>làm việc</b> chứ không chỉ xem: mỗi lỗi báo sai lúc, mỗi định dạng bắt gõ lại là một lý do bỏ ngang. Sáu pattern dưới đây giúp điền nhanh hơn và ít sai hơn. Mọi demo đều gõ, bấm và dùng bàn phím được thật.</p>
+  <p>Form là nơi người dùng <b>thao tác</b> chứ không chỉ đọc: mỗi lỗi báo sai thời điểm, mỗi định dạng buộc gõ lại đều làm tăng tỉ lệ bỏ ngang. Sáu pattern dưới đây giúp người dùng điền nhanh hơn và ít sai hơn. Mọi demo đều nhập liệu, nhấn và điều khiển bằng bàn phím được.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="inline-validation">
   <h2>Inline validation</h2>
-  <p class="vi"><b>Báo lỗi ngay tại ô, đúng lúc.</b> Thay vì đợi bấm Gửi rồi mới đổ ra một loạt lỗi, form kiểm từng ô khi người dùng <b>rời</b> ô đó, và gỡ lỗi ngay khi họ sửa đúng. Hai form dưới giống hệt nhau, chỉ khác thời điểm báo lỗi. Gõ email thiếu “@” rồi nhấn Tab ở cả hai; thử tên đăng nhập “minhanh” (đã có người dùng).</p>
+  <p class="vi"><b>Báo lỗi ngay tại ô nhập, đúng thời điểm.</b> Thay vì chờ người dùng nhấn Gửi rồi hiện một loạt lỗi, form kiểm tra từng ô khi người dùng <b>rời</b> ô đó và gỡ thông báo lỗi ngay khi giá trị hợp lệ. Hai form trong khung demo giống hệt nhau, chỉ khác thời điểm báo lỗi. Gõ một email thiếu “@” rồi nhấn Tab ở cả hai form, sau đó thử tên đăng nhập “minhanh” (đã được sử dụng).</p>
   <div class="demo">
     <p class="cap">Cùng một form, <b>hai thời điểm báo lỗi</b></p>
     <div class="cmp">
       <form class="card" data-mode="submit" novalidate>
-        <p class="tag"><i>A</i>Chỉ báo khi bấm Gửi</p>
+        <p class="tag"><i>A</i>Chỉ báo lỗi khi nhấn Gửi</p>
         <div class="sum" tabindex="-1" role="alert" hidden></div>
         <div class="fld"><label for="iv-a-email">Email</label><div class="box"><input class="inp" id="iv-a-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-a-email-err"></div><p class="err" id="iv-a-email-err"></p></div>
         <div class="fld"><label for="iv-a-user">Tên đăng nhập</label><div class="box"><input class="inp" id="iv-a-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-a-user-err"></div><p class="err" id="iv-a-user-err"></p></div>
@@ -294,9 +312,9 @@
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ô có quy tắc rõ ràng mà người dùng dễ sai: email, tên đăng nhập trùng, mã giảm giá, số điện thoại. Báo lúc rời ô, và khi đã báo lỗi thì kiểm lại theo từng phím để lỗi biến mất ngay lúc sửa đúng.</p>
-    <p class="avoid"><b>Tránh khi</b>báo lỗi ngay từ ký tự đầu tiên (“email không hợp lệ” khi mới gõ “l”), hoặc báo đỏ ô trống chỉ vì người dùng Tab đi qua. Vẫn cần kiểm lại khi Gửi và đưa focus tới ô sai đầu tiên.</p>
-    <p class="tip">Mẹo prompt: nói rõ <i>thời điểm</i> (“validate on blur, re-validate on input once an error is shown”), nếu không AI thường làm kiểu báo lỗi theo từng phím.</p>
+    <p class="use"><b>Dùng khi</b>ô có quy tắc rõ ràng mà người dùng dễ nhập sai: email, tên đăng nhập trùng, mã giảm giá, số điện thoại. Báo lỗi khi rời ô; sau khi đã báo lỗi thì kiểm tra lại theo từng phím để lỗi biến mất ngay khi sửa đúng.</p>
+    <p class="avoid"><b>Tránh khi</b>báo lỗi ngay từ ký tự đầu tiên (“email không hợp lệ” khi mới gõ “l”), hoặc báo đỏ ô trống chỉ vì người dùng nhấn Tab đi qua. Vẫn cần kiểm tra lại khi Gửi và đưa focus tới ô sai đầu tiên.</p>
+    <p class="tip">Mẹo prompt: nêu rõ <i>thời điểm</i> (“validate on blur, re-validate on input once an error is shown”); nếu không, AI thường báo lỗi theo từng phím.</p>
   </div>
   <div class="kw"><button>inline form validation</button><button>validate on blur</button><button>re-validate on input after first error</button><button>error message below field</button><button>aria-invalid + aria-describedby</button><button>:user-invalid</button><button>async username availability check</button></div>
 </article>
@@ -304,7 +322,7 @@
 <!-- 2 -->
 <article class="pattern" id="multi-step-form" data-toc="Multi-step form">
   <h2>Multi-step form / Wizard</h2>
-  <p class="vi"><b>Chia form dài thành từng bước.</b> Mỗi màn hình chỉ hỏi vài câu cùng chủ đề, thanh tiến độ cho biết còn bao xa, và có thể quay lại sửa mà không mất dữ liệu đã điền. Bước cuối cho xem lại toàn bộ trước khi gửi. Điền thử, bấm “Quay lại”, hoặc bấm tên bước đã xong ở cột trái.</p>
+  <p class="vi"><b>Chia form dài thành nhiều bước.</b> Mỗi màn hình chỉ hỏi vài câu cùng chủ đề, thanh tiến độ cho biết còn bao nhiêu bước, và người dùng có thể quay lại sửa mà không mất dữ liệu đã điền. Bước cuối hiển thị toàn bộ thông tin để kiểm tra trước khi gửi. Điền form, nhấn “Quay lại” hoặc nhấn tên một bước đã hoàn tất để chuyển bước.</p>
   <div class="demo">
     <div class="wz">
       <div class="rail">
@@ -338,7 +356,7 @@
         </section>
         <section class="step" data-i="2" hidden>
           <h3 tabindex="-1">Kiểm tra lại</h3>
-          <p>Bấm “Sửa” để quay lại đúng bước đó.</p>
+          <p>Nhấn “Sửa” để quay lại đúng bước đó.</p>
           <dl>
             <dt>Email</dt><dd data-k="email"></dd><button type="button" data-go="0" aria-label="Sửa email">Sửa</button>
             <dt>Mật khẩu</dt><dd data-k="pw"></dd><button type="button" data-go="0" aria-label="Sửa mật khẩu">Sửa</button>
@@ -356,9 +374,9 @@
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>form dài trên 6–8 ô và chia được thành nhóm có nghĩa (tài khoản → thông tin → thanh toán): đăng ký, onboarding, đặt hàng, hồ sơ xin việc. Mỗi bước ngắn nên bớt ngợp, và dữ liệu bước trước có thể dùng cho bước sau.</p>
-    <p class="avoid"><b>Tránh khi</b>form chỉ có 3–5 ô (tách bước chỉ thêm cú bấm), hoặc người dùng cần nhìn mọi ô cùng lúc để so sánh. Đừng làm wizard không cho quay lại, hay mất dữ liệu khi lùi bước.</p>
-    <p class="tip">Mẹo prompt: nêu đủ ba thứ hay bị quên: “back button keeps entered data”, “review step with edit links”, “focus moves to step heading on change”.</p>
+    <p class="use"><b>Dùng khi</b>form dài trên 6–8 ô và chia được thành các nhóm có nghĩa (tài khoản → thông tin → thanh toán): đăng ký, onboarding, đặt hàng, hồ sơ xin việc. Mỗi bước ngắn giúp giảm tải nhận thức, và dữ liệu bước trước có thể dùng cho bước sau.</p>
+    <p class="avoid"><b>Tránh khi</b>form chỉ có 3–5 ô (tách bước chỉ thêm thao tác), hoặc người dùng cần nhìn mọi ô cùng lúc để so sánh. Không làm wizard thiếu nút quay lại hoặc làm mất dữ liệu khi lùi bước.</p>
+    <p class="tip">Mẹo prompt: nêu đủ ba yêu cầu hay bị bỏ sót: “back button keeps entered data”, “review step with edit links”, “focus moves to step heading on change”.</p>
   </div>
   <div class="kw"><button>multi-step form</button><button>wizard with progress stepper</button><button>step indicator (aria-current="step")</button><button>back button preserves data</button><button>per-step validation</button><button>review &amp; edit summary step</button><button>descriptive next button label</button></div>
 </article>
@@ -366,7 +384,7 @@
 <!-- 3 -->
 <article class="pattern" id="autocomplete-combobox" data-toc="Autocomplete / Combobox">
   <h2>Autocomplete / Combobox</h2>
-  <p class="vi"><b>Ô gõ kèm danh sách gợi ý.</b> Gõ vài chữ là danh sách thu lại còn mục khớp, chọn bằng chuột hoặc phím ↑ ↓ Enter. Với tiếng Việt, khớp phải bỏ qua dấu: gõ “da nang”, “danang” hay “Đà Nẵng” đều ra một kết quả. Thử “hue”, “sai gon”, “ca” rồi dùng bàn phím.</p>
+  <p class="vi"><b>Ô nhập kèm danh sách gợi ý.</b> Khi người dùng gõ, danh sách thu hẹp còn các mục khớp; chọn bằng chuột, chạm hoặc phím ↑ ↓ Enter. Với tiếng Việt, việc so khớp phải bỏ qua dấu: “da nang”, “danang” và “Đà Nẵng” cho cùng một kết quả. Gõ “hue”, “sai gon” hoặc “ca” rồi chọn bằng bàn phím.</p>
   <div class="demo">
     <div class="ac">
       <div class="main">
@@ -380,17 +398,17 @@
         <p class="sr cnt" role="status"></p>
       </div>
       <div class="side">
-        <h4>Máy so khớp thế nào</h4>
-        <div class="mt"><span>Bạn gõ</span><code class="q1">…</code><span>Đem so</span><code class="q2">…</code></div>
+        <h4>Cách so khớp</h4>
+        <div class="mt"><span>Đã gõ</span><code class="q1">…</code><span>Chuỗi so khớp</span><code class="q2">…</code></div>
         <div class="keys"><span><kbd>↓</kbd> <kbd>↑</kbd></span><span>Đi qua các gợi ý</span><span><kbd>Enter</kbd></span><span>Chọn gợi ý đang sáng</span><span><kbd>Esc</kbd></span><span>Đóng danh sách, nhấn lần nữa để xoá</span><span><kbd>Alt</kbd> <kbd>↓</kbd></span><span>Mở danh sách khi ô trống</span></div>
       </div>
     </div>
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>chọn một mục trong danh sách dài (thành phố, quốc gia, sản phẩm, người trong nhóm) mà người dùng biết mình muốn gì: gõ ba chữ nhanh hơn cuộn một <code>&lt;select&gt;</code> 60 dòng.</p>
-    <p class="avoid"><b>Tránh khi</b>chỉ có dưới 7 lựa chọn (dùng radio hoặc select), hoặc người dùng chưa biết có gì để chọn (cho duyệt danh sách). Đừng tự điền đè chữ người dùng đang gõ, và đừng khớp phân biệt dấu với tiếng Việt.</p>
-    <p class="tip">Mẹo prompt: nhấn mạnh “diacritic-insensitive matching for Vietnamese (normalize NFD, đ → d)” và “WAI-ARIA combobox pattern”, nếu không AI hay làm một danh sách div không dùng được bằng bàn phím.</p>
+    <p class="use"><b>Dùng khi</b>chọn một mục trong danh sách dài (thành phố, quốc gia, sản phẩm, thành viên nhóm) khi người dùng đã biết mình cần gì: gõ ba ký tự nhanh hơn cuộn một <code>&lt;select&gt;</code> 60 dòng.</p>
+    <p class="avoid"><b>Tránh khi</b>chỉ có dưới 7 lựa chọn (dùng radio hoặc select), hoặc người dùng chưa biết có những lựa chọn nào (cho duyệt danh sách). Không tự điền đè lên chữ người dùng đang gõ, và không so khớp phân biệt dấu với tiếng Việt.</p>
+    <p class="tip">Mẹo prompt: nhấn mạnh “diacritic-insensitive matching for Vietnamese (normalize NFD, đ → d)” và “WAI-ARIA combobox pattern”, nếu không, AI thường tạo một danh sách div không dùng được bằng bàn phím.</p>
   </div>
   <div class="kw"><button>autocomplete combobox</button><button>WAI-ARIA combobox with listbox popup</button><button>aria-activedescendant keyboard navigation</button><button>diacritic-insensitive search</button><button>highlight matched substring</button><button>typeahead suggestions</button><button>no results state</button></div>
 </article>
@@ -398,7 +416,7 @@
 <!-- 4 -->
 <article class="pattern" id="date-picker">
   <h2>Date picker</h2>
-  <p class="vi"><b>Chọn ngày trên lịch.</b> Một ô ngày vừa cho gõ thẳng (dd/mm/yyyy) vừa có nút mở lịch tháng để chọn, đánh dấu hôm nay, làm mờ ngày không được chọn. Bấm biểu tượng lịch, rồi dùng phím mũi tên, PgUp / PgDn, Enter, Esc. Bên phải là ô ngày native của trình duyệt để so sánh.</p>
+  <p class="vi"><b>Chọn ngày trên lịch tháng.</b> Ô ngày vừa cho gõ trực tiếp (dd/mm/yyyy) vừa có nút mở lịch tháng, đánh dấu ngày hôm nay và làm mờ các ngày không được chọn. Bên cạnh (dưới trên mobile) là ô ngày native của trình duyệt để so sánh. Nhấn biểu tượng lịch, rồi chọn ngày bằng chạm hoặc phím mũi tên, PgUp / PgDn, Enter, Esc.</p>
   <div class="demo">
     <div class="dp">
       <div class="col">
@@ -429,9 +447,9 @@
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ngày gần và cần biết thứ trong tuần: đặt lịch hẹn, đặt phòng, hạn chót, chọn khoảng ngày. Lịch giúp thấy ngay “thứ Bảy tuần sau” mà không phải tính nhẩm.</p>
-    <p class="avoid"><b>Tránh khi</b>ngày ở xa và người dùng đã thuộc lòng, như ngày sinh: bấm lùi 30 năm trên lịch rất cực, ba ô ngày/tháng/năm hoặc gõ thẳng nhanh hơn. Luôn cho gõ tay song song với lịch.</p>
-    <p class="tip">Mẹo prompt: ghi rõ “week starts on Monday, Vietnamese locale, dd/mm/yyyy” và “keyboard: arrows, PageUp/PageDown, Home/End, Esc returns focus”, mặc định AI hay làm lịch kiểu Mỹ bắt đầu từ Chủ Nhật.</p>
+    <p class="use"><b>Dùng khi</b>ngày cần chọn ở gần hiện tại và thứ trong tuần quan trọng: đặt lịch hẹn, đặt phòng, hạn chót, chọn khoảng ngày. Lịch giúp xác định ngay “thứ Bảy tuần sau” mà không phải tính nhẩm.</p>
+    <p class="avoid"><b>Tránh khi</b>ngày ở xa và người dùng đã nhớ sẵn, như ngày sinh: lùi 30 năm trên lịch mất nhiều thao tác, ba ô ngày/tháng/năm hoặc gõ trực tiếp nhanh hơn. Luôn cho phép gõ tay song song với lịch.</p>
+    <p class="tip">Mẹo prompt: ghi rõ “week starts on Monday, Vietnamese locale, dd/mm/yyyy” và “keyboard: arrows, PageUp/PageDown, Home/End, Esc returns focus”, mặc định AI thường tạo lịch kiểu Mỹ bắt đầu từ Chủ Nhật.</p>
   </div>
   <div class="kw"><button>date picker</button><button>calendar popover with month grid</button><button>typeable date input with calendar button</button><button>disabled past dates</button><button>today indicator</button><button>WAI-ARIA date picker dialog (role=grid)</button><button>native input type="date"</button></div>
 </article>
@@ -439,7 +457,7 @@
 <!-- 5 -->
 <article class="pattern" id="password-strength-meter" data-toc="Password strength meter">
   <h2>Password strength meter</h2>
-  <p class="vi"><b>Thước đo độ mạnh mật khẩu.</b> Thanh 4 nấc đổi màu theo từng phím, kèm một câu gợi ý cụ thể để mạnh hơn và danh sách tiêu chí tự tích. Điểm mấu chốt: độ <b>dài</b> quan trọng hơn ký tự lạ. Thử “matkhau123” rồi thử một câu dài như “ba con meo treo cay cau”.</p>
+  <p class="vi"><b>Thước đo độ mạnh mật khẩu.</b> Thanh 4 nấc đổi màu theo từng phím, kèm một gợi ý cụ thể để tăng độ mạnh và danh sách tiêu chí tự đánh dấu. Điểm mấu chốt: độ <b>dài</b> quan trọng hơn ký tự đặc biệt. Nhập “matkhau123”, sau đó nhập một câu dài như “ba con meo treo cay cau”.</p>
   <div class="demo">
     <div class="pw">
       <form class="card" novalidate>
@@ -465,15 +483,15 @@
           <li data-r="common">Không phải mật khẩu phổ biến hay dãy dễ đoán</li>
           <li data-r="name">Không chứa tên hay email của bạn</li>
         </ul>
-        <div class="try">Thử nhanh:<br><button type="button">matkhau123</button><button type="button">LanPham@2026</button><button type="button">ba con meo treo cay cau</button></div>
+        <div class="try">Ví dụ nhanh:<br><button type="button">matkhau123</button><button type="button">LanPham@2026</button><button type="button">ba con meo treo cay cau</button></div>
       </div>
     </div>
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>người dùng tự đặt mật khẩu: đăng ký, đổi mật khẩu, đặt lại. Phản hồi theo từng phím giúp họ chỉnh ngay thay vì bị từ chối sau khi bấm Lưu.</p>
-    <p class="avoid"><b>Tránh khi</b>ô đăng nhập (chỉ gõ mật khẩu cũ, không cần đo). Đừng chấm điểm kiểu “có ký hiệu là Mạnh”: “P@ssw0rd” vẫn bị đoán trong vài giây; nên chặn danh sách mật khẩu phổ biến và thưởng độ dài.</p>
-    <p class="tip">Mẹo prompt: ghi “zxcvbn-style scoring, reward length, block common passwords” và “show / hide password toggle” để tránh kiểu thước đo chỉ đếm ký tự đặc biệt.</p>
+    <p class="use"><b>Dùng khi</b>người dùng tự đặt mật khẩu: đăng ký, đổi mật khẩu, đặt lại mật khẩu. Phản hồi theo từng phím giúp người dùng chỉnh ngay thay vì bị từ chối sau khi nhấn Lưu.</p>
+    <p class="avoid"><b>Tránh khi</b>ô đăng nhập (chỉ nhập mật khẩu hiện có, không cần đo). Không chấm điểm theo kiểu “có ký hiệu là Mạnh”: “P@ssw0rd” vẫn bị đoán trong vài giây; nên chặn danh sách mật khẩu phổ biến và ưu tiên độ dài.</p>
+    <p class="tip">Mẹo prompt: ghi “zxcvbn-style scoring, reward length, block common passwords” và “show / hide password toggle” để tránh thước đo chỉ đếm ký tự đặc biệt.</p>
   </div>
   <div class="kw"><button>password strength meter</button><button>4-segment strength bar</button><button>live requirement checklist</button><button>show / hide password toggle</button><button>zxcvbn-style scoring</button><button>autocomplete="new-password"</button></div>
 </article>
@@ -481,7 +499,7 @@
 <!-- 6 -->
 <article class="pattern" id="input-mask">
   <h2>Input mask</h2>
-  <p class="vi"><b>Ô tự định dạng khi gõ.</b> Người dùng chỉ gõ chữ số, ô tự chèn khoảng trắng hay dấu “/” đúng chỗ và hiện phần khuôn còn thiếu bằng chữ mờ. Dữ liệu gửi đi vẫn là chuỗi số sạch. Gõ thử, sửa một số ở giữa, xoá qua dấu cách, hoặc dán “+84 912 345 678”.</p>
+  <p class="vi"><b>Ô nhập tự định dạng khi gõ.</b> Người dùng chỉ gõ chữ số; ô tự chèn khoảng trắng hoặc dấu “/” đúng vị trí và hiện phần khuôn còn thiếu bằng chữ mờ. Dữ liệu gửi đi vẫn là chuỗi số không định dạng. Nhập số, sửa một chữ số ở giữa, xoá qua dấu cách hoặc dán “+84 912 345 678”.</p>
   <div class="demo">
     <div class="im">
       <form class="card" novalidate>
@@ -494,15 +512,15 @@
           <h4>Giá trị thật gửi đi</h4>
           <dl><dt>tel</dt><dd data-k="tel"></dd><dt>cc-number</dt><dd data-k="cc"></dd><dt>cc-exp</dt><dd data-k="exp"></dd></dl>
         </div>
-        <p>Thẻ thử: <code>4111 1111 1111 1111</code> (số kiểm tra Luhn hợp lệ). Mask chỉ là cách <b>hiển thị</b>; máy chủ nhận và kiểm số trần.</p>
+        <p>Số thẻ thử nghiệm: <code>4111 1111 1111 1111</code> (hợp lệ theo thuật toán Luhn). Mask chỉ là cách <b>hiển thị</b>; máy chủ nhận và kiểm tra chuỗi số không định dạng.</p>
       </div>
     </div>
     <button class="replay">↻ Xem lại</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>dữ liệu có khuôn cố định và chia nhóm giúp đọc lại: số điện thoại, số thẻ, ngày hết hạn, mã số thuế, số tài khoản. Nhóm 4 số dễ soát lỗi hơn một dãy 16 số liền.</p>
-    <p class="avoid"><b>Tránh khi</b>dữ liệu không có khuôn chắc chắn (tên, địa chỉ, số điện thoại quốc tế đủ loại độ dài). Mask làm nhảy con trỏ, chặn dán hay không cho xoá qua dấu cách thì còn tệ hơn không có mask.</p>
-    <p class="tip">Mẹo prompt: đòi rõ “preserve caret position when editing in the middle”, “backspace across separators”, “accept pasted values with spaces or +84”, đó là ba chỗ mask tự viết hay hỏng.</p>
+    <p class="use"><b>Dùng khi</b>dữ liệu có khuôn cố định và việc chia nhóm giúp đọc lại: số điện thoại, số thẻ, ngày hết hạn, mã số thuế, số tài khoản. Nhóm 4 chữ số dễ soát lỗi hơn một dãy 16 chữ số liền.</p>
+    <p class="avoid"><b>Tránh khi</b>dữ liệu không có khuôn cố định (tên, địa chỉ, số điện thoại quốc tế với nhiều độ dài khác nhau). Mask làm nhảy con trỏ, chặn dán hoặc không cho xoá qua dấu cách còn gây hại hơn không dùng mask.</p>
+    <p class="tip">Mẹo prompt: đòi rõ “preserve caret position when editing in the middle”, “backspace across separators”, “accept pasted values with spaces or +84”, đây là ba điểm mask tự viết thường lỗi.</p>
   </div>
   <div class="kw"><button>input mask</button><button>auto-format phone number as you type</button><button>credit card number grouping (4-4-4-4)</button><button>MM/YY expiry auto slash</button><button>ghost placeholder showing remaining format</button><button>inputmode="numeric"</button><button>caret-preserving formatter</button></div>
 </article>
@@ -529,7 +547,7 @@ const ivRule = {
     if (!v) return 'Chọn một tên đăng nhập.';
     if (v.length < 3 || v.length > 20) return `Cần 3–20 ký tự (đang có ${v.length}).`;
     if (/[^a-z0-9._]/.test(v)) return 'Chỉ dùng chữ thường không dấu, số, dấu chấm hoặc gạch dưới.';
-    if (withServer && TAKEN.includes(v)) return `“${v}” đã có người dùng. Thử “${v}.${YEAR}”?`;
+    if (withServer && TAKEN.includes(v)) return `“${v}” đã được sử dụng. Có thể dùng “${v}.${YEAR}”.`;
     return '';
   }
 };
@@ -888,7 +906,7 @@ const pwScore = (p, ids) => {
     else if (!r.len8) { l = 1; sug = `Thêm ${8 - p.length} ký tự nữa.`; }
     else {
       l = Math.min(4, 1 + (p.length >= 12) + (p.length >= 16) + (p.length >= 20) + r.mix);
-      sug = l === 4 ? 'Tốt. Lưu vào trình quản lý mật khẩu nhé.' : p.length < 16 ? 'Thêm vài từ nữa: câu dài dễ nhớ mà khó đoán.' : 'Thêm chữ hoa, số hoặc ký hiệu.';
+      sug = l === 4 ? 'Mật khẩu mạnh. Nên lưu vào trình quản lý mật khẩu.' : p.length < 16 ? 'Thêm vài từ nữa: câu dài dễ nhớ mà khó đoán.' : 'Thêm chữ hoa, số hoặc ký hiệu.';
     }
   }
   return { r, l, sug };

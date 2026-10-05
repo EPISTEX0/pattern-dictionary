@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Phản hồi &amp; lớp phủ — Từ điển pattern thiết kế web</title>
+<meta name="description" content="Bảy pattern phản hồi và lớp phủ: modal, drawer, toast, tooltip, popover, hộp xác nhận và chỉ báo tiến độ, kèm demo, điều kiện dùng và keyword tiếng Anh.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -300,6 +301,34 @@
   #confirmation-dialog .demo .pane{padding:18px 16px}
   #progress-indicator .demo .grid{position:relative;grid-template-columns:1fr;grid-template-rows:none;padding:14px}
 }
+/* focus vào hộp thoại đang trượt vào không được cuộn khung demo (overflow:hidden vẫn cuộn được bằng script) */
+:where(#modal-dialog,#drawer,#confirmation-dialog) .demo{overflow:clip}
+@media (max-width:760px){
+  :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar h3{min-width:0}
+  :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar h3 small{font-size:12px}
+  :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .av{font-size:12px}
+  :is(#modal-dialog,#popover) .demo .bar h3{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  :is(#modal-dialog,#popover) .demo .bar h3 small{display:none}
+  #modal-dialog .demo .col>b{font-size:12px}
+  #modal-dialog .demo .col p span{font-size:12px}
+  #drawer .demo .tr.th{font-size:12px}
+  #drawer .demo .tr button{min-height:32px;padding:6px 0}
+  #drawer .demo .dh small{font-size:12px}
+  #drawer .demo .who .av,#popover .demo .tasks li .av{font-size:10px}
+  #popover .demo .mem small{font-size:12px}
+  #toast-notification .demo .toast .x{width:32px;height:32px}
+  #tooltip .demo .doc{padding:20px 14px}
+  #tooltip .demo .quota{flex-wrap:wrap;padding:10px 16px 14px}
+  #tooltip .demo .quota .tw button{width:32px;height:32px}
+  #tooltip .demo .txt{padding:16px}
+  #popover .demo .bar .btn.ghost .n{font-size:12px}
+  #popover .demo [popover] legend{font-size:12px}
+  #popover .demo [popover] .ck{min-height:32px}
+  #confirmation-dialog .demo .tag i{font-size:12px}
+  #confirmation-dialog .demo .pane:last-of-type .why{padding-right:0;padding-bottom:44px}
+  #progress-indicator .demo .tag{font-size:12px}
+  #progress-indicator .demo .sy-b{height:34px!important}
+}
 </style>
 </head>
 <body>
@@ -308,13 +337,13 @@
 <main class="wrap">
 <header class="head">
   <h1>Phản hồi &amp; lớp phủ</h1>
-  <p>Mỗi lần người dùng bấm, hệ thống phải <b>trả lời</b>: đã nhận, đang làm, xong rồi, hay cần hỏi lại. Bảy pattern dưới đây là những cách trả lời đó, từ hộp thoại chặn mọi thứ tới một dòng chữ nhỏ tự biến mất. Chọn sai loại thì hoặc làm phiền, hoặc người dùng không hề thấy.</p>
+  <p>Mỗi thao tác của người dùng cần một <b>phản hồi</b> từ hệ thống: đã nhận, đang xử lý, đã xong hoặc cần xác nhận thêm. Bảy pattern dưới đây bao quát các mức phản hồi, từ hộp thoại chặn toàn bộ giao diện tới thông báo ngắn tự ẩn. Chọn sai mức phản hồi sẽ gây gián đoạn không cần thiết hoặc khiến người dùng bỏ lỡ thông tin.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="modal-dialog">
   <h2>Modal dialog</h2>
-  <p class="vi"><b>Hộp thoại chặn.</b> Một khung nổi giữa màn hình, phần phía sau tối lại và không bấm được cho tới khi xong hoặc đóng. Focus nhảy vào trong, phím Tab chỉ đi vòng trong hộp, <kbd>Esc</kbd> hoặc bấm ra nền tối để đóng, và focus quay về đúng nút đã mở. Bấm “Mời thành viên”.</p>
+  <p class="vi"><b>Hộp thoại chặn tương tác với phần còn lại của trang.</b> Khung nổi nằm giữa màn hình, phần phía sau bị lớp phủ (overlay) làm tối và không thao tác được cho tới khi hoàn tất hoặc đóng hộp thoại. Focus chuyển vào trong, phím Tab chỉ di chuyển trong hộp, <kbd>Esc</kbd> hoặc nhấn vào lớp phủ để đóng, sau đó focus trở về nút đã mở. Nhấn “Mời thành viên” để xem.</p>
   <div class="demo">
     <div class="app">
       <div class="bar">
@@ -343,9 +372,9 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>cần người dùng làm xong một việc ngắn, tự đủ, trước khi đi tiếp: điền 1–3 ô, chọn một lựa chọn quan trọng, xác nhận thao tác không hoàn tác được. Việc tách khỏi ngữ cảnh là cố ý.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung dài hay cần đối chiếu với trang phía sau (dùng Drawer), chỉ để thông báo (dùng Toast), hoặc bật lên tự động khi người dùng chưa làm gì. Không chồng modal lên modal.</p>
-    <p class="tip">Trong sản phẩm thật, mở bằng <code>dialog.showModal()</code>: trình duyệt tự làm focus trap, <kbd>Esc</kbd>, <code>::backdrop</code> và vô hiệu phần còn lại của trang. Demo này mở bằng <code>show()</code> + <code>inert</code> + tự giữ Tab, chỉ để hộp thoại nằm gọn trong khung thay vì phủ cả trang từ điển.</p>
+    <p class="use"><b>Dùng khi</b>người dùng cần hoàn tất một việc ngắn, độc lập trước khi tiếp tục: điền 1–3 ô, chọn một lựa chọn quan trọng, xác nhận thao tác không hoàn tác được. Việc tách khỏi ngữ cảnh là có chủ đích.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung dài hoặc cần đối chiếu với trang phía sau (dùng Drawer), chỉ để thông báo (dùng Toast), hoặc tự mở khi người dùng chưa thao tác gì. Không chồng modal lên modal.</p>
+    <p class="tip">Trong sản phẩm thật, mở bằng <code>dialog.showModal()</code>: trình duyệt tự làm focus trap, <kbd>Esc</kbd>, <code>::backdrop</code> và vô hiệu phần còn lại của trang. Demo này mở bằng <code>show()</code> + <code>inert</code> + tự giữ Tab để hộp thoại nằm gọn trong khung demo thay vì phủ cả trang.</p>
   </div>
   <div class="kw"><button>modal dialog</button><button>native &lt;dialog&gt; with showModal()</button><button>focus trap + return focus to trigger</button><button>close on Esc and backdrop click</button><button>dimmed backdrop (::backdrop)</button><button>aria-labelledby dialog title</button><button>scale-in entry animation</button></div>
 </article>
@@ -353,7 +382,7 @@
 <!-- 2 -->
 <article class="pattern" id="drawer" data-toc="Drawer / Side sheet">
   <h2>Drawer / Side sheet</h2>
-  <p class="vi"><b>Ngăn kéo trượt từ cạnh.</b> Một tấm cao bằng màn hình trượt ra từ mép phải, chứa chi tiết hoặc form chỉnh sửa của mục vừa chọn, trong khi danh sách phía sau vẫn nhìn thấy. Bấm tên một công việc, đổi trạng thái rồi Lưu; <kbd>Esc</kbd> hoặc bấm ra ngoài để đóng.</p>
+  <p class="vi"><b>Tấm nội dung trượt ra từ cạnh màn hình.</b> Drawer (ngăn kéo bên) cao bằng khung nhìn, trượt ra từ mép phải và chứa chi tiết hoặc form chỉnh sửa của mục vừa chọn, trong khi danh sách phía sau vẫn hiển thị. Nhấn tên một công việc, đổi trạng thái rồi nhấn Lưu; nhấn <kbd>Esc</kbd> hoặc nhấn ra ngoài để đóng.</p>
   <div class="demo">
     <div class="app">
       <div class="bar"><h3>Công việc <small>Sprint 14</small></h3></div>
@@ -380,9 +409,9 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>xem hoặc sửa chi tiết một mục trong danh sách mà vẫn cần thấy danh sách (email, công việc, đơn hàng), bộ lọc nhiều tuỳ chọn, giỏ hàng, menu điều hướng trên điện thoại. Nhiều chỗ hơn modal, ít mất ngữ cảnh hơn chuyển trang.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung là một luồng chính đáng có trang riêng (cần link chia sẻ được, nút Back), hoặc chỉ cần hỏi một câu ngắn (dùng modal). Đừng mở drawer từ drawer.</p>
-    <p class="tip">Mẹo prompt: nói rõ “modal side sheet” (có nền tối, giữ focus) hay “non-modal / push drawer” (đẩy nội dung, vẫn thao tác được phía sau): hai hành vi khác nhau.</p>
+    <p class="use"><b>Dùng khi</b>xem hoặc sửa chi tiết một mục mà vẫn cần thấy danh sách (email, công việc, đơn hàng), bộ lọc nhiều tuỳ chọn, giỏ hàng, menu điều hướng trên điện thoại. Drawer có nhiều không gian hơn modal và giữ ngữ cảnh tốt hơn chuyển trang.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung là một luồng đủ lớn để có trang riêng (cần liên kết chia sẻ được, nút Back), hoặc chỉ cần hỏi một câu ngắn (dùng modal). Không mở drawer từ trong drawer.</p>
+    <p class="tip">Mẹo prompt: nêu rõ “modal side sheet” (có lớp phủ, giữ focus) hay “non-modal / push drawer” (đẩy nội dung, vẫn thao tác được phía sau); đây là hai hành vi khác nhau.</p>
   </div>
   <div class="kw"><button>side drawer</button><button>slide-over panel from right</button><button>side sheet with sticky footer actions</button><button>master–detail editing</button><button>focus trap, Esc to close, return focus</button><button>off-canvas</button></div>
 </article>
@@ -390,7 +419,7 @@
 <!-- 3 -->
 <article class="pattern" id="toast-notification" data-toc="Toast / Snackbar">
   <h2>Toast / Snackbar</h2>
-  <p class="vi"><b>Thông báo nhỏ tự biến mất.</b> Một mẩu thông báo trượt lên ở góc sau khi làm xong việc gì đó, không chặn thao tác, vài giây sau tự ẩn. Kèm nút <b>Hoàn tác</b> thì việc xoá hay lưu trữ có thể làm ngay mà không cần hỏi trước. Bấm “Lưu trữ” vài thư, rồi Hoàn tác (hoặc nhấn <kbd>Z</kbd>). Rê chuột lên thông báo để giữ nó lại.</p>
+  <p class="vi"><b>Thông báo ngắn tự ẩn sau vài giây.</b> Toast xuất hiện ở góc màn hình sau khi một thao tác hoàn tất, không chặn tương tác và tự ẩn sau vài giây. Khi có nút <b>Hoàn tác</b>, thao tác xoá hay lưu trữ có thể thực hiện ngay mà không cần hỏi trước. Nhấn “Lưu trữ” ở vài thư rồi nhấn Hoàn tác (hoặc phím <kbd>Z</kbd>); di chuột lên hoặc chạm giữ thông báo để tạm dừng đếm giờ.</p>
   <div class="demo">
     <div class="app">
       <div class="bar"><h3>Hộp thư <small>4 chưa đọc</small></h3></div>
@@ -401,8 +430,8 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>báo kết quả của việc người dùng vừa làm và không cần họ phản hồi: “Đã lưu”, “Đã gửi”, “Đã lưu trữ · Hoàn tác”. Một dòng, một hành động tối đa, hiện 4–8 giây, dừng đếm khi rê chuột hoặc focus vào.</p>
-    <p class="avoid"><b>Tránh khi</b>lỗi cần sửa (đặt lỗi ngay cạnh chỗ sai), thông tin quan trọng người dùng phải đọc, hay nút hành động duy nhất để làm việc gì đó: toast biến mất là mất luôn. Đừng xếp chồng quá 3 cái.</p>
+    <p class="use"><b>Dùng khi</b>thông báo kết quả của thao tác vừa thực hiện mà không cần người dùng phản hồi: “Đã lưu”, “Đã gửi”, “Đã lưu trữ · Hoàn tác”. Một dòng, tối đa một hành động, hiển thị 4–8 giây, dừng đếm khi di chuột lên hoặc focus vào.</p>
+    <p class="avoid"><b>Tránh khi</b>báo lỗi cần sửa (đặt lỗi ngay cạnh chỗ sai), thông tin quan trọng bắt buộc phải đọc, hoặc hành động không có lối vào nào khác: toast đã ẩn thì không xem lại được. Không xếp chồng quá 3 toast.</p>
     <p class="tip">Mẹo prompt: ghi “toast with Undo action, pauses on hover/focus, announced via aria-live polite, does not steal focus” để AI không làm toast chiếm focus hoặc trình đọc màn hình không đọc được.</p>
   </div>
   <div class="kw"><button>toast notification</button><button>snackbar with Undo action</button><button>auto-dismiss with countdown bar</button><button>pause on hover / focus</button><button>aria-live="polite" status</button><button>stacked toasts bottom-left</button><button>optimistic UI</button></div>
@@ -411,7 +440,7 @@
 <!-- 4 -->
 <article class="pattern" id="tooltip">
   <h2>Tooltip</h2>
-  <p class="vi"><b>Nhãn nhỏ khi rê chuột hoặc focus.</b> Một ô chữ ngắn hiện cạnh nút, nói nút đó làm gì (và phím tắt), hữu ích nhất cho nút chỉ có biểu tượng. Hiện sau một nhịp chờ ngắn khi rê chuột, hiện ngay khi Tab tới, rê qua nút bên cạnh thì đổi ngay không chờ, <kbd>Esc</kbd> để ẩn. Thử với thanh công cụ và dấu <b>i</b> bên dưới.</p>
+  <p class="vi"><b>Nhãn ngắn hiện khi di chuột hoặc focus vào một phần tử.</b> Tooltip mô tả chức năng của nút và phím tắt, hữu ích nhất cho nút chỉ có biểu tượng. Tooltip hiện sau một khoảng chờ ngắn khi di chuột, hiện ngay khi Tab tới, chuyển ngay khi di sang nút bên cạnh và ẩn khi nhấn <kbd>Esc</kbd>. Di chuột, nhấn Tab hoặc chạm vào thanh công cụ và biểu tượng <b>i</b> trong khung demo.</p>
   <div class="demo">
     <div class="app">
       <div class="bar"><h3>Ghi chú họp <small>Đã lưu</small></h3></div>
@@ -433,8 +462,8 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giải thích nút chỉ có biểu tượng, cho biết phím tắt, hoặc thêm một câu giải nghĩa thuật ngữ. Nội dung là chữ ngắn, đọc được trong một hơi, và không bắt buộc phải đọc mới dùng được.</p>
-    <p class="avoid"><b>Tránh khi</b>chứa thứ bấm được (link, nút: dùng Popover), chứa thông tin bắt buộc (ghi thẳng ra giao diện), hoặc người dùng chủ yếu trên điện thoại: không có hover, tooltip coi như không tồn tại.</p>
+    <p class="use"><b>Dùng khi</b>giải thích nút chỉ có biểu tượng, cho biết phím tắt, hoặc giải nghĩa một thuật ngữ. Nội dung là văn bản ngắn, đọc trong một lần và không bắt buộc phải đọc mới dùng được.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung có phần tử tương tác (liên kết, nút: dùng Popover), chứa thông tin bắt buộc (hiển thị thẳng trên giao diện), hoặc người dùng chủ yếu dùng điện thoại: không có hover nên tooltip gần như không được nhìn thấy.</p>
     <p class="tip">Mẹo prompt: “tooltip on hover and keyboard focus, 400ms delay, no delay when moving between adjacent triggers, dismiss with Esc, hoverable (WCAG 1.4.13)”. Trình duyệt mới có <code>popover="hint"</code> + <code>interestfor</code> làm sẵn phần lớn việc này.</p>
   </div>
   <div class="kw"><button>tooltip</button><button>icon button tooltip with keyboard shortcut</button><button>show on hover and focus</button><button>hover delay + warm-up</button><button>dismiss on Esc (WCAG 1.4.13)</button><button>role="tooltip"</button><button>popover="hint" interestfor</button></div>
@@ -443,7 +472,7 @@
 <!-- 5 -->
 <article class="pattern" id="popover">
   <h2>Popover</h2>
-  <p class="vi"><b>Khung nổi bấm mới mở, có thể tương tác.</b> Khác tooltip, popover mở khi <b>bấm</b> và chứa được nút, ô chọn, link. Bấm ra ngoài hoặc <kbd>Esc</kbd> để đóng, mở cái này thì cái kia tự đóng. Thử “Bộ lọc” (chọn rồi Áp dụng) và “Chia sẻ” (sao chép link).</p>
+  <p class="vi"><b>Khung nổi mở khi nhấn, có thể tương tác.</b> Khác tooltip, popover mở khi <b>nhấn</b> và chứa được nút, ô chọn và liên kết. Nhấn ra ngoài hoặc <kbd>Esc</kbd> để đóng; mở một popover thì popover đang mở tự đóng. Mở “Bộ lọc” để chọn rồi Áp dụng, và mở “Chia sẻ” để sao chép liên kết.</p>
   <div class="demo">
     <div class="app">
       <div class="bar">
@@ -476,9 +505,9 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>cần một nhóm điều khiển nhỏ gắn với một nút: bộ lọc, chia sẻ, chọn màu, thẻ hồ sơ khi bấm avatar, cài đặt nhanh. Người dùng vẫn thấy và quay lại trang ngay khi bấm ra ngoài.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung chỉ là một dòng giải thích (dùng Tooltip), hoặc là một việc phải làm xong mới đi tiếp được (dùng Modal). Popover dài cần cuộn bên trong là dấu hiệu nên chuyển sang Drawer.</p>
-    <p class="tip">Thuộc tính HTML <code>popover</code> + <code>popovertarget</code> cho sẵn: đóng khi bấm ngoài, <kbd>Esc</kbd>, chỉ một cái mở một lúc, <code>aria-expanded</code> trên nút. Vị trí bám nút dùng CSS anchor positioning.</p>
+    <p class="use"><b>Dùng khi</b>cần một nhóm điều khiển nhỏ gắn với một nút: bộ lọc, chia sẻ, chọn màu, thẻ hồ sơ khi nhấn avatar, cài đặt nhanh. Trang phía sau vẫn hiển thị và người dùng quay lại ngay khi nhấn ra ngoài.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung chỉ là một dòng giải thích (dùng Tooltip), hoặc là việc phải hoàn tất mới tiếp tục được (dùng Modal). Popover dài phải cuộn bên trong là dấu hiệu nên chuyển sang Drawer.</p>
+    <p class="tip">Thuộc tính HTML <code>popover</code> + <code>popovertarget</code> có sẵn: đóng khi nhấn ra ngoài, <kbd>Esc</kbd>, chỉ một cái mở một lúc, <code>aria-expanded</code> trên nút. Vị trí bám nút dùng CSS anchor positioning.</p>
   </div>
   <div class="kw"><button>popover</button><button>HTML popover attribute + popovertarget</button><button>light dismiss</button><button>CSS anchor positioning</button><button>filter popover with apply button</button><button>share popover with copy link</button></div>
 </article>
@@ -486,7 +515,7 @@
 <!-- 6 -->
 <article class="pattern" id="confirmation-dialog" data-toc="Confirmation vs Undo">
   <h2>Confirmation dialog</h2>
-  <p class="vi"><b>Hỏi lại trước khi làm, hay làm luôn rồi cho hoàn tác?</b> Hộp xác nhận chặn người dùng để nói rõ hậu quả; đúng chỗ cho việc <b>không quay lại được</b>. Với việc lặp lại hằng ngày và khôi phục được, hỏi “Bạn có chắc?” mỗi lần chỉ khiến người ta bấm OK theo phản xạ; làm ngay kèm Hoàn tác tốt hơn. Thử cả hai bên.</p>
+  <p class="vi"><b>Hỏi lại trước khi thực hiện, hoặc thực hiện ngay kèm hoàn tác.</b> Hộp xác nhận chặn thao tác để nêu rõ hậu quả, phù hợp với việc <b>không thể hoàn tác</b>. Với thao tác lặp lại hằng ngày và khôi phục được, câu hỏi “Bạn có chắc?” mỗi lần chỉ khiến người dùng nhấn OK theo phản xạ; thực hiện ngay kèm Hoàn tác hiệu quả hơn. Thử cả hai phương án A và B trong khung demo.</p>
   <div class="demo">
     <div class="cf">
       <section class="pane" aria-labelledby="cf-a">
@@ -505,7 +534,7 @@
         <ul class="nl" aria-label="Ghi chú"></ul>
         <div class="ub" hidden><span></span><button type="button">Hoàn tác</button></div>
         <p class="sr live" role="status"></p>
-        <p class="why">Việc nhỏ, làm thường xuyên, khôi phục được → không hỏi, cho làm luôn.</p>
+        <p class="why">Thao tác nhỏ, thường xuyên, khôi phục được → không hỏi, thực hiện ngay.</p>
       </section>
     </div>
     <div class="scrim"></div>
@@ -521,8 +550,8 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>(xác nhận) thao tác không hoàn tác được, tốn kém hoặc ảnh hưởng người khác: xoá dự án, huỷ gói trả phí, gửi cho 5.000 người. Tiêu đề là câu hỏi cụ thể, nút ghi đúng động từ (“Xoá dự án”, không phải “OK”); việc rất nặng thì bắt gõ lại tên.</p>
-    <p class="avoid"><b>Tránh khi</b>việc khôi phục được và lặp lại nhiều (xoá thư, lưu trữ, bỏ khỏi danh sách): dùng Undo. Hỏi lại quá nhiều làm người dùng quen tay bấm “Đồng ý” và hộp xác nhận mất tác dụng đúng lúc cần.</p>
+    <p class="use"><b>Dùng khi</b>(xác nhận) thao tác không hoàn tác được, tốn kém hoặc ảnh hưởng người khác: xoá dự án, huỷ gói trả phí, gửi email cho 5.000 người. Tiêu đề là câu hỏi cụ thể, nút ghi đúng động từ (“Xoá dự án”, không phải “OK”); với thao tác hệ trọng, yêu cầu gõ lại tên để xác nhận.</p>
+    <p class="avoid"><b>Tránh khi</b>thao tác khôi phục được và lặp lại thường xuyên (xoá thư, lưu trữ, bỏ khỏi danh sách): dùng Undo. Hỏi lại quá nhiều khiến người dùng nhấn “Đồng ý” theo thói quen, và hộp xác nhận mất tác dụng đúng lúc cần.</p>
     <p class="tip">Mẹo prompt: “destructive action confirmation with type-to-confirm, specific verb on button, focus on cancel/input, not OK/Cancel” cho trường hợp A; “optimistic delete with undo snackbar” cho trường hợp B.</p>
   </div>
   <div class="kw"><button>confirmation dialog</button><button>destructive action alertdialog</button><button>type-to-confirm (GitHub-style)</button><button>specific verb button label</button><button>undo instead of confirm</button><button>optimistic delete with undo</button></div>
@@ -531,7 +560,7 @@
 <!-- 7 -->
 <article class="pattern" id="progress-indicator">
   <h2>Progress indicator</h2>
-  <p class="vi"><b>Cho biết hệ thống đang làm và còn bao lâu.</b> <b>Determinate</b> (biết tiến độ): thanh hoặc vòng chạy tới 100%, kèm phần trăm / thời gian còn lại. <b>Indeterminate</b> (chưa biết): vệt chạy qua lại hoặc spinner, chỉ nói “đang làm”. Spinner hợp với chờ ngắn trong một nút; thanh hợp với việc dài. Bấm các nút để chạy lại.</p>
+  <p class="vi"><b>Cho biết hệ thống đang xử lý và còn bao lâu.</b> <b>Determinate</b> (xác định được tiến độ): thanh hoặc vòng chạy tới 100%, kèm phần trăm hoặc thời gian còn lại. <b>Indeterminate</b> (chưa xác định): vệt chạy qua lại hoặc spinner, chỉ báo hệ thống đang xử lý. Spinner phù hợp với thời gian chờ ngắn trong một nút; thanh tiến độ phù hợp với tác vụ dài. Nhấn các nút để chạy lại.</p>
   <div class="demo">
     <div class="grid">
       <div class="cell">
@@ -548,7 +577,7 @@
       </div>
       <div class="cell">
         <p class="tag"><b>Indeterminate</b> · spinner trong nút</p>
-        <p style="font-size:13px;color:var(--t2)">Chờ ngắn (dưới ~3 giây), ngay tại chỗ vừa bấm.</p>
+        <p style="font-size:13px;color:var(--t2)">Thời gian chờ ngắn (dưới khoảng 3 giây), hiển thị ngay tại nút vừa nhấn.</p>
         <div class="acts"><button type="button" class="btn save">Lưu thay đổi</button><small class="sv-st" role="status"></small></div>
       </div>
       <div class="cell">
@@ -562,8 +591,8 @@
     <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>chờ quá ~1 giây. Dưới 1 giây: không cần gì. 1–3 giây: spinner tại chỗ. Trên 3 giây hoặc đo được (tải lên, xuất file, cài đặt): thanh determinate có phần trăm, cho huỷ. Chưa đo được thì chạy indeterminate rồi chuyển sang determinate khi biết.</p>
-    <p class="avoid"><b>Tránh khi</b>đang tải nội dung có hình dạng biết trước (dùng Skeleton), hoặc thanh “giả” chạy tới 99% rồi đứng im: người dùng mất tin ngay. Spinner toàn màn hình che mất trang là lựa chọn tệ nhất.</p>
+    <p class="use"><b>Dùng khi</b>thời gian chờ vượt khoảng 1 giây. Dưới 1 giây: không cần chỉ báo. 1–3 giây: spinner tại chỗ. Trên 3 giây hoặc đo được tiến độ (tải lên, xuất file, cài đặt): thanh determinate có phần trăm và nút huỷ. Chưa đo được thì dùng indeterminate, rồi chuyển sang determinate khi có số liệu.</p>
+    <p class="avoid"><b>Tránh khi</b>đang tải nội dung có bố cục biết trước (dùng Skeleton), hoặc thanh tiến độ không phản ánh tiến độ thật, chạy tới 99% rồi dừng: người dùng mất niềm tin ngay. Spinner toàn màn hình che kín trang là lựa chọn kém nhất.</p>
     <p class="tip">Mẹo prompt: phân biệt rõ “determinate progress bar with percentage and time remaining” và “indeterminate spinner”; dùng <code>&lt;progress&gt;</code> native (có sẵn role progressbar), bỏ <code>value</code> để thành indeterminate.</p>
   </div>
   <div class="kw"><button>determinate progress bar</button><button>indeterminate progress bar</button><button>loading spinner in button</button><button>circular progress ring</button><button>time remaining estimate</button><button>native &lt;progress&gt; element</button><button>cancelable upload</button></div>
@@ -677,7 +706,7 @@ Dict.demo('drawer', d => {
 
 /* ---------- 3. Toast ---------- */
 const MAIL = [
-  ['Trần Bảo Ngọc', 'Lịch họp tuần sau', 'Mình dời buổi họp sang chiều thứ Ba nhé…', '#ffd7c2'],
+  ['Trần Bảo Ngọc', 'Lịch họp tuần sau', 'Buổi họp tuần sau được dời sang chiều thứ Ba…', '#ffd7c2'],
   ['Nguyễn Quốc Huy', 'Bản thiết kế trang chủ v3', 'Đã cập nhật theo góp ý hôm qua, xem giúp…', '#c9e7d6'],
   ['Lê Thu Hà', 'Báo cáo tháng 9', 'Gửi bạn bản tổng hợp số liệu tháng 9…', '#d8d3ff'],
   ['Phạm Gia Khang', 'Hoá đơn gói Pro', 'Hoá đơn kỳ tháng 10 đã sẵn sàng…', '#ffe7a3']
@@ -795,6 +824,8 @@ Dict.demo('tooltip', d => {
     b.addEventListener('focus', () => { if (b.matches(':focus-visible')) show(tip); });
     b.addEventListener('blur', () => hide(tip));
     b.addEventListener('pointerdown', () => hide(tip));
+    /* màn hình cảm ứng không có hover: chạm hiện nhãn trong chốc lát */
+    b.addEventListener('pointerup', e => { if (e.pointerType === 'mouse') return; show(tip); hide(tip, tip.classList.contains('wide') ? 3200 : 1600); });
   }
   const fmt = f => {
     if (f === 'clear') { ['b', 'i', 'u'].forEach(k => { delete paper.dataset[k]; $(`[data-f="${k}"]`, d).setAttribute('aria-pressed', 'false'); }); return; }

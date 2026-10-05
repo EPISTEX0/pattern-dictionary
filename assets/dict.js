@@ -6,17 +6,17 @@
    count: số pattern (0 = chưa có / chưa điền). */
 const DICT_GROUPS = ['Hình thức', 'Chức năng'];
 const DICT_PAGES = [
-  { file: 'aesthetic.html',     name: 'Phong cách',         group: 'Hình thức', count: 8,  desc: 'Cùng một nội dung mặc tám bộ “quần áo” thẩm mỹ khác nhau.' },
-  { file: 'layout.html',        name: 'Bố cục',             group: 'Hình thức', count: 6,  desc: 'Cách chia khung trang: thứ gì nằm đâu, chiếm bao nhiêu cột.' },
-  { file: 'motion.html',        name: 'Chuyển động',        group: 'Hình thức', count: 11, desc: 'Trang web động đậy khi cuộn, bấm hay chỉ nhìn vào nó.' },
-  { file: 'surface.html',       name: 'Bề mặt',             group: 'Hình thức', count: 6,  desc: 'Hạt nhiễu, dải màu, chấm in, ánh sáng — chất liệu của màn hình.' },
-  { file: 'navigation.html',    name: 'Điều hướng',         group: 'Chức năng', count: 7,  desc: 'Cách người dùng biết mình đang ở đâu và đi tiếp tới đâu.' },
-  { file: 'forms.html',         name: 'Form & nhập liệu',   group: 'Chức năng', count: 6,  desc: 'Ô nhập, lựa chọn và kiểm lỗi giúp người dùng điền nhanh, ít sai.' },
-  { file: 'feedback.html',      name: 'Phản hồi & lớp phủ', group: 'Chức năng', count: 7,  desc: 'Thông báo, hộp thoại, tooltip — hệ thống trả lời lại người dùng.' },
-  { file: 'data.html',          name: 'Hiển thị dữ liệu',   group: 'Chức năng', count: 6,  desc: 'Bảng, danh sách, thẻ số liệu và biểu đồ dễ đọc.' },
-  { file: 'ux.html',            name: 'Thành phần UX',      group: 'Chức năng', count: 8,  desc: 'Những khối quen thuộc giúp người dùng quyết định nhanh hơn.' },
-  { file: 'onboarding.html',    name: 'Onboarding',         group: 'Chức năng', count: 4,  desc: 'Dẫn người mới từ lần mở đầu tiên tới lúc thấy giá trị.' },
-  { file: 'dark-patterns.html', name: 'Dark patterns',      group: 'Chức năng', count: 7,  desc: 'Mẹo giao diện lừa người dùng — để nhận ra và tránh.' },
+  { file: 'aesthetic.html',     name: 'Phong cách',         group: 'Hình thức', count: 8,  desc: 'Một nội dung trình bày theo tám phong cách thẩm mỹ khác nhau.' },
+  { file: 'layout.html',        name: 'Bố cục',             group: 'Hình thức', count: 6,  desc: 'Cách chia vùng trang: vị trí, thứ tự và số cột của từng khối nội dung.' },
+  { file: 'motion.html',        name: 'Chuyển động',        group: 'Hình thức', count: 11, desc: 'Hiệu ứng chuyển động phản hồi thao tác cuộn, nhấn và di chuột.' },
+  { file: 'surface.html',       name: 'Bề mặt',             group: 'Hình thức', count: 6,  desc: 'Chất liệu bề mặt: nhiễu hạt, dải chuyển màu, lưới chấm và hiệu ứng ánh sáng.' },
+  { file: 'navigation.html',    name: 'Điều hướng',         group: 'Chức năng', count: 7,  desc: 'Cấu trúc giúp người dùng biết vị trí hiện tại và đường đi tiếp theo.' },
+  { file: 'forms.html',         name: 'Form & nhập liệu',   group: 'Chức năng', count: 6,  desc: 'Ô nhập, lựa chọn và kiểm tra lỗi giúp người dùng điền nhanh và chính xác.' },
+  { file: 'feedback.html',      name: 'Phản hồi & lớp phủ', group: 'Chức năng', count: 7,  desc: 'Thông báo, hộp thoại và tooltip phản hồi kết quả thao tác của người dùng.' },
+  { file: 'data.html',          name: 'Hiển thị dữ liệu',   group: 'Chức năng', count: 6,  desc: 'Bảng, danh sách, thẻ chỉ số và biểu đồ trình bày dữ liệu rõ ràng.' },
+  { file: 'ux.html',            name: 'Thành phần UX',      group: 'Chức năng', count: 8,  desc: 'Các thành phần quen thuộc hỗ trợ người dùng ra quyết định nhanh hơn.' },
+  { file: 'onboarding.html',    name: 'Onboarding',         group: 'Chức năng', count: 4,  desc: 'Quy trình dẫn người dùng mới từ lần mở đầu tiên tới khi nhận ra giá trị sản phẩm.' },
+  { file: 'dark-patterns.html', name: 'Dark patterns',      group: 'Chức năng', count: 7,  desc: 'Thủ thuật giao diện dẫn người dùng tới lựa chọn bất lợi, kèm cách nhận diện và thay thế.' },
 ];
 
 const Dict = (() => {
@@ -30,7 +30,7 @@ const Dict = (() => {
   const nav = document.querySelector('nav.dnav');
   if (nav) {
     nav.setAttribute('aria-label', 'Các nhóm pattern');
-    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html">Từ điển pattern</a>' +
+    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Từ điển pattern — trang chủ"><span>Từ điển<span class="b2"> pattern</span></span></a>' +
       DICT_GROUPS.map((g, gi) => {
         const items = DICT_PAGES.filter(p => p.group === g);
         const cur = items.find(p => p === page);

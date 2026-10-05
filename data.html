@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hiển thị dữ liệu — Từ điển pattern thiết kế web</title>
+<title>Hiển thị dữ liệu — Từ điển pattern</title>
+<meta name="description" content="6 pattern hiển thị dữ liệu: data table, accordion, carousel, activity feed, comparison table, faceted search. Có demo thao tác được và keyword để prompt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -124,11 +125,21 @@
 #carousel .demo .dots button:focus-visible{outline:2px solid var(--acc);outline-offset:0}
 #carousel .demo .pos{font:500 12px/1 var(--mono);color:#9a9ba5;min-width:44px;text-align:center}
 @media (max-width:760px){
+  #carousel .demo{--demo-h-m:500px}
   #carousel .demo .track{padding:4px 8%}
-  #carousel .demo .slide{flex-basis:84%;grid-template-columns:1fr;padding:18px}
-  #carousel .demo .prev{display:none}
+  #carousel .demo .slide{flex-basis:84%;grid-template-columns:1fr;align-content:center;gap:14px;padding:16px 18px 18px}
+  #carousel .demo .slide h4{font-size:20px}
+  #carousel .demo .slide p{margin:6px 0 12px}
+  #carousel .demo .slide .use{height:36px}
+  #carousel .demo .prev{order:-1;height:92px;padding:10px;gap:5px}
+  #carousel .demo .prev i{height:9px}
+  #carousel .demo .prev i.b{height:20px}
+  #carousel .demo .prev .cols i{height:28px}
   #carousel .demo .top{padding:0 16px 12px}
   #carousel .demo .top h3{font-size:14px;line-height:1.3}
+  #carousel .demo .foot{padding-top:10px;gap:8px}
+  #carousel .demo .dots{gap:0}
+  #carousel .demo .dots button{width:32px;height:32px}
 }
 
 /* ===== 4. Activity feed ===== */
@@ -142,7 +153,7 @@
 #activity-feed .demo fieldset label:has(:focus-visible){outline:2px solid var(--acc);outline-offset:1px}
 #activity-feed .demo .feed{flex:1;overflow-y:auto;padding:6px 22px 60px;scrollbar-width:thin}
 #activity-feed .demo .feed:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
-#activity-feed .demo .day{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#999;padding:16px 0 8px 46px}
+#activity-feed .demo .day{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#999;padding:16px 0 8px 46px}
 #activity-feed .demo .ev{position:relative;display:grid;grid-template-columns:32px 1fr auto;gap:14px;padding:8px 0}
 #activity-feed .demo .ev::before{content:"";position:absolute;left:15px;top:0;bottom:0;width:2px;background:#ebe9e4}
 #activity-feed .demo .ev:first-of-type::before{top:20px}
@@ -194,7 +205,7 @@
 /* ===== 6. Filter chips / faceted search ===== */
 #faceted-search .demo{height:440px;background:#fbfbfa;color:#1b1b1b;font-size:13px}
 #faceted-search .demo{container-type:inline-size}
-#faceted-search .demo .in{position:absolute;inset:0;display:grid;grid-template-columns:210px 1fr}
+#faceted-search .demo .in{position:absolute;inset:0;display:grid;grid-template-columns:210px 1fr;grid-template-rows:minmax(0,1fr)}
 #faceted-search .demo aside{border-right:1px solid #ecebe7;padding:18px 16px;overflow-y:auto;background:#fff}
 #faceted-search .demo fieldset{border:0;margin-bottom:18px}
 #faceted-search .demo legend{font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:8px}
@@ -235,7 +246,64 @@
   #faceted-search .demo fieldset{margin:0;flex:1}
   #faceted-search .demo main{min-height:0}
 }
+/* ===== mobile (≤760px) =====
+   Data table: 6 cột không vừa 390px, nên chuyển mỗi hàng thành một thẻ; hàng tiêu đề thành dãy nút sắp xếp
+   (đúng khuyến nghị trong mục "Tránh khi" của chính pattern này).
+   Comparison table: chỉ 3 sản phẩm, giá trị ngắn, nên giữ dạng bảng và thu cột cho vừa bề ngang:
+   so sánh cần thấy cả ba cột cùng lúc; cột tiêu chí vẫn sticky nếu bảng rộng hơn. */
 @media (max-width:760px){
+  #data-table .demo{height:560px}
+  #data-table .demo .bar{padding:12px;gap:8px}
+  #data-table .demo .search{flex:1 1 100%;max-width:none}
+  #data-table .demo select{flex:1 1 auto}
+  #data-table .demo .bulk{flex-wrap:wrap}
+  #data-table .demo .bulk button{height:36px}
+  #data-table .demo :is(table,thead,tbody){display:block;min-width:0}
+  #data-table .demo thead tr{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 12px;background:#faf9f7;border-bottom:1px solid #e4e2dc}
+  #data-table .demo thead th{position:static;flex:none;height:auto;border:0;background:none}
+  #data-table .demo thead th.chk{width:auto}
+  #data-table .demo thead th.chk label{display:grid;place-items:center;width:36px;height:36px;cursor:pointer}
+  #data-table .demo thead th button{width:auto;height:36px;padding:0 12px;border:1px solid #d9d6cf;border-radius:999px;background:#fff}
+  #data-table .demo thead th[aria-sort] button{border-color:#1b1b1b;color:#111}
+  #data-table .demo input[type=checkbox]{width:20px;height:20px}
+  #data-table .demo tbody tr{display:grid;grid-template-columns:44px 1fr 1fr 1fr;grid-template-areas:"c n n s" "c r p d";gap:8px 10px;padding:12px 14px 12px 0;border-bottom:1px solid #f0eee9}
+  #data-table .demo tbody :is(td,th){height:auto;padding:0;border:0;white-space:normal;background:none}
+  #data-table .demo tbody tr:hover,#data-table .demo tbody tr:hover>*{background:#faf9f7}
+  #data-table .demo tbody tr.sel,#data-table .demo tbody tr.sel>*{background:#fff4ee}
+  #data-table .demo tbody td.chk{grid-area:c;width:auto;display:grid;justify-items:center;align-content:start;padding-top:2px}
+  #data-table .demo tbody th{grid-area:n;font-size:14.5px}
+  #data-table .demo tbody th small{font-size:12.5px;margin-top:2px}
+  #data-table .demo tbody td:nth-child(3){grid-area:r}
+  #data-table .demo tbody td:nth-child(4){grid-area:s;justify-self:end}
+  #data-table .demo tbody td:nth-child(5){grid-area:p}
+  #data-table .demo tbody td:nth-child(6){grid-area:d}
+  #data-table .demo tbody td.num{text-align:left}
+  #data-table .demo tbody td[data-l]::before{content:attr(data-l);display:block;font-size:12px;color:#888;margin-bottom:2px}
+  #data-table .demo tbody tr.empty{display:block;padding:0}
+  #data-table .demo tbody tr.empty td{display:block;padding:48px 16px}
+
+  #comparison-table .demo{height:540px}
+  #comparison-table .demo .bar{padding:12px 14px;gap:10px}
+  #comparison-table .demo .sw{min-height:36px}
+  #comparison-table .demo table{min-width:0}
+  #comparison-table .demo col:first-child{width:27%}
+  #comparison-table .demo :is(thead th,tbody th,tbody td){padding:10px 4px}
+  #comparison-table .demo :is(thead th,tbody th):first-child{padding-left:12px}
+  #comparison-table .demo thead th:first-child,#comparison-table .demo tbody th[scope=rowgroup]{font-size:12px}
+  #comparison-table .demo tbody th[scope=rowgroup]{padding-top:18px}
+  #comparison-table .demo thead b{font-size:14px;line-height:1.25}
+  #comparison-table .demo thead span{font-size:12px;white-space:nowrap}
+  #comparison-table .demo thead .tag{display:block;width:fit-content;margin:4px 0 2px;font-size:12px}
+  #comparison-table .demo tbody :is(th,td){font-size:13px}
+
+  #activity-feed .demo .demo-tools>button{min-height:36px}
+  #activity-feed .demo :is(.day,.pill,time){font-size:12px}
+  #faceted-search .demo legend{font-size:12px}
+  #faceted-search .demo aside label{padding:8px 6px}
+  #faceted-search .demo :is(aside .n,.chip small){font-size:12px}
+  #faceted-search .demo .chip{height:36px}
+  #faceted-search .demo .rm{height:32px}
+  #faceted-search .demo .clear{min-height:32px}
   #faceted-search .demo{height:600px}
   #accordion .demo{height:480px}
   #activity-feed .demo .bar h3{display:none}
@@ -251,16 +319,16 @@
 <main class="wrap">
   <header class="head">
     <h1>Hiển thị dữ liệu</h1>
-    <p>Khi giao diện phải chứa nhiều thông tin: bảng, danh sách có lọc, nội dung xếp gọn để mở ra khi cần. Mọi demo dưới đây <b>bấm, gõ, dùng bàn phím được thật</b>.</p>
+    <p>Pattern trình bày lượng thông tin lớn: bảng, danh sách có bộ lọc, nội dung thu gọn và mở ra khi cần. Mọi demo đều thao tác được bằng chuột, chạm và bàn phím.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="data-table">
     <h2>Data table</h2>
-    <p class="vi"><b>Bảng dữ liệu sắp xếp, lọc, chọn nhiều hàng.</b> Bấm tiêu đề cột để sắp xếp (bấm lại để đảo chiều), gõ vào ô lọc để thu hẹp, tích nhiều hàng để hiện thanh thao tác hàng loạt. Hàng tiêu đề dính ở trên khi cuộn trong bảng.</p>
+    <p class="vi"><b>Bảng dữ liệu có sắp xếp, lọc và chọn nhiều hàng.</b> Hàng tiêu đề dính ở trên khi cuộn trong bảng. Trên màn hình hẹp, mỗi hàng chuyển thành một thẻ và tiêu đề cột chuyển thành dãy nút sắp xếp. Nhấn tiêu đề cột để sắp xếp (nhấn lần nữa để đảo chiều), nhập vào ô lọc để thu hẹp, chọn nhiều hàng để hiện thanh thao tác hàng loạt.</p>
     <div class="demo">
       <div class="bar">
-        <div class="search"><label class="sr" for="dt-q">Lọc theo tên</label><input id="dt-q" type="search" placeholder="Lọc theo tên…" autocomplete="off"></div>
+        <div class="search"><label class="sr" for="dt-q">Lọc theo tên hoặc email</label><input id="dt-q" type="search" placeholder="Lọc theo tên hoặc email" autocomplete="off"></div>
         <label class="sr" for="dt-st">Trạng thái</label>
         <select id="dt-st"><option value="">Mọi trạng thái</option><option>Hoạt động</option><option>Đã mời</option><option>Tạm khoá</option></select>
         <output class="cnt" aria-live="polite"></output>
@@ -270,7 +338,7 @@
         <table>
           <caption class="sr">Thành viên dự án</caption>
           <thead><tr>
-            <th class="chk" scope="col"><input type="checkbox" class="all" aria-label="Chọn tất cả hàng đang hiện"></th>
+            <th class="chk" scope="col"><label><input type="checkbox" class="all" aria-label="Chọn tất cả hàng đang hiện"></label></th>
             <th scope="col" data-k="name" aria-sort="ascending"><button type="button">Thành viên<span class="ar" aria-hidden="true"></span></button></th>
             <th scope="col" data-k="role"><button type="button">Vai trò<span class="ar" aria-hidden="true"></span></button></th>
             <th scope="col" data-k="status"><button type="button">Trạng thái<span class="ar" aria-hidden="true"></span></button></th>
@@ -283,8 +351,8 @@
       <div class="toast" role="status"></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng cần so sánh nhiều bản ghi cùng thuộc tính, tìm một hàng cụ thể, hoặc làm một việc cho nhiều hàng một lúc (xuất, xoá, đổi quyền). Trang quản trị, danh sách đơn hàng, thành viên.</p>
-      <p class="avoid"><b>Tránh khi</b>mỗi bản ghi chỉ có 1–2 thuộc tính hoặc nội dung giàu hình ảnh: dùng danh sách hay lưới thẻ. Trên điện thoại, bảng trên 4 cột nên chuyển thành thẻ xếp chồng.</p>
+      <p class="use"><b>Dùng khi</b>người dùng cần so sánh nhiều bản ghi theo cùng thuộc tính, tìm một hàng cụ thể, hoặc thao tác trên nhiều hàng cùng lúc (xuất, xoá, đổi quyền): trang quản trị, danh sách đơn hàng, danh sách thành viên.</p>
+      <p class="avoid"><b>Tránh khi</b>mỗi bản ghi chỉ có 1–2 thuộc tính hoặc nội dung chủ yếu là hình ảnh: dùng danh sách hoặc lưới thẻ. Trên điện thoại, bảng có hơn 4 cột nên chuyển thành thẻ xếp chồng.</p>
     </div>
     <div class="kw"><button>sortable data table</button><button>aria-sort column headers</button><button>sticky table header</button><button>row selection with bulk actions bar</button><button>select-all checkbox (indeterminate)</button><button>inline table filter</button><button>tabular numbers, right-aligned</button></div>
   </article>
@@ -292,27 +360,27 @@
   <!-- 2 -->
   <article class="pattern" id="accordion">
     <h2>Accordion</h2>
-    <p class="vi"><b>Danh sách mục gập/mở.</b> Chỉ hiện tiêu đề; bấm (hoặc Tab tới rồi Enter/Space) để mở phần nội dung bên dưới. Kiểu “một mục mỗi lúc” tự đóng mục cũ khi mở mục mới. Bản này dùng thẻ <code>&lt;details&gt;</code> có sẵn của trình duyệt, nên Ctrl+F vẫn tìm thấy chữ trong mục đang đóng.</p>
+    <p class="vi"><b>Danh sách mục thu gọn và mở rộng.</b> Mỗi mục chỉ hiện tiêu đề; phần nội dung mở ra bên dưới khi được chọn. Chế độ một mục mỗi lúc tự đóng mục cũ khi mở mục mới. Demo dùng phần tử <code>&lt;details&gt;</code> gốc của trình duyệt, nên Ctrl+F vẫn tìm thấy chữ trong mục đang đóng. Nhấn vào tiêu đề, hoặc Tab tới rồi nhấn Enter/Space.</p>
     <div class="demo">
       <div class="in">
         <div class="side">
           <h3>Câu hỏi thường gặp</h3>
-          <p>Không thấy câu trả lời? Gửi câu hỏi cho đội hỗ trợ, thường trả lời trong 1 ngày làm việc.</p>
+          <p>Chưa có câu trả lời phù hợp: gửi câu hỏi cho đội hỗ trợ, phản hồi trong 1 ngày làm việc.</p>
           <button type="button" class="excl" aria-pressed="true">Một mục mỗi lúc</button>
           <p class="mode" aria-live="polite">Đang bật: mở mục mới sẽ đóng mục cũ</p>
         </div>
         <div class="list">
-          <details name="faq" open><summary>Ứng dụng có dùng được khi mất mạng không?</summary><div class="ans">Có. Ghi chú bạn đã mở gần đây được lưu trên máy; mọi chỉnh sửa khi ngoại tuyến sẽ tự đồng bộ khi có mạng trở lại.</div></details>
-          <details name="faq"><summary>Dữ liệu của tôi được sao lưu ở đâu?</summary><div class="ans">Mỗi giờ hệ thống tạo một bản sao lưu, giữ trong 30 ngày. Bạn có thể khôi phục một ghi chú về bất kỳ phiên bản nào trong khoảng đó.</div></details>
+          <details name="faq" open><summary>Ứng dụng có dùng được khi mất mạng không?</summary><div class="ans">Có. Các ghi chú mở gần đây được lưu trên máy; mọi chỉnh sửa khi ngoại tuyến sẽ tự đồng bộ khi có mạng trở lại.</div></details>
+          <details name="faq"><summary>Dữ liệu của tôi được sao lưu ở đâu?</summary><div class="ans">Mỗi giờ hệ thống tạo một bản sao lưu, giữ trong 30 ngày. Mỗi ghi chú khôi phục được về bất kỳ phiên bản nào trong khoảng đó.</div></details>
           <details name="faq"><summary>Huỷ gói Pro thì ghi chú có bị mất không?</summary><div class="ans">Không. Tài khoản quay về gói Miễn phí, mọi ghi chú vẫn còn; chỉ các tính năng Pro (lịch sử phiên bản dài, tệp lớn) bị khoá lại.</div></details>
           <details name="faq"><summary>Tôi dùng được trên bao nhiêu thiết bị?</summary><div class="ans">Gói Miễn phí: 2 thiết bị. Gói Pro: không giới hạn. Thiết bị cũ có thể gỡ trong <a href="#accordion">Cài đặt → Thiết bị</a>.</div></details>
-          <details name="faq"><summary>Làm sao mời người khác cùng sửa?</summary><div class="ans">Mở ghi chú, bấm “Chia sẻ”, nhập email. Người được mời có quyền Xem hoặc Sửa, bạn đổi được bất cứ lúc nào.</div></details>
+          <details name="faq"><summary>Làm sao mời người khác cùng sửa?</summary><div class="ans">Mở ghi chú, chọn Chia sẻ, nhập email. Người được mời có quyền Xem hoặc Sửa; quyền này đổi được bất cứ lúc nào.</div></details>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>nhiều mục nội dung độc lập mà người đọc chỉ cần vài mục: FAQ, điều khoản chi tiết, bộ lọc nhiều nhóm, thông số kỹ thuật. Giúp trang ngắn lại mà vẫn quét được mọi tiêu đề.</p>
-      <p class="avoid"><b>Tránh khi</b>người dùng cần đọc gần hết nội dung (bắt họ bấm từng mục là thêm việc), hoặc chỉ có 1–2 mục. Đừng giấu thông tin quan trọng như giá, điều kiện huỷ trong mục đóng.</p>
+      <p class="use"><b>Dùng khi</b>có nhiều mục nội dung độc lập và người đọc chỉ cần vài mục: FAQ, điều khoản chi tiết, bộ lọc nhiều nhóm, thông số kỹ thuật. Trang ngắn lại mà người dùng vẫn quét được mọi tiêu đề.</p>
+      <p class="avoid"><b>Tránh khi</b>người dùng cần đọc gần hết nội dung (mở từng mục là thêm thao tác), hoặc chỉ có 1–2 mục. Không đặt thông tin quyết định như giá, điều kiện huỷ trong mục đang đóng.</p>
     </div>
     <div class="kw"><button>accordion</button><button>FAQ accordion</button><button>native &lt;details&gt; / &lt;summary&gt;</button><button>exclusive accordion (details name)</button><button>animated expand with chevron rotation</button><button>disclosure pattern, aria-expanded</button></div>
   </article>
@@ -320,7 +388,7 @@
   <!-- 3 -->
   <article class="pattern" id="carousel">
     <h2>Carousel / Slider</h2>
-    <p class="vi"><b>Băng chuyền nội dung trượt ngang.</b> Mỗi lần hiện một mục, lộ một phần mục kế bên để gợi ý còn nữa. Vuốt (hoặc kéo ngang bằng touchpad), bấm ‹ ›, chấm chỉ báo, hoặc Tab vào khung rồi dùng ← →. Không tự chạy mặc định; bật “Tự chạy” thì dừng khi di chuột hay focus vào.</p>
+    <p class="vi"><b>Dải nội dung trượt ngang.</b> Mỗi lần hiển thị một mục, kèm một phần mục kế tiếp để báo hiệu còn nội dung. Mặc định không tự chạy; khi bật Tự chạy, carousel dừng lúc con trỏ hoặc focus nằm trong khung. Vuốt ngang, nhấn ‹ › hoặc chấm chỉ báo, hoặc Tab vào khung rồi dùng phím ← →.</p>
     <div class="demo">
       <section aria-roledescription="carousel" aria-label="Mẫu giao diện nổi bật">
         <div class="top">
@@ -343,8 +411,8 @@
       </section>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>nhóm mục cùng loại, ngang hàng, mà người dùng thích lướt xem (ảnh sản phẩm, mẫu, bài nổi bật) và không gian dọc bị giới hạn.</p>
-      <p class="avoid"><b>Tránh khi</b>đặt thông điệp quan trọng ở slide 2 trở đi: rất ít người xem tới. Đừng tự chạy mặc định; nếu có tự chạy phải có nút dừng và dừng khi hover/focus.</p>
+      <p class="use"><b>Dùng khi</b>có một nhóm mục cùng loại, ngang hàng, người dùng xem lần lượt (ảnh sản phẩm, mẫu, bài nổi bật) và chiều cao trang bị giới hạn.</p>
+      <p class="avoid"><b>Tránh khi</b>thông điệp quan trọng nằm từ slide thứ 2 trở đi: rất ít người dùng xem tới. Không tự chạy mặc định; nếu có tự chạy, phải có nút dừng và dừng khi hover hoặc focus.</p>
     </div>
     <div class="kw"><button>accessible carousel (WAI-ARIA APG)</button><button>CSS scroll-snap slider</button><button>swipeable, peek next slide</button><button>prev/next buttons + dot indicators</button><button>no autoplay by default, pause on hover/focus</button><button>aria-roledescription="slide"</button></div>
   </article>
@@ -352,7 +420,7 @@
   <!-- 4 -->
   <article class="pattern" id="activity-feed" data-toc="Timeline / Activity feed">
     <h2>Timeline / Activity feed</h2>
-    <p class="vi"><b>Dòng thời gian các hoạt động.</b> Ai làm gì, với cái gì, lúc nào, mới nhất ở trên, gom theo ngày, nối bằng một đường dọc. Lọc theo loại hoạt động; bấm “+ Hoạt động mới” để thấy một sự kiện mới chen vào đầu dòng.</p>
+    <p class="vi"><b>Dòng thời gian hoạt động.</b> Mỗi mục cho biết ai làm gì, với đối tượng nào, lúc nào; mục mới nhất ở trên, nhóm theo ngày và nối bằng một đường dọc. Lọc theo loại hoạt động, hoặc nhấn + Hoạt động mới để thêm một sự kiện vào đầu danh sách.</p>
     <div class="demo">
       <div class="bar">
         <h3>Dự án Website mới</h3>
@@ -368,8 +436,8 @@
       <div class="demo-tools"><button type="button" class="add">+ Hoạt động mới</button><button class="replay">↻ Xem lại</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng cần biết “chuyện gì đã xảy ra” khi họ vắng mặt: lịch sử dự án, theo dõi đơn hàng, nhật ký thay đổi, thông báo nhóm.</p>
-      <p class="avoid"><b>Tránh khi</b>người dùng cần trạng thái hiện tại chứ không cần lịch sử (dùng bảng hoặc thẻ tóm tắt), hoặc sự kiện quá dày: gộp lại kiểu “Minh và 4 người khác đã bình luận”.</p>
+      <p class="use"><b>Dùng khi</b>người dùng cần biết những gì đã diễn ra trong thời gian vắng mặt: lịch sử dự án, theo dõi đơn hàng, nhật ký thay đổi, thông báo nhóm.</p>
+      <p class="avoid"><b>Tránh khi</b>người dùng cần trạng thái hiện tại thay vì lịch sử (dùng bảng hoặc thẻ tóm tắt). Khi sự kiện quá dày, gộp lại theo dạng “Minh và 4 người khác đã bình luận”.</p>
     </div>
     <div class="kw"><button>activity feed</button><button>vertical timeline with connector line</button><button>grouped by day (Today, Yesterday)</button><button>actor · action · object · timestamp</button><button>filter by event type</button><button>new item highlight</button></div>
   </article>
@@ -377,10 +445,10 @@
   <!-- 5 -->
   <article class="pattern" id="comparison-table">
     <h2>Comparison table</h2>
-    <p class="vi"><b>Bảng so sánh sản phẩm theo từng tiêu chí.</b> Mỗi cột một lựa chọn, mỗi hàng một thuộc tính, gom theo nhóm. Tên sản phẩm dính ở trên, tên tiêu chí dính bên trái khi cuộn. Bật “Chỉ hiện điểm khác nhau” để bỏ các hàng giống hệt; di chuột để tô cả cột đang đọc.</p>
+    <p class="vi"><b>Bảng so sánh sản phẩm theo tiêu chí.</b> Mỗi cột là một lựa chọn, mỗi hàng là một thuộc tính, các hàng được nhóm theo chủ đề. Hàng tên sản phẩm dính ở trên và cột tiêu chí dính bên trái khi cuộn. Bật Chỉ hiện điểm khác nhau để ẩn các hàng giống hệt; di chuột hoặc chạm vào một ô để tô sáng cả cột.</p>
     <div class="demo">
       <div class="bar">
-        <h3>So sánh loa không dây</h3>
+        <h3>So sánh ba mẫu loa không dây</h3>
         <label class="sw"><input type="checkbox" class="diffT">Chỉ hiện điểm khác nhau</label>
       </div>
       <div class="wrapT" tabindex="0" role="region" aria-label="Bảng so sánh, cuộn được">
@@ -389,9 +457,9 @@
           <colgroup><col><col><col><col></colgroup>
           <thead><tr>
             <th scope="col">Tiêu chí</th>
-            <th scope="col"><b>Loa Mẫu S</b><span>890.000 ₫</span></th>
-            <th scope="col"><b>Loa Mẫu M<span class="tag">Phù hợp nhất</span></b><span>1.490.000 ₫</span></th>
-            <th scope="col"><b>Loa Mẫu L</b><span>2.990.000 ₫</span></th>
+            <th scope="col"><b>Mẫu S</b><span>890.000 ₫</span></th>
+            <th scope="col"><b>Mẫu M<span class="tag">Đề xuất</span></b><span>1.490.000 ₫</span></th>
+            <th scope="col"><b>Mẫu L</b><span>2.990.000 ₫</span></th>
           </tr></thead>
           <tbody>
             <tr class="grp"><th scope="rowgroup" colspan="4">Âm thanh</th></tr>
@@ -418,8 +486,8 @@
       <p class="sr live" aria-live="polite"></p>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng đang chọn giữa 2–4 lựa chọn có cùng bộ thuộc tính (sản phẩm, gói, cấu hình) và cần thấy khác biệt theo từng tiêu chí, không chỉ giá.</p>
-      <p class="avoid"><b>Tránh khi</b>lựa chọn quá khác loại để có chung tiêu chí, hoặc trên 5 cột: chia nhỏ, hoặc cho người dùng tự chọn mục để so. Đừng dùng ✓/✗ khi giá trị thật là con số.</p>
+      <p class="use"><b>Dùng khi</b>người dùng đang chọn giữa 2–4 lựa chọn có cùng bộ thuộc tính (sản phẩm, gói dịch vụ, cấu hình) và cần thấy khác biệt theo từng tiêu chí, không chỉ giá.</p>
+      <p class="avoid"><b>Tránh khi</b>các lựa chọn quá khác loại để có tiêu chí chung, hoặc có hơn 5 cột: chia nhỏ bảng, hoặc cho người dùng tự chọn mục cần so sánh. Không dùng ✓/✗ khi giá trị thực là con số.</p>
     </div>
     <div class="kw"><button>product comparison table</button><button>feature matrix</button><button>sticky header row and first column</button><button>"show differences only" toggle</button><button>grouped spec rows</button><button>column highlight on hover</button></div>
   </article>
@@ -427,7 +495,7 @@
   <!-- 6 -->
   <article class="pattern" id="faceted-search" data-toc="Filter chips / Faceted search">
     <h2>Filter chips / Faceted search</h2>
-    <p class="vi"><b>Lọc nhiều chiều, kết quả cập nhật ngay.</b> Cột trái là các “mặt” (facet) như chủ đề, cấp độ, mỗi lựa chọn kèm số kết quả sẽ còn lại nếu chọn nó. Hàng chip trên cùng là bộ lọc nhanh bật/tắt. Bộ lọc đang áp dụng hiện thành chip có dấu × để bỏ từng cái.</p>
+    <p class="vi"><b>Lọc theo nhiều chiều, kết quả cập nhật ngay.</b> Cột bên trái chứa các facet (nhóm thuộc tính) như chủ đề, cấp độ; mỗi lựa chọn kèm số kết quả còn lại nếu được chọn. Hàng chip trên cùng là bộ lọc nhanh dạng bật/tắt. Mỗi bộ lọc đang áp dụng hiện thành một chip có dấu × để bỏ riêng. Chọn một facet hoặc chip để lọc.</p>
     <div class="demo">
       <div class="in">
         <aside aria-label="Bộ lọc">
@@ -442,8 +510,8 @@
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tập kết quả lớn có nhiều thuộc tính rõ ràng (cửa hàng, khoá học, việc làm, bất động sản) và người dùng thu hẹp dần chứ không biết trước tên thứ họ tìm.</p>
-      <p class="avoid"><b>Tránh khi</b>dưới ~20 kết quả (một danh sách là đủ) hoặc bộ lọc phải bấm “Áp dụng” và tải lại trang mới thấy số: đếm phải hiện trước khi chọn, để người dùng không lọc ra con số 0.</p>
+      <p class="use"><b>Dùng khi</b>tập kết quả lớn có nhiều thuộc tính rõ ràng (cửa hàng, khoá học, việc làm, bất động sản) và người dùng thu hẹp dần thay vì biết trước tên mục cần tìm.</p>
+      <p class="avoid"><b>Tránh khi</b>có dưới khoảng 20 kết quả (một danh sách là đủ), hoặc bộ lọc buộc người dùng nhấn Áp dụng và tải lại trang mới thấy số lượng. Số kết quả cần hiện trước khi chọn để người dùng không lọc ra 0 kết quả.</p>
     </div>
     <div class="kw"><button>faceted search</button><button>filter chips (toggle)</button><button>removable active filter chips</button><button>live result count</button><button>facet counts per option</button><button>disable zero-result options</button><button>"Clear all" filters</button></div>
   </article>
@@ -491,10 +559,10 @@
       tb.innerHTML = vis.length ? vis.map(p => `<tr data-id="${p.id}"${sel.has(p.id) ? ' class="sel"' : ''}>
         <td class="chk"><input type="checkbox" aria-label="Chọn ${esc(p.name)}"${sel.has(p.id) ? ' checked' : ''}></td>
         <th scope="row">${esc(p.name)}<small>${esc(p.mail)}</small></th>
-        <td>${p.role}</td>
+        <td data-l="Vai trò">${p.role}</td>
         <td><span class="st" style="--c:${ST_C[p.status]}">${p.status}</span></td>
-        <td class="num">${p.projects}</td>
-        <td class="num">${p.seen.slice(8).replace(/^0/, '')}/${p.seen.slice(5, 7).replace(/^0/, '')}/${p.seen.slice(0, 4)}</td></tr>`).join('')
+        <td class="num" data-l="Dự án">${p.projects}</td>
+        <td class="num" data-l="Gần nhất">${p.seen.slice(8).replace(/^0/, '')}/${p.seen.slice(5, 7).replace(/^0/, '')}/${p.seen.slice(0, 4)}</td></tr>`).join('')
         : `<tr class="empty"><td colspan="6">Không có thành viên nào khớp bộ lọc.</td></tr>`;
       cnt.textContent = vis.length === PEOPLE.length ? `${vis.length} thành viên` : `${vis.length} / ${PEOPLE.length} thành viên`;
       sync();
@@ -615,7 +683,7 @@
   const pill = s => `<span class="pill" style="--pb:${PILL[s][0]};--pc:${PILL[s][1]}">${s}</span>`;
   const EVENTS = [
     { day: 'Hôm nay', t: '10:42', iso: '2026-10-05T10:42', p: 'LA', k: 'st', h: `đã chuyển <span class="obj">Thiết kế trang chủ</span> từ ${pill('Đang làm')} sang ${pill('Chờ duyệt')}` },
-    { day: 'Hôm nay', t: '09:15', iso: '2026-10-05T09:15', p: 'MK', k: 'cmt', h: `bình luận trong <span class="obj">Trang bảng giá</span>`, q: 'Bảng giá nên có thêm cột so sánh theo năm, khách hỏi nhiều.' },
+    { day: 'Hôm nay', t: '09:15', iso: '2026-10-05T09:15', p: 'MK', k: 'cmt', h: `bình luận trong <span class="obj">Trang bảng giá</span>`, q: 'Bảng giá nên có thêm cột giá theo năm, nhiều khách hàng đã hỏi.' },
     { day: 'Hôm nay', t: '08:30', iso: '2026-10-05T08:30', p: 'TH', k: 'file', h: `tải lên tệp trong <span class="obj">Bộ nhận diện</span>`, f: 'logo-ban-moi.svg · 24 KB' },
     { day: 'Hôm qua', t: '17:05', iso: '2026-10-04T17:05', p: 'QB', k: 'st', h: `đánh dấu <span class="obj">Viết nội dung trang Giới thiệu</span> là ${pill('Xong')}` },
     { day: 'Hôm qua', t: '14:20', iso: '2026-10-04T14:20', p: 'YN', k: 'cmt', h: `trả lời <b>Minh Khoa</b> trong <span class="obj">Trang bảng giá</span>`, q: 'Đồng ý, mình sẽ thêm vào bản nháp tiếp theo.' },
@@ -675,7 +743,9 @@
     const cols = $$('col', d), live = $('.live', d);
     const hl = k => cols.forEach((c, j) => c.classList.toggle('hl', j === k && k > 0));
     const table = $('table', d);
-    table.addEventListener('mouseover', e => { const c = e.target.closest('td,th'); if (c && !c.matches('[scope=rowgroup]')) hl(c.cellIndex); });
+    const pick = e => { const c = e.target.closest('td,th'); if (c && !c.matches('[scope=rowgroup]')) hl(c.cellIndex); };
+    table.addEventListener('mouseover', pick);
+    table.addEventListener('click', pick); // chạm trên mobile
     table.addEventListener('mouseleave', () => hl(-1));
     $('.diffT', d).addEventListener('change', e => {
       d.classList.toggle('diff', e.target.checked);
@@ -688,11 +758,11 @@
   const COURSES = [
     ['Nhập môn thiết kế giao diện', 'Thiết kế', 'Cơ bản', 1, 2.5, 1], ['Hệ thống màu cho sản phẩm số', 'Thiết kế', 'Trung cấp', 0, 4, 1],
     ['Typography trên màn hình', 'Thiết kế', 'Trung cấp', 0, 3, 0], ['Phác thảo wireframe nhanh', 'Thiết kế', 'Cơ bản', 1, 1.5, 0],
-    ['Thiết kế cho người khiếm thị', 'Thiết kế', 'Nâng cao', 0, 5, 1], ['HTML & CSS từ con số 0', 'Lập trình', 'Cơ bản', 1, 6, 1],
+    ['Thiết kế cho người khiếm thị', 'Thiết kế', 'Nâng cao', 0, 5, 1], ['HTML & CSS căn bản', 'Lập trình', 'Cơ bản', 1, 6, 1],
     ['JavaScript cho người mới', 'Lập trình', 'Cơ bản', 1, 2, 0], ['Viết API đầu tiên', 'Lập trình', 'Trung cấp', 0, 8, 1],
     ['Kiểm thử tự động', 'Lập trình', 'Nâng cao', 0, 7, 1], ['Git trong 90 phút', 'Lập trình', 'Cơ bản', 1, 1.5, 0],
-    ['Bảng tính cho người bận rộn', 'Dữ liệu', 'Cơ bản', 1, 2, 0], ['SQL cơ bản', 'Dữ liệu', 'Cơ bản', 0, 5, 1],
-    ['Trực quan hoá số liệu', 'Dữ liệu', 'Trung cấp', 0, 3, 1], ['Thống kê không đáng sợ', 'Dữ liệu', 'Trung cấp', 1, 4, 0],
+    ['Bảng tính văn phòng', 'Dữ liệu', 'Cơ bản', 1, 2, 0], ['SQL cơ bản', 'Dữ liệu', 'Cơ bản', 0, 5, 1],
+    ['Trực quan hoá số liệu', 'Dữ liệu', 'Trung cấp', 0, 3, 1], ['Thống kê nhập môn', 'Dữ liệu', 'Trung cấp', 1, 4, 0],
     ['Dự báo bằng chuỗi thời gian', 'Dữ liệu', 'Nâng cao', 0, 9, 1], ['Viết email rõ ràng', 'Kỹ năng', 'Cơ bản', 1, 1, 0],
     ['Thuyết trình 10 phút', 'Kỹ năng', 'Cơ bản', 1, 2, 1], ['Quản lý thời gian', 'Kỹ năng', 'Trung cấp', 0, 3, 1],
     ['Dẫn dắt cuộc họp', 'Kỹ năng', 'Nâng cao', 0, 2.5, 0], ['Phản hồi đồng nghiệp', 'Kỹ năng', 'Trung cấp', 1, 1, 0],
@@ -734,7 +804,7 @@
       act.insertAdjacentHTML('beforeend', chips.map(([g, v, l]) => `<button type="button" class="rm" data-g="${g}" data-v="${v}" aria-label="Bỏ lọc ${l}">${l}</button>`).join('') +
         (chips.length > 1 ? '<button type="button" class="clear">Xoá tất cả</button>' : ''));
       res.innerHTML = hits.length ? hits.map(c => `<li class="card"><b>${c.t}</b><div class="meta"><span>${c.topic}</span><span>${c.level}</span><span>${String(c.hours).replace('.', ',')} giờ</span>${c.free ? '<span class="free">Miễn phí</span>' : ''}${c.cert ? '<span>Chứng chỉ</span>' : ''}</div></li>`).join('')
-        : '<li class="zero">Không có khoá học khớp. Thử bỏ bớt một bộ lọc.</li>';
+        : '<li class="zero">Không có khoá học phù hợp. Bỏ bớt một bộ lọc để xem thêm kết quả.</li>';
     };
     d.addEventListener('change', e => {
       const i = e.target; if (!i.matches('aside input')) return;

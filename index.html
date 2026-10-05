@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Từ điển pattern thiết kế web — thấy cái đẹp, gọi được tên</title>
-<meta name="description" content="Từ điển pattern thiết kế web bằng tiếng Việt: mỗi pattern chạy thật ngay trên trang, kèm tên gọi và keyword tiếng Anh để bạn mô tả cho AI đúng thứ mình muốn.">
+<title>Từ điển pattern thiết kế web — tên gọi và keyword cho từng pattern UI</title>
+<meta name="description" content="Từ điển pattern thiết kế web bằng tiếng Việt: mỗi pattern có demo tương tác, tên gọi chuẩn và keyword tiếng Anh để mô tả chính xác yêu cầu cho công cụ AI.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:title" content="Từ điển pattern thiết kế web">
-<meta property="og:description" content="Thấy cái đẹp, gọi được tên, prompt được. Các pattern UI/UX chạy thật, kèm keyword tiếng Anh để prompt AI.">
+<meta property="og:description" content="Các pattern UI/UX có demo tương tác, kèm tên gọi và keyword tiếng Anh để viết prompt cho AI.">
 <meta property="og:url" content="https://epistex0.github.io/tu-dien-pattern/">
 <link rel="canonical" href="https://epistex0.github.io/tu-dien-pattern/">
 <meta name="theme-color" content="#f6f5f2">
@@ -345,6 +345,16 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   .end{padding:120px 0 104px}
   .foot .lw{grid-template-columns:1fr}.foot ul{columns:2}
 }
+/* mobile: chữ ≥12px, vùng chạm ≥32px (đặt cuối để thắng quy tắc ≤900px) */
+@media (max-width:760px){
+  .lnav .brand{min-height:40px}
+  .tabs .tg{font-size:12px}
+  .tabs .n{min-width:20px;height:20px;font-size:12px;line-height:20px}
+  .tag,.prompt-card .lbl{font-size:12px}
+  .pv-dark .modal small{font-size:12px}
+  .foot li{padding:0}
+  .foot a,.foot li span{display:flex;align-items:center;min-height:36px}
+}
 </style>
 </head>
 <body>
@@ -363,11 +373,11 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="hero">
   <div class="lw">
     <span class="pill"><b>Từ điển học tập</b><span aria-hidden="true">·</span>UI/UX bằng tiếng Việt</span>
-    <h1><span class="w" style="--i:0">Thấy</span> <span class="w" style="--i:1">cái</span> <span class="w" style="--i:2">đẹp,</span><br> <span class="w" style="--i:3">giờ</span> <span class="w" style="--i:4">gọi</span> <span class="w" style="--i:5">được</span> <span class="anchor"><span class="w" style="--i:6"><em>tên</em>.</span><span class="note-hand" aria-hidden="true"><svg viewBox="0 0 60 44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M56 34C40 38 18 34 8 12"/><path d="M4 20 8 11l9 4"/></svg>keyword tiếng Anh<br>để prompt cho AI</span></span></h1>
-    <p class="lead">Mỗi pattern thiết kế web <b>chạy thật ngay trên trang</b>, kèm tên gọi và keyword tiếng Anh. Học một lần, mô tả cho AI đúng thứ bạn muốn thay vì “làm cho đẹp hơn”.</p>
+    <h1><span class="w" style="--i:0">Nhận</span> <span class="w" style="--i:1">ra</span> <span class="w" style="--i:2">pattern,</span><br> <span class="w" style="--i:3">gọi</span> <span class="w" style="--i:4">đúng</span> <span class="anchor"><span class="w" style="--i:5"><em>tên</em>.</span><span class="note-hand" aria-hidden="true"><svg viewBox="0 0 60 44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M56 34C40 38 18 34 8 12"/><path d="M4 20 8 11l9 4"/></svg>keyword tiếng Anh<br>để viết prompt AI</span></span></h1>
+    <p class="lead">Mỗi pattern thiết kế web có <b>demo tương tác ngay trên trang</b>, kèm tên gọi và keyword tiếng Anh. Biết đúng tên giúp mô tả chính xác yêu cầu cho AI, thay vì chỉ nói “làm cho đẹp hơn”.</p>
     <div class="cta-row">
       <a class="btn btn-ink" href="aesthetic.html" data-first>Mở từ điển <span class="ar">→</span></a>
-      <a class="btn btn-ghost" href="#prompt">Thử ghép prompt</a>
+      <a class="btn btn-ghost" href="#prompt">Ghép prompt</a>
     </div>
     <p class="stats" id="stats" hidden></p>
   </div>
@@ -378,14 +388,14 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   <div class="lw">
     <div class="sec-h rv">
       <div class="eb">Quy trình</div>
-      <h2 id="qt-h">Từ cảm giác tới câu lệnh</h2>
-      <p>Bạn đã có con mắt. Thứ còn thiếu là tên gọi — để nói lại được điều mình thấy.</p>
+      <h2 id="qt-h">Từ cảm nhận tới câu lệnh</h2>
+      <p>Nhận ra một giao diện đẹp mới là bước đầu. Để mô tả lại, cần biết tên gọi của từng thành phần.</p>
     </div>
     <div class="story">
       <div class="steps">
-        <div class="step on" data-s="1"><span class="n">01</span><h3>Thấy cái đẹp</h3><p>Lướt qua một trang và thấy nó “sang”. Nhưng sang ở đâu? <b>Cảm giác thì có, từ ngữ thì chưa.</b></p></div>
-        <div class="step" data-s="2"><span class="n">02</span><h3>Gọi được tên</h3><p>Từ điển tách trang ra thành từng mảnh có tên: thanh nav nổi là <b>Floating nav</b>, lưới ô so le là <b>Bento grid</b>, tấm kính mờ là <b>Glassmorphism</b>.</p></div>
-        <div class="step" data-s="3"><span class="n">03</span><h3>Prompt được</h3><p>Có tên rồi, mô tả cho AI chỉ còn là <b>ghép keyword</b>. Kết quả sát ý hơn hẳn một câu “làm cho đẹp”.</p></div>
+        <div class="step on" data-s="1"><span class="n">01</span><h3>Nhận ra</h3><p>Khi cuộn qua một trang, người xem cảm nhận được sự chỉn chu nhưng khó chỉ ra yếu tố nào tạo nên cảm nhận đó. <b>Có cảm nhận nhưng chưa có thuật ngữ.</b></p></div>
+        <div class="step" data-s="2"><span class="n">02</span><h3>Gọi tên</h3><p>Từ điển tách giao diện thành từng thành phần có tên: thanh điều hướng nổi dạng pill là <b>Floating nav</b>, lưới ô kích thước không đều là <b>Bento grid</b>, bề mặt kính mờ là <b>Glassmorphism</b>.</p></div>
+        <div class="step" data-s="3"><span class="n">03</span><h3>Viết prompt</h3><p>Khi đã có tên, mô tả cho AI là việc <b>ghép keyword</b>. Kết quả sát yêu cầu hơn nhiều so với câu “làm cho đẹp hơn”.</p></div>
       </div>
       <div class="panel" id="panel" data-step="1" aria-hidden="true">
         <div class="frame">
@@ -394,7 +404,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
             <div class="m-nav"><i></i><i></i><i></i><i></i><i></i></div>
             <div class="m-hero"><i></i><i></i><i></i></div>
             <div class="m-bento"><div class="big"><div class="glass"></div></div><div></div><div></div><div class="wide"></div></div>
-            <span class="wow">đẹp quá… gọi là gì nhỉ?</span>
+            <span class="wow">đẹp, nhưng chưa biết tên</span>
           </div>
         </div>
         <span class="tag t1" style="--i:0">Floating nav</span>
@@ -412,7 +422,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
     <div class="sec-h rv">
       <div class="eb">Các nhóm</div>
       <h2 id="nhom-h">Hai cách nhìn một giao diện</h2>
-      <p><b style="color:var(--ink);font-weight:600">Hình thức</b> là trông nó ra sao. <b style="color:var(--ink);font-weight:600">Chức năng</b> là nó giúp người dùng làm gì. Mỗi ô dưới đây là một trang.</p>
+      <p><b style="color:var(--ink);font-weight:600">Hình thức</b> mô tả giao diện trông như thế nào. <b style="color:var(--ink);font-weight:600">Chức năng</b> mô tả giao diện giúp người dùng làm gì. Mỗi thẻ dưới đây dẫn tới một trang.</p>
     </div>
     <div id="clusters"></div>
   </div>
@@ -421,23 +431,23 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="sec" id="prompt" aria-labelledby="pb-h">
   <div class="lw">
     <div class="sec-h rv">
-      <div class="eb">Thử ngay</div>
+      <div class="eb">Công cụ</div>
       <h2 id="pb-h">Ghép keyword thành prompt</h2>
-      <p>Chọn vài pattern, prompt tự viết lại. Copy rồi dán cho AI bạn dùng.</p>
+      <p>Chọn các pattern cần dùng, prompt được cập nhật theo lựa chọn. Copy và dán vào công cụ AI đang dùng.</p>
     </div>
     <div class="pb rv">
       <div class="pb-l">
-        <label class="pb-subj"><span>Bạn đang làm gì (tiếng Anh)</span><input id="subj" value="a note-taking app" autocomplete="off" spellcheck="false"></label>
+        <label class="pb-subj"><span>Sản phẩm cần thiết kế (tiếng Anh)</span><input id="subj" value="a note-taking app" autocomplete="off" spellcheck="false"></label>
         <div class="tabs" role="tablist" aria-label="Nhóm keyword" id="tabs"></div>
         <div class="chips" role="tabpanel" id="chips" aria-labelledby=""></div>
-        <p class="pb-hint">Chip trong <b>Dark patterns</b> được ghi vào dòng “Avoid” — để AI tránh, không phải làm theo.</p>
+        <p class="pb-hint">Chip trong nhóm <b>Dark patterns</b> được ghi vào dòng “Avoid” để AI tránh, không phải để áp dụng.</p>
       </div>
       <div class="pb-r">
         <span class="lbl">Prompt</span>
         <div class="pb-out" id="out" aria-live="polite"></div>
         <div class="pb-act">
           <button class="btn copy" type="button" id="copy">Copy prompt</button>
-          <button class="btn clear" type="button" id="clear">Bỏ chọn hết</button>
+          <button class="btn clear" type="button" id="clear">Bỏ chọn tất cả</button>
         </div>
       </div>
     </div>
@@ -447,8 +457,8 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="end">
   <div class="lw rv">
     <div class="eb">Bắt đầu</div>
-    <h2>Lần tới thấy cái đẹp, bạn sẽ gọi được tên.</h2>
-    <p>Mở một nhóm, xem pattern chạy, bấm keyword để copy.</p>
+    <h2>Gọi đúng tên, mô tả đúng ý.</h2>
+    <p>Mở một nhóm, xem pattern hoạt động trong khung demo và nhấn keyword để copy.</p>
     <div class="cta-row">
       <a class="btn btn-ink" href="aesthetic.html" data-first><span>Bắt đầu với <span data-first-name>Phong cách</span></span> <span class="ar">→</span></a>
       <a class="btn btn-ghost" href="#nhom">Xem tất cả nhóm</a>
@@ -493,7 +503,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   $$('[data-first]').forEach(a => a.href = first.file);
   $$('[data-first-name]').forEach(s => s.textContent = first.name);
   const st = $('#stats');
-  st.innerHTML = `<b>${total}</b> pattern chạy thật · <b>${open.length}</b> nhóm đã mở` + (soon ? ` · ${soon} nhóm sắp có` : '');
+  st.innerHTML = `<b>${total}</b> pattern có demo · <b>${open.length}</b> nhóm đã mở` + (soon ? ` · ${soon} nhóm sắp có` : '');
   st.hidden = false;
 
   /* ---------- marquee: hai hàng, ngược chiều ---------- */
@@ -517,10 +527,10 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
     'data.html': `<div class="c">${[40, 70, 52, 88, 110, 76, 96].map((h, i) => `<i style="--h:${h}px;--i:${i}"></i>`).join('')}</div>`,
     'ux.html': `<div class="pal"><div class="q">⌘ Tìm lệnh…<kbd>esc</kbd></div><div class="rows"><span class="hl"></span><i style="--w:70%"></i><i style="--w:52%"></i><i style="--w:62%"></i></div></div>`,
     'onboarding.html': `<div class="list">${[70, 54, 80].map((w, i) => `<div class="row"><span class="bx" style="--i:${i}"></span><i style="--w:${w}%"></i></div>`).join('')}<div class="prog"><i></i></div></div>`,
-    'dark-patterns.html': `<div class="c"><span class="urg">⏱ Chỉ còn 02:59!</span><div class="modal"><b>Nâng cấp lên gói Pro?</b><span>Nâng cấp ngay</span><small>Không, tôi không thích tiết kiệm</small></div></div>`,
+    'dark-patterns.html': `<div class="c"><span class="urg">Ưu đãi kết thúc sau 02:59</span><div class="modal"><b>Nâng cấp lên gói Pro?</b><span>Nâng cấp ngay</span><small>Không, tôi không thích tiết kiệm</small></div></div>`,
   };
   const SPAN = { 'Hình thức': [4, 2, 2, 4], 'Chức năng': [2, 2, 2, 2, 2, 2, 6] };
-  const SUB = { 'Hình thức': 'trông nó ra sao', 'Chức năng': 'nó giúp làm gì' };
+  const SUB = { 'Hình thức': 'giao diện trông thế nào', 'Chức năng': 'giao diện giúp làm gì' };
   const card = (p, i, g) => {
     const span = (SPAN[g] || [])[i] || 2, dark = p.file === 'dark-patterns.html';
     const tag = p.count ? 'a' : 'div';
