@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bố cục — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Sáu bố cục trang web thường gặp trên lưới 12 cột: hero căn giữa, hero chia đôi, bento grid, lưới bất đối xứng, tràn viền và lưới thẻ.">
+<title>Layout — Pattern Dictionary</title>
+<meta name="description" content="Six common web page layouts on a 12-column grid: centered hero, split hero, bento grid, asymmetric grid, full-bleed and card grid.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset cũ của trang, giờ chỉ áp trong demo (specificity 0 như trước) */
+/* former page reset, now applied only inside demos (specificity 0 as before) */
 :where(.demo *){margin:0;padding:0}
 :where(.demo button){font:inherit;color:inherit}
 
-/* ===== Hạ tầng demo bố cục: trang mini + overlay lưới 12 cột ===== */
+/* ===== Layout demo base: mini page + 12-column grid overlay ===== */
 .demo{--pad:40px;--gap:16px}
 .demo .mini{position:absolute;inset:0;overflow:hidden}
 .demo .g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);padding:0 var(--pad)}
@@ -27,7 +27,7 @@
 .demo .mnav{height:46px;display:flex;align-items:center;gap:22px;font-size:12px}
 .demo .mnav .logo{font-weight:800;font-size:15px;margin-right:auto;letter-spacing:-.02em}
 .demo .mbtn{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:999px;font-size:12.5px;font-weight:600;border:0;cursor:default}
-/* vào khung: các khối xuất hiện so le */
+/* on enter: blocks appear staggered */
 .demo [data-a]{opacity:0;transform:translateY(16px)}
 .demo.play [data-a]{animation:inUp .7s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0) * 90ms)}
 @keyframes inUp{to{opacity:1;transform:none}}
@@ -163,21 +163,21 @@
 #card-grid .c h4{font-size:13px;line-height:1.35;font-weight:600;margin-top:5px}
 #card-grid .c.hide{display:none}
 
-/* ===== MOBILE (≤760px): lưới 12 cột giữ nguyên, thu lề và khoảng cột; các khối xếp chồng ===== */
+/* ===== MOBILE (≤760px): 12-column grid kept, smaller margins and gutters; blocks stack ===== */
 .demo .dk{display:inline}.demo .mb{display:none}
 @media (max-width:760px){
   .demo .dk{display:none}.demo .mb{display:inline}
   .demo{--pad:16px;--gap:6px}
   .demo .ov-tag{font-size:12px}
   .demo .mnav{gap:14px}
-  /* 1. Hero centered: ảnh sản phẩm lấp phần còn lại, sát cạnh dưới */
+  /* 1. Hero centered: product shot fills the rest, flush with the bottom edge */
   #hero-centered .mini{display:flex;flex-direction:column}
   #hero-centered .mini>.g12:last-child{flex:1;grid-template-rows:auto 1fr;min-height:0}
   #hero-centered .body{grid-column:1/-1;padding-top:18px}
   #hero-centered .pill{font-size:12px}
   #hero-centered h3{font-size:clamp(26px,8vw,32px);margin:12px 0 10px}
   #hero-centered .shot{grid-column:2/12;height:auto;min-height:72px}
-  /* 2. Split hero: chữ trên, hình dưới */
+  /* 2. Split hero: copy on top, image below */
   #split-hero .demo{--demo-h-m:600px}
   #split-hero .mnav span:nth-child(3),#split-hero .mnav span:nth-child(4){display:none}
   #split-hero .row{grid-template-rows:auto 1fr;align-items:stretch;row-gap:16px;padding-bottom:16px}
@@ -191,8 +191,10 @@
   #split-hero .card .num{font-size:12px}
   #split-hero .ov-tag.t1{left:16px;top:52px}
   #split-hero .ov-tag.t2{left:16px;right:auto;top:auto;bottom:14px}
-  /* 3. Bento: 2 cột; ô 2×2 ở trên, ô 2×1, rồi hai ô 1×1 */
-  #bento-grid .demo{--demo-h-m:750px}
+  /* 3. Bento: 2 columns; 2×2 tile on top, then 2×1, then two 1×1 */
+  /* height follows content so narrower phones never clip the tiles */
+  #bento-grid .demo{--demo-h-m:auto}
+  #bento-grid .mini{position:relative;min-height:750px}
   #bento-grid .mini{display:flex;flex-direction:column}
   #bento-grid .top{flex-direction:column;align-items:flex-start;gap:6px}
   #bento-grid .top p{text-align:left;max-width:none}
@@ -205,7 +207,7 @@
   #bento-grid .bars{left:18px;right:18px;bottom:18px;height:80px}
   #bento-grid .wide .avs{margin-top:8px}
   #bento-grid .s1 .big-n{font-size:28px}
-  /* 4. Asymmetric: tiêu đề vẫn chồng lên ảnh, đoạn văn lệch phải */
+  /* 4. Asymmetric: headline still overlaps the image, paragraph offset right */
   #asymmetric-grid .demo{--demo-h-m:580px}
   #asymmetric-grid .a{height:calc(100% - 46px - 56px)}
   #asymmetric-grid .mnav .logo{font-size:16px}
@@ -216,7 +218,7 @@
   #asymmetric-grid .cap{grid-column:6/13;grid-row:4;align-self:start;margin-top:6px;font-size:12px}
   #asymmetric-grid .num{grid-column:1/4;grid-row:5;font-size:32px}
   #asymmetric-grid .lede{grid-column:4/13;grid-row:5/7;margin-top:6px}
-  /* 5. Full-bleed: cột đọc chiếm trọn bề ngang, ảnh vẫn chạm hai mép */
+  /* 5. Full-bleed: reading column spans the width, images still touch both edges */
   #full-bleed .col,#full-bleed .quote{grid-column:2/12}
   #full-bleed .col h3{font-size:24px}
   #full-bleed .col p{font-size:14px}
@@ -225,7 +227,7 @@
   #full-bleed .quote{font-size:18px}
   #full-bleed .hint{font-size:12px}
   #full-bleed .ov-tag.tb{left:16px;right:auto}
-  /* 6. Card grid: bộ lọc xuống dòng, 2 thẻ mỗi hàng */
+  /* 6. Card grid: filters wrap, 2 cards per row */
   #card-grid .head{flex-wrap:wrap;padding:6px var(--pad) 12px}
   #card-grid .head h3{flex-basis:100%;margin-bottom:4px}
   #card-grid .f{min-height:34px;font-size:13px;padding:0 14px}
@@ -240,34 +242,34 @@
 
 <main class="wrap">
   <header class="head">
-    <h1>Bố cục</h1>
-    <p>Cách chia khung trang: vị trí, số cột và kích thước của từng khối nội dung. Nhấn <b>▦ Lưới</b> trong mỗi khung demo để hiện lưới 12 cột phía sau.</p>
+    <h1>Layout</h1>
+    <p>How a page is divided: the position, column span and size of each content block. Select <b>▦ Grid</b> in any demo to show the 12-column grid behind it.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="hero-centered">
     <h2>Hero centered</h2>
-    <p class="vi"><b>Hero căn giữa (centered hero).</b> Màn hình đầu tiên xếp mọi khối theo một trục dọc ở giữa: nhãn nhỏ, tiêu đề lớn, một câu mô tả, hai nút, ảnh sản phẩm lộ một phần ở cạnh dưới. Mắt người xem chỉ có một hướng đọc.</p>
+    <p class="vi"><b>Centered hero.</b> The first screen stacks every block on one vertical center axis: a small label, a large headline, one line of description, two buttons, and a product shot partly visible at the bottom edge. The eye has a single reading direction.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="mnav g12" style="display:flex"><span class="logo">mộc.</span><span>Bộ sưu tập</span><span>Câu chuyện</span><span>Cửa hàng</span></div>
+        <div class="mnav g12" style="display:flex"><span class="logo">wick.</span><span>Collection</span><span>Story</span><span>Shop</span></div>
         <div class="g12">
           <div class="body">
-            <span class="pill" data-a style="--i:0">Mới · Bộ sưu tập mùa thu</span>
-            <h3 data-a style="--i:1">Ánh sáng ấm cho<br>những tối chậm lại</h3>
-            <p class="sub" data-a style="--i:2">Nến sáp đậu nành đổ thủ công tại Đà Lạt, thời gian cháy 60 giờ, hương gỗ thông và trà khô.</p>
-            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Mua ngay</span><span class="mbtn b2">Xem mùi hương</span></div>
+            <span class="pill" data-a style="--i:0">New · Fall collection</span>
+            <h3 data-a style="--i:1">Warm light for<br>slower evenings</h3>
+            <p class="sub" data-a style="--i:2">Hand-poured soy wax candles from Portland, Oregon. 60-hour burn time, scented with pine and dried tea.</p>
+            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Shop now</span><span class="mbtn b2">See scents</span></div>
           </div>
           <div class="shot" data-a style="--i:4"></div>
         </div>
       </div>
       <div class="axis"></div>
       <div class="ov"></div>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>trang có một thông điệp và một hành động chính: landing sản phẩm, trang ra mắt, đăng ký sớm. Tiêu đề ngắn và đủ mạnh để đứng một mình.</p>
-      <p class="avoid"><b>Tránh khi</b>cần so sánh nhiều lựa chọn ngang hàng ngay màn hình đầu, hoặc tiêu đề dài hơn 2 dòng: văn bản căn giữa nhiều dòng khó đọc.</p>
+      <p class="use"><b>Use when</b>the page has one message and one primary action: a product landing page, a launch page, an early-access signup. The headline is short and strong enough to stand alone.</p>
+      <p class="avoid"><b>Avoid when</b>users need to compare several equal options on the first screen, or the headline runs longer than 2 lines. Centered multi-line text is hard to read.</p>
     </div>
     <div class="kw"><button>centered hero</button><button>single focal point</button><button>eyebrow + headline + subhead + dual CTA</button><button>symmetrical layout</button><button>product shot peeking from bottom</button><button>generous whitespace</button></div>
   </article>
@@ -275,17 +277,17 @@
   <!-- 2 -->
   <article class="pattern" id="split-hero">
     <h2>Split hero</h2>
-    <p class="vi"><b>Hero chia đôi (split hero).</b> Màn hình đầu tiên chia làm hai nửa cân bằng: bên trái là chữ (thông điệp và nút hành động), bên phải là hình (sản phẩm, minh hoạ). Người xem đọc thông điệp trước, sau đó nhìn hình để xác nhận. Trên mobile, hai nửa xếp chồng: chữ trước, hình sau.</p>
+    <p class="vi"><b>Split hero.</b> The first screen divides into two balanced halves: copy on the left (message and call to action), image on the right (product or illustration). Users read the message first, then look at the image to confirm it. On mobile, the halves stack: copy first, image second.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="mnav g12" style="display:flex"><span class="logo">Lumen</span><span>Thẻ</span><span>Tiết kiệm</span><span>Doanh nghiệp</span><span class="mbtn" style="height:28px;background:#1f2b38;color:#fff">Đăng nhập</span></div>
+        <div class="mnav g12" style="display:flex"><span class="logo">Lumen</span><span>Cards</span><span>Savings</span><span>Business</span><span class="mbtn" style="height:28px;background:#1f2b38;color:#fff">Sign in</span></div>
         <div class="g12 row">
           <div class="txt">
-            <div class="tag" data-a style="--i:0">Thẻ tín dụng · 0đ phí năm</div>
-            <h3 data-a style="--i:1">Chi tiêu thông minh,<br><em>hoàn tiền 5%</em> mỗi ngày</h3>
-            <p class="sub" data-a style="--i:2">Mở thẻ trong 4 phút trên điện thoại. Không giấy tờ, không phí ẩn, theo dõi từng đồng theo thời gian thực.</p>
-            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Mở thẻ miễn phí</span><span class="lnk">So sánh các thẻ →</span></div>
-            <div class="stats" data-a style="--i:4"><div><b>1,2 triệu</b>khách hàng</div><div><b>4,8★</b>App Store</div></div>
+            <div class="tag" data-a style="--i:0">Credit card · $0 annual fee</div>
+            <h3 data-a style="--i:1">Spend smarter,<br><em>get 5% back</em> daily</h3>
+            <p class="sub" data-a style="--i:2">Open a card in 4 minutes on your phone. No paperwork, no hidden fees, every dollar tracked in real time.</p>
+            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Get your free card</span><span class="lnk">Compare cards →</span></div>
+            <div class="stats" data-a style="--i:4"><div><b>1.2M</b>customers</div><div><b>4.8★</b>App Store</div></div>
           </div>
           <div class="vis" data-a style="--i:2">
             <div class="card c1"><span class="chipc"></span><span class="num">•••• 2048</span></div>
@@ -294,12 +296,12 @@
         </div>
       </div>
       <div class="ov"></div>
-      <span class="ov-tag t1"><span class="dk">cột 1–6</span><span class="mb">cột 1–12</span> · chữ</span><span class="ov-tag t2"><span class="dk">cột 7–12</span><span class="mb">cột 1–12</span> · hình</span>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <span class="ov-tag t1"><span class="dk">cols 1–6</span><span class="mb">cols 1–12</span> · copy</span><span class="ov-tag t2"><span class="dk">cols 7–12</span><span class="mb">cols 1–12</span> · image</span>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>sản phẩm cần được <i>nhìn thấy</i> ngay (ứng dụng, thiết bị, thẻ, dashboard) và thông điệp cần vài câu giải thích. Đây là bố cục hero phổ biến nhất của SaaS và fintech.</p>
-      <p class="avoid"><b>Tránh khi</b>không có hình đủ mạnh: nửa màn hình dành cho ảnh stock làm cả màn đầu yếu đi.</p>
+      <p class="use"><b>Use when</b>the product needs to be <i>seen</i> right away (an app, a device, a card, a dashboard) and the message takes a few sentences to explain. This is the most common hero layout in SaaS and fintech.</p>
+      <p class="avoid"><b>Avoid when</b>there is no strong image. Half a screen of stock photography weakens the whole first screen.</p>
     </div>
     <div class="kw"><button>split hero</button><button>two-column hero, text left / visual right</button><button>50/50 split layout</button><button>vertically centered content</button><button>social proof stats under CTA</button></div>
   </article>
@@ -307,25 +309,25 @@
   <!-- 3 -->
   <article class="pattern" id="bento-grid">
     <h2>Bento grid</h2>
-    <p class="vi"><b>Bento grid (lưới dạng hộp cơm bento).</b> Các ô khác kích thước ghép khít vào một khung chữ nhật. Về bố cục, nguyên tắc chính là <b>kích thước ô tương ứng mức độ quan trọng</b>: tính năng chính chiếm ô 2×2, tính năng thứ hai chiếm ô ngang 2×1, nội dung phụ dùng ô 1×1. Bento với vai trò <i>phong cách thị giác</i> được trình bày ở trang Phong cách thẩm mỹ.</p>
+    <p class="vi"><b>Bento grid.</b> Tiles of different sizes fit tightly into one rectangle. As a layout, the main rule is <b>tile size matches importance</b>: the main feature takes a 2×2 tile, the second feature a wide 2×1 tile, and supporting content 1×1 tiles. Bento as a <i>visual style</i> is covered on the Visual styles page.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="top"><h3 data-a style="--i:0">Mọi công cụ nhóm nhỏ cần,<br>trên một màn hình</h3><p data-a style="--i:1">Ô càng lớn, tính năng càng quan trọng.</p></div>
+        <div class="top"><h3 data-a style="--i:0">All your team's tools,<br>on one screen</h3><p data-a style="--i:1">The bigger the tile, the more important the feature.</p></div>
         <div class="bento">
-          <div class="t big" data-a style="--i:1"><span class="rank">ưu tiên 1 · 2×2</span><h4>Báo cáo doanh thu tự động</h4><p>Gom dữ liệu từ mọi kênh bán, cập nhật mỗi 5 phút.</p>
+          <div class="t big" data-a style="--i:1"><span class="rank">priority 1 · 2×2</span><h4>Automatic revenue reports</h4><p>Pulls data from every sales channel, updated every 5 minutes.</p>
             <div class="bars"><i style="--h:35%;--j:0"></i><i style="--h:52%;--j:1"></i><i style="--h:44%;--j:2"></i><i style="--h:68%;--j:3"></i><i style="--h:60%;--j:4"></i><i style="--h:82%;--j:5"></i><i style="--h:95%;--j:6"></i></div></div>
-          <div class="t wide" data-a style="--i:2"><span class="rank">ưu tiên 2 · 2×1</span><h4>Làm việc cùng nhau</h4><p>Bình luận, giao việc ngay trên số liệu.</p><div class="avs"><i style="--c:#ff8a5c"></i><i style="--c:#6c8cff"></i><i style="--c:#2f9e5b"></i><i style="--c:#f2c94c"></i></div></div>
-          <div class="t s1" data-a style="--i:3"><span class="rank">3 · 1×1</span><h4>Tốc độ</h4><div class="big-n">0,4s</div></div>
-          <div class="t s2" data-a style="--i:4"><span class="rank">3 · 1×1</span><h4>Cảnh báo</h4><p>Báo khi tồn kho thấp.</p><div class="toggle"></div></div>
+          <div class="t wide" data-a style="--i:2"><span class="rank">priority 2 · 2×1</span><h4>Work together</h4><p>Comment and assign tasks right on the numbers.</p><div class="avs"><i style="--c:#ff8a5c"></i><i style="--c:#6c8cff"></i><i style="--c:#2f9e5b"></i><i style="--c:#f2c94c"></i></div></div>
+          <div class="t s1" data-a style="--i:3"><span class="rank">3 · 1×1</span><h4>Speed</h4><div class="big-n">0.4s</div></div>
+          <div class="t s2" data-a style="--i:4"><span class="rank">3 · 1×1</span><h4>Alerts</h4><p>Flags low stock.</p><div class="toggle"></div></div>
           <div class="ov-b"><i style="grid-column:span 2;grid-row:span 2"></i><i style="grid-column:span 2"></i><i></i><i></i></div>
         </div>
       </div>
       <div class="ov"></div>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>giới thiệu 4–7 tính năng có thứ bậc rõ ràng trên một màn hình, để người xem nhận ra ngay tính năng chính và tính năng phụ.</p>
-      <p class="avoid"><b>Tránh khi</b>các mục có vai trò ngang nhau (dùng card grid), hoặc ô không có nội dung trực quan riêng: ô lớn chỉ chứa chữ trông trống trải.</p>
+      <p class="use"><b>Use when</b>you present 4–7 features with a clear hierarchy on one screen, so users see the main feature and the supporting ones at a glance.</p>
+      <p class="avoid"><b>Avoid when</b>the items are equal in importance (use a card grid), or the tiles have no visual content of their own. A large tile with only text looks empty.</p>
     </div>
     <div class="kw"><button>bento grid layout</button><button>tile size reflects feature importance</button><button>one 2×2 hero tile, mixed 2×1 and 1×1 tiles</button><button>CSS grid with grid-row/column span</button><button>rounded tiles, 12px gap</button></div>
   </article>
@@ -333,25 +335,25 @@
   <!-- 4 -->
   <article class="pattern" id="asymmetric-grid">
     <h2>Asymmetric grid</h2>
-    <p class="vi"><b>Lưới bất đối xứng (asymmetric grid).</b> Vẫn dựa trên 12 cột, nhưng các khối không chia đều và không căn giữa: tiêu đề chồng lên ảnh, đoạn văn bắt đầu lệch vào trong, chú thích đặt ở góc. Khoảng trống là một thành phần của thiết kế.</p>
+    <p class="vi"><b>Asymmetric grid.</b> Still built on 12 columns, but blocks are neither evenly divided nor centered: the headline overlaps the image, the paragraph starts offset inward, the caption sits in a corner. Empty space is part of the design.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="mnav g12" style="display:flex;color:#6b645a"><span class="logo">Tạp chí Gió</span><span>Số 14</span><span>Du hành</span><span>Ăn uống</span></div>
+        <div class="mnav g12" style="display:flex;color:#6b645a"><span class="logo">Drift</span><span>Issue 14</span><span>Travel</span><span>Food</span></div>
         <div class="g12 a">
-          <div class="kicker" data-a style="--i:0">DU HÀNH — TÂY BẮC</div>
-          <h3 data-a style="--i:1">Mùa lúa chín<br>trên <i>những bậc thang</i></h3>
+          <div class="kicker" data-a style="--i:0">TRAVEL — NORTHERN CALIFORNIA</div>
+          <h3 data-a style="--i:1">Harvest season<br>on <i>the terraces</i></h3>
           <div class="img" data-a style="--i:2"></div>
           <div class="num" data-a style="--i:3">01</div>
-          <p class="lede" data-a style="--i:3"><b>Mù Cang Chải, tháng chín.</b> Sương tan lúc bảy giờ, cả thung lũng chuyển từ xanh sang vàng trong chưa đầy hai tuần. Chúng tôi đi bộ ba ngày theo những con đường đất đỏ.</p>
-          <div class="cap" data-a style="--i:4">Ảnh: La Pán Tẩn, 6:40 sáng</div>
+          <p class="lede" data-a style="--i:3"><b>Napa Valley, September.</b> The fog lifts at seven, and the whole valley turns from green to gold in under two weeks. We walked for three days along red dirt roads.</p>
+          <div class="cap" data-a style="--i:4">Photo: Oakville, 6:40 a.m.</div>
         </div>
       </div>
       <div class="ov"></div>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>trang kể chuyện, tạp chí, portfolio, thương hiệu muốn bố cục mang dấu ấn biên tập thay vì theo template. Khi bật lưới, các khối lệch nhau nhưng mọi cạnh vẫn bám theo cột.</p>
-      <p class="avoid"><b>Tránh khi</b>trang nhiều dữ liệu hoặc form, nơi người dùng cần quét nhanh và đoán trước vị trí thông tin.</p>
+      <p class="use"><b>Use when</b>the page tells a story: magazines, portfolios, brands that want an editorial layout instead of a template. With the grid on, the blocks are offset but every edge still aligns to a column.</p>
+      <p class="avoid"><b>Avoid when</b>the page is data-heavy or a form, where users need to scan quickly and predict where information sits.</p>
     </div>
     <div class="kw"><button>asymmetric grid</button><button>12-column grid, off-center composition</button><button>headline overlapping image</button><button>editorial layout</button><button>broken grid</button><button>intentional negative space</button></div>
   </article>
@@ -359,24 +361,24 @@
   <!-- 5 -->
   <article class="pattern" id="full-bleed">
     <h2>Full-bleed</h2>
-    <p class="vi"><b>Tràn viền (full-bleed).</b> Văn bản nằm trong một cột hẹp để dễ đọc, xen kẽ những ảnh hoặc dải màu <b>mở rộng</b> chạm cả hai mép màn hình. Nhịp hẹp, rộng, hẹp tạo cảm giác không gian được mở ra. Cuộn trong khung demo để xem.</p>
+    <p class="vi"><b>Full-bleed.</b> Text sits in a narrow column for readability, alternating with images or color bands that <b>extend</b> to both edges of the screen. The narrow, wide, narrow rhythm makes the space feel open. Scroll inside the frame.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="mnav g12" style="display:flex"><span class="logo">Trạm</span><span>Bài viết</span><span>Giới thiệu</span></div>
-        <div class="g12"><div class="col" data-a style="--i:0"><h3>Một tuần không màn hình</h3><p>Ngày đầu tiên là khó nhất. Tay vẫn tự tìm điện thoại trong túi áo mỗi khi thang máy dừng. Đến ngày thứ ba, tôi bắt đầu để ý những thứ trước giờ chỉ là phông nền.</p></div></div>
-        <figure class="bleed" data-a style="--i:1"><div class="sun" aria-hidden="true"></div><div class="hill h1" aria-hidden="true"></div><div class="hill h2" aria-hidden="true"></div><div class="hill h3" aria-hidden="true"></div><figcaption>ẢNH TRÀN VIỀN · 100% CHIỀU NGANG</figcaption></figure>
-        <div class="g12"><blockquote class="quote">“Buồn chán hoá ra là cánh cửa, không phải bức tường.”</blockquote><div class="col"><p>Ngày thứ năm, tôi đọc xong một cuốn sách dày bốn trăm trang. Ngày thứ bảy, tôi không còn nhớ mình đã từng lo lắng điều gì. Bài học không nằm ở việc bỏ công nghệ, mà ở việc chọn lại lúc nào mình muốn nó.</p><p>Khi cầm lại điện thoại, việc đầu tiên tôi làm là tắt hết thông báo.</p></div></div>
-        <div class="bleed2">Dải màu tràn viền cuối bài</div>
+        <div class="mnav g12" style="display:flex"><span class="logo">Waypoint</span><span>Essays</span><span>About</span></div>
+        <div class="g12"><div class="col" data-a style="--i:0"><h3>A week without screens</h3><p>The first day was the hardest. My hand still reached for my phone every time the elevator stopped. By the third day, I started noticing things that had always been background.</p></div></div>
+        <figure class="bleed" data-a style="--i:1"><div class="sun" aria-hidden="true"></div><div class="hill h1" aria-hidden="true"></div><div class="hill h2" aria-hidden="true"></div><div class="hill h3" aria-hidden="true"></div><figcaption>FULL-BLEED IMAGE · 100% WIDTH</figcaption></figure>
+        <div class="g12"><blockquote class="quote">“Boredom turned out to be a door, not a wall.”</blockquote><div class="col"><p>On the fifth day, I finished a four-hundred-page book. By the seventh, I could not remember what I had been worried about. The lesson was not to give up technology, but to choose again when I want it.</p><p>When I picked up my phone again, the first thing I did was turn off every notification.</p></div></div>
+        <div class="bleed2">Full-bleed color band at the end of the essay</div>
         <div style="height:30px"></div>
       </div>
-      <span class="hint">↓ Cuộn<span class="dk"> trong khung</span></span>
-      <span class="ov-tag tb">cột đọc: <span class="dk">4–9</span><span class="mb">2–11</span> · ảnh: tràn viền</span>
+      <span class="hint">↓ Scroll<span class="dk"> inside the frame</span></span>
+      <span class="ov-tag tb">reading column: <span class="dk">4–9</span><span class="mb">2–11</span> · images: full-bleed</span>
       <div class="ov"></div>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>bài viết dài, case study, trang thương hiệu có ảnh chất lượng cao; cần những khoảng nghỉ thị giác lớn giữa các đoạn văn.</p>
-      <p class="avoid"><b>Tránh khi</b>ảnh có độ phân giải thấp hoặc thiếu điểm nhấn: kích thước tràn viền làm lộ rõ khuyết điểm.</p>
+      <p class="use"><b>Use when</b>you publish long articles, case studies or brand pages with high-quality images, and need large visual breaks between sections of text.</p>
+      <p class="avoid"><b>Avoid when</b>the images are low resolution or lack a focal point. Full-bleed size makes the flaws obvious.</p>
     </div>
     <div class="kw"><button>full-bleed image</button><button>edge-to-edge section</button><button>breakout layout</button><button>narrow reading column (~65ch)</button><button>CSS grid named lines: full / content</button></div>
   </article>
@@ -384,30 +386,30 @@
   <!-- 6 -->
   <article class="pattern" id="card-grid">
     <h2>Card grid</h2>
-    <p class="vi"><b>Lưới thẻ đồng đều (card grid).</b> Các thẻ cùng kích thước và cùng cấu trúc (ảnh, nhãn, tiêu đề), tự xuống hàng theo chiều rộng màn hình. Đây là bố cục mang tính <b>template</b> nhất trên web, vì vậy người dùng dễ đoán và dễ thao tác. Nhấn các bộ lọc để xem lưới tự sắp xếp lại.</p>
+    <p class="vi"><b>Card grid.</b> Cards share one size and one structure (image, label, title) and wrap to fit the screen width. It is the most <b>template-like</b> layout on the web, which makes it predictable and easy to use. Tap a filter to see the grid rearrange.</p>
     <div class="demo" data-grid>
       <div class="mini">
-        <div class="mnav g12" style="display:flex"><span class="logo">Bếp Nhà</span><span>Công thức</span><span>Mẹo</span><span>Dụng cụ</span></div>
-        <div class="head" data-a style="--i:0"><h3>Công thức mới</h3>
-          <button class="f" aria-pressed="true" data-f="all">Tất cả</button><button class="f" aria-pressed="false" data-f="man">Món mặn</button><button class="f" aria-pressed="false" data-f="ngot">Đồ ngọt</button></div>
+        <div class="mnav g12" style="display:flex"><span class="logo">Home Kitchen</span><span>Recipes</span><span>Tips</span><span>Tools</span></div>
+        <div class="head" data-a style="--i:0"><h3>New recipes</h3>
+          <button class="f" aria-pressed="true" data-f="all">All</button><button class="f" aria-pressed="false" data-f="man">Savory</button><button class="f" aria-pressed="false" data-f="ngot">Sweet</button></div>
         <div class="cards">
-          <div class="c" data-a data-k="man" style="--i:1;--g:linear-gradient(135deg,#f6b26b,#c0582c)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 30 phút</div><h4>Cá kho tộ nồi đất</h4></div></div>
-          <div class="c" data-a data-k="ngot" style="--i:2;--g:linear-gradient(135deg,#f9d9e6,#d46a92)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 45 phút</div><h4>Chè khúc bạch hạnh nhân</h4></div></div>
-          <div class="c" data-a data-k="man" style="--i:3;--g:linear-gradient(135deg,#d9ead3,#5b8c4a)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 20 phút</div><h4>Rau muống xào tỏi</h4></div></div>
-          <div class="c" data-a data-k="man" style="--i:4;--g:linear-gradient(135deg,#ffe599,#e69138)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 1 giờ</div><h4>Gà nướng mật ong</h4></div></div>
-          <div class="c" data-a data-k="ngot" style="--i:5;--g:linear-gradient(135deg,#cfe2f3,#3d85c6)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 15 phút</div><h4>Sữa chua nếp cẩm</h4></div></div>
-          <div class="c" data-a data-k="ngot" style="--i:6;--g:linear-gradient(135deg,#fce5cd,#b45f06)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 2 giờ</div><h4>Bánh flan caramen</h4></div></div>
-          <div class="c" data-a data-k="man" style="--i:7;--g:linear-gradient(135deg,#ead1dc,#741b47)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 40 phút</div><h4>Bò lúc lắc</h4></div></div>
-          <div class="c" data-a data-k="ngot" style="--i:8;--g:linear-gradient(135deg,#d0e0e3,#45818e)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 30 phút</div><h4>Rau câu dừa</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:1;--g:linear-gradient(135deg,#f6b26b,#c0582c)"><div class="th"></div><div class="bd"><div class="cat">Savory · 30 min</div><h4>Clay pot braised fish</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:2;--g:linear-gradient(135deg,#f9d9e6,#d46a92)"><div class="th"></div><div class="bd"><div class="cat">Sweet · 45 min</div><h4>Almond panna cotta</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:3;--g:linear-gradient(135deg,#d9ead3,#5b8c4a)"><div class="th"></div><div class="bd"><div class="cat">Savory · 20 min</div><h4>Garlic green beans</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:4;--g:linear-gradient(135deg,#ffe599,#e69138)"><div class="th"></div><div class="bd"><div class="cat">Savory · 1 hr</div><h4>Honey roast chicken</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:5;--g:linear-gradient(135deg,#cfe2f3,#3d85c6)"><div class="th"></div><div class="bd"><div class="cat">Sweet · 15 min</div><h4>Berry yogurt parfait</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:6;--g:linear-gradient(135deg,#fce5cd,#b45f06)"><div class="th"></div><div class="bd"><div class="cat">Sweet · 2 hr</div><h4>Vanilla flan</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:7;--g:linear-gradient(135deg,#ead1dc,#741b47)"><div class="th"></div><div class="bd"><div class="cat">Savory · 40 min</div><h4>Pepper steak bites</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:8;--g:linear-gradient(135deg,#d0e0e3,#45818e)"><div class="th"></div><div class="bd"><div class="cat">Sweet · 30 min</div><h4>Coconut jelly</h4></div></div>
         </div>
       </div>
       <div class="ov"></div>
-      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Grid</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>các mục thật sự <i>ngang hàng</i> và người dùng cần duyệt, so sánh, lọc: danh mục sản phẩm, blog, công thức nấu ăn, kết quả tìm kiếm. Trong trường hợp này, tính template là ưu điểm.</p>
-      <p class="avoid"><b>Tránh khi</b>có một mục quan trọng hơn hẳn (dùng bento grid hoặc hero), hoặc chỉ có 3 tính năng cần giới thiệu: ba thẻ giống hệt nhau là dấu hiệu thường gặp của giao diện do AI tạo.</p>
-      <p class="tip">Mẹo viết prompt: để tránh cảm giác template, không chỉ ghi card grid. Nêu rõ mục nào được ưu tiên, hoặc yêu cầu một thẻ nổi bật (featured card) chiếm 2 cột.</p>
+      <p class="use"><b>Use when</b>the items are truly <i>equal</i> and users need to browse, compare and filter: product catalogs, blogs, recipes, search results. Here, the template feel is an advantage.</p>
+      <p class="avoid"><b>Avoid when</b>one item matters far more than the rest (use a bento grid or a hero), or there are only 3 features to present. Three identical cards are a common sign of AI-generated interfaces.</p>
+      <p class="tip">Prompt tip: to avoid the template look, do not just write "card grid". Say which item takes priority, or ask for a featured card that spans 2 columns.</p>
     </div>
     <div class="kw"><button>responsive card grid</button><button>grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))</button><button>uniform cards, consistent aspect ratio</button><button>filter chips above grid</button><button>featured card spanning 2 columns</button></div>
   </article>
@@ -418,7 +420,7 @@
 (() => {
   const reduce = Dict.RM;
 
-  // Overlay 12 cột
+  // 12-column overlay
   document.querySelectorAll('.demo .ov').forEach(ov => {
     for (let n = 1; n <= 12; n++) { const i = document.createElement('i'); i.dataset.n = n; ov.appendChild(i); }
   });
@@ -428,7 +430,7 @@
     b.setAttribute('aria-pressed', on);
   }));
 
-  // Phát animation vào khung khi cuộn tới + nút Xem lại
+  // Play the enter animation when scrolled into view + Replay button
   const play = d => { d.classList.remove('play'); void d.offsetWidth; d.classList.add('play'); };
   document.querySelectorAll('article.pattern').forEach(a => {
     const d = a.querySelector('.demo'), m = d.querySelector('.mini');
@@ -436,11 +438,11 @@
     Dict.replay(a.id, () => { if (m) m.scrollTop = 0; play(d); });
   });
 
-  // Full-bleed: ẩn gợi ý khi đã cuộn
+  // Full-bleed: hide the hint once scrolled
   const fb = document.querySelector('#full-bleed .mini'), hint = document.querySelector('#full-bleed .hint');
   fb.addEventListener('scroll', () => { hint.style.opacity = fb.scrollTop > 20 ? 0 : 1; }, { passive: true });
 
-  // Card grid: bộ lọc
+  // Card grid: filters
   const cg = document.getElementById('card-grid');
   cg.querySelectorAll('.f').forEach(f => f.addEventListener('click', () => {
     cg.querySelectorAll('.f').forEach(x => x.setAttribute('aria-pressed', x === f));

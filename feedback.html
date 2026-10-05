@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Phản hồi &amp; lớp phủ — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Bảy pattern phản hồi và lớp phủ: modal, drawer, toast, tooltip, popover, hộp xác nhận và chỉ báo tiến độ, kèm demo, điều kiện dùng và keyword tiếng Anh.">
+<title>Feedback &amp; overlays — Pattern Dictionary</title>
+<meta name="description" content="Seven feedback and overlay patterns: modal dialog, drawer, toast, tooltip, popover, confirmation dialog and progress indicator, each with a demo, usage conditions and prompt keywords.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset inside demos only, specificity 0 */
 :where(.demo *){margin:0;padding:0}
 :where(.demo) :where(button,input,select,textarea){font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){
   :where(.demo *),:where(.demo *)::before,:where(.demo *)::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 
-/* ===== thành phần dùng chung cho 7 demo của trang này ===== */
+/* ===== shared components for the 7 demos on this page ===== */
 :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo{
   --p:#2f5bea;--p-soft:rgba(47,91,234,.16);--t:#1d1d1f;--t2:#66666b;--bd:#d5d4cf;--err:#c0341d;--ok:#1a7f4b;--surf:#f4f3ef;
   background:var(--surf);color:var(--t);font-size:14px;line-height:1.45}
@@ -45,7 +45,7 @@
 :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .av{flex:none;width:30px;height:30px;border-radius:50%;background:var(--c,#cfd8ff);display:grid;place-items:center;font:700 11px/1 var(--sans);color:#1d1d1f}
 :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo kbd{font:500 11px/1 var(--mono);border:1px solid rgba(128,128,128,.4);border-bottom-width:2px;border-radius:5px;padding:2px 5px}
-/* lớp phủ nằm gọn trong khung .demo (không dùng top layer): scrim + dialog mở bằng show() */
+/* overlays stay inside the .demo frame (no top layer): scrim + dialog opened with show() */
 :where(#modal-dialog,#drawer,#confirmation-dialog) .demo .scrim{position:absolute;inset:0;z-index:55;background:rgba(18,20,28,.42);opacity:0;pointer-events:none;transition:opacity .2s}
 :where(#modal-dialog,#drawer,#confirmation-dialog) .demo .scrim.on{opacity:1;pointer-events:auto}
 :where(#modal-dialog,#drawer,#confirmation-dialog) .demo dialog{z-index:60;border:0;color:var(--t);background:#fff;box-shadow:0 30px 70px -20px rgba(0,0,0,.45);overflow:visible}
@@ -81,9 +81,9 @@
 #drawer .demo .who{display:flex;align-items:center;gap:8px;color:var(--t2)}
 #drawer .demo .who .av{width:24px;height:24px;font-size:9.5px}
 #drawer .demo .st{justify-self:start;font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:#eceae5;color:#4b4b50}
-#drawer .demo .st[data-s="Đang làm"]{background:#e8eeff;color:#2445b8}
-#drawer .demo .st[data-s="Xong"]{background:#e3f4ea;color:#17683f}
-#drawer .demo .st[data-s="Bị chặn"]{background:#fde9e5;color:#a32c17}
+#drawer .demo .st[data-s="In progress"]{background:#e8eeff;color:#2445b8}
+#drawer .demo .st[data-s="Done"]{background:#e3f4ea;color:#17683f}
+#drawer .demo .st[data-s="Blocked"]{background:#fde9e5;color:#a32c17}
 #drawer .demo .due{color:var(--t2);font-variant-numeric:tabular-nums}
 #drawer .demo .tr.flash{animation:drFlash 1.2s}
 #drawer .demo .demo-tools{top:13px;bottom:auto}
@@ -249,7 +249,7 @@
 #progress-indicator .demo progress::-moz-progress-bar{background:var(--p);border-radius:4px}
 #progress-indicator .demo progress.done::-webkit-progress-value{background:var(--ok)}
 #progress-indicator .demo progress.done::-moz-progress-bar{background:var(--ok)}
-/* indeterminate: trình duyệt Chromium vẽ thanh trống, nên tự vẽ vệt chạy */
+/* indeterminate: Chromium draws an empty bar, so draw the moving stripe manually */
 #progress-indicator .demo progress:indeterminate{position:relative;background:#ecebe6}
 #progress-indicator .demo progress:indeterminate::-webkit-progress-bar{background:transparent}
 #progress-indicator .demo progress:indeterminate::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;border-radius:4px;background:var(--p);animation:pgSlide 1.3s cubic-bezier(.4,0,.2,1) infinite}
@@ -274,12 +274,12 @@
 @keyframes pgSlide{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
 @keyframes pgSpin{to{transform:rotate(1turn)}}
 @media (prefers-reduced-motion:reduce){
-  /* chỉ báo đang chạy là thông tin, nên giữ chuyển động nhưng chậm lại */
+  /* a running indicator carries information, so keep the motion but slow it down */
   #progress-indicator .demo .spin{animation-duration:1.6s!important;animation-iteration-count:infinite!important}
   #progress-indicator .demo progress:indeterminate::after{animation-duration:2.6s!important;animation-iteration-count:infinite!important}
 }
 
-/* ===== màn hình hẹp ===== */
+/* ===== narrow screens ===== */
 @media (max-width:760px){
   :where(#toast-notification,#popover,#confirmation-dialog,#progress-indicator,#drawer,#modal-dialog,#tooltip) .demo{height:auto;min-height:420px}
   :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .app{position:relative;min-height:420px}
@@ -301,7 +301,7 @@
   #confirmation-dialog .demo .pane{padding:18px 16px}
   #progress-indicator .demo .grid{position:relative;grid-template-columns:1fr;grid-template-rows:none;padding:14px}
 }
-/* focus vào hộp thoại đang trượt vào không được cuộn khung demo (overflow:hidden vẫn cuộn được bằng script) */
+/* focusing a dialog that is sliding in must not scroll the demo frame (overflow:hidden can still be scrolled by script) */
 :where(#modal-dialog,#drawer,#confirmation-dialog) .demo{overflow:clip}
 @media (max-width:760px){
   :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar h3{min-width:0}
@@ -328,6 +328,8 @@
   #confirmation-dialog .demo .pane:last-of-type .why{padding-right:0;padding-bottom:44px}
   #progress-indicator .demo .tag{font-size:12px}
   #progress-indicator .demo .sy-b{height:34px!important}
+  #tooltip .demo .tip kbd{font-size:12px}
+  #progress-indicator .demo .file{font-size:12px}
 }
 </style>
 </head>
@@ -336,45 +338,45 @@
 
 <main class="wrap">
 <header class="head">
-  <h1>Phản hồi &amp; lớp phủ</h1>
-  <p>Mỗi thao tác của người dùng cần một <b>phản hồi</b> từ hệ thống: đã nhận, đang xử lý, đã xong hoặc cần xác nhận thêm. Bảy pattern dưới đây bao quát các mức phản hồi, từ hộp thoại chặn toàn bộ giao diện tới thông báo ngắn tự ẩn. Chọn sai mức phản hồi sẽ gây gián đoạn không cần thiết hoặc khiến người dùng bỏ lỡ thông tin.</p>
+  <h1>Feedback &amp; overlays</h1>
+  <p>Every user action needs <b>feedback</b> from the system: received, in progress, done, or needs confirmation. The seven patterns below cover the levels of feedback, from a dialog that blocks the whole interface to a short message that dismisses itself. The wrong level either interrupts the user without reason or lets them miss information.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="modal-dialog">
   <h2>Modal dialog</h2>
-  <p class="vi"><b>Hộp thoại chặn tương tác với phần còn lại của trang.</b> Khung nổi nằm giữa màn hình, phần phía sau bị lớp phủ (overlay) làm tối và không thao tác được cho tới khi hoàn tất hoặc đóng hộp thoại. Focus chuyển vào trong, phím Tab chỉ di chuyển trong hộp, <kbd>Esc</kbd> hoặc nhấn vào lớp phủ để đóng, sau đó focus trở về nút đã mở. Nhấn “Mời thành viên” để xem.</p>
+  <p class="vi"><b>A dialog that blocks interaction with the rest of the page.</b> A panel sits in the center of the screen. An overlay dims the content behind it, which stays inactive until the user completes or closes the dialog. Focus moves into the dialog, Tab cycles only through its controls, and <kbd>Esc</kbd> or a click on the overlay closes it. Focus then returns to the button that opened it. Select “Invite member” to open the dialog.</p>
   <div class="demo">
     <div class="app">
       <div class="bar">
-        <h3>Ra mắt bản 2.0 <small>Dự án</small></h3>
+        <h3>Launch 2.0 <small>Project</small></h3>
         <p class="stat" role="status"></p>
-        <div class="avs" aria-label="Thành viên"><span class="av" style="--c:#ffd7c2">LP</span><span class="av" style="--c:#c9e7d6">QH</span><span class="av" style="--c:#d8d3ff">TH</span></div>
-        <button type="button" class="btn open">+ Mời thành viên</button>
+        <div class="avs" aria-label="Members"><span class="av" style="--c:#ffd7c2">LP</span><span class="av" style="--c:#c9e7d6">QH</span><span class="av" style="--c:#d8d3ff">TH</span></div>
+        <button type="button" class="btn open">+ Invite member</button>
       </div>
       <div class="body">
-        <div class="col"><b>Cần làm</b><p>Viết ghi chú phát hành<span>Thu Hà · 12/10</span></p><p>Kiểm thử trên điện thoại<span>Quốc Huy · 14/10</span></p></div>
-        <div class="col"><b>Đang làm</b><p>Thiết kế trang giới thiệu<span>Lan Phạm · 10/10</span></p><p>Sửa lỗi đăng nhập<span>Quốc Huy · 09/10</span></p></div>
-        <div class="col"><b>Xong</b><p>Chốt danh sách tính năng<span>Lan Phạm · 02/10</span></p></div>
+        <div class="col"><b>To do</b><p>Write release notes<span>Tara Hughes · Oct 12</span></p><p>Test on mobile<span>Quinn Harper · Oct 14</span></p></div>
+        <div class="col"><b>In progress</b><p>Design landing page<span>Laura Park · Oct 10</span></p><p>Fix sign-in bug<span>Quinn Harper · Oct 9</span></p></div>
+        <div class="col"><b>Done</b><p>Finalize feature list<span>Laura Park · Oct 2</span></p></div>
       </div>
     </div>
     <div class="scrim"></div>
     <dialog aria-labelledby="md-t" aria-describedby="md-d">
-      <div class="dh"><h4 id="md-t">Mời vào dự án</h4><button type="button" class="x close" aria-label="Đóng">×</button></div>
-      <p id="md-d">Người được mời sẽ nhận email và thấy mọi công việc trong “Ra mắt bản 2.0”.</p>
+      <div class="dh"><h4 id="md-t">Invite to project</h4><button type="button" class="x close" aria-label="Close">×</button></div>
+      <p id="md-d">Invitees receive an email and can see every task in “Launch 2.0”.</p>
       <form novalidate>
-        <div class="fld"><label for="md-email">Email</label><input class="inp" id="md-email" type="email" autocomplete="email" spellcheck="false" placeholder="ten@vidu.com" data-autofocus aria-describedby="md-err"></div>
-        <div class="fld"><label for="md-role">Quyền</label><select class="inp" id="md-role"><option>Có thể sửa</option><option>Chỉ xem</option></select></div>
+        <div class="fld"><label for="md-email">Email</label><input class="inp" id="md-email" type="email" autocomplete="email" spellcheck="false" placeholder="name@example.com" data-autofocus aria-describedby="md-err"></div>
+        <div class="fld"><label for="md-role">Role</label><select class="inp" id="md-role"><option>Can edit</option><option>Can view</option></select></div>
         <p class="err" id="md-err" aria-live="polite"></p>
-        <div class="acts"><button type="button" class="btn ghost close">Huỷ</button><button class="btn">Gửi lời mời</button></div>
+        <div class="acts"><button type="button" class="btn ghost close">Cancel</button><button class="btn">Send invite</button></div>
       </form>
     </dialog>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>người dùng cần hoàn tất một việc ngắn, độc lập trước khi tiếp tục: điền 1–3 ô, chọn một lựa chọn quan trọng, xác nhận thao tác không hoàn tác được. Việc tách khỏi ngữ cảnh là có chủ đích.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung dài hoặc cần đối chiếu với trang phía sau (dùng Drawer), chỉ để thông báo (dùng Toast), hoặc tự mở khi người dùng chưa thao tác gì. Không chồng modal lên modal.</p>
-    <p class="tip">Trong sản phẩm thật, mở bằng <code>dialog.showModal()</code>: trình duyệt tự làm focus trap, <kbd>Esc</kbd>, <code>::backdrop</code> và vô hiệu phần còn lại của trang. Demo này mở bằng <code>show()</code> + <code>inert</code> + tự giữ Tab để hộp thoại nằm gọn trong khung demo thay vì phủ cả trang.</p>
+    <p class="use"><b>Use when</b>the user must finish a short, self-contained task before continuing: filling in one to three fields, making one important choice, or confirming an action that cannot be undone. The break from context is intentional.</p>
+    <p class="avoid"><b>Avoid when</b>the content is long or must be compared with the page behind it (use a drawer), the message is informational only (use a toast), or the dialog would open without a user action. Do not stack one modal on another.</p>
+    <p class="tip">In production, open the dialog with <code>dialog.showModal()</code>: the browser provides the focus trap, <kbd>Esc</kbd>, <code>::backdrop</code> and an inert page. This demo uses <code>show()</code> + <code>inert</code> + a scripted Tab trap so the dialog stays inside the demo frame instead of covering the page.</p>
   </div>
   <div class="kw"><button>modal dialog</button><button>native &lt;dialog&gt; with showModal()</button><button>focus trap + return focus to trigger</button><button>close on Esc and backdrop click</button><button>dimmed backdrop (::backdrop)</button><button>aria-labelledby dialog title</button><button>scale-in entry animation</button></div>
 </article>
@@ -382,36 +384,36 @@
 <!-- 2 -->
 <article class="pattern" id="drawer" data-toc="Drawer / Side sheet">
   <h2>Drawer / Side sheet</h2>
-  <p class="vi"><b>Tấm nội dung trượt ra từ cạnh màn hình.</b> Drawer (ngăn kéo bên) cao bằng khung nhìn, trượt ra từ mép phải và chứa chi tiết hoặc form chỉnh sửa của mục vừa chọn, trong khi danh sách phía sau vẫn hiển thị. Nhấn tên một công việc, đổi trạng thái rồi nhấn Lưu; nhấn <kbd>Esc</kbd> hoặc nhấn ra ngoài để đóng.</p>
+  <p class="vi"><b>A panel that slides in from the edge of the screen.</b> A drawer spans the full height of the viewport, slides in from the right and holds the details or edit form for the selected item. The list behind it stays visible. Select a task name, change its status and save; press <kbd>Esc</kbd> or click outside the drawer to close it.</p>
   <div class="demo">
     <div class="app">
-      <div class="bar"><h3>Công việc <small>Sprint 14</small></h3></div>
-      <div class="tbl" role="table" aria-label="Công việc">
-        <div class="tr th" role="row"><span role="columnheader">Tên việc</span><span role="columnheader">Phụ trách</span><span role="columnheader">Trạng thái</span><span role="columnheader">Hạn</span></div>
+      <div class="bar"><h3>Tasks <small>Sprint 14</small></h3></div>
+      <div class="tbl" role="table" aria-label="Tasks">
+        <div class="tr th" role="row"><span role="columnheader">Task</span><span role="columnheader">Assignee</span><span role="columnheader">Status</span><span role="columnheader">Due</span></div>
       </div>
     </div>
     <div class="scrim"></div>
     <dialog aria-labelledby="dr-t">
       <form novalidate>
-        <div class="dh"><div style="flex:1"><small class="dr-id"></small><h4 id="dr-t">Chi tiết công việc</h4></div><button type="button" class="x close" aria-label="Đóng">×</button></div>
+        <div class="dh"><div style="flex:1"><small class="dr-id"></small><h4 id="dr-t">Task details</h4></div><button type="button" class="x close" aria-label="Close">×</button></div>
         <div class="dbody">
-          <div class="fld"><label for="dr-name">Tên việc</label><input class="inp" id="dr-name" type="text" autocomplete="off" data-autofocus></div>
+          <div class="fld"><label for="dr-name">Task</label><input class="inp" id="dr-name" type="text" autocomplete="off" data-autofocus></div>
           <div class="two">
-            <div class="fld"><label for="dr-st">Trạng thái</label><select class="inp" id="dr-st"><option>Cần làm</option><option>Đang làm</option><option>Bị chặn</option><option>Xong</option></select></div>
-            <div class="fld"><label for="dr-who">Phụ trách</label><select class="inp" id="dr-who"><option>Lan Phạm</option><option>Quốc Huy</option><option>Thu Hà</option><option>Gia Khang</option></select></div>
+            <div class="fld"><label for="dr-st">Status</label><select class="inp" id="dr-st"><option>To do</option><option>In progress</option><option>Blocked</option><option>Done</option></select></div>
+            <div class="fld"><label for="dr-who">Assignee</label><select class="inp" id="dr-who"><option>Laura Park</option><option>Quinn Harper</option><option>Tara Hughes</option><option>Grace Kim</option></select></div>
           </div>
-          <div class="fld"><label for="dr-note">Ghi chú</label><textarea class="inp" id="dr-note"></textarea></div>
+          <div class="fld"><label for="dr-note">Notes</label><textarea class="inp" id="dr-note"></textarea></div>
         </div>
-        <div class="dfoot"><button type="button" class="btn ghost close">Huỷ</button><button class="btn">Lưu thay đổi</button></div>
+        <div class="dfoot"><button type="button" class="btn ghost close">Cancel</button><button class="btn">Save changes</button></div>
       </form>
     </dialog>
     <p class="sr" role="status"></p>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>xem hoặc sửa chi tiết một mục mà vẫn cần thấy danh sách (email, công việc, đơn hàng), bộ lọc nhiều tuỳ chọn, giỏ hàng, menu điều hướng trên điện thoại. Drawer có nhiều không gian hơn modal và giữ ngữ cảnh tốt hơn chuyển trang.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung là một luồng đủ lớn để có trang riêng (cần liên kết chia sẻ được, nút Back), hoặc chỉ cần hỏi một câu ngắn (dùng modal). Không mở drawer từ trong drawer.</p>
-    <p class="tip">Mẹo prompt: nêu rõ “modal side sheet” (có lớp phủ, giữ focus) hay “non-modal / push drawer” (đẩy nội dung, vẫn thao tác được phía sau); đây là hai hành vi khác nhau.</p>
+    <p class="use"><b>Use when</b>the user views or edits one item while the list stays in sight (email, tasks, orders), and for filters with many options, shopping carts and mobile navigation menus. A drawer offers more space than a modal and keeps more context than a page change.</p>
+    <p class="avoid"><b>Avoid when</b>the content is a flow large enough for its own page (it needs a shareable link and Back button support), or the question is short (use a modal). Do not open a drawer from inside a drawer.</p>
+    <p class="tip">Prompt tip: state whether you want a “modal side sheet” (overlay, focus trap) or a “non-modal / push drawer” (pushes the content aside, the page behind stays interactive). These are different behaviors.</p>
   </div>
   <div class="kw"><button>side drawer</button><button>slide-over panel from right</button><button>side sheet with sticky footer actions</button><button>master–detail editing</button><button>focus trap, Esc to close, return focus</button><button>off-canvas</button></div>
 </article>
@@ -419,20 +421,20 @@
 <!-- 3 -->
 <article class="pattern" id="toast-notification" data-toc="Toast / Snackbar">
   <h2>Toast / Snackbar</h2>
-  <p class="vi"><b>Thông báo ngắn tự ẩn sau vài giây.</b> Toast xuất hiện ở góc màn hình sau khi một thao tác hoàn tất, không chặn tương tác và tự ẩn sau vài giây. Khi có nút <b>Hoàn tác</b>, thao tác xoá hay lưu trữ có thể thực hiện ngay mà không cần hỏi trước. Nhấn “Lưu trữ” ở vài thư rồi nhấn Hoàn tác (hoặc phím <kbd>Z</kbd>); di chuột lên hoặc chạm giữ thông báo để tạm dừng đếm giờ.</p>
+  <p class="vi"><b>A short message that dismisses itself after a few seconds.</b> A toast appears in a corner of the screen after an action completes. It does not block interaction and hides after a few seconds. With an <b>Undo</b> button, delete and archive actions can run immediately without a confirmation step. Archive a few messages, then select Undo or press <kbd>Z</kbd>; hover over or touch and hold a toast to pause its timer.</p>
   <div class="demo">
     <div class="app">
-      <div class="bar"><h3>Hộp thư <small>4 chưa đọc</small></h3></div>
-      <ul class="list" aria-label="Thư"></ul>
+      <div class="bar"><h3>Inbox <small>4 unread</small></h3></div>
+      <ul class="list" aria-label="Messages"></ul>
     </div>
-    <section class="toasts" aria-label="Thông báo"></section>
+    <section class="toasts" aria-label="Notifications"></section>
     <p class="sr live" role="status"></p>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>thông báo kết quả của thao tác vừa thực hiện mà không cần người dùng phản hồi: “Đã lưu”, “Đã gửi”, “Đã lưu trữ · Hoàn tác”. Một dòng, tối đa một hành động, hiển thị 4–8 giây, dừng đếm khi di chuột lên hoặc focus vào.</p>
-    <p class="avoid"><b>Tránh khi</b>báo lỗi cần sửa (đặt lỗi ngay cạnh chỗ sai), thông tin quan trọng bắt buộc phải đọc, hoặc hành động không có lối vào nào khác: toast đã ẩn thì không xem lại được. Không xếp chồng quá 3 toast.</p>
-    <p class="tip">Mẹo prompt: ghi “toast with Undo action, pauses on hover/focus, announced via aria-live polite, does not steal focus” để AI không làm toast chiếm focus hoặc trình đọc màn hình không đọc được.</p>
+    <p class="use"><b>Use when</b>reporting the result of an action that needs no response: “Saved”, “Sent”, “Archived · Undo”. One line, at most one action, visible for 4–8 seconds, with the timer paused on hover or focus.</p>
+    <p class="avoid"><b>Avoid when</b>reporting an error the user must fix (place the error next to its source), showing information the user must read, or offering an action with no other entry point: a dismissed toast cannot be recalled. Do not stack more than three toasts.</p>
+    <p class="tip">Prompt tip: write “toast with Undo action, pauses on hover/focus, announced via aria-live polite, does not steal focus” so the AI does not build a toast that takes focus or stays silent to screen readers.</p>
   </div>
   <div class="kw"><button>toast notification</button><button>snackbar with Undo action</button><button>auto-dismiss with countdown bar</button><button>pause on hover / focus</button><button>aria-live="polite" status</button><button>stacked toasts bottom-left</button><button>optimistic UI</button></div>
 </article>
@@ -440,31 +442,31 @@
 <!-- 4 -->
 <article class="pattern" id="tooltip">
   <h2>Tooltip</h2>
-  <p class="vi"><b>Nhãn ngắn hiện khi di chuột hoặc focus vào một phần tử.</b> Tooltip mô tả chức năng của nút và phím tắt, hữu ích nhất cho nút chỉ có biểu tượng. Tooltip hiện sau một khoảng chờ ngắn khi di chuột, hiện ngay khi Tab tới, chuyển ngay khi di sang nút bên cạnh và ẩn khi nhấn <kbd>Esc</kbd>. Di chuột, nhấn Tab hoặc chạm vào thanh công cụ và biểu tượng <b>i</b> trong khung demo.</p>
+  <p class="vi"><b>A short label that appears on hover or focus.</b> A tooltip names a control and its keyboard shortcut, and is most useful on icon-only buttons. It appears after a short delay on hover and immediately on keyboard focus, switches without delay when the pointer moves to an adjacent button, and hides on <kbd>Esc</kbd>. Hover, focus or tap the toolbar icons and the <b>i</b> icon.</p>
   <div class="demo">
     <div class="app">
-      <div class="bar"><h3>Ghi chú họp <small>Đã lưu</small></h3></div>
+      <div class="bar"><h3>Meeting notes <small>Saved</small></h3></div>
       <div class="doc">
         <div class="paper">
-          <div class="tb" role="toolbar" aria-label="Định dạng chữ">
-            <span class="tw"><button type="button" aria-pressed="false" data-f="b" aria-labelledby="tt-b" aria-keyshortcuts="Control+B"><b>B</b></button><span class="tip" role="tooltip"><span id="tt-b">Đậm</span><kbd>Ctrl B</kbd></span></span>
-            <span class="tw"><button type="button" aria-pressed="false" data-f="i" aria-labelledby="tt-i" aria-keyshortcuts="Control+I"><i style="font-family:Georgia,serif">I</i></button><span class="tip" role="tooltip"><span id="tt-i">Nghiêng</span><kbd>Ctrl I</kbd></span></span>
-            <span class="tw"><button type="button" aria-pressed="false" data-f="u" aria-labelledby="tt-u" aria-keyshortcuts="Control+U"><u>U</u></button><span class="tip" role="tooltip"><span id="tt-u">Gạch chân</span><kbd>Ctrl U</kbd></span></span>
+          <div class="tb" role="toolbar" aria-label="Text formatting">
+            <span class="tw"><button type="button" aria-pressed="false" data-f="b" aria-labelledby="tt-b" aria-keyshortcuts="Control+B"><b>B</b></button><span class="tip" role="tooltip"><span id="tt-b">Bold</span><kbd>Ctrl B</kbd></span></span>
+            <span class="tw"><button type="button" aria-pressed="false" data-f="i" aria-labelledby="tt-i" aria-keyshortcuts="Control+I"><i style="font-family:Georgia,serif">I</i></button><span class="tip" role="tooltip"><span id="tt-i">Italic</span><kbd>Ctrl I</kbd></span></span>
+            <span class="tw"><button type="button" aria-pressed="false" data-f="u" aria-labelledby="tt-u" aria-keyshortcuts="Control+U"><u>U</u></button><span class="tip" role="tooltip"><span id="tt-u">Underline</span><kbd>Ctrl U</kbd></span></span>
             <span class="sep" aria-hidden="true"></span>
-            <span class="tw"><button type="button" data-f="clear" aria-labelledby="tt-c" aria-keyshortcuts="Control+\"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 5h11M10.5 5L8 16M4 17l12-12"/></svg></button><span class="tip" role="tooltip"><span id="tt-c">Xoá định dạng</span><kbd>Ctrl \</kbd></span></span>
+            <span class="tw"><button type="button" data-f="clear" aria-labelledby="tt-c" aria-keyshortcuts="Control+\"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 5h11M10.5 5L8 16M4 17l12-12"/></svg></button><span class="tip" role="tooltip"><span id="tt-c">Clear formatting</span><kbd>Ctrl \</kbd></span></span>
           </div>
-          <p class="txt">Chốt lại: <span class="s">bản 2.0 ra mắt ngày 20/10</span>, nhóm thiết kế gửi ảnh chụp màn hình trước thứ Sáu.</p>
-          <div class="quota"><span>Dung lượng: 4,2 / 5 GB</span><span class="meter" aria-hidden="true"><i></i></span>
-            <span class="tw"><button type="button" aria-label="Giải thích dung lượng" aria-describedby="tt-q">i</button><span class="tip up wide" role="tooltip" id="tt-q">Gồm mọi tệp đính kèm trong ghi chú. Gói Pro có 100 GB.</span></span></div>
+          <p class="txt">Decision: <span class="s">version 2.0 launches on October 20</span>, and the design team sends screenshots before Friday.</p>
+          <div class="quota"><span>Storage: 4.2 / 5 GB</span><span class="meter" aria-hidden="true"><i></i></span>
+            <span class="tw"><button type="button" aria-label="About storage" aria-describedby="tt-q">i</button><span class="tip up wide" role="tooltip" id="tt-q">Includes every attachment in your notes. The Pro plan includes 100 GB.</span></span></div>
         </div>
       </div>
     </div>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giải thích nút chỉ có biểu tượng, cho biết phím tắt, hoặc giải nghĩa một thuật ngữ. Nội dung là văn bản ngắn, đọc trong một lần và không bắt buộc phải đọc mới dùng được.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung có phần tử tương tác (liên kết, nút: dùng Popover), chứa thông tin bắt buộc (hiển thị thẳng trên giao diện), hoặc người dùng chủ yếu dùng điện thoại: không có hover nên tooltip gần như không được nhìn thấy.</p>
-    <p class="tip">Mẹo prompt: “tooltip on hover and keyboard focus, 400ms delay, no delay when moving between adjacent triggers, dismiss with Esc, hoverable (WCAG 1.4.13)”. Trình duyệt mới có <code>popover="hint"</code> + <code>interestfor</code> làm sẵn phần lớn việc này.</p>
+    <p class="use"><b>Use when</b>labeling an icon-only button, showing a keyboard shortcut or defining a term. The content is short text, read at a glance, and not required to complete the task.</p>
+    <p class="avoid"><b>Avoid when</b>the content includes interactive elements such as links or buttons (use a popover), holds required information (show it in the interface), or most users are on touch devices: without hover, tooltips are rarely seen.</p>
+    <p class="tip">Prompt tip: “tooltip on hover and keyboard focus, 400ms delay, no delay when moving between adjacent triggers, dismiss with Esc, hoverable (WCAG 1.4.13)”. In newer browsers, <code>popover="hint"</code> + <code>interestfor</code> handle most of this.</p>
   </div>
   <div class="kw"><button>tooltip</button><button>icon button tooltip with keyboard shortcut</button><button>show on hover and focus</button><button>hover delay + warm-up</button><button>dismiss on Esc (WCAG 1.4.13)</button><button>role="tooltip"</button><button>popover="hint" interestfor</button></div>
 </article>
@@ -472,42 +474,42 @@
 <!-- 5 -->
 <article class="pattern" id="popover">
   <h2>Popover</h2>
-  <p class="vi"><b>Khung nổi mở khi nhấn, có thể tương tác.</b> Khác tooltip, popover mở khi <b>nhấn</b> và chứa được nút, ô chọn và liên kết. Nhấn ra ngoài hoặc <kbd>Esc</kbd> để đóng; mở một popover thì popover đang mở tự đóng. Mở “Bộ lọc” để chọn rồi Áp dụng, và mở “Chia sẻ” để sao chép liên kết.</p>
+  <p class="vi"><b>An interactive floating panel that opens on click.</b> Unlike a tooltip, a popover opens on <b>click</b> and can contain buttons, checkboxes and links. A click outside or <kbd>Esc</kbd> closes it, and opening one popover closes any other. Open “Filter”, choose options and select Apply; open “Share” to copy the link.</p>
   <div class="demo">
     <div class="app">
       <div class="bar">
-        <h3>Ra mắt bản 2.0 <small>Công việc</small></h3>
-        <button type="button" class="btn ghost bf" popovertarget="pv-filter">Bộ lọc <span class="n"></span></button>
-        <button type="button" class="btn bs" popovertarget="pv-share">Chia sẻ</button>
+        <h3>Launch 2.0 <small>Tasks</small></h3>
+        <button type="button" class="btn ghost bf" popovertarget="pv-filter">Filter <span class="n"></span></button>
+        <button type="button" class="btn bs" popovertarget="pv-share">Share</button>
       </div>
-      <ul class="tasks" aria-label="Công việc"></ul>
+      <ul class="tasks" aria-label="Tasks"></ul>
       <p class="sr" role="status"></p>
     </div>
     <div id="pv-filter" popover role="dialog" aria-labelledby="pv-f-t">
-      <h4 id="pv-f-t">Lọc công việc</h4>
-      <fieldset><legend>Trạng thái</legend>
-        <label class="ck"><input type="checkbox" name="st" value="Đang làm">Đang làm</label>
-        <label class="ck"><input type="checkbox" name="st" value="Xong">Xong</label>
+      <h4 id="pv-f-t">Filter tasks</h4>
+      <fieldset><legend>Status</legend>
+        <label class="ck"><input type="checkbox" name="st" value="In progress">In progress</label>
+        <label class="ck"><input type="checkbox" name="st" value="Done">Done</label>
       </fieldset>
-      <fieldset><legend>Phụ trách</legend>
-        <label class="ck"><input type="checkbox" name="who" value="Lan Phạm">Lan Phạm</label>
-        <label class="ck"><input type="checkbox" name="who" value="Quốc Huy">Quốc Huy</label>
-        <label class="ck"><input type="checkbox" name="who" value="Thu Hà">Thu Hà</label>
+      <fieldset><legend>Assignee</legend>
+        <label class="ck"><input type="checkbox" name="who" value="Laura Park">Laura Park</label>
+        <label class="ck"><input type="checkbox" name="who" value="Quinn Harper">Quinn Harper</label>
+        <label class="ck"><input type="checkbox" name="who" value="Tara Hughes">Tara Hughes</label>
       </fieldset>
-      <div class="pf"><button type="button" class="btn ghost clear">Bỏ lọc</button><button type="button" class="btn apply">Áp dụng</button></div>
+      <div class="pf"><button type="button" class="btn ghost clear">Clear</button><button type="button" class="btn apply">Apply</button></div>
     </div>
     <div id="pv-share" popover role="dialog" aria-labelledby="pv-s-t">
-      <h4 id="pv-s-t">Chia sẻ dự án</h4>
-      <div class="link"><input class="inp" type="text" readonly value="https://app.vidu.com/p/ra-mat-2-0" aria-label="Link dự án"><button type="button" class="btn copy">Sao chép</button></div>
-      <label class="acc" for="pv-acc">Ai có link <select id="pv-acc"><option>Chỉ xem</option><option>Có thể bình luận</option><option>Không truy cập</option></select></label>
-      <ul class="mem"><li><span class="av" style="--c:#ffd7c2">LP</span>Lan Phạm<small>Chủ dự án</small></li><li><span class="av" style="--c:#c9e7d6">QH</span>Quốc Huy<small>Có thể sửa</small></li></ul>
+      <h4 id="pv-s-t">Share project</h4>
+      <div class="link"><input class="inp" type="text" readonly value="https://app.example.com/p/launch-2-0" aria-label="Project link"><button type="button" class="btn copy">Copy</button></div>
+      <label class="acc" for="pv-acc">Anyone with the link <select id="pv-acc"><option>Can view</option><option>Can comment</option><option>No access</option></select></label>
+      <ul class="mem"><li><span class="av" style="--c:#ffd7c2">LP</span>Laura Park<small>Owner</small></li><li><span class="av" style="--c:#c9e7d6">QH</span>Quinn Harper<small>Can edit</small></li></ul>
     </div>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>cần một nhóm điều khiển nhỏ gắn với một nút: bộ lọc, chia sẻ, chọn màu, thẻ hồ sơ khi nhấn avatar, cài đặt nhanh. Trang phía sau vẫn hiển thị và người dùng quay lại ngay khi nhấn ra ngoài.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung chỉ là một dòng giải thích (dùng Tooltip), hoặc là việc phải hoàn tất mới tiếp tục được (dùng Modal). Popover dài phải cuộn bên trong là dấu hiệu nên chuyển sang Drawer.</p>
-    <p class="tip">Thuộc tính HTML <code>popover</code> + <code>popovertarget</code> có sẵn: đóng khi nhấn ra ngoài, <kbd>Esc</kbd>, chỉ một cái mở một lúc, <code>aria-expanded</code> trên nút. Vị trí bám nút dùng CSS anchor positioning.</p>
+    <p class="use"><b>Use when</b>a small group of controls belongs to one button: filters, sharing, color pickers, a profile card on avatar click, quick settings. The page stays visible, and a click outside returns the user to it.</p>
+    <p class="avoid"><b>Avoid when</b>the content is a single line of explanation (use a tooltip) or a task that must be finished before the user continues (use a modal). If the popover needs its own scrolling, use a drawer instead.</p>
+    <p class="tip">The HTML <code>popover</code> attribute with <code>popovertarget</code> provides light dismiss, <kbd>Esc</kbd>, one open popover at a time and <code>aria-expanded</code> on the button. CSS anchor positioning keeps the panel attached to its button.</p>
   </div>
   <div class="kw"><button>popover</button><button>HTML popover attribute + popovertarget</button><button>light dismiss</button><button>CSS anchor positioning</button><button>filter popover with apply button</button><button>share popover with copy link</button></div>
 </article>
@@ -515,44 +517,44 @@
 <!-- 6 -->
 <article class="pattern" id="confirmation-dialog" data-toc="Confirmation vs Undo">
   <h2>Confirmation dialog</h2>
-  <p class="vi"><b>Hỏi lại trước khi thực hiện, hoặc thực hiện ngay kèm hoàn tác.</b> Hộp xác nhận chặn thao tác để nêu rõ hậu quả, phù hợp với việc <b>không thể hoàn tác</b>. Với thao tác lặp lại hằng ngày và khôi phục được, câu hỏi “Bạn có chắc?” mỗi lần chỉ khiến người dùng nhấn OK theo phản xạ; thực hiện ngay kèm Hoàn tác hiệu quả hơn. Thử cả hai phương án A và B trong khung demo.</p>
+  <p class="vi"><b>Ask before acting, or act immediately and offer Undo.</b> A confirmation dialog interrupts an action to state its consequences, and suits actions that <b>cannot be undone</b>. For routine, recoverable actions, asking “Are you sure?” every time trains users to select OK by reflex; acting immediately with Undo works better. Try both options, A and B.</p>
   <div class="demo">
     <div class="cf">
       <section class="pane" aria-labelledby="cf-a">
-        <p class="tag" id="cf-a"><i>A</i>Xác nhận trước</p>
+        <p class="tag" id="cf-a"><i>A</i>Confirm first</p>
         <div class="slot">
           <div class="proj">
-            <h4>Kế hoạch Q4</h4>
-            <p>128 tệp · 34 công việc · 6 thành viên</p>
-            <div class="dz"><span>Xoá dự án và mọi dữ liệu bên trong. Không thể khôi phục.</span><button type="button" class="btn red open">Xoá dự án…</button></div>
+            <h4>Q4 Plan</h4>
+            <p>128 files · 34 tasks · 6 members</p>
+            <div class="dz"><span>Deletes the project and all of its data. This cannot be recovered.</span><button type="button" class="btn red open">Delete project…</button></div>
           </div>
         </div>
-        <p class="why">Không hoàn tác được, ảnh hưởng nhiều người → hỏi lại, nói rõ hậu quả, nút ghi đúng hành động.</p>
+        <p class="why">Irreversible and affects many people → ask first, state the consequences, name the action on the button.</p>
       </section>
       <section class="pane" aria-labelledby="cf-b">
-        <p class="tag" id="cf-b"><i>B</i>Làm ngay, cho hoàn tác</p>
-        <ul class="nl" aria-label="Ghi chú"></ul>
-        <div class="ub" hidden><span></span><button type="button">Hoàn tác</button></div>
+        <p class="tag" id="cf-b"><i>B</i>Act now, offer Undo</p>
+        <ul class="nl" aria-label="Notes"></ul>
+        <div class="ub" hidden><span></span><button type="button">Undo</button></div>
         <p class="sr live" role="status"></p>
-        <p class="why">Thao tác nhỏ, thường xuyên, khôi phục được → không hỏi, thực hiện ngay.</p>
+        <p class="why">Small, frequent and recoverable → do not ask, act immediately.</p>
       </section>
     </div>
     <div class="scrim"></div>
     <dialog role="alertdialog" aria-labelledby="cf-t" aria-describedby="cf-d">
       <div class="ic" aria-hidden="true">!</div>
-      <h4 id="cf-t">Xoá vĩnh viễn “Kế hoạch Q4”?</h4>
-      <p id="cf-d">128 tệp và 34 công việc sẽ bị xoá với cả 6 thành viên. Thao tác này không hoàn tác được.</p>
+      <h4 id="cf-t">Permanently delete “Q4 Plan”?</h4>
+      <p id="cf-d">128 files and 34 tasks will be deleted for all 6 members. This action cannot be undone.</p>
       <form novalidate>
-        <div class="fld"><label class="lab" for="cf-in">Gõ <b>Kế hoạch Q4</b> để xác nhận</label><input class="inp" id="cf-in" type="text" autocomplete="off" spellcheck="false" data-autofocus></div>
-        <div class="acts"><button type="button" class="btn ghost close">Huỷ</button><button class="btn red go" disabled>Xoá dự án</button></div>
+        <div class="fld"><label class="lab" for="cf-in">Type <b>Q4 Plan</b> to confirm</label><input class="inp" id="cf-in" type="text" autocomplete="off" spellcheck="false" data-autofocus></div>
+        <div class="acts"><button type="button" class="btn ghost close">Cancel</button><button class="btn red go" disabled>Delete project</button></div>
       </form>
     </dialog>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>(xác nhận) thao tác không hoàn tác được, tốn kém hoặc ảnh hưởng người khác: xoá dự án, huỷ gói trả phí, gửi email cho 5.000 người. Tiêu đề là câu hỏi cụ thể, nút ghi đúng động từ (“Xoá dự án”, không phải “OK”); với thao tác hệ trọng, yêu cầu gõ lại tên để xác nhận.</p>
-    <p class="avoid"><b>Tránh khi</b>thao tác khôi phục được và lặp lại thường xuyên (xoá thư, lưu trữ, bỏ khỏi danh sách): dùng Undo. Hỏi lại quá nhiều khiến người dùng nhấn “Đồng ý” theo thói quen, và hộp xác nhận mất tác dụng đúng lúc cần.</p>
-    <p class="tip">Mẹo prompt: “destructive action confirmation with type-to-confirm, specific verb on button, focus on cancel/input, not OK/Cancel” cho trường hợp A; “optimistic delete with undo snackbar” cho trường hợp B.</p>
+    <p class="use"><b>Use when</b>(confirm) the action cannot be undone, is costly or affects other people: deleting a project, canceling a paid plan, emailing 5,000 people. The title is a specific question and the button names the exact verb (“Delete project”, not “OK”). For high-stakes actions, ask the user to type the name to confirm.</p>
+    <p class="avoid"><b>Avoid when</b>the action is recoverable and frequent (deleting email, archiving, removing from a list): use Undo. Frequent confirmations train users to select “OK” out of habit, and the dialog fails exactly when it matters.</p>
+    <p class="tip">Prompt tip: “destructive action confirmation with type-to-confirm, specific verb on button, focus on cancel/input, not OK/Cancel” for option A; “optimistic delete with undo snackbar” for option B.</p>
   </div>
   <div class="kw"><button>confirmation dialog</button><button>destructive action alertdialog</button><button>type-to-confirm (GitHub-style)</button><button>specific verb button label</button><button>undo instead of confirm</button><button>optimistic delete with undo</button></div>
 </article>
@@ -560,40 +562,40 @@
 <!-- 7 -->
 <article class="pattern" id="progress-indicator">
   <h2>Progress indicator</h2>
-  <p class="vi"><b>Cho biết hệ thống đang xử lý và còn bao lâu.</b> <b>Determinate</b> (xác định được tiến độ): thanh hoặc vòng chạy tới 100%, kèm phần trăm hoặc thời gian còn lại. <b>Indeterminate</b> (chưa xác định): vệt chạy qua lại hoặc spinner, chỉ báo hệ thống đang xử lý. Spinner phù hợp với thời gian chờ ngắn trong một nút; thanh tiến độ phù hợp với tác vụ dài. Nhấn các nút để chạy lại.</p>
+  <p class="vi"><b>Shows that the system is working and how long it will take.</b> <b>Determinate</b>: a bar or ring fills to 100%, with a percentage or the time remaining. <b>Indeterminate</b>: a moving stripe or spinner shows that work is in progress when the duration is unknown. A spinner suits a short wait inside a button; a progress bar suits a long task. Select the buttons to run each indicator again.</p>
   <div class="demo">
     <div class="grid">
       <div class="cell">
-        <p class="tag"><b>Determinate</b> · thanh</p>
-        <div class="row"><span class="file" aria-hidden="true">PDF</span><div class="meta"><b id="pg-up-l">bao-cao-quy-3.pdf</b><span class="up-s">24 MB</span></div></div>
+        <p class="tag"><b>Determinate</b> · bar</p>
+        <div class="row"><span class="file" aria-hidden="true">PDF</span><div class="meta"><b id="pg-up-l">q3-report.pdf</b><span class="up-s">24 MB</span></div></div>
         <progress class="up" max="100" value="0" aria-labelledby="pg-up-l"></progress>
-        <div class="acts"><button type="button" class="btn ghost up-b">Huỷ</button><small class="up-st" role="status"></small></div>
+        <div class="acts"><button type="button" class="btn ghost up-b">Cancel</button><small class="up-st" role="status"></small></div>
       </div>
       <div class="cell">
-        <p class="tag"><b>Indeterminate → determinate</b> · thanh</p>
-        <div class="row"><div class="meta"><b id="pg-ex-l">Xuất báo cáo PDF</b><span class="ex-s">Đang chuẩn bị dữ liệu…</span></div></div>
+        <p class="tag"><b>Indeterminate → determinate</b> · bar</p>
+        <div class="row"><div class="meta"><b id="pg-ex-l">Export PDF report</b><span class="ex-s">Preparing data…</span></div></div>
         <progress class="ex" max="100" aria-labelledby="pg-ex-l"></progress>
-        <div class="acts"><button type="button" class="btn ghost ex-b">Xuất lại</button><small class="ex-st" role="status"></small></div>
+        <div class="acts"><button type="button" class="btn ghost ex-b">Export again</button><small class="ex-st" role="status"></small></div>
       </div>
       <div class="cell">
-        <p class="tag"><b>Indeterminate</b> · spinner trong nút</p>
-        <p style="font-size:13px;color:var(--t2)">Thời gian chờ ngắn (dưới khoảng 3 giây), hiển thị ngay tại nút vừa nhấn.</p>
-        <div class="acts"><button type="button" class="btn save">Lưu thay đổi</button><small class="sv-st" role="status"></small></div>
+        <p class="tag"><b>Indeterminate</b> · spinner in button</p>
+        <p style="font-size:13px;color:var(--t2)">Short wait (under about 3 seconds), shown on the button the user selected.</p>
+        <div class="acts"><button type="button" class="btn save">Save changes</button><small class="sv-st" role="status"></small></div>
       </div>
       <div class="cell">
-        <p class="tag"><b>Determinate</b> · vòng</p>
+        <p class="tag"><b>Determinate</b> · ring</p>
         <div class="row">
           <div class="ring" role="progressbar" aria-labelledby="pg-sy-l" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="tr" cx="40" cy="40" r="33"/><circle class="vl" cx="40" cy="40" r="33" stroke-dasharray="207.35" stroke-dashoffset="207.35"/></svg><b>0%</b></div>
-          <div class="meta"><b id="pg-sy-l">Đồng bộ ảnh</b><span class="sy-s">0 / 40 ảnh</span><div class="lsp" style="margin-top:8px"><button type="button" class="btn ghost sy-b" style="height:30px;font-size:12.5px;padding:0 11px">Đồng bộ lại</button></div></div>
+          <div class="meta"><b id="pg-sy-l">Sync photos</b><span class="sy-s">0 / 40 photos</span><div class="lsp" style="margin-top:8px"><button type="button" class="btn ghost sy-b" style="height:30px;font-size:12.5px;padding:0 11px">Sync again</button></div></div>
         </div>
       </div>
     </div>
-    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    <div class="demo-tools"><button class="replay">↻ Replay</button></div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>thời gian chờ vượt khoảng 1 giây. Dưới 1 giây: không cần chỉ báo. 1–3 giây: spinner tại chỗ. Trên 3 giây hoặc đo được tiến độ (tải lên, xuất file, cài đặt): thanh determinate có phần trăm và nút huỷ. Chưa đo được thì dùng indeterminate, rồi chuyển sang determinate khi có số liệu.</p>
-    <p class="avoid"><b>Tránh khi</b>đang tải nội dung có bố cục biết trước (dùng Skeleton), hoặc thanh tiến độ không phản ánh tiến độ thật, chạy tới 99% rồi dừng: người dùng mất niềm tin ngay. Spinner toàn màn hình che kín trang là lựa chọn kém nhất.</p>
-    <p class="tip">Mẹo prompt: phân biệt rõ “determinate progress bar with percentage and time remaining” và “indeterminate spinner”; dùng <code>&lt;progress&gt;</code> native (có sẵn role progressbar), bỏ <code>value</code> để thành indeterminate.</p>
+    <p class="use"><b>Use when</b>a wait exceeds about 1 second. Under 1 second: no indicator. 1–3 seconds: an inline spinner. Over 3 seconds, or when progress is measurable (upload, export, install): a determinate bar with a percentage and a Cancel button. If progress cannot be measured yet, start indeterminate and switch to determinate once data is available.</p>
+    <p class="avoid"><b>Avoid when</b>loading content with a known layout (use a skeleton screen), or when the bar does not reflect real progress, for example one that reaches 99% and stalls: users lose trust at once. A full-screen spinner that covers the page is the weakest option.</p>
+    <p class="tip">Prompt tip: distinguish “determinate progress bar with percentage and time remaining” from “indeterminate spinner”. Use the native <code>&lt;progress&gt;</code> element (it has the progressbar role built in) and omit <code>value</code> to make it indeterminate.</p>
   </div>
   <div class="kw"><button>determinate progress bar</button><button>indeterminate progress bar</button><button>loading spinner in button</button><button>circular progress ring</button><button>time remaining estimate</button><button>native &lt;progress&gt; element</button><button>cancelable upload</button></div>
 </article>
@@ -608,8 +610,8 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const FOC = 'button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 const OUT_MS = Dict.RM ? 0 : 170;
 
-/* Lớp phủ nằm trong khung .demo: <dialog>.show() + inert phần dưới + tự giữ Tab + Esc + trả focus.
-   (Sản phẩm thật: dùng showModal(), trình duyệt làm hết những việc này.) */
+/* Overlay inside the .demo frame: <dialog>.show() + inert content below + scripted Tab trap + Esc + focus return.
+   (In production, use showModal(); the browser does all of this.) */
 function layer(dlg, { under, scrim, onClose }) {
   let opener = null, timer;
   const vis = () => $$(FOC, dlg).filter(el => el.getClientRects().length);
@@ -653,10 +655,10 @@ Dict.demo('modal-dialog', d => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const v = email.value.trim();
-    if (!okEmail(v)) { err.textContent = v ? 'Email chưa đúng, ví dụ ten@vidu.com.' : 'Nhập email người bạn muốn mời.'; email.setAttribute('aria-invalid', 'true'); email.focus(); return; }
+    if (!okEmail(v)) { err.textContent = v ? 'Enter a valid email address, for example name@example.com.' : 'Enter the email address of the person to invite.'; email.setAttribute('aria-invalid', 'true'); email.focus(); return; }
     const ini = v.split('@')[0].replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || '?';
     $('.avs', d).insertAdjacentHTML('beforeend', `<span class="av new" style="--c:#ffe7a3" title="${esc(v)}">${esc(ini)}</span>`);
-    stat.textContent = `✓ Đã mời ${v}`;
+    stat.textContent = `✓ Invited ${v}`;
     L.close('sent');
   });
   return L.stop;
@@ -664,13 +666,13 @@ Dict.demo('modal-dialog', d => {
 
 /* ---------- 2. Drawer ---------- */
 const TASKS = [
-  ['T-201', 'Thiết kế trang giới thiệu', 'Lan Phạm', 'Đang làm', '10/10', 'Bản mobile trước, desktop sau.'],
-  ['T-202', 'Sửa lỗi đăng nhập bằng email', 'Quốc Huy', 'Bị chặn', '09/10', 'Chờ phản hồi từ nhóm hạ tầng.'],
-  ['T-203', 'Viết ghi chú phát hành 2.0', 'Thu Hà', 'Cần làm', '12/10', ''],
-  ['T-204', 'Chốt danh sách tính năng', 'Lan Phạm', 'Xong', '02/10', 'Đã duyệt trong buổi họp thứ Hai.'],
-  ['T-205', 'Kiểm thử trên điện thoại', 'Gia Khang', 'Cần làm', '14/10', '']
+  ['T-201', 'Design landing page', 'Laura Park', 'In progress', 'Oct 10', 'Mobile first, then desktop.'],
+  ['T-202', 'Fix email sign-in bug', 'Quinn Harper', 'Blocked', 'Oct 9', 'Waiting on the infrastructure team.'],
+  ['T-203', 'Write 2.0 release notes', 'Tara Hughes', 'To do', 'Oct 12', ''],
+  ['T-204', 'Finalize feature list', 'Laura Park', 'Done', 'Oct 2', 'Approved in the Monday meeting.'],
+  ['T-205', 'Test on mobile', 'Grace Kim', 'To do', 'Oct 14', '']
 ];
-const AVC = { 'Lan Phạm': '#ffd7c2', 'Quốc Huy': '#c9e7d6', 'Thu Hà': '#d8d3ff', 'Gia Khang': '#ffe7a3' };
+const AVC = { 'Laura Park': '#ffd7c2', 'Quinn Harper': '#c9e7d6', 'Tara Hughes': '#d8d3ff', 'Grace Kim': '#ffe7a3' };
 const ini = n => n.split(' ').map(w => w[0]).join('').slice(-2).toUpperCase();
 Dict.demo('drawer', d => {
   const tbl = $('.tbl', d), dlg = $('dialog', d), form = $('form', dlg);
@@ -696,9 +698,9 @@ Dict.demo('drawer', d => {
     const old = $(`.tr[data-i="${cur}"]`, tbl);
     old.outerHTML = row(t, cur);
     const nr = $(`.tr[data-i="${cur}"]`, tbl); nr.classList.add('flash');
-    $('.sr[role=status]', d).textContent = `Đã lưu ${t[0]}: ${t[1]}, ${t[3]}.`;
+    $('.sr[role=status]', d).textContent = `Saved ${t[0]}: ${t[1]}, ${t[3]}.`;
     L.close('save');
-    /* nút cũ đã bị thay: trả focus về nút mới của đúng dòng đó */
+    /* the old button was replaced: return focus to the new button in the same row */
     setTimeout(() => $('button', nr).focus({ preventScroll: true }), OUT_MS + 10);
   });
   return L.stop;
@@ -706,10 +708,10 @@ Dict.demo('drawer', d => {
 
 /* ---------- 3. Toast ---------- */
 const MAIL = [
-  ['Trần Bảo Ngọc', 'Lịch họp tuần sau', 'Buổi họp tuần sau được dời sang chiều thứ Ba…', '#ffd7c2'],
-  ['Nguyễn Quốc Huy', 'Bản thiết kế trang chủ v3', 'Đã cập nhật theo góp ý hôm qua, xem giúp…', '#c9e7d6'],
-  ['Lê Thu Hà', 'Báo cáo tháng 9', 'Gửi bạn bản tổng hợp số liệu tháng 9…', '#d8d3ff'],
-  ['Phạm Gia Khang', 'Hoá đơn gói Pro', 'Hoá đơn kỳ tháng 10 đã sẵn sàng…', '#ffe7a3']
+  ['Brooke Nolan', 'Next week’s meeting', 'The meeting moves to Tuesday afternoon…', '#ffd7c2'],
+  ['Quinn Harper', 'Homepage design v3', 'Updated with yesterday’s feedback, please review…', '#c9e7d6'],
+  ['Tara Hughes', 'September report', 'Here is the September metrics summary…', '#d8d3ff'],
+  ['Grace Kim', 'Pro plan invoice', 'Your October invoice is ready…', '#ffe7a3']
 ];
 Dict.demo('toast-notification', d => {
   const list = $('.list', d), box = $('.toasts', d), live = $('.live', d), app = $('.app', d);
@@ -717,11 +719,11 @@ Dict.demo('toast-notification', d => {
   const undoStack = [];
   const live2 = t => { live.textContent = ''; setTimeout(() => live.textContent = t, 30); };
   const li = it => `<li data-i="${it.i}"><span class="av" style="--c:${it.m[3]}" aria-hidden="true">${ini(it.m[0])}</span><div class="m"><b>${esc(it.m[1])}</b><span>${esc(it.m[0])} · ${esc(it.m[2])}</span></div>` +
-    `<button type="button" class="arch" aria-label="Lưu trữ thư: ${esc(it.m[1])}"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="14" height="4" rx="1"/><path d="M4.5 8v7.5a1 1 0 001 1h9a1 1 0 001-1V8M8 11.5h4" stroke-linecap="round"/></svg><span>Lưu trữ</span></button></li>`;
+    `<button type="button" class="arch" aria-label="Archive message: ${esc(it.m[1])}"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="14" height="4" rx="1"/><path d="M4.5 8v7.5a1 1 0 001 1h9a1 1 0 001-1V8M8 11.5h4" stroke-linecap="round"/></svg><span>Archive</span></button></li>`;
   const draw = () => {
     const vis = items.filter(x => x.on);
-    list.innerHTML = vis.length ? vis.map(li).join('') : '<li class="empty">Hộp thư trống. Hoàn tác để lấy lại thư.</li>';
-    $('.bar small', d).textContent = vis.length ? `${vis.length} thư` : 'Trống';
+    list.innerHTML = vis.length ? vis.map(li).join('') : '<li class="empty">Your inbox is empty. Undo to restore a message.</li>';
+    $('.bar small', d).textContent = vis.length ? `${vis.length} message${vis.length > 1 ? 's' : ''}` : 'Empty';
   };
   draw();
   /* --- toast --- */
@@ -747,21 +749,21 @@ Dict.demo('toast-notification', d => {
   box.addEventListener('focusin', pause); box.addEventListener('focusout', e => { if (!box.contains(e.relatedTarget) && !box.matches(':hover')) resume(); });
   const toast = (msg, undo) => {
     const t = document.createElement('div'); t.className = 'toast';
-    t.innerHTML = `<span>${msg}</span>${undo ? '<button type="button" class="undo">Hoàn tác</button>' : ''}<button type="button" class="x" aria-label="Đóng thông báo">×</button><i aria-hidden="true"></i>`;
+    t.innerHTML = `<span>${msg}</span>${undo ? '<button type="button" class="undo">Undo</button>' : ''}<button type="button" class="x" aria-label="Dismiss notification">×</button><i aria-hidden="true"></i>`;
     t._bar = $('i', t); t._left = undo ? DUR : 3500;
     if (undo) $('.undo', t).addEventListener('click', () => { kill(t, true); undo(); });
     $('.x', t).addEventListener('click', () => kill(t, true));
     box.prepend(t);
     const all = $$('.toast:not(.out)', box); if (all.length > 3) kill(all.at(-1), true);
     if (paused) { t._start = performance.now(); } else arm(t);
-    live2(msg.replace(/<[^>]+>/g, '') + (undo ? '. Có nút Hoàn tác.' : ''));
+    live2(msg.replace(/<[^>]+>/g, '') + (undo ? '. Undo available.' : ''));
     return t;
   };
   const restore = it => {
     it.on = true; draw();
     const r = $(`li[data-i="${it.i}"]`, list); r.classList.add('back'); $('.arch', r).focus({ preventScroll: true });
     const k = undoStack.indexOf(it); if (k > -1) undoStack.splice(k, 1);
-    toast(`Đã khôi phục “${esc(it.m[1])}”`);
+    toast(`Restored “${esc(it.m[1])}”`);
   };
   list.addEventListener('click', e => {
     const b = e.target.closest('.arch'); if (!b) return;
@@ -772,14 +774,14 @@ Dict.demo('toast-notification', d => {
       it.on = false; draw(); undoStack.push(it);
       const f = nextI != null ? $(`li[data-i="${nextI}"] .arch`, list) : null;
       (f || app.querySelector('.list')).focus?.({ preventScroll: true });
-      const t = toast(`Đã lưu trữ “${esc(it.m[1])}”`, () => restore(it));
+      const t = toast(`Archived “${esc(it.m[1])}”`, () => restore(it));
       t._it = it;
     };
     if (Dict.RM) return finish();
     r.animate([{ height: r.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 200, easing: 'ease-in' }).onfinish = finish;
   });
   list.tabIndex = -1;
-  /* phím Z (hoặc Ctrl+Z) khi focus trong demo: hoàn tác lần lưu trữ gần nhất */
+  /* Z (or Ctrl+Z) with focus inside the demo: undo the most recent archive */
   const onKey = e => {
     if (!(e.key === 'z' || e.key === 'Z') || e.altKey || e.shiftKey || e.target.matches('input,textarea')) return;
     const it = undoStack.at(-1); if (!it) return;
@@ -800,7 +802,7 @@ Dict.demo('tooltip', d => {
     clearTimeout(hideT);
     if (openTip && openTip !== tip) openTip.classList.remove('on');
     tip.style.setProperty('--dx', '0px'); tip.classList.add('on'); openTip = tip;
-    /* giữ bong bóng trong khung demo; mũi tên vẫn chỉ đúng nút */
+    /* keep the bubble inside the demo frame; the arrow still points at its button */
     const r = tip.getBoundingClientRect(), box = d.getBoundingClientRect(), m = 8;
     const dx = Math.min(0, box.right - m - r.right) || Math.max(0, box.left + m - r.left);
     tip.style.setProperty('--dx', dx + 'px');
@@ -815,16 +817,16 @@ Dict.demo('tooltip', d => {
       if (e.pointerType !== 'mouse') return;
       clearTimeout(showT); clearTimeout(hideT);
       if (suppressed === tip) return;
-      const wait = (openTip || performance.now() < warmUntil) ? 0 : 450; // nút kế bên: hiện ngay
+      const wait = (openTip || performance.now() < warmUntil) ? 0 : 450; // adjacent button: show immediately
       showT = setTimeout(() => show(tip), wait);
     });
     b.addEventListener('pointerleave', () => { suppressed = null; hide(tip, 120); });
-    tip.addEventListener('pointerenter', () => clearTimeout(hideT));  // rê lên được tooltip (WCAG 1.4.13)
+    tip.addEventListener('pointerenter', () => clearTimeout(hideT));  // the tooltip itself is hoverable (WCAG 1.4.13)
     tip.addEventListener('pointerleave', () => hide(tip, 120));
     b.addEventListener('focus', () => { if (b.matches(':focus-visible')) show(tip); });
     b.addEventListener('blur', () => hide(tip));
     b.addEventListener('pointerdown', () => hide(tip));
-    /* màn hình cảm ứng không có hover: chạm hiện nhãn trong chốc lát */
+    /* touch screens have no hover: a tap shows the label briefly */
     b.addEventListener('pointerup', e => { if (e.pointerType === 'mouse') return; show(tip); hide(tip, tip.classList.contains('wide') ? 3200 : 1600); });
   }
   const fmt = f => {
@@ -834,7 +836,7 @@ Dict.demo('tooltip', d => {
     $(`[data-f="${f}"]`, d).setAttribute('aria-pressed', on);
   };
   $('.tb', d).addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (b) fmt(b.dataset.f); });
-  /* toolbar: ← → giữa các nút (roving tabindex) */
+  /* toolbar: ← → between buttons (roving tabindex) */
   const tbs = $$('.tb button', d);
   tbs.forEach((b, i) => b.tabIndex = i ? -1 : 0);
   $('.tb', d).addEventListener('keydown', e => {
@@ -857,19 +859,19 @@ Dict.demo('tooltip', d => {
 
 /* ---------- 5. Popover ---------- */
 const PV_TASKS = [
-  ['Thiết kế trang giới thiệu', 'Lan Phạm', 'Đang làm'], ['Sửa lỗi đăng nhập', 'Quốc Huy', 'Đang làm'],
-  ['Chốt danh sách tính năng', 'Lan Phạm', 'Xong'], ['Viết ghi chú phát hành', 'Thu Hà', 'Đang làm'], ['Ảnh chụp màn hình cửa hàng', 'Thu Hà', 'Xong']
+  ['Design landing page', 'Laura Park', 'In progress'], ['Fix sign-in bug', 'Quinn Harper', 'In progress'],
+  ['Finalize feature list', 'Laura Park', 'Done'], ['Write release notes', 'Tara Hughes', 'In progress'], ['App store screenshots', 'Tara Hughes', 'Done']
 ];
 const ANCHOR = CSS.supports('anchor-name: --a');
 Dict.demo('popover', d => {
   const list = $('.tasks', d), fp = $('#pv-filter', d), sp = $('#pv-share', d), bf = $('.bf', d), n = $('.bf .n', d);
   const draw = (st = [], who = [], say = true) => {
     const rows = PV_TASKS.filter(t => (!st.length || st.includes(t[2])) && (!who.length || who.includes(t[1])));
-    list.innerHTML = rows.length ? rows.map(t => `<li><span class="av" style="--c:${AVC[t[1]]}" aria-hidden="true">${ini(t[1])}</span><span>${esc(t[0])}</span><em class="st${t[2] === 'Xong' ? ' done' : ''}" style="font-style:normal">${t[2]}</em></li>`).join('')
-      : '<li class="nil">Không có công việc khớp bộ lọc.</li>';
+    list.innerHTML = rows.length ? rows.map(t => `<li><span class="av" style="--c:${AVC[t[1]]}" aria-hidden="true">${ini(t[1])}</span><span>${esc(t[0])}</span><em class="st${t[2] === 'Done' ? ' done' : ''}" style="font-style:normal">${t[2]}</em></li>`).join('')
+      : '<li class="nil">No tasks match the filter.</li>';
     n.textContent = (st.length + who.length) || '';
-    bf.setAttribute('aria-label', `Bộ lọc${st.length + who.length ? `, đang bật ${st.length + who.length}` : ''}`);
-    if (say) $('.sr[role=status]', d).textContent = `Hiện ${rows.length} trên ${PV_TASKS.length} công việc.`;
+    bf.setAttribute('aria-label', `Filter${st.length + who.length ? `, ${st.length + who.length} active` : ''}`);
+    if (say) $('.sr[role=status]', d).textContent = `Showing ${rows.length} of ${PV_TASKS.length} tasks.`;
   };
   draw([], [], false);
   const picked = name => $$(`input[name=${name}]:checked`, fp).map(i => i.value);
@@ -879,10 +881,10 @@ Dict.demo('popover', d => {
   let ct;
   copy.addEventListener('click', async () => {
     const ok = await Dict.copy($('.link input', sp).value);
-    copy.textContent = ok ? '✓ Đã chép' : 'Không chép được';
-    clearTimeout(ct); ct = setTimeout(() => copy.textContent = 'Sao chép', 1600);
+    copy.textContent = ok ? '✓ Copied' : 'Couldn’t copy';
+    clearTimeout(ct); ct = setTimeout(() => copy.textContent = 'Copy', 1600);
   });
-  /* trình duyệt chưa có anchor positioning: tự đặt vị trí khi mở, đóng khi cuộn trang */
+  /* browsers without anchor positioning: place on open, close on page scroll */
   const place = (pop, btn) => {
     const r = btn.getBoundingClientRect();
     pop.style.position = 'fixed';
@@ -899,10 +901,10 @@ Dict.demo('popover', d => {
 });
 
 /* ---------- 6. Confirmation vs Undo ---------- */
-const NOTES = ['Ý tưởng cho buổi workshop', 'Danh sách câu hỏi phỏng vấn', 'Ghi chú họp với nhóm hỗ trợ', 'Việc cần làm trước kỳ nghỉ'];
+const NOTES = ['Workshop ideas', 'Interview questions', 'Support team meeting notes', 'To-dos before the holidays'];
 Dict.demo('confirmation-dialog', d => {
   const dlg = $('dialog', d), form = $('form', dlg), inp = $('#cf-in', d), go = $('.go', d), slot = $('.slot', d);
-  const NAME = 'Kế hoạch Q4';
+  const NAME = 'Q4 Plan';
   const L = layer(dlg, { under: [$('.cf', d)], scrim: $('.scrim', d) });
   $('.open', d).addEventListener('click', e => { form.reset(); go.disabled = true; L.open(e.currentTarget); });
   inp.addEventListener('input', () => { go.disabled = inp.value.trim().toLowerCase() !== NAME.toLowerCase(); });
@@ -910,17 +912,17 @@ Dict.demo('confirmation-dialog', d => {
     e.preventDefault(); if (go.disabled) return;
     L.close('delete');
     setTimeout(() => {
-      slot.innerHTML = `<div class="gone" tabindex="-1" role="status"><b>Đã xoá “${NAME}”</b>Dự án và dữ liệu không thể khôi phục.</div>`;
+      slot.innerHTML = `<div class="gone" tabindex="-1" role="status"><b>Deleted “${NAME}”</b>The project and its data cannot be recovered.</div>`;
       $('.gone', slot).focus({ preventScroll: true });
     }, OUT_MS + 10);
   });
-  /* B: xoá ngay + Hoàn tác */
+  /* B: delete immediately + Undo */
   const nl = $('.nl', d), ub = $('.ub', d), live = $('.live', d);
   const on = NOTES.map(() => true);
   let last = -1, t;
   const draw = () => {
-    const rows = NOTES.map((x, i) => on[i] ? `<li data-i="${i}"><span>${esc(x)}</span><button type="button" class="del" aria-label="Xoá ghi chú: ${esc(x)}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li>` : '').join('');
-    nl.innerHTML = rows || '<li class="nil">Không còn ghi chú nào.</li>';
+    const rows = NOTES.map((x, i) => on[i] ? `<li data-i="${i}"><span>${esc(x)}</span><button type="button" class="del" aria-label="Delete note: ${esc(x)}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li>` : '').join('');
+    nl.innerHTML = rows || '<li class="nil">No notes left.</li>';
   };
   draw();
   const hideUb = () => { ub.hidden = true; last = -1; };
@@ -929,16 +931,16 @@ Dict.demo('confirmation-dialog', d => {
     const r = b.closest('li'), i = +r.dataset.i, sib = (r.nextElementSibling || r.previousElementSibling)?.dataset.i;
     on[i] = false; last = i; draw();
     (sib != null ? $(`li[data-i="${sib}"] .del`, nl) : $('button', ub))?.focus({ preventScroll: true });
-    $('span', ub).textContent = `Đã xoá “${NOTES[i]}”`; ub.hidden = false;
+    $('span', ub).textContent = `Deleted “${NOTES[i]}”`; ub.hidden = false;
     ub.style.animation = 'none'; void ub.offsetWidth; ub.style.animation = '';
-    live.textContent = `Đã xoá ghi chú ${NOTES[i]}. Có nút Hoàn tác.`;
+    live.textContent = `Deleted note ${NOTES[i]}. Undo available.`;
     clearTimeout(t); t = setTimeout(hideUb, 6000);
   });
   $('button', ub).addEventListener('click', () => {
     if (last < 0) return;
     const i = last; on[i] = true; draw(); hideUb(); clearTimeout(t);
     const r = $(`li[data-i="${i}"]`, nl); r.classList.add('back'); $('.del', r).focus({ preventScroll: true });
-    live.textContent = `Đã khôi phục ${NOTES[i]}.`;
+    live.textContent = `Restored ${NOTES[i]}.`;
   });
   return () => { clearTimeout(t); L.stop(); };
 });
@@ -947,55 +949,55 @@ Dict.demo('confirmation-dialog', d => {
 Dict.demo('progress-indicator', d => {
   const T = new Set();
   const later = (fn, ms) => { const id = setTimeout(() => { T.delete(id); fn(); }, ms); T.add(id); return id; };
-  /* A: tải lên, tốc độ không đều như mạng thật */
+  /* A: upload, with an uneven speed like a real network */
   const up = $('.up', d), upS = $('.up-s', d), upB = $('.up-b', d), upSt = $('.up-st', d);
   let upT = null, upV = 0;
   const upTick = () => {
     upV = Math.min(100, upV + 1.2 + Math.random() * 3.4);
     up.value = upV;
     const left = Math.max(1, Math.round((100 - upV) / 3.2 * .16));
-    upS.textContent = `${(24 * upV / 100).toFixed(1).replace('.', ',')} / 24 MB · ${Math.round(upV)}% · còn khoảng ${left} giây`;
-    if (upV >= 100) { up.classList.add('done'); upS.innerHTML = '<span class="ok">✓ Đã tải lên · 24 MB</span>'; upSt.textContent = 'Đã tải lên xong.'; upB.textContent = 'Tải lên lại'; upT = null; return; }
+    upS.textContent = `${(24 * upV / 100).toFixed(1)} / 24 MB · ${Math.round(upV)}% · about ${left} s left`;
+    if (upV >= 100) { up.classList.add('done'); upS.innerHTML = '<span class="ok">✓ Uploaded · 24 MB</span>'; upSt.textContent = 'Upload complete.'; upB.textContent = 'Upload again'; upT = null; return; }
     upT = later(upTick, 160);
   };
-  const upStart = () => { clearTimeout(upT); upV = 0; up.value = 0; up.classList.remove('done'); upSt.textContent = ''; upB.textContent = 'Huỷ'; upTick(); };
+  const upStart = () => { clearTimeout(upT); upV = 0; up.value = 0; up.classList.remove('done'); upSt.textContent = ''; upB.textContent = 'Cancel'; upTick(); };
   upB.addEventListener('click', () => {
-    if (upT) { clearTimeout(upT); T.delete(upT); upT = null; upS.textContent = `Đã huỷ ở ${Math.round(upV)}%`; upSt.textContent = 'Đã huỷ tải lên.'; upB.textContent = 'Tải lên lại'; }
+    if (upT) { clearTimeout(upT); T.delete(upT); upT = null; upS.textContent = `Canceled at ${Math.round(upV)}%`; upSt.textContent = 'Upload canceled.'; upB.textContent = 'Upload again'; }
     else upStart();
   });
   upStart();
-  /* B: chưa biết bao lâu → biết rồi */
+  /* B: unknown duration → known */
   const ex = $('.ex', d), exS = $('.ex-s', d), exB = $('.ex-b', d), exSt = $('.ex-st', d);
   let exRun = 0;
   const exStart = () => {
     const my = ++exRun;
-    ex.removeAttribute('value'); ex.classList.remove('done'); exS.textContent = 'Đang chuẩn bị dữ liệu…'; exSt.textContent = ''; exB.setAttribute('aria-disabled', 'true');
+    ex.removeAttribute('value'); ex.classList.remove('done'); exS.textContent = 'Preparing data…'; exSt.textContent = ''; exB.setAttribute('aria-disabled', 'true');
     later(() => {
       if (my !== exRun) return;
       let p = 0;
       const step = () => {
         if (my !== exRun) return;
-        p++; ex.value = p / 12 * 100; exS.textContent = `Đang xuất trang ${p} / 12`;
+        p++; ex.value = p / 12 * 100; exS.textContent = `Exporting page ${p} of 12`;
         if (p < 12) return later(step, 260);
-        ex.classList.add('done'); exS.innerHTML = '<span class="ok">✓ Xong · bao-cao.pdf (12 trang)</span>'; exSt.textContent = 'Xuất báo cáo xong.'; exB.removeAttribute('aria-disabled');
+        ex.classList.add('done'); exS.innerHTML = '<span class="ok">✓ Done · report.pdf (12 pages)</span>'; exSt.textContent = 'Report export complete.'; exB.removeAttribute('aria-disabled');
       };
       step();
     }, 2600);
   };
   exB.addEventListener('click', () => { if (exB.getAttribute('aria-disabled') !== 'true') exStart(); });
   exStart();
-  /* C: spinner trong nút */
+  /* C: spinner in a button */
   const sv = $('.save', d), svSt = $('.sv-st', d);
   sv.addEventListener('click', () => {
     if (sv.getAttribute('aria-disabled') === 'true') return;
     sv.setAttribute('aria-disabled', 'true'); sv.classList.remove('saved');
-    sv.innerHTML = '<span class="spin" aria-hidden="true"></span>Đang lưu…'; svSt.textContent = 'Đang lưu';
+    sv.innerHTML = '<span class="spin" aria-hidden="true"></span>Saving…'; svSt.textContent = 'Saving';
     later(() => {
-      sv.removeAttribute('aria-disabled'); sv.classList.add('saved'); sv.textContent = '✓ Đã lưu'; svSt.textContent = 'Đã lưu thay đổi';
-      later(() => { sv.classList.remove('saved'); sv.textContent = 'Lưu thay đổi'; svSt.textContent = ''; }, 1800);
+      sv.removeAttribute('aria-disabled'); sv.classList.add('saved'); sv.textContent = '✓ Saved'; svSt.textContent = 'Changes saved';
+      later(() => { sv.classList.remove('saved'); sv.textContent = 'Save changes'; svSt.textContent = ''; }, 1800);
     }, 1500);
   });
-  /* D: vòng */
+  /* D: ring */
   const ring = $('.ring', d), vl = $('.vl', ring), rb = $('b', ring), syS = $('.sy-s', d), syB = $('.sy-b', d);
   const C = 207.35;
   let syRun = 0;
@@ -1005,8 +1007,8 @@ Dict.demo('progress-indicator', d => {
       if (my !== syRun) return;
       const pc = Math.round(k / 40 * 100);
       vl.style.strokeDashoffset = C * (1 - k / 40); rb.textContent = pc + '%';
-      ring.setAttribute('aria-valuenow', k); ring.setAttribute('aria-valuetext', `${k} trên 40 ảnh`);
-      syS.textContent = k < 40 ? `${k} / 40 ảnh` : '✓ Đã đồng bộ 40 ảnh';
+      ring.setAttribute('aria-valuenow', k); ring.setAttribute('aria-valuetext', `${k} of 40 photos`);
+      syS.textContent = k < 40 ? `${k} / 40 photos` : '✓ 40 photos synced';
       if (k >= 40) { ring.classList.add('done'); syB.removeAttribute('aria-disabled'); return; }
       k++; later(step, 90 + Math.random() * 140);
     };

@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Điều hướng — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Bảy pattern điều hướng kèm demo tương tác: hamburger menu, mega menu, breadcrumbs, sidebar, bottom tab bar, pagination, infinite scroll và load more.">
+<title>Navigation — Pattern Dictionary</title>
+<meta name="description" content="Seven navigation patterns with interactive demos: hamburger menu, mega menu, breadcrumbs, sidebar, bottom tab bar, pagination, infinite scroll, and load more.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset scoped to demos, specificity 0 */
 :where(.demo) :where(h3,h4,h5,p,ul,ol,dl,dd,figure){margin:0;padding:0}
 :where(.demo) :where(ul,ol){list-style:none}
 :where(.demo) :where(button,input,select){font:inherit;color:inherit}
@@ -20,7 +20,7 @@
   .demo *,.demo *::before,.demo *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 
-/* khung điện thoại dùng chung cho 2 demo mobile */
+/* phone frame shared by the 2 mobile demos */
 :is(#hamburger-menu,#bottom-tab-bar) .demo .phone{position:relative;flex:none;width:248px;height:352px;border-radius:36px;background:#141414;padding:8px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5)}
 :is(#hamburger-menu,#bottom-tab-bar) .demo .scr{position:relative;height:100%;border-radius:28px;overflow:hidden;background:#fff;color:#161616;font-size:13px;line-height:1.45}
 :is(#hamburger-menu,#bottom-tab-bar) .demo .split{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:56px;padding:0 24px}
@@ -31,7 +31,7 @@
 :is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dd{font:500 13px/1.3 var(--mono);color:#161616}
 :is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dd mark{background:#e7ecff;color:#2a45c4;border-radius:4px;padding:1px 5px}
 :is(#hamburger-menu,#bottom-tab-bar) .demo .side-note p{margin-top:16px;font-size:13px;color:var(--mute)}
-/* mobile: bỏ khung điện thoại, khung demo chính là màn hình thật */
+/* mobile: drop the phone frame; the demo frame is the real screen */
 @media (max-width:760px){
   :is(#hamburger-menu,#bottom-tab-bar) .demo .side-note{display:none}
   :is(#hamburger-menu,#bottom-tab-bar) .demo .split{padding:0}
@@ -226,7 +226,7 @@
 #sidebar-navigation .demo .cards div{height:96px;border-radius:12px;background:#f6f7fb;border:1px solid #eef0f6;padding:12px;font-size:12px;color:#888}
 #sidebar-navigation .demo .cards div b{display:block;font-size:20px;color:#161616;font-weight:800}
 #sidebar-navigation .demo .wide{margin-top:12px;height:110px;border-radius:12px;border:1px solid #eef0f6;background:linear-gradient(to top,#e7ecff 0 40%,transparent 40%) 6% 100%/8% 70% no-repeat,linear-gradient(to top,#cfd8ff 0 70%,transparent 70%) 28% 100%/8% 70% no-repeat,linear-gradient(to top,#e7ecff 0 55%,transparent 55%) 50% 100%/8% 70% no-repeat,linear-gradient(to top,#3b5bdb 0 90%,transparent 90%) 72% 100%/8% 70% no-repeat,linear-gradient(to top,#cfd8ff 0 60%,transparent 60%) 94% 100%/8% 70% no-repeat,#fbfbfd}
-/* mobile: thanh bên mở rộng phủ lên nội dung (như ngăn kéo), khi thu gọn chỉ còn dải biểu tượng 64px */
+/* mobile: the expanded sidebar overlays the content (like a drawer); collapsed, it is a 64px icon rail */
 @media (max-width:760px){
   #sidebar-navigation .demo .shell{padding-left:64px}
   #sidebar-navigation .demo .side{position:absolute;z-index:3;inset:0 auto 0 0;width:min(240px,78%)}
@@ -410,60 +410,60 @@
 
 <main class="wrap">
 <header class="head">
-  <h1>Điều hướng</h1>
-  <p>Các pattern giúp người dùng biết <b>mình đang ở đâu</b>, <b>còn nội dung nào</b> và <b>có thể đi tiếp tới đâu</b>. Mọi demo hoạt động với chuột, cảm ứng và bàn phím (Tab, Enter, Esc, phím mũi tên) như sản phẩm thật.</p>
+  <h1>Navigation</h1>
+  <p>Patterns that tell people <b>where they are</b>, <b>what else there is</b>, and <b>where they can go next</b>. Every demo works with a mouse, touch, and keyboard (Tab, Enter, Esc, arrow keys), like a real product.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="hamburger-menu">
   <h2>Hamburger / Off-canvas menu</h2>
-  <p class="vi"><b>Menu ẩn ngoài cạnh màn hình.</b> Nút ba gạch (☰) mở một ngăn kéo (drawer) trượt vào từ cạnh trái và phủ lên trang. Nội dung phía sau được làm tối và khoá tương tác (<code>inert</code>) để phím Tab không đi ra phía sau. Nhấn hoặc chạm ☰ (hoặc Tab tới nút rồi nhấn Enter); đóng bằng Esc, nút ✕ hoặc chạm vào vùng tối, focus sẽ trở về nút ☰.</p>
+  <p class="vi"><b>Off-canvas menu.</b> A three-line button (☰) opens a drawer that slides in from the left edge and covers the page. The content behind it is dimmed and made non-interactive (<code>inert</code>), so Tab cannot reach it. Close the drawer with Esc, the ✕ button, or a tap on the dimmed area; focus then returns to the ☰ button. Click or tap ☰, or Tab to it and press Enter.</p>
   <div class="demo">
     <div class="split">
       <div class="phone"><div class="scr">
         <div class="app">
           <div class="bar">
-            <button class="ham" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="hm-drawer"><span></span></button>
+            <button class="ham" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hm-drawer"><span></span></button>
             <b>Workspace</b>
-            <button class="ico" type="button" aria-label="Tìm kiếm"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></button>
+            <button class="ico" type="button" aria-label="Search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></button>
           </div>
           <div class="pg">
-            <h3 class="ttl">Trang chủ</h3>
-            <p>Thứ Hai, 5 tháng 10</p>
-            <div class="card"><i style="--c:#dfe6ff"></i><div><b>Duyệt bản thiết kế</b><span>Hạn hôm nay</span></div></div>
-            <div class="card"><i style="--c:#ffe3d3"></i><div><b>Họp kế hoạch quý</b><span>14:00 · Phòng 3</span></div></div>
-            <div class="card"><i style="--c:#d9f3e4"></i><div><b>Gửi báo cáo tuần</b><span>Ngày mai</span></div></div>
+            <h3 class="ttl">Home</h3>
+            <p>Monday, October 5</p>
+            <div class="card"><i style="--c:#dfe6ff"></i><div><b>Review designs</b><span>Due today</span></div></div>
+            <div class="card"><i style="--c:#ffe3d3"></i><div><b>Quarterly planning</b><span>2:00 PM · Room 3</span></div></div>
+            <div class="card"><i style="--c:#d9f3e4"></i><div><b>Send weekly report</b><span>Tomorrow</span></div></div>
           </div>
         </div>
         <div class="scrim"></div>
-        <dialog id="hm-drawer" aria-label="Menu chính">
-          <div class="who"><span class="av" aria-hidden="true">TH</span><div><b>Lê Thu Hà</b><small>thuha@example.com</small></div>
-            <button class="x" type="button" aria-label="Đóng menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
-          <nav aria-label="Chính"><ul>
-            <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Trang chủ</a></li>
-            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg>Dự án</a></li>
-            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Lịch</a></li>
-            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Tin nhắn<em aria-label="3 chưa đọc">3</em></a></li>
-            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Cài đặt</a></li>
+        <dialog id="hm-drawer" aria-label="Main menu">
+          <div class="who"><span class="av" aria-hidden="true">HL</span><div><b>Hannah Lee</b><small>hannah@example.com</small></div>
+            <button class="x" type="button" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <nav aria-label="Main"><ul>
+            <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Home</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg>Projects</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Calendar</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Messages<em aria-label="3 unread">3</em></a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a></li>
           </ul></nav>
-          <nav class="foot" aria-label="Tài khoản"><ul><li><a href="#" data-noop><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg>Đăng xuất</a></li></ul></nav>
+          <nav class="foot" aria-label="Account"><ul><li><a href="#" data-noop><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg>Sign out</a></li></ul></nav>
         </dialog>
       </div></div>
       <div class="side-note" aria-hidden="true">
-        <h4>Trạng thái trực tiếp</h4>
+        <h4>Live state</h4>
         <dl>
-          <dt>Nút ☰</dt><dd>aria-expanded=<mark data-st="exp">false</mark></dd>
-          <dt>Trang phía sau</dt><dd><mark data-st="inert">tương tác được</mark></dd>
-          <dt>Focus đang ở</dt><dd data-st="focus">—</dd>
+          <dt>☰ button</dt><dd>aria-expanded=<mark data-st="exp">false</mark></dd>
+          <dt>Page behind</dt><dd><mark data-st="inert">interactive</mark></dd>
+          <dt>Focus is on</dt><dd data-st="focus">—</dd>
         </dl>
-        <p>Khi menu đang mở, nhấn Tab liên tục: focus chỉ di chuyển vòng trong ngăn kéo.</p>
+        <p>With the menu open, keep pressing Tab: focus cycles only inside the drawer.</p>
       </div>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>màn hình hẹp (mobile) với menu hơn 4–5 mục, hoặc cho các mục ít dùng như Cài đặt, Trợ giúp, Đăng xuất. Ngăn kéo còn chứa được thông tin tài khoản và các nhóm mục.</p>
-    <p class="avoid"><b>Tránh khi</b>chỉ có 3–5 điểm đến chính mà người dùng chuyển qua lại thường xuyên: ẩn chúng sau ☰ làm giảm tần suất sử dụng. Khi đó dùng bottom tab bar, hoặc hiển thị sẵn menu trên desktop.</p>
-    <p class="tip">Mẹo prompt: nêu rõ hướng trượt, có lớp phủ (overlay) phía sau hay không, và yêu cầu “trap focus, close on Esc, return focus to trigger”. AI thường bỏ sót ba yêu cầu này.</p>
+    <p class="use"><b>Use when</b>the screen is narrow (mobile) and the menu has more than 4–5 items, or for rarely used items such as Settings, Help, and Sign out. The drawer can also hold account details and grouped items.</p>
+    <p class="avoid"><b>Avoid when</b>there are only 3–5 main destinations that people switch between often: hiding them behind ☰ reduces how often they are used. Use a bottom tab bar instead, or show the menu openly on desktop.</p>
+    <p class="tip">Prompt tip: state the slide direction, whether an overlay sits behind the drawer, and ask for “trap focus, close on Esc, return focus to trigger”. AI tools often miss these three requirements.</p>
   </div>
   <div class="kw"><button>hamburger menu</button><button>off-canvas navigation drawer</button><button>slide-in from left with scrim overlay</button><button>aria-expanded toggle button</button><button>focus trap + Esc to close</button><button>inert background content</button></div>
 </article>
@@ -471,56 +471,56 @@
 <!-- 2 -->
 <article class="pattern" id="mega-menu">
   <h2>Mega menu</h2>
-  <p class="vi"><b>Menu thả xuống cỡ lớn.</b> Một mục trên thanh điều hướng mở ra một tấm rộng, chia thành nhiều cột có tiêu đề; mỗi liên kết kèm một dòng mô tả, kèm thêm một ô nội dung nổi bật. Khi mở bằng chuột, menu chờ một khoảng trễ ngắn để tránh mở nhầm. Bàn phím: ← → chuyển giữa các mục trên cùng, ↓ để vào tấm menu, ↑ ↓ để di chuyển giữa các liên kết, Esc để đóng. Di chuột hoặc chạm vào “Sản phẩm” để mở.</p>
+  <p class="vi"><b>Large dropdown menu.</b> An item in the navigation bar opens a wide panel divided into titled columns; each link has a one-line description, and the panel includes a featured content card. When opened with a mouse, the menu waits for a short delay to prevent accidental opening. Keyboard: ← → move between top-level items, ↓ enters the panel, ↑ ↓ move between links, Esc closes. Hover over or tap “Product” to open it.</p>
   <div class="demo">
     <div class="site">
       <header class="hdr">
-        <a class="logo" href="#" data-noop><span>Nền tảng</span></a>
-        <nav aria-label="Chính"><ul class="top">
-          <li><button type="button" aria-expanded="false" aria-controls="mm-p1">Sản phẩm</button>
+        <a class="logo" href="#" data-noop><span>Platform</span></a>
+        <nav aria-label="Main"><ul class="top">
+          <li><button type="button" aria-expanded="false" aria-controls="mm-p1">Product</button>
             <div class="panel" id="mm-p1" hidden>
-              <div><h4>Làm việc</h4><ul>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Bảng công việc</b><small>Kéo thả việc qua từng cột trạng thái</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg></span><b>Tài liệu</b><small>Soạn thảo chung, bình luận tại chỗ</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg></span><b>Lịch nhóm</b><small>Hạn chót và cuộc họp trên một trục</small></a></li>
+              <div><h4>Work</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Task boards</b><small>Drag tasks across status columns</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg></span><b>Docs</b><small>Write together, comment inline</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg></span><b>Team calendar</b><small>Deadlines and meetings on one timeline</small></a></li>
               </ul></div>
-              <div><h4>Kết nối</h4><ul>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-plug"/></svg></span><b>Tích hợp</b><small>Hơn 80 công cụ quen thuộc</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-bolt"/></svg></span><b>Tự động hoá</b><small>Quy tắc “khi… thì…” không cần code</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Báo cáo</b><small>Biểu đồ tiến độ cập nhật tự động</small></a></li>
+              <div><h4>Connect</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-plug"/></svg></span><b>Integrations</b><small>More than 80 familiar tools</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-bolt"/></svg></span><b>Automation</b><small>“When… then…” rules without code</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Reports</b><small>Progress charts that update automatically</small></a></li>
               </ul></div>
-              <div class="feat"><em>Mới</em><b>Chế độ ngoại tuyến</b><span>Làm việc khi mất mạng, tự đồng bộ khi có lại.</span><a href="#">Xem tính năng mới</a></div>
+              <div class="feat"><em>New</em><b>Offline mode</b><span>Keep working without a connection; changes sync when you reconnect.</span><a href="#">See what’s new</a></div>
             </div></li>
-          <li><button type="button" aria-expanded="false" aria-controls="mm-p2">Giải pháp</button>
+          <li><button type="button" aria-expanded="false" aria-controls="mm-p2">Solutions</button>
             <div class="panel" id="mm-p2" hidden>
-              <div><h4>Theo nhóm</h4><ul>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span><b>Nhóm sản phẩm</b><small>Lộ trình, sprint, phản hồi người dùng</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><b>Chăm sóc khách hàng</b><small>Gom yêu cầu về một hộp thư</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Vận hành</b><small>Quy trình lặp lại, theo dõi SLA</small></a></li>
+              <div><h4>By team</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span><b>Product teams</b><small>Roadmaps, sprints, user feedback</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><b>Customer support</b><small>All requests in one inbox</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Operations</b><small>Repeatable processes, SLA tracking</small></a></li>
               </ul></div>
-              <div><h4>Theo quy mô</h4><ul>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span><b>Cá nhân</b><small>Miễn phí, tối đa 3 dự án</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span><b>Doanh nghiệp nhỏ</b><small>Dưới 50 người, cài đặt trong 10 phút</small></a></li>
-                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Tập đoàn</b><small>Phân quyền, kiểm toán, SSO</small></a></li>
+              <div><h4>By size</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span><b>Individuals</b><small>Free, up to 3 projects</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span><b>Small business</b><small>Under 50 people, set up in 10 minutes</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Enterprise</b><small>Permissions, audit logs, SSO</small></a></li>
               </ul></div>
-              <div class="feat"><em>Câu chuyện</em><b>Nhóm 12 người gộp 4 công cụ thành một</b><span>Toàn bộ quá trình chuyển đổi hoàn tất trong một tuần.</span><a href="#">Đọc bài</a></div>
+              <div class="feat"><em>Story</em><b>A 12-person team replaced 4 tools with one</b><span>The whole migration took one week.</span><a href="#">Read the story</a></div>
             </div></li>
-          <li><a href="#">Bảng giá</a></li>
-          <li><a href="#">Tài liệu</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Docs</a></li>
         </ul></nav>
-        <a class="cta" href="#" data-noop>Dùng thử</a>
+        <a class="cta" href="#" data-noop>Try free</a>
       </header>
       <div class="dim"></div>
       <div class="hero">
-        <div><h3>Mọi việc của nhóm, gọn trong một chỗ</h3><p>Lập kế hoạch, viết tài liệu và theo dõi tiến độ mà không phải nhảy qua lại giữa nhiều ứng dụng.</p><p class="went" aria-live="polite"></p></div>
+        <div><h3>All of your team’s work in one place</h3><p>Plan, write docs, and track progress without jumping between apps.</p><p class="went" aria-live="polite"></p></div>
         <div class="shot" aria-hidden="true"></div>
       </div>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>site có nhiều trang chia thành nhóm rõ ràng (sản phẩm, giải pháp, tài nguyên), khoảng 8–10 liên kết trở lên mỗi mục. Dòng mô tả dưới mỗi liên kết giúp người dùng mới chọn đúng ngay lần đầu.</p>
-    <p class="avoid"><b>Tránh khi</b>mỗi mục chỉ có 3–4 liên kết (dùng dropdown thường), hoặc trên mobile (chuyển thành accordion trong menu ☰). Menu chỉ mở bằng hover mà không có độ trễ sẽ bật nhầm khi người dùng di chuột ngang qua.</p>
-    <p class="tip">Mẹo prompt: gọi đây là “disclosure navigation”, không dùng <code>role="menu"</code>. Yêu cầu nút có <code>aria-expanded</code>, có hover intent delay, và Esc trả focus về nút.</p>
+    <p class="use"><b>Use when</b>a site has many pages in clear groups (product, solutions, resources), with roughly 8–10 or more links per item. The description under each link helps new visitors choose correctly the first time.</p>
+    <p class="avoid"><b>Avoid when</b>each item has only 3–4 links (use a regular dropdown), or on mobile (switch to an accordion inside the ☰ menu). A menu that opens on hover without a delay opens by accident when the pointer passes over it.</p>
+    <p class="tip">Prompt tip: call this “disclosure navigation” and do not use <code>role="menu"</code>. Ask for buttons with <code>aria-expanded</code>, a hover intent delay, and Esc returning focus to the button.</p>
   </div>
   <div class="kw"><button>mega menu</button><button>multi-column dropdown panel</button><button>link with one-line description</button><button>featured promo card in menu</button><button>hover intent delay</button><button>disclosure navigation pattern (aria-expanded)</button></div>
 </article>
@@ -528,7 +528,7 @@
 <!-- 3 -->
 <article class="pattern" id="breadcrumbs">
   <h2>Breadcrumbs</h2>
-  <p class="vi"><b>Đường dẫn phân cấp.</b> Một dòng liên kết nhỏ cho biết vị trí hiện tại trong cấu trúc phân cấp và cho phép quay lên bất kỳ cấp nào bằng một lần nhấn. Khi đường dẫn quá dài, các cấp ở giữa được gộp vào nút “…”. Mở thư mục để đi sâu hơn, nhấn một cấp trên đường dẫn để quay lên, hoặc nhấn “…” để hiện các cấp đang ẩn.</p>
+  <p class="vi"><b>Hierarchical path.</b> A short row of links shows the current location in a hierarchy and lets people jump up to any level in one step. When the path is too long, the middle levels collapse into a “…” button. Open a folder to go deeper, select a level in the path to go back up, or press “…” to reveal the hidden levels.</p>
   <div class="demo">
     <div class="win">
       <nav class="bc" aria-label="Breadcrumb"><ol></ol></nav>
@@ -536,8 +536,8 @@
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>nội dung tổ chức theo cây nhiều cấp: thư mục, danh mục sản phẩm, tài liệu hướng dẫn. Đặc biệt hữu ích khi người dùng vào thẳng một trang sâu từ công cụ tìm kiếm hoặc từ liên kết được chia sẻ.</p>
-    <p class="avoid"><b>Tránh khi</b>site phẳng chỉ một hoặc hai cấp, hoặc luồng tuần tự (thanh toán, đăng ký): trường hợp đó cần chỉ báo các bước (stepper), không phải breadcrumb. Không dùng breadcrumb thay cho nút Quay lại theo lịch sử duyệt.</p>
+    <p class="use"><b>Use when</b>content is organized as a multi-level tree: folders, product categories, documentation. It is especially useful when people land directly on a deep page from a search engine or a shared link.</p>
+    <p class="avoid"><b>Avoid when</b>the site is flat with only one or two levels, or the flow is sequential (checkout, sign-up): those need a step indicator (stepper), not breadcrumbs. Do not use breadcrumbs as a replacement for a history-based Back button.</p>
   </div>
   <div class="kw"><button>breadcrumb navigation</button><button>nav aria-label="Breadcrumb" with ordered list</button><button>aria-current="page" on last item</button><button>collapsed middle items with ellipsis button</button><button>slash / chevron separators</button></div>
 </article>
@@ -545,42 +545,42 @@
 <!-- 4 -->
 <article class="pattern" id="sidebar-navigation" data-toc="Sidebar navigation">
   <h2>Sidebar navigation</h2>
-  <p class="vi"><b>Thanh điều hướng bên, thu gọn được.</b> Danh sách điểm đến xếp dọc theo cạnh trái ứng dụng, có nhóm và mục con. Nút ở góc thu thanh bên thành một dải chỉ còn biểu tượng (icon rail) để nhường chỗ cho nội dung; nhãn hiện dưới dạng tooltip khi di chuột hoặc Tab tới biểu tượng. Trên màn hình hẹp, thanh bên mở rộng phủ lên nội dung như một ngăn kéo. Nhấn nút thu gọn, chọn các mục và mở nhóm “Dự án”.</p>
+  <p class="vi"><b>Collapsible side navigation.</b> A vertical list of destinations along the left edge of the app, with groups and nested items. A button in the corner collapses the sidebar into an icon-only strip (icon rail) to make room for content; labels then appear as tooltips on hover or keyboard focus. On narrow screens, the expanded sidebar overlays the content like a drawer. Press the collapse button, select items, and open the “Projects” group.</p>
   <div class="demo">
     <div class="shell">
-      <nav class="side" id="sb-side" aria-label="Điều hướng ứng dụng">
+      <nav class="side" id="sb-side" aria-label="App navigation">
         <div class="sh"><span class="logo" aria-hidden="true">W</span><b class="lbl">Workspace</b>
-          <button class="tg" type="button" aria-expanded="true" aria-controls="sb-side" aria-label="Thu gọn thanh bên"><svg class="i" aria-hidden="true"><use href="#i-sidebar"/></svg></button></div>
+          <button class="tg" type="button" aria-expanded="true" aria-controls="sb-side" aria-label="Collapse sidebar"><svg class="i" aria-hidden="true"><use href="#i-sidebar"/></svg></button></div>
         <ul>
-          <li><a href="#" data-tip="Tổng quan" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="lbl">Tổng quan</span></a></li>
-          <li><a href="#" data-tip="Hộp thư"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg><span class="lbl">Hộp thư</span></a></li>
-          <li><a href="#" data-tip="Lịch"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span class="lbl">Lịch</span></a></li>
+          <li><a href="#" data-tip="Overview" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="lbl">Overview</span></a></li>
+          <li><a href="#" data-tip="Inbox"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg><span class="lbl">Inbox</span></a></li>
+          <li><a href="#" data-tip="Calendar"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span class="lbl">Calendar</span></a></li>
         </ul>
-        <div class="grp">Không gian</div>
+        <div class="grp">Workspace</div>
         <details open>
-          <summary data-tip="Dự án"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg><span class="lbl">Dự án</span></summary>
+          <summary data-tip="Projects"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg><span class="lbl">Projects</span></summary>
           <ul>
-            <li><a href="#"><span class="dot" style="--c:#3b5bdb"></span><span class="lbl">Ra mắt ứng dụng</span></a></li>
-            <li><a href="#"><span class="dot" style="--c:#e8590c"></span><span class="lbl">Nghiên cứu người dùng</span></a></li>
-            <li><a href="#"><span class="dot" style="--c:#2b8a3e"></span><span class="lbl">Website mới</span></a></li>
+            <li><a href="#"><span class="dot" style="--c:#3b5bdb"></span><span class="lbl">App launch</span></a></li>
+            <li><a href="#"><span class="dot" style="--c:#e8590c"></span><span class="lbl">User research</span></a></li>
+            <li><a href="#"><span class="dot" style="--c:#2b8a3e"></span><span class="lbl">New website</span></a></li>
           </ul>
         </details>
         <ul class="bot">
-          <li><a href="#" data-tip="Cài đặt"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg><span class="lbl">Cài đặt</span></a></li>
-          <li><a href="#" data-tip="Trần Minh Khoa"><span class="av" aria-hidden="true">MK</span><span class="lbl">Trần Minh Khoa</span></a></li>
+          <li><a href="#" data-tip="Settings"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg><span class="lbl">Settings</span></a></li>
+          <li><a href="#" data-tip="Mark Kim"><span class="av" aria-hidden="true">MK</span><span class="lbl">Mark Kim</span></a></li>
         </ul>
       </nav>
       <main>
-        <h3 class="ttl">Tổng quan</h3>
-        <p>Tuần 41 · cập nhật 5 phút trước</p>
-        <div class="cards"><div><b>24</b>việc đang mở</div><div><b>7</b>đến hạn tuần này</div><div><b>92%</b>đúng hạn</div></div>
+        <h3 class="ttl">Overview</h3>
+        <p>Week 41 · updated 5 minutes ago</p>
+        <div class="cards"><div><b>24</b>open tasks</div><div><b>7</b>due this week</div><div><b>92%</b>on time</div></div>
         <div class="wide" aria-hidden="true"></div>
       </main>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ứng dụng làm việc (dashboard, công cụ quản lý, email) có từ 5 điểm đến trở lên và phiên sử dụng dài. Bản thu gọn phù hợp với người dùng đã quen biểu tượng và cần thêm chỗ cho bảng, tài liệu.</p>
-    <p class="avoid"><b>Tránh khi</b>trang marketing, blog hoặc site ít trang: thanh điều hướng trên cùng gọn hơn. Biểu tượng không rõ nghĩa khiến bản thu gọn khó dùng; luôn kèm tooltip và cho phép mở rộng lại ngay.</p>
+    <p class="use"><b>Use when</b>a work app (dashboard, management tool, email) has 5 or more destinations and long sessions. The collapsed version suits people who already know the icons and need more room for tables and documents.</p>
+    <p class="avoid"><b>Avoid when</b>the site is a marketing site, a blog, or has few pages: a top navigation bar is more compact. Ambiguous icons make the collapsed version hard to use; always add tooltips and allow expanding again in one step.</p>
   </div>
   <div class="kw"><button>collapsible sidebar navigation</button><button>icon-only rail when collapsed</button><button>tooltip labels on hover / focus</button><button>nested section with disclosure</button><button>active item indicator bar</button><button>aria-current="page"</button></div>
 </article>
@@ -588,64 +588,64 @@
 <!-- 5 -->
 <article class="pattern" id="bottom-tab-bar">
   <h2>Bottom tab bar</h2>
-  <p class="vi"><b>Thanh tab dưới đáy màn hình (mobile).</b> 3–5 điểm đến chính nằm trong tầm ngón cái, luôn hiển thị, mỗi tab gồm biểu tượng và nhãn. Mỗi tab ghi nhớ vị trí cuộn riêng; chạm lại tab đang mở sẽ cuộn về đầu. Cuộn tab Trang chủ, chuyển sang Hộp thư rồi quay lại, sau đó chạm “Trang chủ” thêm một lần.</p>
+  <p class="vi"><b>Primary destinations along the bottom edge (mobile).</b> 3–5 main destinations sit within thumb reach and stay visible; each tab has an icon and a label. Each tab remembers its own scroll position, and tapping the active tab again scrolls back to the top. Scroll the Home tab, switch to Inbox and back, then tap “Home” once more.</p>
   <div class="demo">
     <div class="split">
       <div class="phone"><div class="scr">
         <div class="sb" aria-hidden="true"><span>9:41</span><i></i></div>
-        <div class="apph" aria-live="polite">Trang chủ</div>
+        <div class="apph" aria-live="polite">Home</div>
         <div class="panes">
-          <section class="pane" data-tab="home" aria-label="Trang chủ" tabindex="-1">
-            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c9d4ff,#8fa3ff)"></div><b>Bản cập nhật tháng 10 có gì mới</b><small>Nhóm Sản phẩm · 2 giờ</small></div>
-            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffd9c2,#ff9d6c)"></div><b>5 mẹo sắp xếp việc trong tuần</b><small>Phạm Gia Huy · 5 giờ</small></div>
-            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c8f0d8,#6fcf97)"></div><b>Lịch nghỉ lễ của văn phòng</b><small>Hành chính · hôm qua</small></div>
-            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#f1d6ff,#c084fc)"></div><b>Chào thành viên mới: Đỗ Mai Linh</b><small>Nhân sự · 2 ngày</small></div>
-            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffe9a8,#f5b400)"></div><b>Kết quả khảo sát nội bộ</b><small>Vũ Hoàng Nam · 3 ngày</small></div>
+          <section class="pane" data-tab="home" aria-label="Home" tabindex="-1">
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c9d4ff,#8fa3ff)"></div><b>What’s new in the October update</b><small>Product team · 2 hr</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffd9c2,#ff9d6c)"></div><b>5 tips for organizing your week</b><small>Gavin Hughes · 5 hr</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c8f0d8,#6fcf97)"></div><b>Office holiday schedule</b><small>Office admin · yesterday</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#f1d6ff,#c084fc)"></div><b>Welcome our new teammate, Maya Lin</b><small>People team · 2 days</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffe9a8,#f5b400)"></div><b>Internal survey results</b><small>Henry Nash · 3 days</small></div>
           </section>
-          <section class="pane" data-tab="search" aria-label="Tìm kiếm" tabindex="-1" hidden>
-            <div class="srch"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Tìm việc, tệp, người…</div>
-            <div class="chips"><span>Báo cáo</span><span>Hạn tuần này</span><span>Ảnh</span><span>Của tôi</span></div>
-            <div class="row"><i style="--c:#eef1ff">TL</i><div><b>Kế hoạch quý 4</b><span>Tài liệu · mở hôm qua</span></div></div>
-            <div class="row"><i style="--c:#fff1e6">BG</i><div><b>Bảng giá 2026</b><span>Bảng tính · mở 3 ngày trước</span></div></div>
-            <div class="row"><i style="--c:#e9f8ef">PL</i><div><b>Phạm Lan</b><span>Thành viên · Thiết kế</span></div></div>
+          <section class="pane" data-tab="search" aria-label="Search" tabindex="-1" hidden>
+            <div class="srch"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Search tasks, files, people…</div>
+            <div class="chips"><span>Reports</span><span>Due this week</span><span>Photos</span><span>Mine</span></div>
+            <div class="row"><i style="--c:#eef1ff">DC</i><div><b>Q4 plan</b><span>Document · opened yesterday</span></div></div>
+            <div class="row"><i style="--c:#fff1e6">SH</i><div><b>2026 price list</b><span>Spreadsheet · opened 3 days ago</span></div></div>
+            <div class="row"><i style="--c:#e9f8ef">PL</i><div><b>Paula Lane</b><span>Member · Design</span></div></div>
           </section>
-          <section class="pane" data-tab="inbox" aria-label="Hộp thư" tabindex="-1" hidden>
-            <div class="row new"><i style="--c:#ffd8c2">MA</i><div><b>Nguyễn Minh Anh</b><span>Mình đã gửi bản sửa cuối, nhờ chị xem giúp…</span></div></div>
-            <div class="row new"><i style="--c:#d6e0ff">GH</i><div><b>Phạm Gia Huy</b><span>Đề xuất dời cuộc họp chiều nay sang 15:00.</span></div></div>
-            <div class="row new"><i style="--c:#d1f2e0">ML</i><div><b>Đỗ Mai Linh</b><span>Cảm ơn mọi người đã chào đón.</span></div></div>
-            <div class="row"><i style="--c:#f3e1ff">HN</i><div><b>Vũ Hoàng Nam</b><span>Đã cập nhật số liệu khảo sát.</span></div></div>
-            <div class="row"><i style="--c:#ffefc2">TH</i><div><b>Lê Thu Hà</b><span>Đã nhận, mình sẽ xử lý phần này.</span></div></div>
-            <div class="row"><i style="--c:#e3e3e8">HC</i><div><b>Hành chính</b><span>Nhắc lịch nghỉ lễ tháng sau.</span></div></div>
+          <section class="pane" data-tab="inbox" aria-label="Inbox" tabindex="-1" hidden>
+            <div class="row new"><i style="--c:#ffd8c2">MA</i><div><b>Mia Anderson</b><span>I sent the final revision. Could you take a look…</span></div></div>
+            <div class="row new"><i style="--c:#d6e0ff">GH</i><div><b>Gavin Hughes</b><span>Can we move this afternoon’s meeting to 3:00 PM?</span></div></div>
+            <div class="row new"><i style="--c:#d1f2e0">ML</i><div><b>Maya Lin</b><span>Thanks, everyone, for the warm welcome.</span></div></div>
+            <div class="row"><i style="--c:#f3e1ff">HN</i><div><b>Henry Nash</b><span>Survey numbers are updated.</span></div></div>
+            <div class="row"><i style="--c:#ffefc2">HL</i><div><b>Hannah Lee</b><span>Got it, I will take care of this part.</span></div></div>
+            <div class="row"><i style="--c:#e3e3e8">OA</i><div><b>Office admin</b><span>Reminder: holiday schedule for next month.</span></div></div>
           </section>
-          <section class="pane" data-tab="me" aria-label="Hồ sơ" tabindex="-1" hidden>
-            <div class="me"><i>TH</i><b>Lê Thu Hà</b><br><small>Thiết kế sản phẩm</small></div>
-            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg></i><div><b>Cài đặt</b></div></div>
-            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></i><div><b>Mời đồng đội</b></div></div>
-            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg></i><div><b>Đăng xuất</b></div></div>
+          <section class="pane" data-tab="me" aria-label="Profile" tabindex="-1" hidden>
+            <div class="me"><i>HL</i><b>Hannah Lee</b><br><small>Product designer</small></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg></i><div><b>Settings</b></div></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></i><div><b>Invite teammates</b></div></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg></i><div><b>Sign out</b></div></div>
           </section>
         </div>
-        <nav class="tabs" aria-label="Chính">
-          <a href="#" data-tab="home" aria-current="page"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span>Trang chủ</a>
-          <a href="#" data-tab="search"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></span>Tìm kiếm</a>
-          <a href="#" data-tab="inbox"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg></span>Hộp thư<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">, 3 tin chưa đọc</span><em aria-hidden="true">3</em></a>
-          <a href="#" data-tab="me"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span>Hồ sơ</a>
+        <nav class="tabs" aria-label="Main">
+          <a href="#" data-tab="home" aria-current="page"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span>Home</a>
+          <a href="#" data-tab="search"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></span>Search</a>
+          <a href="#" data-tab="inbox"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg></span>Inbox<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">, 3 unread</span><em aria-hidden="true">3</em></a>
+          <a href="#" data-tab="me"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span>Profile</a>
         </nav>
       </div></div>
       <div class="side-note" aria-hidden="true">
-        <h4>Vị trí cuộn đã lưu</h4>
+        <h4>Saved scroll positions</h4>
         <dl>
-          <dt>Trang chủ</dt><dd data-mem="home">0 px</dd>
-          <dt>Tìm kiếm</dt><dd data-mem="search">0 px</dd>
-          <dt>Hộp thư</dt><dd data-mem="inbox">0 px</dd>
-          <dt>Hồ sơ</dt><dd data-mem="me">0 px</dd>
+          <dt>Home</dt><dd data-mem="home">0 px</dd>
+          <dt>Search</dt><dd data-mem="search">0 px</dd>
+          <dt>Inbox</dt><dd data-mem="inbox">0 px</dd>
+          <dt>Profile</dt><dd data-mem="me">0 px</dd>
         </dl>
-        <p>Chuyển tab không làm mất vị trí đang đọc. Chạm lại tab đang mở để cuộn về đầu.</p>
+        <p>Switching tabs keeps the reading position. Tap the active tab again to scroll to the top.</p>
       </div>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ứng dụng mobile có 3–5 khu vực ngang hàng mà người dùng chuyển qua lại thường xuyên (trang chủ, tìm kiếm, tin nhắn, hồ sơ). Luôn hiển thị nhãn chữ dưới biểu tượng.</p>
-    <p class="avoid"><b>Tránh khi</b>có hơn 5 mục (gộp phần còn lại vào tab Thêm hoặc menu ☰), dùng cho hành động như Đăng bài (đó là nút, không phải điểm đến), hoặc trên màn hình desktop rộng.</p>
+    <p class="use"><b>Use when</b>a mobile app has 3–5 peer sections that people switch between often (home, search, messages, profile). Always show a text label under each icon.</p>
+    <p class="avoid"><b>Avoid when</b>there are more than 5 items (group the rest under a More tab or a ☰ menu), the item is an action such as New post (that is a button, not a destination), or the screen is a wide desktop.</p>
   </div>
   <div class="kw"><button>bottom tab bar</button><button>mobile bottom navigation, 4 tabs with labels</button><button>active tab pill indicator</button><button>notification badge on tab</button><button>preserve scroll position per tab</button><button>tap active tab to scroll to top</button></div>
 </article>
@@ -653,18 +653,18 @@
 <!-- 6 -->
 <article class="pattern" id="pagination">
   <h2>Pagination</h2>
-  <p class="vi"><b>Phân trang.</b> Danh sách dài được chia thành các trang đánh số, có nút Trước/Sau, trang hiện tại được tô đậm và dấu “…” thay cho các trang ở xa. Mỗi trang có địa chỉ riêng (xem thanh URL), nên có thể chia sẻ hoặc quay lại đúng vị trí. Nhấn số trang hoặc nút Trước/Sau, hoặc Tab tới các nút rồi nhấn Enter.</p>
+  <p class="vi"><b>Numbered pages for long lists.</b> A long list is split into numbered pages with Previous and Next buttons; the current page is highlighted, and “…” stands in for distant pages. Each page has its own address (see the URL bar), so it can be shared or revisited at the same position. Select a page number or Previous/Next, or Tab to the buttons and press Enter.</p>
   <div class="demo">
     <div class="win">
-      <div class="url" aria-hidden="true">app.example/tai-lieu<b class="q">?trang=1</b></div>
-      <div class="lh"><h3>Tài liệu của nhóm</h3><p class="sum" aria-live="polite"></p></div>
+      <div class="url" aria-hidden="true">app.example/documents<b class="q">?page=1</b></div>
+      <div class="lh"><h3>Team documents</h3><p class="sum" aria-live="polite"></p></div>
       <ol class="rows"></ol>
-      <nav class="pager" aria-label="Phân trang"><ul></ul></nav>
+      <nav class="pager" aria-label="Pagination"><ul></ul></nav>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>người dùng tìm một mục cụ thể, cần quay lại đúng vị trí, so sánh hoặc tham chiếu (mục nằm ở trang 3): kết quả tìm kiếm, bảng quản trị, danh sách đơn hàng. Chân trang luôn truy cập được.</p>
-    <p class="avoid"><b>Tránh khi</b>nội dung để xem liên tục (feed ảnh, mạng xã hội), hoặc trên mobile khi nút số quá nhỏ để chạm chính xác. Không hiển thị 20 số trang cùng lúc; giữ trang đầu, trang cuối, các trang quanh trang hiện tại và dấu “…”.</p>
+    <p class="use"><b>Use when</b>people look for a specific item, need to return to the same position, or compare and reference items (“it is on page 3”): search results, admin tables, order lists. The footer stays reachable.</p>
+    <p class="avoid"><b>Avoid when</b>the content is meant for continuous browsing (photo feeds, social media), or on mobile when the number buttons are too small to tap accurately. Do not show 20 page numbers at once; keep the first page, the last page, the pages around the current one, and “…”.</p>
   </div>
   <div class="kw"><button>numbered pagination</button><button>previous / next buttons</button><button>ellipsis truncation for long ranges</button><button>aria-current="page" on active page</button><button>page number in URL query (?page=3)</button><button>"Showing 7–12 of 57" summary</button></div>
 </article>
@@ -672,29 +672,29 @@
 <!-- 7 -->
 <article class="pattern" id="infinite-scroll-load-more" data-toc="Infinite scroll / Load more">
   <h2>Infinite scroll / Load more</h2>
-  <p class="vi"><b>Cuộn vô hạn hoặc nút Tải thêm.</b> Hai cách tải tiếp một danh sách dài mà không chia trang. Cột trái (infinite scroll): khi cuộn gần cuối, danh sách tự tải thêm, nhưng chân trang liên tục bị đẩy xuống. Cột phải (load more): người dùng chủ động nhấn “Tải thêm”, focus chuyển tới mục mới đầu tiên và chân trang luôn trong tầm với. Cuộn cột trái tới cuối, sau đó nhấn nút ở cột phải.</p>
+  <p class="vi"><b>Infinite scroll or Load more button.</b> Two ways to continue a long list without pages. Left column (infinite scroll): near the end, the list loads more items automatically, but the footer keeps getting pushed down. Right column (load more): people press “Load more” themselves, focus moves to the first new item, and the footer stays within reach. Scroll the left column to the end, then press the button in the right column.</p>
   <div class="demo">
-    <div class="top">Cùng 30 bài viết, hai cách tải tiếp</div>
-    <button class="replay">↻ Xem lại</button>
+    <div class="top">The same 30 articles, two ways to load more</div>
+    <button class="replay">↻ Replay</button>
     <div class="cols">
       <section class="col" data-mode="infinite" aria-label="Infinite scroll">
         <div class="ch"><h4>Infinite scroll</h4><output>6 / 30</output></div>
-        <div class="sc"><div role="feed" aria-busy="false" aria-label="Bài viết, tự tải khi cuộn"></div><div class="sent"></div><p class="ld" hidden>Đang tải thêm…</p>
-          <p class="endnote" hidden>Đã hiển thị hết bài viết.</p>
-          <div class="ft"><b>Chân trang</b>Liên hệ · Điều khoản · Tuyển dụng</div></div>
+        <div class="sc"><div role="feed" aria-busy="false" aria-label="Articles, load as you scroll"></div><div class="sent"></div><p class="ld" hidden>Loading more…</p>
+          <p class="endnote" hidden>All articles are shown.</p>
+          <div class="ft"><b>Footer</b>Contact · Terms · Careers</div></div>
       </section>
       <section class="col" data-mode="more" aria-label="Load more">
         <div class="ch"><h4>Load more</h4><output>6 / 30</output></div>
-        <div class="sc"><div class="list" aria-label="Bài viết" role="list"></div>
-          <button class="more" type="button">Tải thêm 6 bài</button>
-          <div class="ft"><b>Chân trang</b>Liên hệ · Điều khoản · Tuyển dụng</div></div>
+        <div class="sc"><div class="list" aria-label="Articles" role="list"></div>
+          <button class="more" type="button">Load 6 more</button>
+          <div class="ft"><b>Footer</b>Contact · Terms · Careers</div></div>
       </section>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b><i>Infinite scroll</i>: nội dung để xem liên tục, không có đích cụ thể (feed, ảnh, video ngắn). <i>Load more</i>: danh sách sản phẩm, kết quả tìm kiếm, bình luận, khi vẫn cần chân trang và người dùng muốn tự kiểm soát lượng nội dung tải về.</p>
-    <p class="avoid"><b>Tránh khi</b>người dùng cần quay lại đúng vị trí, so sánh hoặc đếm mục (dùng pagination). Infinite scroll kết hợp chân trang chứa liên kết quan trọng là lỗi phổ biến: người dùng không thể cuộn tới chân trang.</p>
-    <p class="tip">Mẹo prompt: với infinite scroll, nêu rõ “IntersectionObserver sentinel” và “aria-busy while loading”; với load more, yêu cầu “move focus to first new item” và hiển thị bộ đếm 6 / 30 để người dùng biết còn bao nhiêu mục.</p>
+    <p class="use"><b>Use when</b><i>Infinite scroll</i>: the content is for continuous browsing with no specific goal (feeds, photos, short videos). <i>Load more</i>: product lists, search results, and comments, when the footer is still needed and people want to control how much content loads.</p>
+    <p class="avoid"><b>Avoid when</b>people need to return to an exact position, compare items, or count them (use pagination). Infinite scroll combined with a footer that holds important links is a common mistake: people cannot reach the footer.</p>
+    <p class="tip">Prompt tip: for infinite scroll, name the “IntersectionObserver sentinel” and “aria-busy while loading”; for load more, ask to “move focus to first new item” and show a 6 / 30 counter so people know how many items remain.</p>
   </div>
   <div class="kw"><button>infinite scroll</button><button>IntersectionObserver sentinel</button><button>load more button</button><button>role="feed" with aria-busy</button><button>focus first newly loaded item</button><button>reachable footer</button><button>"6 of 30 loaded" counter</button></div>
 </article>
@@ -707,7 +707,7 @@
   const ic = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const focus = el => el && el.focus({ preventScroll: true });
-  // focus trap trong một vùng (dùng cho lớp phủ nằm trong khung demo)
+  // focus trap within a region (for overlays inside the demo frame)
   const trap = (box, e) => {
     if (e.key !== 'Tab') return;
     const f = $$('a[href],button:not([disabled]),input,select,[tabindex="0"]', box).filter(x => x.checkVisibility());
@@ -716,7 +716,7 @@
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); focus(last); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); focus(first); }
   };
-  // link giả trong demo không được đổi hash của trang
+  // fake links in demos must not change the page hash
   document.addEventListener('click', e => { const a = e.target.closest('.demo a[href="#"]'); if (a) e.preventDefault(); });
 
   /* 1. Hamburger / off-canvas */
@@ -726,7 +726,7 @@
     const st = k => $(`[data-st=${k}]`, d);
     const sync = () => {
       st('exp').textContent = ham.getAttribute('aria-expanded');
-      st('inert').textContent = app.inert ? 'inert (khoá)' : 'tương tác được';
+      st('inert').textContent = app.inert ? 'inert (locked)' : 'interactive';
     };
     const open = () => {
       dr.show(); scr.classList.add('open'); app.inert = true;
@@ -760,7 +760,7 @@
     const ac = new AbortController(), o = { signal: ac.signal };
     const site = $('.site', d), btns = $$('.top>li>button', d), tops = $$('.top>li>:is(button,a)', d);
     const panel = b => d.querySelector('#' + b.getAttribute('aria-controls'));
-    let timer, by = null; // 'hover' | 'pin': mở bằng rê chuột hay bằng bấm/bàn phím
+    let timer, by = null; // 'hover' | 'pin': opened by hovering or by click/keyboard
     const current = () => btns.find(b => b.getAttribute('aria-expanded') === 'true');
     const show = (b, how = 'pin') => {
       clearTimeout(timer); by = b ? how : null;
@@ -771,13 +771,13 @@
       const li = b.parentElement;
       b.addEventListener('click', () => {
         const isOpen = b.getAttribute('aria-expanded') === 'true';
-        if (isOpen && by === 'hover') { by = 'pin'; return; } // đang mở nhờ hover: bấm = ghim lại, không đóng
+        if (isOpen && by === 'hover') { by = 'pin'; return; } // opened by hover: a click pins it instead of closing
         show(isOpen ? null : b);
       }, o);
       li.addEventListener('pointerenter', e => {
         if (e.pointerType !== 'mouse') return;
         clearTimeout(timer);
-        const mode = current() ? by : 'hover'; // đã có tấm đang mở: rê sang mục khác thì chuyển luôn, giữ kiểu mở
+        const mode = current() ? by : 'hover'; // a panel is already open: hovering another item switches directly, keeping the open mode
         timer = setTimeout(() => { if (current() !== b) show(b, mode); }, current() ? 60 : 160);
       }, o);
       li.addEventListener('pointerleave', e => {
@@ -806,7 +806,7 @@
     d.addEventListener('click', e => {
       const a = e.target.closest('.panel a,.top>li>a'); if (!a) return;
       const b = current();
-      $('.went', d).textContent = '→ Đã chọn: ' + ($('b', a) || a).textContent;
+      $('.went', d).textContent = '→ Selected: ' + ($('b', a) || a).textContent;
       show(null); if (b) focus(b);
     }, o);
     return () => { clearTimeout(timer); ac.abort(); };
@@ -816,18 +816,18 @@
   Dict.demo('breadcrumbs', d => {
     const ac = new AbortController(), o = { signal: ac.signal };
     const F = n => ({ n, f: 1 });
-    const T = { n: 'Tài liệu', c: [
-      { n: 'Dự án 2026', c: [
-        { n: 'Ra mắt sản phẩm', c: [
-          { n: 'Thiết kế', c: [
-            { n: 'Bản phác thảo', c: [F('Màn hình đăng nhập'), F('Trang chủ'), F('Thanh toán')] },
-            { n: 'Bộ biểu tượng', c: [F('Biểu tượng v2'), F('Biểu tượng v1 (cũ)')] },
-            F('Bảng màu')] },
-          { n: 'Nội dung', c: [F('Thông cáo báo chí'), F('Câu hỏi thường gặp')] },
-          F('Lịch ra mắt')] },
-        { n: 'Nghiên cứu người dùng', c: [F('Phỏng vấn tháng 9'), F('Tổng hợp khảo sát')] }] },
-      { n: 'Hợp đồng', c: [F('Mẫu hợp đồng 2026')] },
-      { n: 'Ảnh nhóm', c: [F('Họp mặt cuối năm')] }] };
+    const T = { n: 'Documents', c: [
+      { n: 'Projects 2026', c: [
+        { n: 'Product launch', c: [
+          { n: 'Design', c: [
+            { n: 'Sketches', c: [F('Login screen'), F('Home page'), F('Checkout')] },
+            { n: 'Icon set', c: [F('Icons v2'), F('Icons v1 (old)')] },
+            F('Color palette')] },
+          { n: 'Content', c: [F('Press release'), F('FAQ')] },
+          F('Launch schedule')] },
+        { n: 'User research', c: [F('September interviews'), F('Survey summary')] }] },
+      { n: 'Contracts', c: [F('Contract template 2026')] },
+      { n: 'Team photos', c: [F('Year-end party')] }] };
     let path = [T, T.c[0], T.c[0].c[0], T.c[0].c[0].c[0], T.c[0].c[0].c[0].c[0]], expanded = false;
     const ol = $('.bc ol', d), body = $('.body', d);
     const render = moveFocus => {
@@ -837,16 +837,16 @@
       ol.innerHTML = shown.map(i => {
         if (i === 'more') {
           const hid = path.slice(1, last - 1).map(x => x.n);
-          return `<li><button class="more" type="button" aria-label="Hiện ${hid.length} cấp đang ẩn: ${esc(hid.join(', '))}">…</button></li>`;
+          return `<li><button class="more" type="button" aria-label="Show ${hid.length} hidden levels: ${esc(hid.join(', '))}">…</button></li>`;
         }
         return i === last ? `<li><span aria-current="page">${esc(path[i].n)}</span></li>`
           : `<li><a href="#" data-i="${i}">${esc(path[i].n)}</a></li>`;
       }).join('');
       const cur = path[last];
       body.innerHTML = cur.f
-        ? `<h3 tabindex="-1">${ic('file')}${esc(cur.n)}</h3><div class="file"><div class="pv" aria-hidden="true"></div><p>Phạm Lan chỉnh sửa lần cuối 2 giờ trước.<br>Nhấn một cấp trên đường dẫn để quay lại thư mục.</p></div>`
-        : `<h3 tabindex="-1">${ic('folder')}${esc(cur.n)} <small>${cur.c.length} mục</small></h3><div class="grid">` +
-          cur.c.map((c, k) => `<button type="button" data-k="${k}" class="${c.f ? 'f' : ''}"><span class="ic">${ic(c.f ? 'file' : 'folder')}</span><span><b>${esc(c.n)}</b><small>${c.f ? 'Tệp' : c.c.length + ' mục'}</small></span></button>`).join('') + '</div>';
+        ? `<h3 tabindex="-1">${ic('file')}${esc(cur.n)}</h3><div class="file"><div class="pv" aria-hidden="true"></div><p>Last edited by Paula Lane 2 hours ago.<br>Select a level in the path to return to a folder.</p></div>`
+        : `<h3 tabindex="-1">${ic('folder')}${esc(cur.n)} <small>${cur.c.length} ${cur.c.length === 1 ? 'item' : 'items'}</small></h3><div class="grid">` +
+          cur.c.map((c, k) => `<button type="button" data-k="${k}" class="${c.f ? 'f' : ''}"><span class="ic">${ic(c.f ? 'file' : 'folder')}</span><span><b>${esc(c.n)}</b><small>${c.f ? 'File' : c.c.length + (c.c.length === 1 ? ' item' : ' items')}</small></span></button>`).join('') + '</div>';
       if (moveFocus) focus($('h3', body));
     };
     ol.addEventListener('click', e => {
@@ -869,7 +869,7 @@
     const setMini = mini => {
       shell.classList.toggle('mini', mini);
       tg.setAttribute('aria-expanded', !mini);
-      tg.setAttribute('aria-label', mini ? 'Mở rộng thanh bên' : 'Thu gọn thanh bên');
+      tg.setAttribute('aria-label', mini ? 'Expand sidebar' : 'Collapse sidebar');
     };
     tg.addEventListener('click', () => setMini(!shell.classList.contains('mini')), o);
     $('summary', d).addEventListener('click', e => {
@@ -881,9 +881,9 @@
       $$('.side a', d).forEach(x => x.removeAttribute('aria-current'));
       a.setAttribute('aria-current', 'page');
       $('.ttl', d).textContent = $('.lbl', a).textContent;
-      if (narrow.matches) setMini(true); // màn hẹp: thanh bên phủ lên nội dung, chọn xong thì thu lại
+      if (narrow.matches) setMini(true); // narrow screens: the sidebar overlays the content, so collapse it after a selection
     }, o);
-    // màn hẹp: chạm vào vùng tối bên ngoài thanh bên để thu gọn
+    // narrow screens: tap the dimmed area outside the sidebar to collapse it
     shell.addEventListener('click', e => { if (e.target === shell && narrow.matches) setMini(true); }, o);
     return () => ac.abort();
   });
@@ -908,15 +908,15 @@
   /* 6. Pagination */
   Dict.demo('pagination', d => {
     const ac = new AbortController(), o = { signal: ac.signal };
-    const kinds = ['Biên bản họp', 'Kế hoạch', 'Báo cáo', 'Đề xuất', 'Hướng dẫn', 'Danh sách'];
-    const topics = ['tuyển dụng', 'quý 4', 'ra mắt ứng dụng', 'ngân sách', 'đào tạo nội bộ', 'khảo sát khách hàng', 'website mới', 'bảo mật', 'chăm sóc khách hàng', 'sự kiện cuối năm'];
-    const people = ['Lê Thu Hà', 'Phạm Gia Huy', 'Đỗ Mai Linh', 'Vũ Hoàng Nam', 'Trần Minh Khoa', 'Phạm Lan'];
+    const kinds = ['Meeting notes', 'Plan', 'Report', 'Proposal', 'Guide', 'Checklist'];
+    const topics = ['hiring', 'Q4', 'app launch', 'budget', 'internal training', 'customer survey', 'new website', 'security', 'customer support', 'year-end event'];
+    const people = ['Hannah Lee', 'Gavin Hughes', 'Maya Lin', 'Henry Nash', 'Mark Kim', 'Paula Lane'];
     const N = 57, PER = 6, PAGES = Math.ceil(N / PER);
-    const item = i => [`${kinds[i % 6]} ${topics[(i * 7) % 10]}`, people[(i * 5) % 6], new Date(2026, 8, 30 - i).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })];
+    const item = i => [`${kinds[i % 6]}: ${topics[(i * 7) % 10]}`, people[(i * 5) % 6], new Date(2026, 8, 30 - i).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })];
     let page = 1;
     const list = () => {
       const s = new Set([1, PAGES, page - 1, page, page + 1].filter(p => p >= 1 && p <= PAGES));
-      if (page <= 4) [2, 3, 4, 5].forEach(p => s.add(p)); // luôn đủ 7 ô để nút không xê dịch dưới con trỏ
+      if (page <= 4) [2, 3, 4, 5].forEach(p => s.add(p)); // always 7 slots so buttons do not shift under the pointer
       if (page >= PAGES - 3) [PAGES - 1, PAGES - 2, PAGES - 3, PAGES - 4].forEach(p => s.add(p));
       const a = [...s].sort((x, y) => x - y), out = [];
       a.forEach((p, i) => { if (i && p - a[i - 1] > 1) out.push(p - a[i - 1] === 2 ? p - 1 : '…'); out.push(p); });
@@ -930,13 +930,13 @@
         return `<li><span class="n">${from + k + 1}</span><b>${esc(t)}</b><span>${p}</span><span>${dt}</span></li>`;
       }).join('');
       rows.classList.remove('in'); if (anim) { void rows.offsetWidth; rows.classList.add('in'); }
-      $('.sum', d).textContent = `Hiển thị ${from + 1}–${Math.min(from + PER, N)} trên ${N} tài liệu`;
-      $('.q', d).textContent = '?trang=' + page;
+      $('.sum', d).textContent = `Showing ${from + 1}–${Math.min(from + PER, N)} of ${N} documents`;
+      $('.q', d).textContent = '?page=' + page;
       pager.innerHTML =
-        `<li><button type="button" class="pn" data-k="prev" aria-label="Trang trước" ${page === 1 ? 'disabled' : ''}>‹ <span class="t">Trước</span></button></li>` +
+        `<li><button type="button" class="pn" data-k="prev" aria-label="Previous page" ${page === 1 ? 'disabled' : ''}>‹ <span class="t">Previous</span></button></li>` +
         list().map(p => p === '…' ? '<li class="gap" aria-hidden="true">…</li>'
-          : `<li><button type="button" data-k="${p}" aria-label="Trang ${p}"${p === page ? ' aria-current="page"' : ''}>${p}</button></li>`).join('') +
-        `<li><button type="button" class="pn" data-k="next" aria-label="Trang sau" ${page === PAGES ? 'disabled' : ''}><span class="t">Sau</span> ›</button></li>`;
+          : `<li><button type="button" data-k="${p}" aria-label="Page ${p}"${p === page ? ' aria-current="page"' : ''}>${p}</button></li>`).join('') +
+        `<li><button type="button" class="pn" data-k="next" aria-label="Next page" ${page === PAGES ? 'disabled' : ''}><span class="t">Next</span> ›</button></li>`;
       if (keep) { const b = $(`[data-k="${keep}"]`, pager); focus(b && !b.disabled ? b : $('[aria-current]', pager)); }
     };
     pager.addEventListener('click', e => {
@@ -953,10 +953,10 @@
   Dict.demo('infinite-scroll-load-more', d => {
     const ac = new AbortController(), o = { signal: ac.signal };
     const TOTAL = 30, BATCH = 6;
-    const titles = ['Viết tài liệu sao cho người mới hiểu', 'Họp ngắn mà vẫn đủ ý', 'Đặt tên tệp cho cả nhóm', 'Ước lượng thời gian thực tế hơn', 'Tiếp nhận phản hồi một cách khách quan', 'Ghi chú cuộc gọi khách hàng', 'Chia việc lớn thành việc nhỏ', 'Làm việc khác múi giờ', 'Tắt thông báo mà không lỡ việc', 'Viết email ngắn gọn'];
-    const people = ['Lê Thu Hà', 'Phạm Gia Huy', 'Đỗ Mai Linh', 'Vũ Hoàng Nam', 'Trần Minh Khoa'];
+    const titles = ['Writing docs that new hires understand', 'Short meetings that still cover everything', 'Naming files for the whole team', 'More realistic time estimates', 'Taking feedback objectively', 'Notes from customer calls', 'Breaking big tasks into small ones', 'Working across time zones', 'Muting notifications without missing work', 'Writing shorter emails'];
+    const people = ['Hannah Lee', 'Gavin Hughes', 'Maya Lin', 'Henry Nash', 'Mark Kim'];
     const colors = ['#dfe6ff', '#ffe3d3', '#d9f3e4', '#f1e1ff', '#fff0bf', '#e3eef5'];
-    const art = (i, attrs) => `<article ${attrs}><i style="--c:${colors[i % 6]}">#${i + 1}</i><div><b>${titles[i % 10]}</b><small>${people[i % 5]} · ${3 + (i * 7) % 9} phút đọc</small></div></article>`;
+    const art = (i, attrs) => `<article ${attrs}><i style="--c:${colors[i % 6]}">#${i + 1}</i><div><b>${titles[i % 10]}</b><small>${people[i % 5]} · ${3 + (i * 7) % 9} min read</small></div></article>`;
     const timers = [];
     const later = (fn, ms) => timers.push(setTimeout(fn, ms));
 
@@ -988,15 +988,15 @@
     };
     addR();
     btn.addEventListener('click', () => {
-      btn.disabled = true; btn.textContent = 'Đang tải…';
+      btn.disabled = true; btn.textContent = 'Loading…';
       later(() => {
         const first = addR(), sc = $('.sc', R); focus(first);
         sc.scrollTo({ top: sc.scrollTop + first.getBoundingClientRect().top - sc.getBoundingClientRect().top - 10, behavior: Dict.RM ? 'instant' : 'smooth' });
-        if (nR >= TOTAL) btn.outerHTML = `<p class="endnote">Đã hiển thị hết ${TOTAL} bài.</p>`;
-        else { btn.disabled = false; btn.textContent = `Tải thêm ${BATCH} bài (còn ${TOTAL - nR})`; }
+        if (nR >= TOTAL) btn.outerHTML = `<p class="endnote">All ${TOTAL} articles are shown.</p>`;
+        else { btn.disabled = false; btn.textContent = `Load ${BATCH} more (${TOTAL - nR} left)`; }
       }, 600);
     }, o);
-    btn.textContent = `Tải thêm ${BATCH} bài (còn ${TOTAL - nR})`;
+    btn.textContent = `Load ${BATCH} more (${TOTAL - nR} left)`;
     return () => { io.disconnect(); timers.forEach(clearTimeout); ac.abort(); };
   });
 })();

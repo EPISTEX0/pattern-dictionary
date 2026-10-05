@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dark patterns — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Bảy dark pattern phổ biến, kèm demo so sánh bản thao túng với bản trung thực, cách nhận diện và cách thiết kế đúng.">
+<title>Dark patterns — Pattern Dictionary</title>
+<meta name="description" content="Seven common dark patterns, each with a demo that compares a deceptive version with an honest one, how to spot it, and what to do instead.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset scoped to demos, specificity 0 */
 :where(.pattern>.demo) :where(h3,h4,p,ul,ol,li,fieldset,legend){margin:0;padding:0}
 :where(.pattern>.demo) :where(ul,ol){list-style:none}
 :where(.pattern>.demo) :where(button,input,select){font:inherit;color:inherit}
@@ -19,7 +19,7 @@
   :where(.pattern>.demo) *,:where(.pattern>.demo) *::before,:where(.pattern>.demo) *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 
-/* ===== khung chung cho 7 demo: cảnh + thanh chú thích + công tắc Bản lừa ↔ Bản trung thực ===== */
+/* ===== shared frame for the 7 demos: scene + caption bar + Deceptive ↔ Honest switch ===== */
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo{height:500px;background:#f3f2ee;color:#1b1b1b;font-size:13.5px}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .dp-scene{position:absolute;inset:0 0 64px 0;overflow:hidden;display:grid;place-items:center;padding:44px 20px 16px}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .dp-tag{position:absolute;z-index:40;top:12px;left:12px;font:600 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:6px 9px;border-radius:999px;background:#b3261e;color:#fff}
@@ -31,7 +31,7 @@
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .demo-tools>button[data-mode=dark][aria-pressed=true]{background:#b3261e;border-color:#b3261e;color:#fff}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .demo-tools>button[data-mode=honest][aria-pressed=true]{background:#1a7f4b;border-color:#1a7f4b;color:#fff}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .demo-tools>button[data-mode=dark]::after{content:" ↔";opacity:.6}
-/* thẻ & nút dùng lại trong cảnh */
+/* cards and buttons reused inside scenes */
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .card{background:#fff;border:1px solid #e4e1da;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.08);padding:22px 24px;width:min(460px,100%)}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .card h3{font-size:19px;line-height:1.3;font-weight:800;letter-spacing:-.01em}
 :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .card h3:focus{outline:none}
@@ -176,7 +176,7 @@
 #nagging .demo .ov p{margin:6px 0 14px}
 #nagging .demo .ov .btn{width:100%;margin-top:6px}
 #nagging .demo .ov .times{font:500 11px/1 var(--mono);color:#b3261e;margin-top:10px}
-/* ===== màn hình hẹp: chữ ≥12px, vùng chạm ≥32px (đặt cuối để thắng quy tắc từng demo) ===== */
+/* ===== narrow screens: text ≥12px, tap targets ≥32px (placed last to override per-demo rules) ===== */
 @media (max-width:760px){
   :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .dp-tag{font-size:12px}
   :is(#confirmshaming,#hidden-costs,#roach-motel,#forced-continuity,#fake-urgency,#sneak-into-basket,#nagging) .demo .demo-tools>button{min-height:36px}
@@ -201,22 +201,22 @@
 <main class="wrap">
   <header class="head">
     <h1>Dark patterns</h1>
-    <p>Dark pattern là thiết kế giao diện dẫn người dùng tới lựa chọn bất lợi cho chính họ. Trang này mô tả bảy dạng phổ biến để <b>nhận diện và tránh</b>, không nhằm hướng dẫn áp dụng. Mỗi demo là một ví dụ hư cấu, có công tắc <b>Thao túng ↔ Trung thực</b> để so sánh cùng một màn hình khi được thiết kế đúng.</p>
+    <p>A dark pattern is an interface design that steers users toward a choice that works against their own interest. This page describes seven common types so that you can <b>recognize and avoid them</b>. It is not a guide to using them. Each demo is a fictional example with a <b>Deceptive ↔ Honest</b> switch that shows the same screen designed correctly.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="confirmshaming">
     <h2>Confirmshaming</h2>
-    <p class="vi"><b>Lời từ chối được viết để người dùng cảm thấy có lỗi.</b> Lựa chọn từ chối là một câu tự nhận lỗi, ví dụ “Không, tôi thích bỏ lỡ…”, thường nhỏ, nhạt màu và đặt dưới một hành động chính nổi bật. Nhấn nút từ chối ở cả hai bản để so sánh.</p>
+    <p class="vi"><b>Decline copy written to make the user feel guilty.</b> The option to decline is phrased as a self-criticism, such as “No, I prefer to miss out…”. It is usually small, low in contrast, and placed below a prominent primary action. Tap the decline option in both versions.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>lời từ chối mang giọng trách móc hoặc mỉa mai người dùng, nút từ chối nhỏ và nhạt hơn hẳn nút đồng ý, hoặc hộp thoại không có nút đóng.</p>
-      <p class="use"><b>Làm đúng thay vì</b>dùng hai nút cùng cỡ, chữ trung tính (“Đăng ký” / “Không, cảm ơn”) và có nút × để đóng. Cảm giác bị làm cho xấu hổ gắn với ấn tượng tiêu cực về thương hiệu; ở EU, Đạo luật Dịch vụ số (DSA) cấm nền tảng thiết kế giao diện thao túng lựa chọn.</p>
+      <p class="avoid"><b>How to spot it</b>The decline copy blames or mocks the user, the decline option is much smaller and paler than the accept button, or the dialog has no close button.</p>
+      <p class="use"><b>Do this instead</b>Use two buttons of equal size with neutral labels (“Subscribe” / “No thanks”) and a visible × close button. Shaming copy leaves users with a negative impression of the brand. In the EU, the Digital Services Act (DSA) prohibits platforms from designing interfaces that manipulate user choices.</p>
     </div>
     <div class="kw"><button>confirmshaming</button><button>guilt-tripping opt-out copy</button><button>manipulative decline link</button><button>neutral decline button</button><button>equal-weight choices</button><button>visible close (×) button</button></div>
   </article>
@@ -224,16 +224,16 @@
   <!-- 2 -->
   <article class="pattern" id="hidden-costs">
     <h2>Hidden costs</h2>
-    <p class="vi"><b>Phí bắt buộc chỉ xuất hiện ở bước cuối.</b> Giá ở đầu luồng mua hàng thấp; phí dịch vụ, phí xử lý và phí giao hàng chỉ hiện ở màn thanh toán, khi người dùng đã điền thông tin và ít muốn quay lại. Nhấn “Tiếp tục” qua ba bước để xem tổng tiền thay đổi.</p>
+    <p class="vi"><b>Mandatory fees appear only at the final step.</b> The price at the start of checkout is low. Service, processing and shipping fees appear only on the payment screen, after the user has entered their details and is less willing to go back. Tap Continue through all three steps and watch the total.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>tổng tiền ở bước thanh toán lớn hơn giá hiển thị lúc đầu, hoặc xuất hiện các khoản phí không rõ mục đích (“phí dịch vụ”, “phí xử lý”) chưa được báo trước.</p>
-      <p class="use"><b>Làm đúng thay vì</b>hiển thị tổng giá cuối cùng (gồm thuế, mọi phí bắt buộc và phí giao hàng ước tính) ngay từ trang sản phẩm hoặc giỏ hàng, và giữ nguyên tới lúc thanh toán. EU, Anh và Mỹ (với vé sự kiện, lưu trú ngắn ngày) đã có quy định buộc hiển thị tổng giá từ đầu.</p>
+      <p class="avoid"><b>How to spot it</b>The total at payment is higher than the price shown at the start, or unexplained fees (“service fee”, “processing fee”) appear without prior notice.</p>
+      <p class="use"><b>Do this instead</b>Show the final total price, including tax, all mandatory fees and estimated shipping, on the product page or in the cart, and keep it unchanged through payment. The EU, the UK and the US (for live-event tickets and short-term lodging) require the total price to be shown upfront.</p>
     </div>
     <div class="kw"><button>hidden costs</button><button>drip pricing</button><button>junk fees at checkout</button><button>all-in pricing</button><button>transparent price breakdown</button><button>total price shown upfront</button></div>
   </article>
@@ -241,16 +241,16 @@
   <!-- 3 -->
   <article class="pattern" id="roach-motel">
     <h2>Roach motel</h2>
-    <p class="vi"><b>Đăng ký dễ, huỷ khó.</b> Đăng ký chỉ cần một lần nhấn, còn huỷ phải qua một liên kết bị ẩn, nhiều màn hỏi lý do, ưu đãi giữ chân và cuối cùng là yêu cầu gọi tổng đài. Nâng cấp lên Pro rồi thử huỷ; bộ đếm ở góc thẻ ghi số lần nhấn.</p>
+    <p class="vi"><b>Easy to sign up, hard to cancel.</b> Signing up takes one tap. Canceling requires finding a hidden link, answering several screens of questions, declining a retention offer, and finally calling a support line. Upgrade to Pro, then try to cancel. The counter above the card records each tap.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>nút đăng ký xuất hiện ở nhiều nơi nhưng nút huỷ khó tìm, huỷ cần nhiều bước hơn hẳn đăng ký, bắt buộc trả lời khảo sát, hoặc chỉ huỷ được qua điện thoại, email hay trong giờ hành chính.</p>
-      <p class="use"><b>Làm đúng thay vì</b>đặt “Huỷ gói” ngay cạnh thông tin gói, kèm một màn xác nhận nêu rõ điều gì xảy ra và từ ngày nào. Ưu đãi giữ chân (nếu có) chỉ là lựa chọn phụ. Đức, California và nhiều nơi khác yêu cầu huỷ trực tuyến phải dễ như đăng ký.</p>
+      <p class="avoid"><b>How to spot it</b>Sign-up buttons appear in many places but the cancel option is hard to find, canceling takes far more steps than signing up, a survey is mandatory, or cancellation is possible only by phone, by email, or during business hours.</p>
+      <p class="use"><b>Do this instead</b>Place “Cancel plan” next to the plan details, followed by one confirmation screen that states what happens and from which date. A retention offer, if any, is a secondary option. Germany, California and other jurisdictions require online cancellation to be as easy as sign-up.</p>
     </div>
     <div class="kw"><button>roach motel</button><button>obstruction dark pattern</button><button>hard-to-cancel subscription</button><button>click-to-cancel</button><button>cancel as easy as sign-up</button><button>one-step cancellation confirmation</button></div>
   </article>
@@ -258,16 +258,16 @@
   <!-- 4 -->
   <article class="pattern" id="forced-continuity">
     <h2>Forced continuity</h2>
-    <p class="vi"><b>Bản dùng thử miễn phí tự chuyển sang thu phí mà không báo trước.</b> Dùng thử yêu cầu nhập thẻ, giá gia hạn nằm trong dòng chữ rất nhỏ và không có email nhắc trước khi trừ tiền. Nhấn “Bắt đầu”, sau đó nhấn “Tua 1 ngày” tới ngày thứ 8.</p>
+    <p class="vi"><b>A free trial converts to a paid plan without notice.</b> The trial requires a card, the renewal price sits in very small print, and no reminder email is sent before the charge. Tap Start, then tap Next day until day 8.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>chữ “miễn phí” nổi bật nhưng giá sau dùng thử và ngày bắt đầu tính phí thì nhỏ hoặc không có, không có lời nhắc trước khi trừ tiền, và cách huỷ bị ẩn.</p>
-      <p class="use"><b>Làm đúng thay vì</b>ghi rõ “hôm nay 0 ₫, từ ngày X: Y ₫/tháng”, gửi email nhắc trước khi tính phí và cho huỷ dùng thử bằng một lần nhấn. Nhiều luật về gia hạn tự động (ví dụ ở California) bắt buộc nêu rõ giá, ngày gia hạn và cách huỷ.</p>
+      <p class="avoid"><b>How to spot it</b>“Free” is prominent, but the post-trial price and the billing start date are small or missing, no reminder is sent before the charge, and the way to cancel is hidden.</p>
+      <p class="use"><b>Do this instead</b>State “$0 today, $Y/mo from date X”, send a reminder email before billing starts, and let users cancel the trial in one tap. Many automatic renewal laws, such as California’s, require the price, renewal date and cancellation method to be disclosed clearly.</p>
     </div>
     <div class="kw"><button>forced continuity</button><button>free trial trap</button><button>silent auto-renewal</button><button>trial ending reminder email</button><button>clear renewal date and price</button><button>one-click trial cancellation</button></div>
   </article>
@@ -275,16 +275,16 @@
   <!-- 5 -->
   <article class="pattern" id="fake-urgency" data-toc="Fake urgency / scarcity">
     <h2>Fake urgency / scarcity</h2>
-    <p class="vi"><b>Đồng hồ đếm ngược và số lượng còn lại không phản ánh thực tế.</b> Áp lực thời gian khiến người dùng mua trước khi kịp so sánh. Nhấn “Tải lại trang” ở bản thao túng để thấy đồng hồ quay về 10:00 và số suất vẫn là 2.</p>
+    <p class="vi"><b>Countdown timers and stock counts that do not reflect reality.</b> Time pressure pushes users to buy before they compare options. In the deceptive version, tap Reload page: the timer resets to 10:00 and the count stays at 2.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>đồng hồ khởi động lại mỗi lần mở trang, “chỉ còn N” không bao giờ giảm, “X người đang xem” thay đổi ngẫu nhiên, hoặc ưu đãi “kết thúc hôm nay” xuất hiện mỗi ngày.</p>
-      <p class="use"><b>Làm đúng thay vì</b>ghi hạn chót là một ngày giờ cố định, số chỗ hoặc tồn kho lấy từ dữ liệu thật của hệ thống; không có dữ liệu thì không hiển thị. Ở EU, thông tin sai rằng ưu đãi chỉ còn trong thời gian rất ngắn là hành vi thương mại không lành mạnh bị cấm.</p>
+      <p class="avoid"><b>How to spot it</b>The timer restarts every time the page opens, “only N left” never decreases, “X people are viewing” changes at random, or an offer that “ends today” appears every day.</p>
+      <p class="use"><b>Do this instead</b>Give the deadline as a fixed date and time, and take seat or stock counts from real system data. If no data exists, show nothing. In the EU, falsely stating that an offer is available only for a very short time is a prohibited unfair commercial practice.</p>
     </div>
     <div class="kw"><button>fake urgency</button><button>fake countdown timer</button><button>false scarcity ("only 2 left")</button><button>fake social proof counter</button><button>real deadline with fixed date</button><button>honest stock indicator</button></div>
   </article>
@@ -292,16 +292,16 @@
   <!-- 6 -->
   <article class="pattern" id="sneak-into-basket" data-toc="Sneak into basket">
     <h2>Sneak into basket / Preselected opt-in</h2>
-    <p class="vi"><b>Sản phẩm phụ được tự thêm vào giỏ, ô đồng ý được tích sẵn.</b> Bảo hiểm, bảo hành hoặc dịch vụ tuỳ chọn được tích sẵn hay thêm thẳng vào đơn; ô nhận quảng cáo cũng được tích sẵn. Người dùng không đọc kỹ sẽ trả tiền cho thứ mình không chọn. Tích hoặc bỏ tích để xem tổng tiền thay đổi.</p>
+    <p class="vi"><b>Add-ons are placed in the cart automatically and consent boxes are pre-checked.</b> Insurance, warranties or optional services are pre-checked or added directly to the order, and the marketing consent box is pre-checked too. Users who do not read carefully pay for items they did not choose. Check or uncheck the options and watch the total.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>giỏ hàng có sản phẩm người dùng không tự thêm, ô trả thêm tiền hoặc nhận quảng cáo đã được tích sẵn, và liên kết “gỡ” nhỏ, nhạt màu.</p>
-      <p class="use"><b>Làm đúng thay vì</b>để mọi tuỳ chọn trả thêm và mọi ô đồng ý ở trạng thái <i>chưa tích</i>, ghi rõ giá cạnh từng tuỳ chọn. Ở EU, ô tích sẵn cho khoản trả thêm bị cấm, và ô tích sẵn không được coi là sự đồng ý hợp lệ theo GDPR.</p>
+      <p class="avoid"><b>How to spot it</b>The cart contains items the user did not add, boxes for paid extras or marketing consent are already checked, and the “remove” link is small and low in contrast.</p>
+      <p class="use"><b>Do this instead</b>Leave every paid option and every consent box <i>unchecked</i> by default, and show the price next to each option. In the EU, pre-checked boxes for extra payments are prohibited, and a pre-checked box is not valid consent under the GDPR.</p>
     </div>
     <div class="kw"><button>sneak into basket</button><button>pre-checked opt-in</button><button>preselected add-ons</button><button>unchecked by default (opt-in)</button><button>optional add-ons clearly priced</button><button>explicit consent checkbox</button></div>
   </article>
@@ -309,16 +309,16 @@
   <!-- 7 -->
   <article class="pattern" id="nagging">
     <h2>Nagging</h2>
-    <p class="vi"><b>Cùng một yêu cầu lặp lại cho tới khi người dùng đồng ý.</b> Yêu cầu bật thông báo, đánh giá ứng dụng hoặc nâng cấp xuất hiện liên tục, chen ngang thao tác đang làm, và chỉ có “Để sau” thay vì “Không hỏi lại”. Tích vài việc trong danh sách để xem.</p>
+    <p class="vi"><b>The same request repeats until the user agrees.</b> Prompts to enable notifications, rate the app or upgrade appear again and again, interrupt the current task, and offer only “Maybe later” instead of “Don’t ask again”. Check a few tasks in the list.</p>
     <div class="demo">
       <div class="dp-scene"></div>
-      <span class="dp-tag">Ví dụ hư cấu · Bản thao túng</span>
+      <span class="dp-tag">Fictional example · Deceptive version</span>
       <div class="dp-bar"><p class="dp-cap" aria-live="polite"></p></div>
-      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Thao túng</button><button type="button" data-mode="honest" aria-pressed="false">Trung thực</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" data-mode="dark" aria-pressed="true">Deceptive</button><button type="button" data-mode="honest" aria-pressed="false">Honest</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="avoid"><b>Nhận ra khi</b>hộp thoại cùng nội dung xuất hiện nhiều lần trong một phiên, chặn ngang thao tác, và lựa chọn duy nhất ngoài “Đồng ý” là “Để sau”.</p>
-      <p class="use"><b>Làm đúng thay vì</b>hỏi một lần, vào thời điểm có lý do (ví dụ khi người dùng đặt hạn chót), không chặn màn hình, có “Không, cảm ơn” và tuân theo lựa chọn đó; đặt công tắc trong Cài đặt để người dùng đổi ý. Người dùng bị hỏi lặp lại thường từ chối vĩnh viễn hoặc gỡ ứng dụng.</p>
+      <p class="avoid"><b>How to spot it</b>A dialog with the same content appears several times in one session, blocks the current task, and the only alternative to “Accept” is “Maybe later”.</p>
+      <p class="use"><b>Do this instead</b>Ask once, at a moment with a clear reason (for example, when the user sets a due date). Do not block the screen, offer “No thanks”, and respect that answer. Provide a switch in Settings so users can change their mind. Users who are asked repeatedly often decline permanently or uninstall the app.</p>
     </div>
     <div class="kw"><button>nagging dark pattern</button><button>repeated permission prompt</button><button>"Maybe later" with no "Never"</button><button>contextual permission request</button><button>respect "No" (don't ask again)</button><button>non-blocking inline prompt</button></div>
   </article>
@@ -328,11 +328,12 @@
 <script>
 (() => {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const vnd = n => n.toLocaleString('vi-VN') + ' ₫';
+  /* amounts are stored in cents to keep sums exact */
+  const usd = c => (c / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   const focusHead = sc => $('h3', sc)?.focus({ preventScroll: true });
 
-  /* Khung chung: công tắc Bản lừa ↔ Bản trung thực dựng lại cảnh.
-     build(scene, mode, say) dựng cảnh, trả về hàm dọn dẹp nếu có timer. */
+  /* Shared frame: the Deceptive ↔ Honest switch rebuilds the scene.
+     build(scene, mode, say) builds the scene and returns a cleanup function if it starts timers. */
   const DP = (id, build) => Dict.demo(id, d => {
     let scene = $('.dp-scene', d), cap = $('.dp-cap', d), tag = $('.dp-tag', d);
     let clean = null;
@@ -341,7 +342,7 @@
       clean?.(); clean = null;
       d.dataset.mode = mode;
       $$('[data-mode]', d).forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === mode));
-      tag.textContent = 'Ví dụ hư cấu · ' + (mode === 'dark' ? 'Bản thao túng' : 'Bản trung thực');
+      tag.textContent = 'Fictional example · ' + (mode === 'dark' ? 'Deceptive version' : 'Honest version');
       { const s = scene.cloneNode(false); scene.replaceWith(s); scene = s; }
       clean = build(scene, mode, say) || null;
     };
@@ -356,69 +357,69 @@
     const dark = mode === 'dark';
     const page = '<div class="page" aria-hidden="true"><i></i><i></i><i></i><i style="width:80%"></i><i></i><i style="width:60%"></i></div>';
     const intro = () => say(dark
-      ? '<b>Thủ thuật:</b> nút từ chối là một câu tự chê, chữ nhỏ và nhạt; hộp thoại không có nút × để đóng.'
-      : '<b>Làm đúng:</b> hai nút cùng cỡ, lời từ chối trung tính, có nút × để đóng.');
+      ? '<b>Technique:</b> the decline option is a self-criticism in small, pale text, and the dialog has no × close button.'
+      : '<b>Better:</b> two buttons of equal size, neutral decline copy, and a × close button.');
     const open = (focus) => {
       sc.innerHTML = page + `<div class="ov"><div class="card pop" role="dialog" aria-labelledby="cs-t" aria-describedby="cs-d">
-        ${dark ? '' : '<button type="button" class="x" aria-label="Đóng">×</button>'}
+        ${dark ? '' : '<button type="button" class="x" aria-label="Close">×</button>'}
         <div class="ico">${MAIL}</div>
-        <h3 id="cs-t" tabindex="-1">${dark ? 'Đừng để mình tụt lại phía sau!' : 'Nhận bản tin mỗi tuần?'}</h3>
-        <p class="muted" id="cs-d">${dark ? 'Hơn 50.000 người giỏi giang đã đăng ký. Còn bạn?' : 'Một email mỗi sáng thứ Hai với 3 gợi ý làm việc hiệu quả. Huỷ đăng ký bằng liên kết ở cuối mỗi thư.'}</p>
-        <label class="sr" for="cs-e">Email</label><input id="cs-e" type="email" placeholder="email@vidu.vn" autocomplete="off">
+        <h3 id="cs-t" tabindex="-1">${dark ? 'Don’t get left behind!' : 'Get the weekly newsletter?'}</h3>
+        <p class="muted" id="cs-d">${dark ? 'Over 50,000 high achievers have already signed up. Have you?' : 'One email every Monday morning with 3 productivity tips. Unsubscribe with the link at the end of any email.'}</p>
+        <label class="sr" for="cs-e">Email</label><input id="cs-e" type="email" placeholder="you@example.com" autocomplete="off">
         ${dark
-          ? '<button type="button" class="btn hot yes">Có, tôi muốn giỏi hơn!</button><button type="button" class="shame no">Không, cảm ơn. Tôi thích làm việc kém hiệu quả.</button>'
-          : '<div class="pair"><button type="button" class="btn pri yes">Đăng ký</button><button type="button" class="btn no">Không, cảm ơn</button></div>'}
+          ? '<button type="button" class="btn hot yes">Yes, I want to do better!</button><button type="button" class="shame no">No thanks, I prefer being unproductive.</button>'
+          : '<div class="pair"><button type="button" class="btn pri yes">Subscribe</button><button type="button" class="btn no">No thanks</button></div>'}
       </div></div>`;
       intro();
       if (focus) focusHead(sc);
       const close = (msg) => {
-        sc.innerHTML = page + '<button type="button" class="btn reopen">Mở lại hộp thoại</button>';
+        sc.innerHTML = page + '<button type="button" class="btn reopen">Reopen dialog</button>';
         $('.reopen', sc).addEventListener('click', () => open(true));
         $('.reopen', sc).focus({ preventScroll: true });
         say(msg);
       };
       $('.yes', sc).addEventListener('click', () => close(dark
-        ? '<b>Thủ thuật:</b> nút đồng ý được viết như lời tự khen, khiến lựa chọn từ chối mang nghĩa tự chê.'
-        : '<b>Làm đúng:</b> đã đăng ký (mô phỏng, không gửi dữ liệu). Người dùng tự quyết định, không bị ép.'));
+        ? '<b>Technique:</b> the accept button is phrased as self-praise, so declining reads as self-criticism.'
+        : '<b>Better:</b> subscribed (simulated, no data sent). The user decided without pressure.'));
       $('.no', sc).addEventListener('click', () => close(dark
-        ? '<b>Thủ thuật:</b> để đóng hộp thoại, người dùng phải nhấn vào câu “Tôi thích làm việc kém hiệu quả”.'
-        : '<b>Làm đúng:</b> từ chối là kết thúc, không trách móc, không hỏi lại.'));
-      $('.x', sc)?.addEventListener('click', () => close('<b>Làm đúng:</b> đóng bằng × được xử lý giống “Không, cảm ơn”.'));
+        ? '<b>Technique:</b> to close the dialog, the user has to tap “I prefer being unproductive”.'
+        : '<b>Better:</b> declining ends the request, with no blame and no follow-up prompt.'));
+      $('.x', sc)?.addEventListener('click', () => close('<b>Better:</b> closing with × is handled the same as “No thanks”.'));
     };
     open(false);
   });
 
   /* ---------- 2. Hidden costs ---------- */
   DP('hidden-costs', (sc, mode, say) => {
-    const dark = mode === 'dark', BASE = 390000, SHIP = 35000;
-    const FEES = dark ? [['Phí dịch vụ', 29000], ['Phí xử lý đơn', 19000], ['Phí giao hàng', SHIP]] : [['Phí giao hàng', SHIP]];
+    const dark = mode === 'dark', BASE = 3900, SHIP = 599;
+    const FEES = dark ? [['Service fee', 499], ['Order processing fee', 299], ['Shipping', SHIP]] : [['Shipping', SHIP]];
     const total = BASE + FEES.reduce((a, [, v]) => a + v, 0);
     let step = 0;
-    const STEPS = ['1. Giỏ hàng', '2. Giao hàng', '3. Thanh toán'];
+    const STEPS = ['1. Cart', '2. Shipping', '3. Payment'];
     const render = (focus) => {
       const steps = `<ol class="steps">${STEPS.map((s, i) => `<li class="${i <= step ? 'on' : ''}"${i === step ? ' aria-current="step"' : ''}>${s}</li>`).join('')}</ol>`;
       let body = '';
       if (step === 0) {
-        body = `<h3 tabindex="-1">Giỏ hàng</h3>
-          <div class="item"><span class="thumb" aria-hidden="true"></span><div style="flex:1"><b>Đèn bàn LED (mẫu)</b><p class="muted">Số lượng: 1</p></div><b>${vnd(BASE)}</b></div>
+        body = `<h3 tabindex="-1">Cart</h3>
+          <div class="item"><span class="thumb" aria-hidden="true"></span><div style="flex:1"><b>LED desk lamp (sample)</b><p class="muted">Quantity: 1</p></div><b>${usd(BASE)}</b></div>
           ${dark
-            ? `<div class="ln tot"><span>Tổng</span><span class="big">${vnd(BASE)}</span></div><p class="muted">✓ Miễn phí đổi trả 7 ngày</p>`
-            : `<div class="ln"><span>Tạm tính</span><span>${vnd(BASE)}</span></div><div class="ln"><span>Phí giao hàng</span><span>${vnd(SHIP)}</span></div>
-               <div class="ln tot"><span>Tổng phải trả</span><span class="big">${vnd(total)}</span></div><p class="muted">Đã gồm thuế. Không phát sinh thêm phí nào khác.</p>`}`;
+            ? `<div class="ln tot"><span>Total</span><span class="big">${usd(BASE)}</span></div><p class="muted">✓ Free 30-day returns</p>`
+            : `<div class="ln"><span>Subtotal</span><span>${usd(BASE)}</span></div><div class="ln"><span>Shipping</span><span>${usd(SHIP)}</span></div>
+               <div class="ln tot"><span>Total due</span><span class="big">${usd(total)}</span></div><p class="muted">Tax included. No other fees will be added.</p>`}`;
       } else if (step === 1) {
-        body = `<h3 tabindex="-1">Giao hàng</h3><p class="addr" style="margin:10px 0">Nguyễn Văn Mẫu · 0900 000 000<br>12 Đường Ví Dụ, Phường Mẫu, TP. Minh Hoạ</p>
-          <div class="ln tot"><span>${dark ? 'Tổng' : 'Tổng phải trả'}</span><span class="big">${vnd(dark ? BASE : total)}</span></div>`;
+        body = `<h3 tabindex="-1">Shipping</h3><p class="addr" style="margin:10px 0">Jordan Sample · (555) 010-0123<br>123 Example St, Springfield, IL 62701</p>
+          <div class="ln tot"><span>${dark ? 'Total' : 'Total due'}</span><span class="big">${usd(dark ? BASE : total)}</span></div>`;
       } else if (step === 2) {
-        body = `<h3 tabindex="-1">Thanh toán</h3>
-          <div class="ln"><span>Đèn bàn LED (mẫu)</span><span>${vnd(BASE)}</span></div>
-          <div class="fees">${FEES.map(([n, v]) => `<div class="ln${dark ? ' fee new' : ''}"><span>${n}</span><span>+${vnd(v)}</span></div>`).join('')}</div>
-          <div class="ln tot"><span>Tổng phải trả</span><span class="big">${vnd(total)}</span></div>`;
+        body = `<h3 tabindex="-1">Payment</h3>
+          <div class="ln"><span>LED desk lamp (sample)</span><span>${usd(BASE)}</span></div>
+          <div class="fees">${FEES.map(([n, v]) => `<div class="ln${dark ? ' fee new' : ''}"><span>${n}</span><span>+${usd(v)}</span></div>`).join('')}</div>
+          <div class="ln tot"><span>Total due</span><span class="big">${usd(total)}</span></div>`;
       } else {
-        body = `<h3 tabindex="-1">Đã đặt hàng (mô phỏng)</h3><p class="muted" style="margin-top:6px">Bạn đã trả ${vnd(total)}.</p>
-          <p class="ok">${dark ? `Giá hiển thị lúc đầu: ${vnd(BASE)} · thực trả: ${vnd(total)}` : 'Giá hiển thị ở bước 1 đúng bằng số tiền đã trả.'}</p>`;
+        body = `<h3 tabindex="-1">Order placed (simulated)</h3><p class="muted" style="margin-top:6px">You paid ${usd(total)}.</p>
+          <p class="ok">${dark ? `Price shown at the start: ${usd(BASE)} · amount paid: ${usd(total)}` : 'The price shown in step 1 equals the amount paid.'}</p>`;
       }
-      const nav = step < 3 ? `<div class="nav"><button type="button" class="btn back"${step === 0 ? ' disabled' : ''}>Quay lại</button>
-        <button type="button" class="btn pri next">${step === 2 ? 'Đặt hàng' : 'Tiếp tục'}</button></div>` : '<div class="nav"><span></span><button type="button" class="btn again">Mua lại từ đầu</button></div>';
+      const nav = step < 3 ? `<div class="nav"><button type="button" class="btn back"${step === 0 ? ' disabled' : ''}>Back</button>
+        <button type="button" class="btn pri next">${step === 2 ? 'Place order' : 'Continue'}</button></div>` : '<div class="nav"><span></span><button type="button" class="btn again">Start over</button></div>';
       sc.innerHTML = `<div class="card">${steps}${body}${nav}</div>`;
       $('.next', sc)?.addEventListener('click', () => { step++; render(true); });
       $('.back', sc)?.addEventListener('click', () => { step--; render(true); });
@@ -426,9 +427,9 @@
       if (focus) focusHead(sc);
       const extra = total - BASE, pct = Math.round(extra / BASE * 100);
       if (dark) say(step < 2
-        ? `<b>Thủ thuật:</b> giá hiển thị là ${vnd(BASE)}, chưa có thông tin nào về phí. Nhấn “Tiếp tục”.`
-        : `<b>Thủ thuật:</b> đến bước cuối mới hiện ${vnd(total - BASE - SHIP)} phí không rõ mục đích cùng phí giao hàng; tổng tăng ${pct}% so với giá ban đầu.`);
-      else say(`<b>Làm đúng:</b> tổng ${vnd(total)} (gồm giao hàng) hiện từ bước 1 và giữ nguyên tới lúc trả tiền.`);
+        ? `<b>Technique:</b> the price shown is ${usd(BASE)}, with no mention of fees. Tap Continue.`
+        : `<b>Technique:</b> ${usd(total - BASE - SHIP)} in unexplained fees and the shipping charge appear only at the last step. The total is ${pct}% higher than the starting price.`);
+      else say(`<b>Better:</b> the total of ${usd(total)}, including shipping, is shown from step 1 and stays the same through payment.`);
     };
     render(false);
   });
@@ -437,46 +438,46 @@
   DP('roach-motel', (sc, mode, say) => {
     const dark = mode === 'dark';
     let state = 'free', up = 0, down = 0;
-    const meter = () => `<span class="meter" aria-label="Số lần nhấn để đăng ký: ${up}, số lần nhấn để huỷ: ${down}">Lần nhấn · đăng ký <b>${up}</b> · huỷ <b>${down}</b>${state === 'call' ? ' · chưa huỷ được' : ''}</span>`;
-    const proBox = (badge = 'Đang hoạt động') => `<div class="plan"><div><b>Gói Pro</b><p class="muted">149.000 ₫/tháng · gia hạn ngày 5/11/2026</p></div><span class="badge">${badge}</span></div>`;
+    const meter = () => `<span class="meter" aria-label="Taps to sign up: ${up}, taps to cancel: ${down}">Taps · sign up <b>${up}</b> · cancel <b>${down}</b>${state === 'call' ? ' · not canceled' : ''}</span>`;
+    const proBox = (badge = 'Active') => `<div class="plan"><div><b>Pro plan</b><p class="muted">$12/mo · renews Nov 5, 2026</p></div><span class="badge">${badge}</span></div>`;
     const V = {
-      free: () => `<h3 tabindex="-1">Gói dịch vụ</h3><div class="plan"><div><b>Gói Miễn phí</b><p class="muted">2 thiết bị · 1 GB</p></div><span class="badge free">Hiện tại</span></div>
-        <button type="button" class="btn hot go" data-to="pro" data-c="up">Nâng cấp lên Pro · 149.000 ₫/tháng</button>`,
+      free: () => `<h3 tabindex="-1">Your plan</h3><div class="plan"><div><b>Free plan</b><p class="muted">2 devices · 1 GB</p></div><span class="badge free">Current</span></div>
+        <button type="button" class="btn hot go" data-to="pro" data-c="up">Upgrade to Pro · $12/mo</button>`,
       pro: () => dark
-        ? `<h3 tabindex="-1">Gói dịch vụ</h3>${proBox()}<p class="muted">Không giới hạn thiết bị · 100 GB · Lịch sử phiên bản 1 năm</p>
-           <div class="row" style="margin-top:14px"><button type="button" class="btn pri">Mời thêm thành viên</button></div>
-           <p style="margin-top:22px"><button type="button" class="lnk go" data-to="manage" data-c="down">Quản lý gói</button></p>`
-        : `<h3 tabindex="-1">Gói dịch vụ</h3>${proBox()}<div class="row"><button type="button" class="btn">Đổi gói</button><button type="button" class="btn go" data-to="confirm" data-c="down">Huỷ gói</button></div>`,
-      manage: () => `<h3 tabindex="-1">Quản lý gói</h3>${proBox()}<div class="row"><button type="button" class="btn">Đổi phương thức thanh toán</button><button type="button" class="btn">Tải hoá đơn</button></div>
-        <p style="margin-top:22px;text-align:right"><button type="button" class="lnk go" data-to="sure" data-c="down">Tôi muốn ngừng sử dụng</button></p>`,
-      sure: () => `<h3 tabindex="-1">Bạn chắc chắn muốn huỷ?</h3><p class="wall">Bạn sẽ mất quyền truy cập 2.340 ghi chú đã đồng bộ, toàn bộ lịch sử phiên bản và mọi thành viên được mời.</p>
-        <div class="row"><button type="button" class="btn pri go" data-to="pro">Giữ gói Pro</button><button type="button" class="lnk go" data-to="why" data-c="down">Tiếp tục huỷ</button></div>`,
-      why: () => `<h3 tabindex="-1">Vì sao bạn muốn rời đi?</h3><fieldset><legend class="sr">Lý do huỷ (bắt buộc)</legend>
-        ${['Giá quá cao', 'Không dùng nhiều', 'Chuyển sang công cụ khác', 'Lý do khác'].map(r => `<label><input type="radio" name="rm-why">${r}</label>`).join('')}</fieldset>
-        <div class="row"><button type="button" class="btn pri go" data-to="offer" data-c="down" disabled>Tiếp tục</button><span class="muted">* bắt buộc</span></div>`,
-      offer: () => `<h3 tabindex="-1">Khoan đã! Ưu đãi dành riêng cho bạn</h3><div class="offer"><b>Giảm 50% trong 3 tháng</b>Chỉ 74.500 ₫/tháng nếu bạn ở lại hôm nay.</div>
-        <div class="row"><button type="button" class="btn hot go" data-to="pro">Nhận ưu đãi</button><button type="button" class="lnk go" data-to="call" data-c="down">Không, tôi vẫn muốn huỷ</button></div>`,
-      call: () => `<h3 tabindex="-1">Gần xong rồi</h3><p class="wall">Để hoàn tất việc huỷ, vui lòng gọi tổng đài <b>1900 0000</b> (8:00–17:00, thứ Hai đến thứ Sáu). Gói vẫn được gia hạn cho tới khi tổng đài xác nhận.</p>
-        <button type="button" class="btn go" data-to="pro">Quay về</button>`,
-      confirm: () => `<h3 tabindex="-1">Huỷ gói Pro?</h3><p style="margin:10px 0;line-height:1.55">Bạn vẫn dùng Pro tới hết <b>5/11/2026</b>. Sau đó tài khoản về gói Miễn phí; mọi ghi chú vẫn giữ nguyên.</p>
-        <div class="row"><button type="button" class="btn pri go" data-to="done" data-c="down">Huỷ gói</button><button type="button" class="btn go" data-to="pro">Giữ gói</button></div>`,
-      done: () => `<h3 tabindex="-1">Đã huỷ gói Pro</h3>${proBox('Dùng tới 5/11')}<p class="muted">Email xác nhận đã được gửi. Không cần làm gì thêm.</p>
-        <button type="button" class="btn go" data-to="pro" data-c="up" style="margin-top:12px">Đăng ký lại</button>`,
+        ? `<h3 tabindex="-1">Your plan</h3>${proBox()}<p class="muted">Unlimited devices · 100 GB · 1-year version history</p>
+           <div class="row" style="margin-top:14px"><button type="button" class="btn pri">Invite members</button></div>
+           <p style="margin-top:22px"><button type="button" class="lnk go" data-to="manage" data-c="down">Manage plan</button></p>`
+        : `<h3 tabindex="-1">Your plan</h3>${proBox()}<div class="row"><button type="button" class="btn">Change plan</button><button type="button" class="btn go" data-to="confirm" data-c="down">Cancel plan</button></div>`,
+      manage: () => `<h3 tabindex="-1">Manage plan</h3>${proBox()}<div class="row"><button type="button" class="btn">Change payment method</button><button type="button" class="btn">Download invoices</button></div>
+        <p style="margin-top:22px;text-align:right"><button type="button" class="lnk go" data-to="sure" data-c="down">I want to stop using this service</button></p>`,
+      sure: () => `<h3 tabindex="-1">Are you sure you want to cancel?</h3><p class="wall">You will lose access to 2,340 synced notes, your entire version history and every member you invited.</p>
+        <div class="row"><button type="button" class="btn pri go" data-to="pro">Keep Pro</button><button type="button" class="lnk go" data-to="why" data-c="down">Continue canceling</button></div>`,
+      why: () => `<h3 tabindex="-1">Why are you leaving?</h3><fieldset><legend class="sr">Reason for canceling (required)</legend>
+        ${['Too expensive', 'I don’t use it enough', 'Switching to another tool', 'Other reason'].map(r => `<label><input type="radio" name="rm-why">${r}</label>`).join('')}</fieldset>
+        <div class="row"><button type="button" class="btn pri go" data-to="offer" data-c="down" disabled>Continue</button><span class="muted">* required</span></div>`,
+      offer: () => `<h3 tabindex="-1">Wait! A special offer just for you</h3><div class="offer"><b>50% off for 3 months</b>Only $6/mo if you stay today.</div>
+        <div class="row"><button type="button" class="btn hot go" data-to="pro">Claim offer</button><button type="button" class="lnk go" data-to="call" data-c="down">No, I still want to cancel</button></div>`,
+      call: () => `<h3 tabindex="-1">Almost done</h3><p class="wall">To complete your cancellation, call <b>1-800-555-0100</b> (8 AM–5 PM, Monday to Friday). Your plan keeps renewing until support confirms the cancellation.</p>
+        <button type="button" class="btn go" data-to="pro">Go back</button>`,
+      confirm: () => `<h3 tabindex="-1">Cancel Pro plan?</h3><p style="margin:10px 0;line-height:1.55">You keep Pro until <b>Nov 5, 2026</b>. After that, your account moves to the Free plan and all notes are kept.</p>
+        <div class="row"><button type="button" class="btn pri go" data-to="done" data-c="down">Cancel plan</button><button type="button" class="btn go" data-to="pro">Keep plan</button></div>`,
+      done: () => `<h3 tabindex="-1">Pro plan canceled</h3>${proBox('Active until Nov 5')}<p class="muted">A confirmation email has been sent. No further action is needed.</p>
+        <button type="button" class="btn go" data-to="pro" data-c="up" style="margin-top:12px">Resubscribe</button>`,
     };
     const CAP = {
-      free: dark ? '<b>Thủ thuật:</b> nút đăng ký hiển thị rõ, chỉ cần một lần nhấn.' : '<b>Làm đúng:</b> đăng ký bằng một lần nhấn.',
-      pro: dark ? '<b>Thủ thuật:</b> không có nút “Huỷ”, chỉ có liên kết mờ “Quản lý gói” ở cuối thẻ.' : '<b>Làm đúng:</b> “Huỷ gói” nằm ngay cạnh thông tin gói, cùng kiểu với các nút khác.',
-      manage: '<b>Thủ thuật:</b> trang quản lý chỉ có các nút khác; lối huỷ là một liên kết nhỏ ở góc.',
-      sure: '<b>Thủ thuật:</b> cảnh báo mất dữ liệu (thực tế không mất) để người dùng chọn “Giữ gói”.',
-      why: '<b>Thủ thuật:</b> khảo sát bắt buộc; chưa chọn lý do thì không thể tiếp tục.',
-      offer: '<b>Thủ thuật:</b> ưu đãi giữ chân nổi bật, lựa chọn tiếp tục huỷ thì nhỏ.',
-      call: '<b>Thủ thuật:</b> ngõ cụt. Đăng ký cần một lần nhấn, còn huỷ thì không thực hiện được trực tuyến.',
-      confirm: '<b>Làm đúng:</b> một màn xác nhận nêu rõ điều gì xảy ra và từ ngày nào.',
-      done: '<b>Làm đúng:</b> đăng ký cần một lần nhấn, huỷ cần hai. Huỷ dễ như đăng ký.',
+      free: dark ? '<b>Technique:</b> the sign-up button is prominent and takes one tap.' : '<b>Better:</b> signing up takes one tap.',
+      pro: dark ? '<b>Technique:</b> there is no Cancel button, only a faint Manage plan link at the bottom of the card.' : '<b>Better:</b> Cancel plan sits next to the plan details, styled like the other buttons.',
+      manage: '<b>Technique:</b> the management page shows only unrelated buttons. The way to cancel is a small link in the corner.',
+      sure: '<b>Technique:</b> a data-loss warning (no data is actually lost) pushes the user to choose Keep Pro.',
+      why: '<b>Technique:</b> a mandatory survey. The user cannot continue without choosing a reason.',
+      offer: '<b>Technique:</b> the retention offer is prominent and the option to keep canceling is small.',
+      call: '<b>Technique:</b> a dead end. Signing up takes one tap, but canceling cannot be completed online.',
+      confirm: '<b>Better:</b> one confirmation screen states what happens and from which date.',
+      done: '<b>Better:</b> signing up takes one tap and canceling takes two. Canceling is as easy as signing up.',
     };
     const render = (focus) => {
-      sc.innerHTML = `<div class="card"><p class="crumb">Tài khoản › Gói dịch vụ</p>${V[state]()}${meter()}</div>`;
-      say(state === 'pro' && down > 0 && dark ? '<b>Thủ thuật:</b> lựa chọn giữ chân đưa người dùng về màn đầu; quy trình huỷ phải làm lại từ đầu.' : CAP[state]);
+      sc.innerHTML = `<div class="card"><p class="crumb">Account › Plan</p>${V[state]()}${meter()}</div>`;
+      say(state === 'pro' && down > 0 && dark ? '<b>Technique:</b> the retention option sends the user back to the first screen, so the cancellation flow starts over.' : CAP[state]);
       if (focus) focusHead(sc);
       $$('.go', sc).forEach(b => b.addEventListener('click', () => {
         if (b.dataset.c === 'up') { up = 1; down = 0; } else if (b.dataset.c === 'down') down++;
@@ -490,53 +491,53 @@
   /* ---------- 4. Forced continuity ---------- */
   DP('forced-continuity', (sc, mode, say) => {
     const dark = mode === 'dark';
-    const date = n => `${4 + n}/10`; // ngày 1 = 5/10/2026
+    const date = n => `10/${4 + n}`; // day 1 = Oct 5, 2026 (M/D)
     let day = 0, cancelled = false;
     const log = [];
-    sc.innerHTML = `<div class="card"></div><section class="log" aria-label="Lịch sử thanh toán và email"><h4>Thẻ & hộp thư <span class="day"></span></h4><ol aria-live="polite"></ol></section>`;
+    sc.innerHTML = `<div class="card"></div><section class="log" aria-label="Billing and email history"><h4>Card &amp; inbox <span class="day"></span></h4><ol aria-live="polite"></ol></section>`;
     const card = $('.card', sc), ol = $('ol', sc), dayEl = $('.day', sc);
     const push = (cls, txt) => { log.push([cls, `${date(day)}`, txt]); };
     const drawLog = () => {
-      dayEl.textContent = day ? `Ngày ${day}` : '';
-      ol.innerHTML = log.length ? log.map(([c, d, t]) => `<li class="${c}"><span>${d}</span>${t}</li>`).join('') : '<li class="empty">Chưa có giao dịch hay email.</li>';
+      dayEl.textContent = day ? `Day ${day}` : '';
+      ol.innerHTML = log.length ? log.map(([c, d, t]) => `<li class="${c}"><span>${d}</span>${t}</li>`).join('') : '<li class="empty">No charges or emails yet.</li>';
       ol.scrollTop = ol.scrollHeight;
     };
     const draw = (focus) => {
       if (!day) {
         card.innerHTML = dark
-          ? `<h3 tabindex="-1">Dùng thử MIỄN PHÍ 7 ngày!</h3><p class="muted" style="margin-top:4px">Mở khoá mọi tính năng Pro. Không ràng buộc*.</p>
-             <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn hot start" style="width:100%">Bắt đầu miễn phí</button>
-             <p class="fine">*Sau thời gian dùng thử, gói tự động gia hạn với giá 249.000 ₫/tháng cho đến khi bị huỷ. Huỷ tại Cài đặt › Tài khoản › Thanh toán › Khác.</p>`
-          : `<h3 tabindex="-1">Dùng thử Pro 7 ngày</h3>
-             <p class="sum">Hôm nay: <b>0 ₫</b><br>Từ <b>12/10/2026</b>: <b>249.000 ₫/tháng</b> nếu bạn không huỷ<br>Email nhắc trước vào ngày <b>10/10</b>.</p>
-             <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn pri start" style="width:100%">Bắt đầu dùng thử</button>`;
+          ? `<h3 tabindex="-1">Try it FREE for 7 days!</h3><p class="muted" style="margin-top:4px">Unlock every Pro feature. No commitment*.</p>
+             <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn hot start" style="width:100%">Start free</button>
+             <p class="fine">*After the trial period, your plan renews automatically at $19.99/mo until canceled. Cancel in Settings › Account › Billing › More.</p>`
+          : `<h3 tabindex="-1">7-day Pro trial</h3>
+             <p class="sum">Today: <b>$0.00</b><br>From <b>Oct 12, 2026</b>: <b>$19.99/mo</b> unless you cancel<br>Reminder email on <b>Oct 10</b>.</p>
+             <div class="cardno">•••• •••• •••• 0000</div><button type="button" class="btn pri start" style="width:100%">Start trial</button>`;
       } else {
         const trial = day <= 7 && !cancelled;
-        card.innerHTML = `<h3 tabindex="-1">${cancelled ? 'Đã huỷ dùng thử' : trial ? `Đang dùng thử · ngày ${day}/7` : 'Gói Pro (đang tính phí)'}</h3>
-          <p class="muted" style="margin:6px 0 14px">${cancelled ? 'Bạn sẽ không bị trừ tiền.' : trial ? (dark ? 'Tận hưởng Pro miễn phí!' : 'Bắt đầu tính phí 249.000 ₫ vào 12/10.') : '249.000 ₫/tháng'}</p>
-          <div class="row"><button type="button" class="btn pri tick"${day >= 9 ? ' disabled' : ''}>Tua 1 ngày ▸</button>
-          ${!dark && trial ? '<button type="button" class="btn cancel">Huỷ dùng thử</button>' : ''}</div>`;
+        card.innerHTML = `<h3 tabindex="-1">${cancelled ? 'Trial canceled' : trial ? `Trial · day ${day} of 7` : 'Pro plan (billing active)'}</h3>
+          <p class="muted" style="margin:6px 0 14px">${cancelled ? 'You will not be charged.' : trial ? (dark ? 'Enjoy Pro for free!' : 'Billing of $19.99 starts Oct 12.') : '$19.99/mo'}</p>
+          <div class="row"><button type="button" class="btn pri tick"${day >= 9 ? ' disabled' : ''}>Next day ▸</button>
+          ${!dark && trial ? '<button type="button" class="btn cancel">Cancel trial</button>' : ''}</div>`;
       }
       if (focus) focusHead(sc);
-      $('.start', card)?.addEventListener('click', () => { day = 1; push('', 'Bắt đầu dùng thử. Thẻ được lưu.'); step(); });
+      $('.start', card)?.addEventListener('click', () => { day = 1; push('', 'Trial started. Card saved.'); step(); });
       $('.tick', card)?.addEventListener('click', () => { day++; events(); step(); });
-      $('.cancel', card)?.addEventListener('click', () => { cancelled = true; push('good', 'Đã huỷ dùng thử bằng một lần nhấn. Email xác nhận đã gửi.'); step(); });
+      $('.cancel', card)?.addEventListener('click', () => { cancelled = true; push('good', 'Trial canceled in one tap. Confirmation email sent.'); step(); });
     };
     const events = () => {
       if (cancelled) return;
-      if (!dark && day === 6) push('mail', '✉ Còn 2 ngày dùng thử. Từ 12/10 tính 249.000 ₫/tháng. Huỷ bằng một lần nhấn tại đây.');
-      if (!dark && day === 7) push('mail', '✉ Ngày mai bắt đầu tính phí 249.000 ₫.');
-      if (day === 8) push('charge', dark ? '−249.000 ₫ · “Gói Pro”. Không có email nào trước đó.' : '−249.000 ₫ · Gói Pro. Đã báo trước 2 lần. Hoá đơn đã gửi.');
+      if (!dark && day === 6) push('mail', '✉ 2 days left in your trial. From Oct 12 you pay $19.99/mo. Cancel here in one tap.');
+      if (!dark && day === 7) push('mail', '✉ Billing of $19.99 starts tomorrow.');
+      if (day === 8) push('charge', dark ? '−$19.99 · “Pro plan”. No prior email.' : '−$19.99 · Pro plan. 2 reminders sent. Receipt emailed.');
     };
     const step = () => {
       draw(true); drawLog();
-      if (!day) say(dark ? '<b>Thủ thuật:</b> chữ “MIỄN PHÍ” cỡ lớn; giá gia hạn nằm trong dòng chữ xám rất nhỏ cuối thẻ.' : '<b>Làm đúng:</b> giá, ngày bắt đầu tính phí và ngày nhắc đều nằm ngay trên nút.');
-      else if (cancelled) say('<b>Làm đúng:</b> huỷ dùng thử bằng một lần nhấn, không có câu hỏi giữ chân.');
-      else if (day < 8) say(dark ? `<b>Thủ thuật:</b> ngày ${day}. Nhấn “Tua 1 ngày” tới ngày 8 và theo dõi khung hộp thư.` : `<b>Làm đúng:</b> ngày ${day}. Nút huỷ luôn hiển thị; email nhắc được gửi vào ngày 6 và 7.`);
-      else say(dark ? '<b>Thủ thuật:</b> ngày 8, thẻ bị trừ 249.000 ₫ mà không có lời nhắc. Nhiều người chỉ phát hiện khi xem sao kê.' : '<b>Làm đúng:</b> tiền bị trừ đúng ngày đã thông báo, sau hai lần nhắc.');
+      if (!day) say(dark ? '<b>Technique:</b> “FREE” is in large type. The renewal price is in very small gray text at the bottom of the card.' : '<b>Better:</b> the price, billing start date and reminder date all appear above the button.');
+      else if (cancelled) say('<b>Better:</b> the trial is canceled in one tap, with no retention questions.');
+      else if (day < 8) say(dark ? `<b>Technique:</b> day ${day}. Tap Next day until day 8 and watch the inbox panel.` : `<b>Better:</b> day ${day}. The cancel button is always visible. Reminder emails go out on days 6 and 7.`);
+      else say(dark ? '<b>Technique:</b> on day 8 the card is charged $19.99 without a reminder. Many people notice only on their statement.' : '<b>Better:</b> the charge happens on the announced date, after two reminders.');
     };
     draw(false); drawLog();
-    say(dark ? '<b>Thủ thuật:</b> chữ “MIỄN PHÍ” cỡ lớn; giá gia hạn nằm trong dòng chữ xám rất nhỏ cuối thẻ.' : '<b>Làm đúng:</b> giá, ngày bắt đầu tính phí và ngày nhắc đều nằm ngay trên nút.');
+    say(dark ? '<b>Technique:</b> “FREE” is in large type. The renewal price is in very small gray text at the bottom of the card.' : '<b>Better:</b> the price, billing start date and reminder date all appear above the button.');
   });
 
   /* ---------- 5. Fake urgency ---------- */
@@ -547,25 +548,25 @@
     const render = () => {
       sc.innerHTML = `<div class="card">
         ${dark
-          ? `<div class="banner"><span>Flash sale kết thúc sau</span><span class="clock" role="timer" aria-label="Thời gian còn lại">${mmss(left)}</span></div>`
-          : '<div class="banner calm"><span>Ưu đãi khai giảng: giá giảm tới hết <b>23:59 ngày 31/10/2026</b></span></div>'}
-        <h3>Khoá học Viết rõ ràng (ví dụ)</h3>
-        <div class="price"><b>499.000 ₫</b><s>990.000 ₫</s></div>
+          ? `<div class="banner"><span>Flash sale ends in</span><span class="clock" role="timer" aria-label="Time remaining">${mmss(left)}</span></div>`
+          : '<div class="banner calm"><span>Launch offer: discounted until <b>11:59 PM, Oct 31, 2026</b></span></div>'}
+        <h3>Clear Writing course (sample)</h3>
+        <div class="price"><b>$49</b><s>$99</s></div>
         ${dark
-          ? `<p class="scar">Chỉ còn 2 suất với giá này!</p><p class="watch"><span class="n">37</span> người đang xem khoá này</p>`
-          : `<p class="muted">Lớp tháng 11 còn <b>18/40</b> chỗ</p><div class="bar2" aria-hidden="true"><i style="--w:55%"></i></div><p class="muted">Sau 31/10 giá về 990.000 ₫; khoá học vẫn mở đăng ký.</p>`}
-        <div class="acts"><button type="button" class="btn ${dark ? 'hot' : 'pri'}">${dark ? 'Mua ngay kẻo hết!' : 'Đăng ký'}</button>
-        <button type="button" class="btn reload">↻ Tải lại trang</button></div></div>`;
+          ? `<p class="scar">Only 2 spots left at this price!</p><p class="watch"><span class="n">37</span> people are viewing this course</p>`
+          : `<p class="muted">November cohort: <b>18 of 40</b> seats open</p><div class="bar2" aria-hidden="true"><i style="--w:55%"></i></div><p class="muted">After Oct 31 the price returns to $99. Enrollment stays open.</p>`}
+        <div class="acts"><button type="button" class="btn ${dark ? 'hot' : 'pri'}">${dark ? 'Buy now before it’s gone!' : 'Enroll'}</button>
+        <button type="button" class="btn reload">↻ Reload page</button></div></div>`;
       $('.reload', sc).addEventListener('click', () => {
         reloads++; if (dark) left = 600; render();
         $('.reload', sc).focus({ preventScroll: true });
         say(dark
-          ? `<b>Thủ thuật:</b> tải lại lần ${reloads}: đồng hồ quay về 10:00, vẫn “chỉ còn 2 suất”. Hạn chót và số suất đều không có thật.`
-          : `<b>Làm đúng:</b> tải lại lần ${reloads}: hạn chót và số chỗ không đổi vì lấy từ dữ liệu thật.`);
+          ? `<b>Technique:</b> reload ${reloads}: the timer is back at 10:00 and there are still “only 2 spots left”. Neither the deadline nor the count is real.`
+          : `<b>Better:</b> reload ${reloads}: the deadline and seat count stay the same because they come from real data.`);
       });
     };
     render();
-    say(dark ? '<b>Thủ thuật:</b> đồng hồ đếm ngược và thông báo “chỉ còn 2 suất” tạo áp lực mua ngay. Nhấn “Tải lại trang”.' : '<b>Làm đúng:</b> hạn chót là một ngày cố định, số chỗ lấy từ dữ liệu thật; không dùng đồng hồ đếm ngược.');
+    say(dark ? '<b>Technique:</b> a countdown timer and an “only 2 spots left” message pressure the user to buy now. Tap Reload page.' : '<b>Better:</b> the deadline is a fixed date and the seat count comes from real data. There is no countdown timer.');
     if (dark) {
       timer = setInterval(() => { left = Math.max(0, left - 1); const c = $('.clock', sc); if (c) c.textContent = mmss(left); }, 1000);
       watch = setInterval(() => { const n = $('.n', sc); if (n) n.textContent = 30 + Math.floor(Math.random() * 16); }, 2600);
@@ -575,17 +576,17 @@
 
   /* ---------- 6. Sneak into basket ---------- */
   DP('sneak-into-basket', (sc, mode, say) => {
-    const dark = mode === 'dark', BASE = 690000, INS = 79000, WAR = 129000;
-    let insLine = dark; // bảo hiểm tự thêm thành dòng hàng (bản lừa)
+    const dark = mode === 'dark', BASE = 8900, INS = 799, WAR = 1499;
+    let insLine = dark; // deceptive version: protection plan is added as a line item
     const draw = () => {
-      sc.innerHTML = `<div class="card"><h3>Đơn hàng của bạn</h3>
-        <div class="ln"><span>Tai nghe không dây (ví dụ)</span><span>${vnd(BASE)}</span></div>
-        ${insLine ? `<div class="ln"><span>Bảo hiểm rơi vỡ 12 tháng<button type="button" class="lnk rm">gỡ</button><small>Đã thêm để bảo vệ bạn</small></span><span>${vnd(INS)}</span></div>` : ''}
-        <p class="grp">${dark ? 'Tuỳ chọn' : 'Thêm nếu bạn muốn (không bắt buộc)'}</p>
-        ${dark ? '' : `<label class="opt"><input type="checkbox" data-v="${INS}" class="ins"><span>Bảo hiểm rơi vỡ 12 tháng</span><em>+${vnd(INS)}</em></label>`}
-        <label class="opt"><input type="checkbox" data-v="${WAR}"${dark ? ' checked' : ''}><span>Gói bảo hành mở rộng 24 tháng</span><em>+${vnd(WAR)}</em></label>
-        <label class="opt${dark ? ' tiny' : ''}"><input type="checkbox" class="mkt"${dark ? ' checked' : ''}><span>${dark ? 'Tôi đồng ý nhận ưu đãi từ đối tác qua email, SMS và cuộc gọi.' : 'Gửi tôi email khuyến mãi (tối đa 1 thư/tuần)'}</span></label>
-        <div class="ln tot"><span>Tổng</span><span class="sum"></span></div>
+      sc.innerHTML = `<div class="card"><h3>Your order</h3>
+        <div class="ln"><span>Wireless headphones (sample)</span><span>${usd(BASE)}</span></div>
+        ${insLine ? `<div class="ln"><span>12-month accident protection<button type="button" class="lnk rm">remove</button><small>Added for your protection</small></span><span>${usd(INS)}</span></div>` : ''}
+        <p class="grp">${dark ? 'Options' : 'Add if you want (optional)'}</p>
+        ${dark ? '' : `<label class="opt"><input type="checkbox" data-v="${INS}" class="ins"><span>12-month accident protection</span><em>+${usd(INS)}</em></label>`}
+        <label class="opt"><input type="checkbox" data-v="${WAR}"${dark ? ' checked' : ''}><span>24-month extended warranty</span><em>+${usd(WAR)}</em></label>
+        <label class="opt${dark ? ' tiny' : ''}"><input type="checkbox" class="mkt"${dark ? ' checked' : ''}><span>${dark ? 'I agree to receive offers from partners by email, text message and phone.' : 'Send me promotional emails (1 per week at most)'}</span></label>
+        <div class="ln tot"><span>Total</span><span class="sum"></span></div>
         <button type="button" class="btn pri pay"></button></div>`;
       $('.rm', sc)?.addEventListener('click', () => { insLine = false; draw(); $('.pay', sc).focus({ preventScroll: true }); });
       $$('input', sc).forEach(i => i.addEventListener('change', upd));
@@ -594,12 +595,12 @@
     const upd = () => {
       const extra = (insLine ? INS : 0) + $$('input[data-v]', sc).filter(i => i.checked).reduce((a, i) => a + +i.dataset.v, 0);
       const mkt = $('.mkt', sc).checked;
-      $('.sum', sc).textContent = vnd(BASE + extra);
-      $('.pay', sc).textContent = 'Thanh toán ' + vnd(BASE + extra);
+      $('.sum', sc).textContent = usd(BASE + extra);
+      $('.pay', sc).textContent = 'Pay ' + usd(BASE + extra);
       if (dark) say(extra || mkt
-        ? `<b>Thủ thuật:</b> người dùng chưa chọn thêm gì nhưng đơn đã tăng <b>${vnd(extra)}</b>${mkt ? ', kèm “đồng ý” nhận quảng cáo từ đối tác' : ''}.`
-        : '<b>Thủ thuật:</b> đã gỡ hết các khoản thêm. Người mua không đọc kỹ sẽ bỏ qua bước này.');
-      else say(`<b>Làm đúng:</b> mọi khoản thêm đều do người dùng tự tích. Đang trả thêm ${vnd(extra)}${mkt ? ', có nhận email khuyến mãi' : ''}.`);
+        ? `<b>Technique:</b> the user has not chosen any extras, yet the order is <b>${usd(extra)}</b> higher${mkt ? ' and includes “consent” to partner marketing' : ''}.`
+        : '<b>Technique:</b> all extras are removed. Buyers who do not read carefully skip this step.');
+      else say(`<b>Better:</b> every extra is checked by the user. Extras selected: ${usd(extra)}${mkt ? ', plus promotional emails' : ''}.`);
     };
     draw();
   });
@@ -607,27 +608,27 @@
   /* ---------- 7. Nagging ---------- */
   DP('nagging', (sc, mode, say) => {
     const dark = mode === 'dark';
-    const TASKS = ['Gửi báo cáo tuần cho nhóm', 'Đặt lịch họp với Thu Hà', 'Duyệt bản thiết kế trang chủ', 'Trả lời góp ý của khách', 'Cập nhật kế hoạch tháng 11', 'Sao lưu tài liệu dự án'];
+    const TASKS = ['Send the weekly report to the team', 'Schedule a meeting with Sarah Chen', 'Review the homepage design', 'Reply to customer feedback', 'Update the November plan', 'Back up project files'];
     let asked = 0, actions = 0, settled = false, back = null;
     const BELL = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>';
-    sc.innerHTML = `<div class="app"><div class="hd"><h3>Việc hôm nay</h3><span class="asked"></span></div>
+    sc.innerHTML = `<div class="app"><div class="hd"><h3>Today’s tasks</h3><span class="asked"></span></div>
       ${dark ? '' : '<div class="ask-slot"></div>'}
       <div class="tasks">${TASKS.map((t, i) => `<label><input type="checkbox"${i === 0 ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div></div>`;
     const askedEl = $('.asked', sc);
-    const count = () => { askedEl.textContent = `Đã hỏi: ${asked} lần`; };
+    const count = () => { askedEl.textContent = `Asked ${asked} ${asked === 1 ? 'time' : 'times'}`; };
     const nag = () => {
       asked++; count();
       const ov = document.createElement('div'); ov.className = 'ov';
       ov.innerHTML = `<div class="card pop" role="alertdialog" aria-modal="true" aria-labelledby="ng-t" aria-describedby="ng-d"><div class="bell">${BELL}</div>
-        <h3 id="ng-t">${asked > 2 ? 'Bạn chắc chắn không muốn nhận thông báo?' : 'Bật thông báo để không bỏ lỡ việc quan trọng!'}</h3>
-        <p class="muted" id="ng-d">Người dùng bật thông báo hoàn thành nhiều việc hơn 3 lần.</p>
-        <button type="button" class="btn hot yes">Bật ngay</button><button type="button" class="btn later">Để sau</button>
-        <p class="times">Lần hỏi thứ ${asked}</p></div>`;
+        <h3 id="ng-t">${asked > 2 ? 'Are you sure you don’t want notifications?' : 'Turn on notifications so you never miss what matters!'}</h3>
+        <p class="muted" id="ng-d">People with notifications on finish 3x more tasks.</p>
+        <button type="button" class="btn hot yes">Turn on now</button><button type="button" class="btn later">Maybe later</button>
+        <p class="times">Prompt #${asked}</p></div>`;
       sc.append(ov);
       const close = msg => { ov.remove(); say(msg); back?.focus({ preventScroll: true }); };
       $('.later', ov).focus({ preventScroll: true });
-      $('.yes', ov).addEventListener('click', () => { settled = true; close('<b>Thủ thuật:</b> hộp thoại chỉ ngừng xuất hiện khi người dùng chọn “Bật”.'); });
-      $('.later', ov).addEventListener('click', () => close(`<b>Thủ thuật:</b> “Để sau” không phải là từ chối; yêu cầu xuất hiện lại sau thao tác tiếp theo (đã hỏi ${asked} lần).`));
+      $('.yes', ov).addEventListener('click', () => { settled = true; close('<b>Technique:</b> the dialog stops appearing only when the user chooses Turn on.'); });
+      $('.later', ov).addEventListener('click', () => close(`<b>Technique:</b> “Maybe later” is not a refusal. The prompt returns after the next action (asked ${asked} ${asked === 1 ? 'time' : 'times'}).`));
       ov.addEventListener('keydown', e => {
         if (e.key === 'Escape') $('.later', ov).click();
         if (e.key === 'Tab') { const bs = $$('button', ov), i = bs.indexOf(document.activeElement); e.preventDefault(); bs[(i + (e.shiftKey ? -1 : 1) + bs.length) % bs.length].focus(); }
@@ -635,21 +636,21 @@
     };
     const offer = () => {
       asked++; count();
-      $('.ask-slot', sc).innerHTML = `<div class="ask pop" role="region" aria-label="Gợi ý nhắc việc"><p>Muốn được nhắc khi việc sắp tới hạn? Đổi lại được trong Cài đặt.</p>
-        <button type="button" class="btn pri on">Bật nhắc việc</button><button type="button" class="btn no">Không, cảm ơn</button></div>`;
+      $('.ask-slot', sc).innerHTML = `<div class="ask pop" role="region" aria-label="Reminder suggestion"><p>Get a reminder when a task is almost due? You can change this in Settings.</p>
+        <button type="button" class="btn pri on">Turn on reminders</button><button type="button" class="btn no">No thanks</button></div>`;
       const done = msg => { $('.ask-slot', sc).innerHTML = ''; settled = true; say(msg); back?.focus({ preventScroll: true }); };
-      $('.on', sc).addEventListener('click', () => done('<b>Làm đúng:</b> đã bật nhắc việc (mô phỏng). Tắt được trong Cài đặt.'));
-      $('.no', sc).addEventListener('click', () => done('<b>Làm đúng:</b> lựa chọn từ chối được tuân theo. Tích thêm việc để kiểm tra: yêu cầu không xuất hiện lại.'));
+      $('.on', sc).addEventListener('click', () => done('<b>Better:</b> reminders are on (simulated). They can be turned off in Settings.'));
+      $('.no', sc).addEventListener('click', () => done('<b>Better:</b> the refusal is respected. Check more tasks to confirm that the prompt does not return.'));
     };
     sc.addEventListener('change', e => {
       if (!e.target.closest('.tasks')) return;
       back = e.target; actions++;
-      if (settled) { say(dark ? '<b>Thủ thuật:</b> đã bật thông báo nên hộp thoại không xuất hiện nữa.' : '<b>Làm đúng:</b> người dùng đã trả lời một lần, không hỏi lại.'); return; }
+      if (settled) { say(dark ? '<b>Technique:</b> notifications are on, so the dialog no longer appears.' : '<b>Better:</b> the user answered once and is not asked again.'); return; }
       if (dark && (actions === 1 || actions % 2 === 1)) nag();
-      if (!dark && actions === 1) { offer(); say('<b>Làm đúng:</b> hỏi một lần, ngay trong nội dung, không che màn hình, có “Không, cảm ơn”.'); }
+      if (!dark && actions === 1) { offer(); say('<b>Better:</b> the prompt appears once, inline, without covering the screen, and offers “No thanks”.'); }
     });
     count();
-    say(dark ? '<b>Thủ thuật:</b> tích một việc bất kỳ trong danh sách để xem.' : '<b>Làm đúng:</b> tích một việc bất kỳ; đề nghị chỉ xuất hiện một lần, đúng ngữ cảnh.');
+    say(dark ? '<b>Technique:</b> check any task in the list.' : '<b>Better:</b> check any task. The suggestion appears once, in context.');
   });
 })();
 </script>

@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chuyển động — Từ điển pattern</title>
-<meta name="description" content="11 pattern chuyển động trong thiết kế web: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Có demo chạy trực tiếp và keyword để prompt.">
+<title>Motion — Pattern Dictionary</title>
+<meta name="description" content="11 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Each has a live demo and prompt keywords.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-  /* reset cũ của trang, giờ chỉ áp trong demo */
+  /* legacy page reset, now scoped to demos */
   :where(.demo h1,.demo h2,.demo h3){line-height:1.2;margin:0}
   :where(.demo button){font:inherit;color:inherit}
   .demo:has(.scroller) .replay{right:26px}
@@ -265,7 +265,7 @@
     #micro *{transition:none !important;animation:none !important}
   }
 
-  /* ---------- mobile (≤760px): xếp chồng, hình minh hoạ sticky trên đầu khung ---------- */
+  /* ---------- mobile (≤760px): stacked layouts, sticky graphic at the top of the frame ---------- */
   @media (max-width:760px){
     .pattern>.demo>.replay{padding:10px 14px}
     .pattern>.demo>.hint{max-width:calc(100% - 140px)}
@@ -352,32 +352,32 @@
 
 <main class="wrap">
   <header class="head">
-    <h1>Chuyển động</h1>
-    <p>Hiệu ứng chuyển động phản hồi thao tác cuộn, nhấn và di chuột, hoặc tự chạy khi nội dung xuất hiện. Mỗi khung demo chạy trực tiếp; keyword cuối mỗi mục dùng để mô tả hiệu ứng khi prompt.</p>
+    <h1>Motion</h1>
+    <p>Motion effects that respond to scrolling, tapping and hovering, or play when content enters the view. Every demo runs live; the keywords under each pattern describe the effect in a prompt.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="scrollytelling">
     <h2>Scrollytelling</h2>
-    <p class="vi"><b>Kể chuyện theo thao tác cuộn.</b> Một hình minh hoạ được ghim (pin) trong khung nhìn, các đoạn chữ cuộn qua bên cạnh hoặc bên dưới. Khi một đoạn tới vùng giữa khung, hình chuyển sang cảnh tương ứng. Cuộn trong khung demo để xem.</p>
+    <p class="vi"><b>Storytelling driven by scroll.</b> A graphic stays pinned in the viewport while text steps scroll past beside or below it. When a step reaches the middle of the frame, the graphic changes to the matching scene. Scroll inside the frame.</p>
     <div class="demo">
-      <span class="hint">Cuộn trong khung ↓</span>
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: cảnh đổi tức thì, không có chuyển tiếp.</span>
+      <span class="hint">Scroll inside the frame ↓</span>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: scenes change instantly, without transitions.</span>
       <div class="scroller">
         <div class="grid">
           <div class="steps">
-            <section class="step" data-step="1"><small>CẢNH 1</small><h3>Một khách hàng</h3><p>Câu chuyện bắt đầu từ một điểm dữ liệu. Hình minh hoạ hiển thị một chấm duy nhất.</p></section>
-            <section class="step" data-step="2"><small>CẢNH 2</small><h3>Ba nhóm ngang nhau</h3><p>Chấm tách thành ba cột bằng nhau: dữ liệu được chia thành ba nhóm.</p></section>
-            <section class="step" data-step="3"><small>CẢNH 3</small><h3>Một nhóm vượt lên</h3><p>Các cột chênh lệch nhau, cột màu cam được nhấn mạnh. Người đọc nắm được kết luận mà không cần đọc bảng số liệu.</p></section>
+            <section class="step" data-step="1"><small>SCENE 1</small><h3>One customer</h3><p>The story starts from a single data point. The graphic shows one dot.</p></section>
+            <section class="step" data-step="2"><small>SCENE 2</small><h3>Three equal groups</h3><p>The dot splits into three equal bars: the data is divided into three groups.</p></section>
+            <section class="step" data-step="3"><small>SCENE 3</small><h3>One group pulls ahead</h3><p>The bars diverge and the orange bar is highlighted. Readers get the conclusion without reading a data table.</p></section>
           </div>
-          <div><div class="visual" data-scene="1"><div class="chart"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="cap">cảnh 1 / 3</div></div></div></div>
+          <div><div class="visual" data-scene="1"><div class="chart"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="cap">scene 1 / 3</div></div></div></div>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>cần trình bày một lập luận theo từng bước (báo cáo dữ liệu, giới thiệu sản phẩm, bài báo dài) và để người đọc tự điều khiển nhịp đọc.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung ngắn hoặc người dùng cần tra cứu nhanh: phải cuộn qua toàn bộ câu chuyện làm chậm việc tìm thông tin.</p>
+      <p class="use"><b>Use when</b>an argument needs to unfold step by step (data reports, product introductions, long-form articles) and readers should control the pace.</p>
+      <p class="avoid"><b>Avoid when</b>the content is short or users need to look something up quickly: scrolling through the whole story slows them down.</p>
     </div>
     <div class="kw"><button>scrollytelling</button><button>sticky graphic with scrolling text steps</button><button>step-based scroll narrative</button><button>scene changes on scroll</button></div>
   </article>
@@ -385,30 +385,30 @@
   <!-- 2 -->
   <article class="pattern" id="pin">
     <h2>Pin / Sticky</h2>
-    <p class="vi"><b>Ghim phần tử khi cuộn.</b> Một khối giữ nguyên vị trí trong khung nhìn trong lúc nội dung liền kề cuộn qua, và được nhả ra khi phần tử cha kết thúc. Cuộn trong khung demo để xem.</p>
+    <p class="vi"><b>An element that sticks while scrolling.</b> A block holds its position in the viewport while adjacent content scrolls past, and is released when its parent element ends. Scroll inside the frame.</p>
     <div class="demo">
-      <span class="hint">Cuộn trong khung ↓</span>
-      <button class="replay">↻ Xem lại</button>
+      <span class="hint">Scroll inside the frame ↓</span>
+      <button class="replay">↻ Replay</button>
       <div class="scroller">
         <div class="wrap">
-          <div class="pinned"><div class="img"></div><div><code>position: sticky; top: 56px</code><h3>Tai nghe Aero</h3></div></div>
+          <div class="pinned"><div class="img"></div><div><code>position: sticky; top: 56px</code><h3>Aero Headphones</h3></div></div>
           <div class="specs">
-            <div class="spec"><h4>Chống ồn chủ động</h4><p>Khối ghim giữ nguyên vị trí trong lúc danh sách thông số cuộn qua.</p></div>
-            <div class="spec"><h4>Pin 40 giờ</h4><p>Người dùng luôn thấy sản phẩm đang được mô tả.</p></div>
-            <div class="spec"><h4>Sạc nhanh 10 phút</h4><p>Danh sách thông số cuộn bình thường.</p></div>
-            <div class="spec"><h4>Kết nối 2 thiết bị</h4><p>Khối ghim chỉ dính trong phạm vi phần tử cha.</p></div>
-            <div class="spec"><h4>Chống nước IPX4</h4><p>Khối ghim vẫn giữ vị trí.</p></div>
-            <div class="spec"><h4>Âm thanh không gian</h4><p>Khối ghim vẫn giữ vị trí.</p></div>
-            <div class="spec"><h4>Nặng 240 g</h4><p>Danh sách sắp kết thúc.</p></div>
-            <div class="spec"><h4>Bảo hành 2 năm</h4><p>Phần tử cha kết thúc, khối ghim bắt đầu cuộn lên.</p></div>
+            <div class="spec"><h4>Active noise cancelling</h4><p>The pinned block holds its position while the spec list scrolls.</p></div>
+            <div class="spec"><h4>40-hour battery</h4><p>The product being described stays in view.</p></div>
+            <div class="spec"><h4>10-minute fast charge</h4><p>The spec list scrolls normally.</p></div>
+            <div class="spec"><h4>Two-device pairing</h4><p>The block only sticks within its parent element.</p></div>
+            <div class="spec"><h4>IPX4 water resistance</h4><p>The block is still pinned.</p></div>
+            <div class="spec"><h4>Spatial audio</h4><p>The block is still pinned.</p></div>
+            <div class="spec"><h4>Weighs 8.5 oz</h4><p>The list is about to end.</p></div>
+            <div class="spec"><h4>2-year warranty</h4><p>The parent ends, so the pinned block starts to scroll up.</p></div>
           </div>
         </div>
-        <div class="after"><b>Hết vùng ghim.</b> Khối ghim đã được nhả ra và cuộn cùng nội dung.</div>
+        <div class="after"><b>End of the sticky area.</b> The pinned block has been released and scrolls with the content.</div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>cần giữ một thành phần trong tầm nhìn khi người dùng đọc phần liên quan: ảnh sản phẩm cạnh thông số, mục lục, thanh tiêu đề, nút mua.</p>
-      <p class="avoid"><b>Tránh khi</b>màn hình có chiều cao thấp (điện thoại xoay ngang): khối ghim chiếm phần lớn vùng đọc.</p>
+      <p class="use"><b>Use when</b>an element must stay visible while users read related content: a product image next to specs, a table of contents, a header bar, a buy button.</p>
+      <p class="avoid"><b>Avoid when</b>the viewport is short (a phone in landscape): the pinned block takes up most of the reading area.</p>
     </div>
     <div class="kw"><button>sticky section</button><button>pinned element on scroll</button><button>position: sticky sidebar</button><button>sticky product image</button></div>
   </article>
@@ -416,25 +416,25 @@
   <!-- 3 -->
   <article class="pattern needs-sda" id="scrub">
     <h2>Scrub (scroll-linked)</h2>
-    <p class="vi"><b>Hoạt ảnh gắn với vị trí cuộn.</b> Tiến độ hoạt ảnh bằng tiến độ cuộn: dừng cuộn thì hoạt ảnh dừng, <b>cuộn ngược thì hoạt ảnh chạy ngược</b>, tương tự kéo thanh tua video. Cuộn xuống rồi cuộn ngược lên trong khung demo.</p>
+    <p class="vi"><b>Animation tied to scroll position.</b> Animation progress equals scroll progress: stop scrolling and the animation stops, <b>scroll back and it plays in reverse</b>, like dragging a video scrubber. Scroll down inside the frame, then back up.</p>
     <div class="demo">
-      <span class="hint">Cuộn xuống ↓ rồi ngược lên ↑</span>
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối (100%).</span>
-      <span class="nosda">Trình duyệt này chưa hỗ trợ scroll-driven animation.</span>
+      <span class="hint">Scroll down ↓, then back up ↑</span>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: shows the end state (100%).</span>
+      <span class="nosda">This browser does not support scroll-driven animations.</span>
       <div class="scroller"><div class="track"><div class="stage">
         <div class="ring"><span class="num"></span></div>
         <div class="right">
-          <h3>Tiến độ = vị trí cuộn</h3>
-          <p>Vòng tròn, thanh tiến độ và khối màu cam cùng đọc một giá trị. Cuộn ngược lên để tua lại.</p>
+          <h3>Progress = scroll position</h3>
+          <p>The ring, the progress bar and the orange block all read the same value. Scroll back up to rewind.</p>
           <div class="bar"><i></i></div>
           <div class="car"><span></span></div>
         </div>
       </div></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng cần điều khiển trực tiếp hoạt ảnh: xoay sản phẩm 3D, vẽ dần đường kẻ, thanh tiến độ đọc, video tua theo cuộn.</p>
-      <p class="avoid"><b>Tránh khi</b>hoạt ảnh chỉ có nghĩa khi chạy trọn vẹn: người dùng dừng cuộn giữa chừng sẽ thấy trạng thái dở dang.</p>
+      <p class="use"><b>Use when</b>users should control an animation directly: rotating a 3D product, drawing a line, a reading progress bar, video that scrubs with scroll.</p>
+      <p class="avoid"><b>Avoid when</b>the animation only makes sense when it completes: users who stop scrolling midway see a half-finished state.</p>
     </div>
     <div class="kw"><button>scroll-linked animation</button><button>scrub on scroll</button><button>animation-timeline: scroll()</button><button>scroll progress indicator</button></div>
   </article>
@@ -442,23 +442,23 @@
   <!-- 4 -->
   <article class="pattern" id="reveal">
     <h2>Scroll-triggered reveal</h2>
-    <p class="vi"><b>Hiện ra khi vào khung nhìn.</b> Khi phần tử vượt ngưỡng hiển thị, hoạt ảnh chạy <i>theo thời gian</i> (0,7 giây) và chạy hết bất kể tốc độ cuộn. Khác với scrub, <b>cuộn ngược không làm phần tử ẩn lại</b>. Cuộn xuống rồi cuộn ngược lên trong khung demo.</p>
+    <p class="vi"><b>Content that animates in when it enters the viewport.</b> Once an element crosses a visibility threshold, a <i>time-based</i> animation (0.7 seconds) plays to completion regardless of scroll speed. Unlike scrub, <b>scrolling back does not hide the element again</b>. Scroll down inside the frame, then back up.</p>
     <div class="demo">
-      <span class="hint">Cuộn xuống ↓ rồi ngược lên ↑</span>
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: thẻ hiển thị sẵn, không hiệu ứng.</span>
+      <span class="hint">Scroll down ↓, then back up ↑</span>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: cards are visible from the start, with no effect.</span>
       <div class="scroller"><div class="list">
-        <p class="intro"><b>Cuộn xuống.</b> Mỗi thẻ chạy hoạt ảnh một lần khi 35% diện tích thẻ vào khung nhìn, sau đó giữ nguyên trạng thái kể cả khi cuộn ngược.</p>
-        <div class="card" style="--c:#ff5a1f"><i></i><div><h4>Thiết kế</h4><p>Vượt ngưỡng, hoạt ảnh chạy 0,7 giây.</p></div></div>
-        <div class="card" style="--c:#3346ff"><i></i><div><h4>Phát triển</h4><p>Tốc độ cuộn không ảnh hưởng.</p></div></div>
-        <div class="card" style="--c:#14a06a"><i></i><div><h4>Kiểm thử</h4><p>Chỉ chạy một lần.</p></div></div>
-        <div class="card" style="--c:#161616"><i></i><div><h4>Ra mắt</h4><p>Cuộn ngược lên để kiểm tra.</p></div></div>
-        <div class="card" style="--c:#c48a00"><i></i><div><h4>Đo lường</h4><p>Nhấn Xem lại để chạy lại từ đầu.</p></div></div>
+        <p class="intro"><b>Scroll down.</b> Each card animates once when 35% of it enters the viewport, then stays in place even when you scroll back.</p>
+        <div class="card" style="--c:#ff5a1f"><i></i><div><h4>Design</h4><p>Threshold crossed, a 0.7 s animation plays.</p></div></div>
+        <div class="card" style="--c:#3346ff"><i></i><div><h4>Build</h4><p>Scroll speed has no effect.</p></div></div>
+        <div class="card" style="--c:#14a06a"><i></i><div><h4>Test</h4><p>Plays only once.</p></div></div>
+        <div class="card" style="--c:#161616"><i></i><div><h4>Launch</h4><p>Scroll back up to check.</p></div></div>
+        <div class="card" style="--c:#c48a00"><i></i><div><h4>Measure</h4><p>Press Replay to start over.</p></div></div>
       </div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>landing page, danh sách tính năng, portfolio: nội dung xuất hiện đúng lúc người dùng cuộn tới mà không cần thao tác thêm.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung cần đọc ngay (bảng giá, form): thời gian chờ hiệu ứng làm chậm việc đọc.</p>
+      <p class="use"><b>Use when</b>building landing pages, feature lists or portfolios where content should appear as users reach it, without extra interaction.</p>
+      <p class="avoid"><b>Avoid when</b>content must be read immediately (pricing tables, forms): waiting for the effect slows reading.</p>
     </div>
     <div class="kw"><button>reveal on scroll</button><button>scroll-triggered animation</button><button>fade-up on enter viewport</button><button>IntersectionObserver animate once</button></div>
   </article>
@@ -466,16 +466,16 @@
   <!-- 5 -->
   <article class="pattern" id="stagger">
     <h2>Stagger</h2>
-    <p class="vi"><b>Xuất hiện lệch nhịp.</b> Các phần tử trong một nhóm xuất hiện lần lượt, phần tử sau trễ hơn phần tử trước vài chục mili giây, tạo thành một chuỗi liên tục thay vì xuất hiện đồng thời. Nhấn Xem lại để so sánh hai hàng.</p>
+    <p class="vi"><b>Items that enter one after another.</b> Elements in a group appear in sequence, each delayed a few tens of milliseconds after the previous one, forming a continuous wave instead of appearing at once. Press Replay to compare the two rows.</p>
     <div class="demo">
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối.</span>
-      <div><div class="row-label">không stagger: tất cả xuất hiện cùng lúc</div><div class="row"></div></div>
-      <div><div class="row-label">stagger: mỗi ô trễ 80 ms</div><div class="row s"></div></div>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: shows the end state.</span>
+      <div><div class="row-label">no stagger: all items appear at once</div><div class="row"></div></div>
+      <div><div class="row-label">stagger: each tile delayed 80 ms</div><div class="row s"></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>hiển thị lưới thẻ, danh sách, menu hoặc từng chữ cái: thứ tự xuất hiện dẫn mắt người dùng theo cấu trúc nội dung.</p>
-      <p class="avoid"><b>Tránh khi</b>danh sách có vài chục mục: tổng thời gian chờ quá dài. Chỉ áp dụng cho khoảng 6–10 mục đầu.</p>
+      <p class="use"><b>Use when</b>revealing card grids, lists, menus or individual letters: the entry order guides the eye through the structure of the content.</p>
+      <p class="avoid"><b>Avoid when</b>a list has dozens of items: the total wait becomes too long. Apply it to the first 6–10 items only.</p>
     </div>
     <div class="kw"><button>staggered animation</button><button>stagger delay 80ms</button><button>cascading entrance</button><button>sequential fade-in grid</button></div>
   </article>
@@ -483,23 +483,23 @@
   <!-- 6 -->
   <article class="pattern needs-sda" id="parallax">
     <h2>Parallax</h2>
-    <p class="vi"><b>Thị sai: nhiều lớp chuyển động với tốc độ khác nhau.</b> Khi cuộn, lớp xa di chuyển chậm, lớp gần di chuyển nhanh, tạo cảm giác chiều sâu. Cuộn trong khung demo để xem.</p>
+    <p class="vi"><b>Layers that move at different speeds.</b> On scroll, distant layers move slowly and near layers move quickly, which creates a sense of depth. Scroll inside the frame.</p>
     <div class="demo">
-      <span class="hint">Cuộn trong khung ↓</span>
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: các lớp đứng yên.</span>
-      <span class="nosda">Trình duyệt này chưa hỗ trợ scroll-driven animation.</span>
+      <span class="hint">Scroll inside the frame ↓</span>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: layers stay still.</span>
+      <span class="nosda">This browser does not support scroll-driven animations.</span>
       <div class="scroller"><div class="track"><div class="stage">
-        <div class="layer sun"><span class="tag">mặt trời: xuống chậm</span></div>
-        <div class="title">Lớp xa chậm,<br>lớp gần nhanh.</div>
-        <div class="layer far"><span class="tag">đồi xa · 0.25×</span></div>
-        <div class="layer mid"><span class="tag">đồi giữa · 0.6×</span></div>
-        <div class="layer near"><span class="tag">lớp gần · 1×</span><p>Cùng một quãng cuộn, ba lớp di chuyển ba khoảng cách khác nhau.</p></div>
+        <div class="layer sun"><span class="tag">sun: sinks slowly</span></div>
+        <div class="title">Far layers slow,<br>near layers fast.</div>
+        <div class="layer far"><span class="tag">far hill · 0.25×</span></div>
+        <div class="layer mid"><span class="tag">middle hill · 0.6×</span></div>
+        <div class="layer near"><span class="tag">near layer · 1×</span><p>For the same scroll distance, the three layers travel three different distances.</p></div>
       </div></div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>hero của landing page, trang giới thiệu thương hiệu, hình minh hoạ nhiều lớp cần thêm chiều sâu.</p>
-      <p class="avoid"><b>Tránh khi</b>trang nhiều chữ cần đọc: chuyển động lệch tốc độ gây mỏi mắt và chóng mặt cho một số người dùng.</p>
+      <p class="use"><b>Use when</b>a landing page hero, brand story page or layered illustration needs a sense of depth.</p>
+      <p class="avoid"><b>Avoid when</b>the page is text-heavy: layers moving at different speeds cause eye strain and dizziness for some users.</p>
     </div>
     <div class="kw"><button>parallax scrolling</button><button>multi-layer parallax hero</button><button>layered depth on scroll</button><button>background moves slower than foreground</button></div>
   </article>
@@ -507,17 +507,17 @@
   <!-- 7 -->
   <article class="pattern" id="morph">
     <h2>Morph</h2>
-    <p class="vi"><b>Biến hình.</b> Một phần tử chuyển hình dạng liên tục sang trạng thái mới thay vì biến mất và được thay bằng phần tử khác. Người dùng nhận ra đó vẫn là cùng một thành phần, chỉ đổi trạng thái. Nhấn nút Gửi đơn hoặc biểu tượng menu.</p>
+    <p class="vi"><b>A shape that transforms between states.</b> An element changes shape continuously into its new state instead of disappearing and being replaced. Users can tell it is the same component in a different state. Tap the Place order button or the menu icon.</p>
     <div class="demo">
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: đổi trạng thái tức thì.</span>
-      <div class="cell"><button class="send"><span class="t">Gửi đơn</span></button><div class="cap">nhấn: nút → vòng tải → dấu tích</div></div>
-      <div class="cell"><button class="burger" aria-label="Mở menu"><i></i><i></i><i></i></button><div class="cap">nhấn: ☰ chuyển thành ✕</div></div>
-      <div class="cell"><div class="blob"></div><div class="cap">khối hình tự biến dạng liên tục</div></div>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: states change instantly.</span>
+      <div class="cell"><button class="send"><span class="t">Place order</span></button><div class="cap">tap: button → spinner → checkmark</div></div>
+      <div class="cell"><button class="burger" aria-label="Open menu"><i></i><i></i><i></i></button><div class="cap">tap: ☰ turns into ✕</div></div>
+      <div class="cell"><div class="blob"></div><div class="cap">shape morphs continuously</div></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>nút chuyển trạng thái (gửi → đang xử lý → hoàn tất), biểu tượng menu/đóng, phát/tạm dừng: giữ liên kết thị giác giữa hai trạng thái.</p>
-      <p class="avoid"><b>Tránh khi</b>hai trạng thái không liên quan về ý nghĩa: hiệu ứng biến hình tạo liên tưởng sai.</p>
+      <p class="use"><b>Use when</b>a button changes state (submit → processing → done), or for menu/close and play/pause icons: it keeps a visual link between the two states.</p>
+      <p class="avoid"><b>Avoid when</b>the two states are unrelated in meaning: the morph implies a connection that does not exist.</p>
     </div>
     <div class="kw"><button>shape morph</button><button>morphing button loading to success</button><button>hamburger to close icon morph</button><button>blob morph animation</button></div>
   </article>
@@ -525,22 +525,22 @@
   <!-- 8 -->
   <article class="pattern" id="marquee">
     <h2>Marquee / Ticker</h2>
-    <p class="vi"><b>Dải chạy liên tục.</b> Chữ hoặc logo trôi ngang không ngừng và lặp lại không có điểm nối. Di chuột hoặc chạm vào một dải để tạm dừng.</p>
+    <p class="vi"><b>A strip that scrolls continuously.</b> Text or logos move horizontally without stopping and loop with no visible seam. Hover or tap a strip to pause it.</p>
     <div class="demo">
-      <span class="rm-note">Giảm chuyển động: dải đứng yên, cuộn ngang để xem.</span>
+      <span class="rm-note">Reduced motion: strips stay still; scroll sideways to see more.</span>
       <div class="row big"><div class="move">
-        <div class="set"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
-        <div class="set" aria-hidden="true"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
+        <div class="set"><span>Design</span><span class="dot">✦</span><span class="o">Motion</span><span class="dot">✦</span><span>Layout</span><span class="dot">✦</span><span class="o">Color</span><span class="dot">✦</span></div>
+        <div class="set" aria-hidden="true"><span>Design</span><span class="dot">✦</span><span class="o">Motion</span><span class="dot">✦</span><span>Layout</span><span class="dot">✦</span><span class="o">Color</span><span class="dot">✦</span></div>
       </div></div>
       <div class="row logos"><div class="move">
         <div class="set"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
         <div class="set" aria-hidden="true"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
       </div></div>
-      <div class="note">Di chuột hoặc chạm vào dải để tạm dừng · hai dải chạy ngược chiều</div>
+      <div class="note">Hover or tap a strip to pause · the two strips run in opposite directions</div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>dải logo khách hàng, tin nhanh, khẩu hiệu thương hiệu cỡ lớn: nội dung người dùng không cần đọc hết.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung bắt buộc phải đọc hoặc nhấn: chữ đang chuyển động khó đọc và khó chạm trúng.</p>
+      <p class="use"><b>Use when</b>showing customer logo strips, news tickers or large brand slogans: content users do not need to read in full.</p>
+      <p class="avoid"><b>Avoid when</b>the content must be read or clicked: moving text is hard to read and hard to hit.</p>
     </div>
     <div class="kw"><button>infinite marquee</button><button>scrolling ticker</button><button>logo marquee loop</button><button>pause on hover</button></div>
   </article>
@@ -548,17 +548,17 @@
   <!-- 9 -->
   <article class="pattern" id="textreveal">
     <h2>Text reveal / Split text</h2>
-    <p class="vi"><b>Chữ xuất hiện theo từng phần.</b> Tiêu đề được tách thành từng ký tự hoặc từng từ; mỗi phần trượt lên từ sau một mặt nạ (mask) theo nhịp lệch. Nhấn Xem lại để chạy lại.</p>
+    <p class="vi"><b>Text that appears piece by piece.</b> A heading is split into characters or words; each piece slides up from behind a mask on a staggered rhythm. Press Replay to play it again.</p>
     <div class="demo">
-      <button class="replay">↻ Xem lại</button>
-      <span class="rm-note">Giảm chuyển động: chữ hiển thị sẵn.</span>
-      <span class="cap">Dòng 1: tách ký tự + mặt nạ. Dòng 2: tách từ + làm mờ.</span>
-      <h3 class="h" data-split="chars">Giao diện có <span class="acc">chuyển động</span>.</h3>
-      <p class="sub" data-split="words">Mỗi ký tự trượt lên từ sau một đường cắt ẩn, nối tiếp nhau theo nhịp lệch.</p>
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: text is visible from the start.</span>
+      <span class="cap">Line 1: split characters + mask. Line 2: split words + blur.</span>
+      <h3 class="h" data-split="chars">Interfaces in <span class="acc">motion</span>.</h3>
+      <p class="sub" data-split="words">Each character slides up from behind a hidden edge, one after another on a staggered rhythm.</p>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tiêu đề hero, khẩu hiệu, màn hình mở đầu: một câu ngắn cần được nhấn mạnh.</p>
-      <p class="avoid"><b>Tránh khi</b>đoạn văn dài hoặc chữ nội dung: tách chữ làm chậm việc đọc, và trình đọc màn hình đọc sai nếu không có aria-label.</p>
+      <p class="use"><b>Use when</b>a hero heading, slogan or intro screen has one short line that needs emphasis.</p>
+      <p class="avoid"><b>Avoid when</b>the text is a long paragraph or body copy: splitting slows reading, and screen readers misread it without an aria-label.</p>
     </div>
     <div class="kw"><button>split text animation</button><button>text reveal</button><button>per-character stagger with mask</button><button>word-by-word blur in</button></div>
   </article>
@@ -566,24 +566,24 @@
   <!-- 10 -->
   <article class="pattern" id="viewtransitions">
     <h2>View transitions</h2>
-    <p class="vi"><b>Chuyển cảnh có phần tử chung.</b> Khi chuyển màn hình, phần tử có mặt ở cả hai màn (ảnh, tiêu đề) di chuyển liên tục từ vị trí cũ sang vị trí mới thay vì thay thế đột ngột. Nhấn vào một thẻ.</p>
+    <p class="vi"><b>Screen changes with shared elements.</b> When the screen changes, elements present on both screens (image, title) move continuously from their old position to their new one instead of cutting abruptly. Tap a card.</p>
     <div class="demo">
       <span class="support"></span>
-      <span class="rm-note">Giảm chuyển động: đổi màn tức thì.</span>
+      <span class="rm-note">Reduced motion: screens change instantly.</span>
       <div class="grid">
-        <button class="vcard" data-i="0" style="--c:linear-gradient(160deg,#ff8a5c,#ff5a1f)"><div class="img"></div><div class="tt">Hoàng hôn<small>Bộ sưu tập 01</small></div></button>
-        <button class="vcard" data-i="1" style="--c:linear-gradient(160deg,#7b8bff,#3346ff)"><div class="img"></div><div class="tt">Biển đêm<small>Bộ sưu tập 02</small></div></button>
-        <button class="vcard" data-i="2" style="--c:linear-gradient(160deg,#5fd3a2,#14a06a)"><div class="img"></div><div class="tt">Rừng thông<small>Bộ sưu tập 03</small></div></button>
-        <button class="vcard" data-i="3" style="--c:linear-gradient(160deg,#f2d06b,#c48a00)"><div class="img"></div><div class="tt">Đồi cát<small>Bộ sưu tập 04</small></div></button>
+        <button class="vcard" data-i="0" style="--c:linear-gradient(160deg,#ff8a5c,#ff5a1f)"><div class="img"></div><div class="tt">Sunset<small>Collection 01</small></div></button>
+        <button class="vcard" data-i="1" style="--c:linear-gradient(160deg,#7b8bff,#3346ff)"><div class="img"></div><div class="tt">Night sea<small>Collection 02</small></div></button>
+        <button class="vcard" data-i="2" style="--c:linear-gradient(160deg,#5fd3a2,#14a06a)"><div class="img"></div><div class="tt">Pine forest<small>Collection 03</small></div></button>
+        <button class="vcard" data-i="3" style="--c:linear-gradient(160deg,#f2d06b,#c48a00)"><div class="img"></div><div class="tt">Dunes<small>Collection 04</small></div></button>
       </div>
       <div class="detail" hidden>
         <div class="img"></div>
-        <div class="body"><h3></h3><p>Ảnh và tiêu đề vừa di chuyển từ thẻ nhỏ sang vị trí này. Trình duyệt chụp lại hai trạng thái và tự nội suy vị trí, kích thước.</p><button class="back">← Quay lại</button></div>
+        <div class="body"><h3></h3><p>The image and title moved here from the small card. The browser captures both states and interpolates position and size.</p><button class="back">← Back</button></div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>danh sách → chi tiết, ảnh thu nhỏ → ảnh lớn, chuyển tab hoặc trang trong ứng dụng: người dùng thấy rõ mình vừa chuyển từ đâu tới.</p>
-      <p class="avoid"><b>Tránh khi</b>hai màn hình không có phần tử chung: hiệu ứng chỉ còn là mờ chéo, không truyền thêm thông tin.</p>
+      <p class="use"><b>Use when</b>moving from list to detail, thumbnail to full image, or between tabs and pages in an app: users see where they came from.</p>
+      <p class="avoid"><b>Avoid when</b>the two screens share no elements: the effect is reduced to a cross-fade that adds no information.</p>
     </div>
     <div class="kw"><button>View Transitions API</button><button>shared element transition</button><button>card expands to detail view</button><button>document.startViewTransition</button></div>
   </article>
@@ -591,29 +591,29 @@
   <!-- 11 -->
   <article class="pattern" id="micro">
     <h2>Micro-interactions</h2>
-    <p class="vi"><b>Phản hồi ngắn cho từng thao tác.</b> Chuyển động rất ngắn (dưới 0,5 giây) xác nhận thao tác đã được ghi nhận và có kết quả. Nhấn vào từng thành phần trong khung demo.</p>
+    <p class="vi"><b>Brief feedback for a single action.</b> A very short animation (under 0.5 seconds) confirms that an action was registered and had an effect. Tap each control in the frame.</p>
     <div class="demo">
-      <span class="rm-note">Giảm chuyển động: trạng thái đổi tức thì.</span>
+      <span class="rm-note">Reduced motion: states change instantly.</span>
       <div class="cell">
         <button class="like" aria-pressed="false"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3.2 5 6.6 5c2.1 0 3.5 1.2 4.4 2.6h2c.9-1.4 2.3-2.6 4.4-2.6 3.4 0 5.4 3.6 4.1 6.8C19.5 16.4 12 21 12 21z"/></svg><span class="count">24</span></button>
-        <div class="cap">like: biểu tượng tim nảy và bắn hạt</div>
+        <div class="cap">like: heart bounces and bursts particles</div>
       </div>
       <div class="cell">
-        <button class="switch" role="switch" aria-checked="false" aria-label="Thông báo"></button>
-        <div class="cap">toggle: núm trượt có độ nảy, giãn ra khi nhấn giữ</div>
+        <button class="switch" role="switch" aria-checked="false" aria-label="Notifications"></button>
+        <div class="cap">toggle: springy knob that stretches while pressed</div>
       </div>
       <div class="cell">
-        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">Gửi báo cáo</span></label>
-        <div class="cap">checkbox: dấu tích được vẽ dần</div>
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">Send report</span></label>
+        <div class="cap">checkbox: the checkmark draws itself</div>
       </div>
       <div class="cell">
-        <button class="copy"><span class="ic"><svg class="i1" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg class="i2" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="t">Copy mã</span></button>
-        <div class="cap">copy: biểu tượng đổi thành dấu tích, nhãn báo kết quả</div>
+        <button class="copy"><span class="ic"><svg class="i1" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg class="i2" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="t">Copy code</span></button>
+        <div class="cap">copy: icon turns into a check, label reports the result</div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>thao tác lặp lại thường xuyên: thích, bật/tắt, đánh dấu, sao chép, gửi. Người dùng cần biết ngay thao tác đã thành công.</p>
-      <p class="avoid"><b>Tránh khi</b>hiệu ứng dài hoặc phô trương làm chặn thao tác tiếp theo: micro-interaction phải nhanh và không cản trở.</p>
+      <p class="use"><b>Use when</b>an action is frequent (like, toggle, check, copy, send) and users need to know at once that it succeeded.</p>
+      <p class="avoid"><b>Avoid when</b>the effect is long or showy enough to block the next action: micro-interactions must be fast and stay out of the way.</p>
     </div>
     <div class="kw"><button>micro-interactions</button><button>animated like button with particle burst</button><button>springy toggle switch</button><button>animated checkmark draw</button><button>copy button success state</button></div>
   </article>
@@ -624,7 +624,7 @@
 const reduce = Dict.RM;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const replay = {}; // id → hàm Xem lại; giao cho Dict.replay ở cuối
+const replay = {}; // id → Replay handler; registered with Dict.replay at the end
 const restart = (el, cls = 'play') => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
 const toTop = id => $(`#${id} .scroller`).scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 
@@ -638,8 +638,8 @@ const onView = (el, fn) => Dict.onView(el, fn, .5);
     if (!e.isIntersecting) return;
     const s = e.target.dataset.step;
     $$('.step', root).forEach(x => x.classList.toggle('on', x === e.target));
-    vis.dataset.scene = s; cap.textContent = `cảnh ${s} / 3`;
-  }), { root: sc, rootMargin: matchMedia('(max-width:760px)').matches ? '-55% 0px -35% 0px' : '-45% 0px -45% 0px' }); // mobile: hình chiếm nửa trên, đổi cảnh khi chữ tới nửa dưới
+    vis.dataset.scene = s; cap.textContent = `scene ${s} / 3`;
+  }), { root: sc, rootMargin: matchMedia('(max-width:760px)').matches ? '-55% 0px -35% 0px' : '-45% 0px -45% 0px' }); // mobile: graphic fills the top half, so switch scenes when text reaches the lower half
   $$('.step', root).forEach(s => io.observe(s));
   $('.step', root).classList.add('on');
   replay.scrollytelling = () => toTop('scrollytelling');
@@ -686,7 +686,7 @@ replay.parallax = () => toTop('parallax');
     timers = [setTimeout(() => { send.classList.replace('loading', 'done'); }, 1600)];
   };
   send.addEventListener('click', () => { if (send.classList.contains('done')) { send.className = 'send'; return; } if (!send.classList.contains('loading')) run(); });
-  burger.addEventListener('click', () => { burger.classList.toggle('x'); burger.setAttribute('aria-label', burger.classList.contains('x') ? 'Đóng menu' : 'Mở menu'); });
+  burger.addEventListener('click', () => { burger.classList.toggle('x'); burger.setAttribute('aria-label', burger.classList.contains('x') ? 'Close menu' : 'Open menu'); });
   replay.morph = () => { run(); burger.classList.remove('x'); setTimeout(() => burger.classList.add('x'), 600); setTimeout(() => burger.classList.remove('x'), 1800); };
   onView($('#morph .demo'), replay.morph);
 }
@@ -722,7 +722,7 @@ replay.parallax = () => toTop('parallax');
   const dImg = $('.img', detail), dTitle = $('h3', detail);
   const can = !!document.startViewTransition && !reduce;
   $('.support', root).textContent = document.startViewTransition
-    ? 'document.startViewTransition: có hỗ trợ' : 'Trình duyệt chưa hỗ trợ View Transitions; màn hình đổi tức thì (fallback)';
+    ? 'document.startViewTransition: supported' : 'View Transitions not supported; screens change instantly (fallback)';
   let current = null;
   const go = update => can ? document.startViewTransition(update) : update();
   const name = (el, n) => { el.style.viewTransitionName = n; };
@@ -766,11 +766,11 @@ replay.parallax = () => toTop('parallax');
   copy.addEventListener('click', async () => {
     let ok = true;
     try { await navigator.clipboard.writeText('MOTION-2026'); } catch (e) { ok = false; }
-    copy.classList.toggle('ok', ok); ct.textContent = ok ? 'Đã copy' : 'Không copy được';
-    clearTimeout(copy._t); copy._t = setTimeout(() => { copy.classList.remove('ok'); ct.textContent = 'Copy mã'; }, 1400);
+    copy.classList.toggle('ok', ok); ct.textContent = ok ? 'Copied' : "Couldn't copy";
+    clearTimeout(copy._t); copy._t = setTimeout(() => { copy.classList.remove('ok'); ct.textContent = 'Copy code'; }, 1400);
   });
 }
-// 8 Marquee: chạm để dừng/chạy tiếp (thiết bị cảm ứng không có hover)
+// 8 Marquee: tap to pause/resume (touch devices have no hover)
 $$('#marquee .row').forEach(r => r.addEventListener('click', () => r.classList.toggle('paused')));
 
 Object.entries(replay).forEach(([id, fn]) => Dict.replay(id, fn));

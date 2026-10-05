@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thành phần UX — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Tám thành phần UX phổ biến kèm demo tương tác: floating nav, sticky CTA, social proof, bảng giá, feature tabs, command palette, empty state và skeleton loading.">
+<title>UX components — Pattern Dictionary</title>
+<meta name="description" content="Eight common UX components with interactive demos: floating nav, sticky CTA, social proof, pricing table, feature tabs, command palette, empty state, and skeleton loading.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset cũ của trang, giờ chỉ áp trong demo (specificity 0 như trước) */
+/* the page's former reset, now scoped to demos (specificity 0 as before) */
 :where(.demo *){margin:0;padding:0}
 :where(.demo button){font:inherit;color:inherit}
 .mini{position:absolute;inset:0;overflow:hidden}
@@ -166,8 +166,8 @@
 #pricing-table .pl.rec .go{background:var(--acc);border-color:var(--acc);color:#fff}
 #pricing-table .pl.rec li::before{color:#7ee0a5}
 #pricing-table .badge{position:absolute;top:-11px;left:20px;background:var(--acc);color:#fff;font:600 11px/1 var(--sans);padding:6px 10px;border-radius:999px}
-/* mobile: cuộn ngang có snap thay vì xếp dọc. Ba thẻ xếp dọc cao ~900px, công tắc tháng/năm trôi khỏi tầm nhìn
-   khi đang xem giá; cuộn ngang giữ công tắc và giá trong một màn hình, thẻ kế bên ló ra để báo còn gói khác. */
+/* mobile: horizontal scroll with snap instead of stacking. Three stacked cards are ~900px tall and the monthly/yearly switch
+   scrolls out of view while reading prices; one row keeps the switch and prices on one screen, and the peeking card signals more plans. */
 #pricing-table .swipe{display:none;font-size:12px;color:#888;margin-top:-6px}
 @media (max-width:760px){
   #pricing-table .demo{--demo-h-m:470px}
@@ -375,31 +375,31 @@
 
 <main class="wrap">
   <header class="head">
-    <h1>Thành phần UX</h1>
-    <p>Các thành phần giao diện giúp người dùng thao tác và ra quyết định nhanh hơn: thanh điều hướng, nút hành động, bảng giá, bảng lệnh. Mọi demo trên trang đều tương tác được bằng chuột, bàn phím hoặc cảm ứng.</p>
+    <h1>UX components</h1>
+    <p>Interface components that help people act and decide faster: navigation bars, action buttons, pricing tables, and command palettes. Every demo on this page works with a mouse, keyboard, or touch.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="floating-shrinking-nav">
     <h2>Floating / shrinking nav</h2>
-    <p class="vi"><b>Thanh điều hướng thu lại thành dạng pill.</b> Ở đầu trang, thanh điều hướng trải hết chiều ngang. Khi người dùng bắt đầu cuộn, thanh tách khỏi mép, thu nhỏ, bo tròn thành dạng pill và nổi trên nội dung với nền mờ (backdrop blur). Cuộn trong khung demo để xem.</p>
+    <p class="vi"><b>Navigation bar that shrinks into a pill.</b> At the top of the page, the navigation bar spans the full width. Once the user starts scrolling, the bar detaches from the edges, shrinks into a rounded pill, and floats over the content on a blurred background (backdrop blur). Scroll inside the frame.</p>
     <div class="demo">
       <div class="mini">
-        <header class="hdr"><span class="logo">Nhịp</span><span>Sản phẩm</span><span>Bảng giá</span><span>Blog</span><span class="cta">Dùng thử</span><span class="menu" aria-hidden="true"><i></i></span></header>
+        <header class="hdr"><span class="logo">Tempo</span><span>Product</span><span>Pricing</span><span>Blog</span><span class="cta">Try free</span><span class="menu" aria-hidden="true"><i></i></span></header>
         <div class="scroller">
-          <div class="hero"><h3>Lịch làm việc tự sắp xếp theo nhịp của bạn</h3><p>Nhịp phân tích lịch, công việc và thói quen của bạn, rồi xếp thời gian tập trung vào khung giờ bạn làm việc hiệu quả nhất.</p></div>
-          <div class="sec" style="background:linear-gradient(135deg,#ff8a5c,#ff5a1f)">Tập trung sâu</div>
-          <div class="sec" style="background:linear-gradient(135deg,#6c8cff,#3a55d8)">Họp ít hơn</div>
-          <div class="sec" style="background:linear-gradient(135deg,#2f9e5b,#1d6b3c)">Nghỉ đúng lúc</div>
+          <div class="hero"><h3>A work calendar that arranges itself around your rhythm</h3><p>Tempo analyzes your calendar, tasks, and habits, then schedules focus time in the hours when you work best.</p></div>
+          <div class="sec" style="background:linear-gradient(135deg,#ff8a5c,#ff5a1f)">Deep focus</div>
+          <div class="sec" style="background:linear-gradient(135deg,#6c8cff,#3a55d8)">Fewer meetings</div>
+          <div class="sec" style="background:linear-gradient(135deg,#2f9e5b,#1d6b3c)">Breaks on time</div>
         </div>
       </div>
-      <span class="state">trạng thái: full-width</span>
-      <span class="hint">↓ Cuộn để xem</span>
-      <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+      <span class="state">state: full-width</span>
+      <span class="hint">↓ Scroll inside</span>
+      <div class="demo-tools"><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>landing page dài, khi người dùng cần truy cập điều hướng ở mọi vị trí cuộn nhưng ảnh và hero cần nhiều khoảng trống. Thanh dạng pill chiếm ít diện tích hơn thanh trải hết chiều ngang.</p>
-      <p class="avoid"><b>Tránh khi</b>ứng dụng có nhiều menu hoặc cần thanh công cụ đầy đủ: thanh dạng pill quá hẹp, buộc phải ẩn bớt các mục quan trọng.</p>
+      <p class="use"><b>Use when</b>a landing page is long, people need navigation at every scroll position, and the imagery and hero need generous space. A pill takes up less room than a full-width bar.</p>
+      <p class="avoid"><b>Avoid when</b>the app has many menus or needs a full toolbar: a pill is too narrow and forces important items into hiding.</p>
     </div>
     <div class="kw"><button>floating pill nav</button><button>shrinking header on scroll</button><button>detached navbar with backdrop blur</button><button>full-width → pill transition</button><button>spring easing</button></div>
   </article>
@@ -407,35 +407,35 @@
   <!-- 2 -->
   <article class="pattern" id="sticky-cta">
     <h2>Sticky CTA</h2>
-    <p class="vi"><b>Nút hành động cố định khi cuộn.</b> Khi nút “Thêm vào giỏ” chính ra khỏi màn hình, một thanh nhỏ trượt lên ở cạnh dưới, chứa tên sản phẩm, giá và cùng nút hành động đó. Thanh ẩn đi khi nút chính xuất hiện trở lại. Cuộn trong khung demo rồi nhấn “Thêm vào giỏ”.</p>
+    <p class="vi"><b>Sticky call-to-action bar.</b> When the main “Add to cart” button leaves the screen, a small bar slides up from the bottom edge with the product name, the price, and the same action. The bar hides again when the main button returns to view. Scroll inside the frame, then press “Add to cart”.</p>
     <div class="demo">
       <div class="mini">
         <div class="scroller">
-          <div class="top"><b>Âm.</b><span>Tai nghe</span><span>Loa</span><span class="cart">🛒<i>0</i></span></div>
+          <div class="top"><b>Aura.</b><span>Headphones</span><span>Speakers</span><span class="cart">🛒<i>0</i></span></div>
           <div class="prod">
             <div class="ph"></div>
             <div class="info">
-              <h3>Tai nghe Âm Studio 2</h3>
-              <div class="price">2.490.000đ<s>2.990.000đ</s></div>
-              <p>Chống ồn chủ động, pin 40 giờ, đệm tai mút nhớ. Bảo hành 24 tháng.</p>
+              <h3>Aura Studio 2 Headphones</h3>
+              <div class="price">$249<s>$299</s></div>
+              <p>Active noise cancellation, 40-hour battery, memory foam ear cushions. Two-year warranty.</p>
               <div class="sw"><i style="--c:#ff6a2b"></i><i style="--c:#1d1d1d"></i><i style="--c:#d9d4c8"></i></div>
-              <button class="add main-add">Thêm vào giỏ</button>
+              <button class="add main-add">Add to cart</button>
             </div>
           </div>
           <div class="long">
-            <h4>Âm thanh</h4><p>Màng loa 40mm, đáp ứng tần số 5Hz–40kHz. Chế độ EQ chỉnh trên app với 10 dải.</p>
-            <h4>Chống ồn</h4><p>Sáu micro lọc tiếng ồn ở văn phòng, trên máy bay và nơi công cộng. Chế độ xuyên âm giúp nghe rõ người đối diện mà không cần tháo tai nghe.</p>
-            <h4>Pin</h4><p>40 giờ khi tắt chống ồn, 30 giờ khi bật. Sạc 10 phút để dùng 5 giờ.</p>
-            <h4>Trong hộp</h4><p>Tai nghe, hộp đựng vải, cáp USB-C, cáp 3,5mm, sách hướng dẫn.</p>
+            <h4>Sound</h4><p>40mm drivers with a 5Hz–40kHz frequency response. A 10-band EQ you can adjust in the app.</p>
+            <h4>Noise cancellation</h4><p>Six microphones filter out noise in the office, on planes, and in public spaces. Transparency mode lets you hear the person in front of you without taking the headphones off.</p>
+            <h4>Battery</h4><p>40 hours with noise cancellation off, 30 hours with it on. A 10-minute charge gives 5 hours of playback.</p>
+            <h4>In the box</h4><p>Headphones, fabric case, USB-C cable, 3.5mm cable, user guide.</p>
           </div>
         </div>
-        <div class="bar" aria-hidden="true"><span class="thumb"></span><div><b>Âm Studio 2</b><span>2.490.000đ · Cam</span></div><button class="add bar-add" tabindex="-1">Thêm vào giỏ</button></div>
+        <div class="bar" aria-hidden="true"><span class="thumb"></span><div><b>Aura Studio 2</b><span>$249 · Orange</span></div><button class="add bar-add" tabindex="-1">Add to cart</button></div>
       </div>
-      <span class="hint">↓ Cuộn để xem</span>
+      <span class="hint">↓ Scroll inside</span>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>trang sản phẩm hoặc trang đăng ký dài, nơi người dùng đọc nhiều thông tin trước khi quyết định; nút mua cần luôn trong tầm với ở mọi vị trí cuộn.</p>
-      <p class="avoid"><b>Tránh khi</b>trang ngắn vừa một màn hình, hoặc cạnh dưới đã có nhiều thành phần cố định (bong bóng chat, banner cookie) dễ chồng lên nhau.</p>
+      <p class="use"><b>Use when</b>a product or sign-up page is long and people read a lot before deciding; the purchase button needs to stay within reach at every scroll position.</p>
+      <p class="avoid"><b>Avoid when</b>the page fits on one screen, or the bottom edge already holds fixed elements (chat bubble, cookie banner) that would overlap.</p>
     </div>
     <div class="kw"><button>sticky CTA bar</button><button>appears when primary CTA scrolls out of view</button><button>IntersectionObserver</button><button>bottom sticky add-to-cart</button><button>slide-up with blur backdrop</button></div>
   </article>
@@ -443,30 +443,30 @@
   <!-- 3 -->
   <article class="pattern" id="social-proof">
     <h2>Social proof</h2>
-    <p class="vi"><b>Bằng chứng xã hội.</b> Các tín hiệu cho thấy người khác đã dùng và tin tưởng sản phẩm: điểm đánh giá, số người dùng, dãy avatar, logo khách hàng và lời chứng thực (testimonial). Lời chứng thực tự chuyển sau vài giây. Nhấn hoặc chạm các vạch dưới thẻ để chuyển lời chứng thực.</p>
+    <p class="vi"><b>Evidence that others trust the product.</b> Signals that other people already use and trust the product: a rating, a user count, an avatar stack, customer logos, and testimonials. Testimonials rotate every few seconds. Click or tap the bars below the card to switch testimonials.</p>
     <div class="demo">
       <div class="mini">
         <div>
-          <div class="rate"><span class="n">4,9</span><div><div class="stars">★★★★★</div><small>trung bình từ 2.381 đánh giá</small></div></div>
-          <div class="avs"><i style="--c:#ffb27a">L</i><i style="--c:#9fb6ff">M</i><i style="--c:#8fe0b0">T</i><i style="--c:#ffd86b">H</i><i style="--c:#f2a7c3">+</i><p><b><span class="count" data-to="12000">0</span>+ nhóm</b>đang dùng mỗi ngày</p></div>
-          <div class="logos-l">Được tin dùng bởi</div>
-          <div class="logos"><span style="font-weight:800;letter-spacing:-.04em">mây.</span><span style="font-family:Georgia,serif;font-style:italic">Gạo Studio</span><span style="font:600 15px var(--mono)">LÚA</span><span style="font-weight:800">Bến</span><span style="font-family:Georgia,serif">Sóng</span></div>
+          <div class="rate"><span class="n">4.9</span><div><div class="stars">★★★★★</div><small>average from 2,381 reviews</small></div></div>
+          <div class="avs"><i style="--c:#ffb27a">L</i><i style="--c:#9fb6ff">M</i><i style="--c:#8fe0b0">T</i><i style="--c:#ffd86b">H</i><i style="--c:#f2a7c3">+</i><p><b><span class="count" data-to="12000">0</span>+ teams</b>use it every day</p></div>
+          <div class="logos-l">Trusted by</div>
+          <div class="logos"><span style="font-weight:800;letter-spacing:-.04em">nimbus.</span><span style="font-family:Georgia,serif;font-style:italic">Harbor Studio</span><span style="font:600 15px var(--mono)">GRAIN</span><span style="font-weight:800">Pier</span><span style="font-family:Georgia,serif">Wave</span></div>
         </div>
         <div class="tcard">
           <div class="tq">"</div>
           <div class="slides">
-            <div class="slide on"><blockquote>Từ khi chuyển sang công cụ này, nhóm chúng tôi bớt được hai buổi họp mỗi tuần. Mọi thông tin nằm ở một nơi, ai cũng nắm rõ việc của mình.</blockquote><div class="who"><i style="--c:#ffb27a"></i><div><b>Lan Phạm</b>Trưởng nhóm sản phẩm, Fintech</div></div></div>
-            <div class="slide"><blockquote>Chúng tôi đã thử bốn công cụ trong một năm. Đây là công cụ đầu tiên cả phòng kế toán dùng đều đặn mà không cần nhắc nhở.</blockquote><div class="who"><i style="--c:#9fb6ff"></i><div><b>Minh Trần</b>COO, chuỗi bán lẻ 12 cửa hàng</div></div></div>
-            <div class="slide"><blockquote>Thiết lập mất mười phút. Ngay tuần đầu tiên, khách hàng đã nhận xét báo cáo tôi gửi rõ ràng và chuyên nghiệp hơn.</blockquote><div class="who"><i style="--c:#8fe0b0"></i><div><b>Thảo Nguyễn</b>Freelancer thiết kế</div></div></div>
+            <div class="slide on"><blockquote>Since we switched to this tool, our team has cut two meetings a week. Everything lives in one place, and everyone knows what they own.</blockquote><div class="who"><i style="--c:#ffb27a"></i><div><b>Laura Park</b>Product lead, fintech</div></div></div>
+            <div class="slide"><blockquote>We tried four tools in one year. This is the first one the whole finance team uses consistently without reminders.</blockquote><div class="who"><i style="--c:#9fb6ff"></i><div><b>Mark Turner</b>COO, 12-store retail chain</div></div></div>
+            <div class="slide"><blockquote>Setup took ten minutes. In the first week, clients told me the reports I sent were clearer and more professional.</blockquote><div class="who"><i style="--c:#8fe0b0"></i><div><b>Tessa Moore</b>Freelance designer</div></div></div>
           </div>
-          <div class="dots" role="tablist" aria-label="Lời chứng thực"><button aria-current="true" aria-label="Lời chứng thực 1"></button><button aria-current="false" aria-label="Lời chứng thực 2"></button><button aria-current="false" aria-label="Lời chứng thực 3"></button></div>
+          <div class="dots" role="tablist" aria-label="Testimonials"><button aria-current="true" aria-label="Testimonial 1"></button><button aria-current="false" aria-label="Testimonial 2"></button><button aria-current="false" aria-label="Testimonial 3"></button></div>
         </div>
       </div>
-      <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>ngay dưới hero hoặc cạnh nút đăng ký, nút mua, đúng thời điểm người dùng đang cân nhắc. Số cụ thể (2.381 đánh giá) đáng tin hơn số làm tròn.</p>
-      <p class="avoid"><b>Tránh khi</b>số liệu còn nhỏ hoặc logo chưa được khách hàng cho phép sử dụng: social proof sai sự thật, khi bị phát hiện, làm mất niềm tin nhiều hơn so với không hiển thị.</p>
+      <p class="use"><b>Use when</b>the proof can sit directly below the hero or next to the sign-up or purchase button, at the moment people are deciding. Specific numbers (2,381 reviews) are more credible than rounded ones.</p>
+      <p class="avoid"><b>Avoid when</b>the numbers are still small or customers have not approved the use of their logos: false social proof, once discovered, costs more trust than showing none.</p>
     </div>
     <div class="kw"><button>social proof section</button><button>star rating + review count</button><button>avatar stack</button><button>grayscale logo cloud</button><button>testimonial carousel</button><button>animated counter</button></div>
   </article>
@@ -474,21 +474,21 @@
   <!-- 4 -->
   <article class="pattern" id="pricing-table">
     <h2>Pricing table</h2>
-    <p class="vi"><b>Bảng giá.</b> Các gói dịch vụ được đặt cạnh nhau để so sánh; gói cần bán nhiều nhất được làm nổi bật bằng kích thước lớn hơn, nền tối và nhãn “Khuyên dùng”. Công tắc tháng/năm hiển thị khoản tiết kiệm khi thanh toán theo năm. Trên màn hình hẹp, các gói nằm trên một hàng cuộn ngang. Nhấn công tắc tháng/năm, hoặc vuốt ngang để xem các gói khác.</p>
+    <p class="vi"><b>Plans compared side by side.</b> Plans sit side by side for comparison; the plan the business most wants to sell is emphasized with a larger card, a dark background, and a “Recommended” label. A monthly/yearly switch shows the savings from annual billing. On narrow screens, the plans sit in one horizontally scrolling row. Toggle monthly or yearly billing, or swipe sideways to see the other plans.</p>
     <div class="demo">
       <div class="mini">
-        <div class="tg"><span class="lbl on" data-p="m">Theo tháng</span><button class="sw" role="switch" aria-checked="false" aria-label="Thanh toán theo năm"></button><span class="lbl" data-p="y">Theo năm</span><span class="save">tiết kiệm 20%</span></div>
+        <div class="tg"><span class="lbl on" data-p="m">Monthly</span><button class="sw" role="switch" aria-checked="false" aria-label="Bill yearly"></button><span class="lbl" data-p="y">Yearly</span><span class="save">save 20%</span></div>
         <div class="plans">
-          <div class="pl"><h4>Cơ bản</h4><div class="amt"><span class="v" data-m="0" data-y="0">0</span>k<small> /tháng</small></div><div class="bill">miễn phí, không giới hạn thời gian</div><ul><li>3 dự án</li><li>1 thành viên</li><li>Lưu lịch sử 7 ngày</li></ul><button class="go">Bắt đầu</button></div>
-          <div class="pl rec"><span class="badge">★ Khuyên dùng</span><h4>Pro</h4><div class="amt"><span class="v" data-m="199" data-y="159">199</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Không giới hạn dự án</li><li>10 thành viên</li><li>Lưu lịch sử 1 năm</li><li>Hỗ trợ ưu tiên</li></ul><button class="go">Dùng thử 14 ngày</button></div>
-          <div class="pl"><h4>Doanh nghiệp</h4><div class="amt"><span class="v" data-m="499" data-y="399">499</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Mọi thứ trong Pro</li><li>SSO, phân quyền</li><li>Hợp đồng riêng</li></ul><button class="go">Liên hệ tư vấn</button></div>
+          <div class="pl"><h4>Basic</h4><div class="amt">$<span class="v" data-m="0" data-y="0">0</span><small> /mo</small></div><div class="bill">free, no time limit</div><ul><li>3 projects</li><li>1 member</li><li>7-day history</li></ul><button class="go">Get started</button></div>
+          <div class="pl rec"><span class="badge">★ Recommended</span><h4>Pro</h4><div class="amt">$<span class="v" data-m="19" data-y="15">19</span><small> /mo</small></div><div class="bill"></div><ul><li>Unlimited projects</li><li>10 members</li><li>1-year history</li><li>Priority support</li></ul><button class="go">Start 14-day trial</button></div>
+          <div class="pl"><h4>Business</h4><div class="amt">$<span class="v" data-m="49" data-y="39">49</span><small> /mo</small></div><div class="bill"></div><ul><li>Everything in Pro</li><li>SSO and permissions</li><li>Custom contract</li></ul><button class="go">Contact sales</button></div>
         </div>
-        <p class="swipe" aria-hidden="true">Vuốt ngang để so sánh các gói</p>
+        <p class="swipe" aria-hidden="true">Swipe to compare plans</p>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>sản phẩm có 2–4 gói rõ ràng và cần dẫn người dùng tới một gói cụ thể, thường là gói ở giữa (hiệu ứng chim mồi, decoy effect).</p>
-      <p class="avoid"><b>Tránh khi</b>giá phụ thuộc vào nhiều tuỳ chọn (dùng công cụ tính giá), hoặc sản phẩm chỉ có một gói: bảng ba cột khi đó trống trải và thiếu thuyết phục.</p>
+      <p class="use"><b>Use when</b>the product has 2–4 clearly defined plans and you need to steer people toward one of them, usually the middle plan (decoy effect).</p>
+      <p class="avoid"><b>Avoid when</b>the price depends on many options (use a price calculator), or there is only one plan: a three-column table then looks empty and unconvincing.</p>
     </div>
     <div class="kw"><button>3-tier pricing table</button><button>highlighted recommended plan</button><button>"Most popular" badge</button><button>monthly / annual billing toggle</button><button>animated price change</button><button>decoy pricing</button></div>
   </article>
@@ -496,25 +496,25 @@
   <!-- 5 -->
   <article class="pattern" id="feature-tabs">
     <h2>Feature tabs</h2>
-    <p class="vi"><b>Tab tính năng.</b> Thay vì trình bày mỗi tính năng thành một khối dài, các tính năng được gom vào một khung: danh sách tab ở một bên, ảnh minh hoạ ở bên kia thay đổi theo tab đang chọn. Trên màn hình hẹp, tab xếp thành hàng ngang phía trên ảnh. Nhấn hoặc chạm từng tab; khi tab đang có focus, dùng phím mũi tên để chuyển.</p>
+    <p class="vi"><b>Features grouped behind tabs.</b> Instead of giving each feature its own long section, the features share one frame: a tab list on one side and an illustration on the other that changes with the selected tab. On narrow screens, the tabs form a horizontal row above the illustration. Click or tap each tab; when a tab has focus, use the arrow keys to switch.</p>
     <div class="demo">
       <div class="mini">
-        <div role="tablist" aria-orientation="vertical" aria-label="Tính năng">
+        <div role="tablist" aria-orientation="vertical" aria-label="Features">
           <span class="ind"></span>
-          <button role="tab" id="ft-t1" aria-selected="true" aria-controls="ft-p1" tabindex="0"><b>Lịch thông minh</b><span>Tự tìm khung giờ trống chung cho cả nhóm, không cần trao đổi qua lại.</span></button>
-          <button role="tab" id="ft-t2" aria-selected="false" aria-controls="ft-p2" tabindex="-1"><b>Hộp thư chung</b><span>Gom mọi email của khách hàng về một nơi và giao cho đúng người xử lý.</span></button>
-          <button role="tab" id="ft-t3" aria-selected="false" aria-controls="ft-p3" tabindex="-1"><b>Báo cáo tuần</b><span>Biểu đồ tự cập nhật, gửi email cho cả nhóm vào sáng thứ Hai.</span></button>
+          <button role="tab" id="ft-t1" aria-selected="true" aria-controls="ft-p1" tabindex="0"><b>Smart calendar</b><span>Finds a free slot for the whole team, with no back-and-forth.</span></button>
+          <button role="tab" id="ft-t2" aria-selected="false" aria-controls="ft-p2" tabindex="-1"><b>Shared inbox</b><span>Collects every customer email in one place and assigns it to the right person.</span></button>
+          <button role="tab" id="ft-t3" aria-selected="false" aria-controls="ft-p3" tabindex="-1"><b>Weekly report</b><span>Charts update automatically and go to the whole team every Monday morning.</span></button>
         </div>
         <div class="stage">
-          <div role="tabpanel" id="ft-p1" aria-labelledby="ft-t1" class="on"><h5>Tuần 41 · Nhóm Sản phẩm</h5><div class="cal"><i></i><i class="ev" style="--c:#ff7a45">Họp sprint<br>9:00</i><i></i><i></i><i class="ev" style="--c:#6c8cff">Demo<br>14:00</i><i class="ev" style="--c:#2f9e5b">1:1<br>10:30</i><i></i><i></i><i class="ev" style="--c:#ff7a45">Tập trung<br>8–11</i><i></i><i></i><i></i><i class="ev" style="--c:#c06cff">Phỏng vấn<br>15:00</i><i></i><i></i></div></div>
-          <div role="tabpanel" id="ft-p2" aria-labelledby="ft-t2"><h5>Hộp thư chung · 4 chưa xử lý</h5><div class="mail"><div><i style="--c:#ffb27a"></i><b>Cửa hàng Mây</b><small>Đơn #2048 chưa giao</small><span>2 phút</span></div><div><i style="--c:#9fb6ff"></i><b>Anh Quân</b><small>Xin hoá đơn VAT</small><span>18 phút</span></div><div><i style="--c:#8fe0b0"></i><b>Chị Hà</b><small>Đổi size áo</small><span>1 giờ</span></div><div><i style="--c:#ffd86b"></i><b>Studio Gạo</b><small>Hợp tác tháng 11</small><span>3 giờ</span></div></div></div>
-          <div role="tabpanel" id="ft-p3" aria-labelledby="ft-t3"><h5>Doanh thu 8 tuần gần nhất</h5><div class="chart"><i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:48%"></i><i style="--h:62%"></i><i style="--h:70%"></i><i style="--h:66%"></i><i style="--h:84%"></i><i style="--h:96%"></i></div></div>
+          <div role="tabpanel" id="ft-p1" aria-labelledby="ft-t1" class="on"><h5>Week 41 · Product team</h5><div class="cal"><i></i><i class="ev" style="--c:#ff7a45">Sprint<br>9 AM</i><i></i><i></i><i class="ev" style="--c:#6c8cff">Demo<br>2 PM</i><i class="ev" style="--c:#2f9e5b">1:1<br>10:30</i><i></i><i></i><i class="ev" style="--c:#ff7a45">Focus<br>8–11</i><i></i><i></i><i></i><i class="ev" style="--c:#c06cff">Interview<br>3 PM</i><i></i><i></i></div></div>
+          <div role="tabpanel" id="ft-p2" aria-labelledby="ft-t2"><h5>Shared inbox · 4 open</h5><div class="mail"><div><i style="--c:#ffb27a"></i><b>Northwind Shop</b><small>Order #2048 not delivered</small><span>2 min</span></div><div><i style="--c:#9fb6ff"></i><b>Jason Lee</b><small>Invoice request</small><span>18 min</span></div><div><i style="--c:#8fe0b0"></i><b>Hannah Cole</b><small>Exchange for a smaller size</small><span>1 hr</span></div><div><i style="--c:#ffd86b"></i><b>Harbor Studio</b><small>November partnership</small><span>3 hr</span></div></div></div>
+          <div role="tabpanel" id="ft-p3" aria-labelledby="ft-t3"><h5>Revenue, last 8 weeks</h5><div class="chart"><i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:48%"></i><i style="--h:62%"></i><i style="--h:70%"></i><i style="--h:66%"></i><i style="--h:84%"></i><i style="--h:96%"></i></div></div>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>sản phẩm có 3–5 tính năng cùng cấp, mỗi tính năng cần một ảnh minh hoạ, và trang cần ngắn gọn mà vẫn cho người dùng tự khám phá.</p>
-      <p class="avoid"><b>Tránh khi</b>nội dung trong tab là thông tin mọi người dùng bắt buộc phải đọc: nội dung ẩn sau tab thường bị bỏ qua.</p>
+      <p class="use"><b>Use when</b>the product has 3–5 features of equal weight, each needs an illustration, and the page must stay short while still letting people explore.</p>
+      <p class="avoid"><b>Avoid when</b>the tab content is information every user must read: content hidden behind tabs is often skipped.</p>
     </div>
     <div class="kw"><button>feature tabs</button><button>vertical tab list with preview panel</button><button>sliding active indicator</button><button>crossfade panels</button><button>accessible tabs (role=tablist, arrow keys)</button></div>
   </article>
@@ -522,25 +522,25 @@
   <!-- 6 -->
   <article class="pattern" id="command-palette">
     <h2>Command palette</h2>
-    <p class="vi"><b>Bảng lệnh.</b> Một ô tìm kiếm nổi giữa màn hình, mở bằng phím tắt hoặc bằng nút; gõ vài ký tự để lọc ra lệnh hoặc trang cần mở, không phân biệt dấu. Trên máy tính, nhấn vào khung demo rồi nhấn <b>⌘K / Ctrl+K</b>, dùng ↑ ↓ và Enter để chọn. Trên điện thoại, chạm ô tìm kiếm trong khung demo. Gõ “doi” để tìm lệnh Đổi giao diện tối.</p>
-    <div class="demo" tabindex="0" aria-label="Demo command palette, nhấn Ctrl+K để mở">
+    <p class="vi"><b>Search-driven access to commands.</b> A search box that floats in the middle of the screen, opened with a keyboard shortcut or a button; typing a few characters filters the commands and pages. On desktop, click the frame, press <b>⌘K / Ctrl+K</b>, then use ↑ ↓ and Enter to choose. On a phone, tap the search field in the frame. Type “dark” to find Switch to dark theme.</p>
+    <div class="demo" tabindex="0" aria-label="Command palette demo, press Ctrl+K to open">
       <div class="app">
-        <div class="side"><b>Sổ tay</b><span class="cur">Trang chủ</span><span>Dự án</span><span>Ghi chú họp</span><span>Cài đặt</span></div>
-        <div class="doc"><h3>Kế hoạch quý 4</h3><div class="ln" style="width:90%"></div><div class="ln" style="width:76%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:52%"></div>
-          <div class="kbd-hint"><span>Mở bảng lệnh:</span><kbd>⌘</kbd><kbd>K</kbd><span>hoặc</span><kbd>Ctrl</kbd><kbd>K</kbd><button class="open-btn" type="button"><span class="d">Mở bảng lệnh</span><span class="m">Tìm lệnh hoặc trang…</span></button></div>
-          <p class="tap-hint">Chạm ô tìm kiếm để mở bảng lệnh, chạm ra ngoài bảng để đóng.</p></div>
+        <div class="side"><b>Notebook</b><span class="cur">Home</span><span>Projects</span><span>Meeting notes</span><span>Settings</span></div>
+        <div class="doc"><h3>Q4 plan</h3><div class="ln" style="width:90%"></div><div class="ln" style="width:76%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:52%"></div>
+          <div class="kbd-hint"><span>Open the command palette:</span><kbd>⌘</kbd><kbd>K</kbd><span>or</span><kbd>Ctrl</kbd><kbd>K</kbd><button class="open-btn" type="button"><span class="d">Open command palette</span><span class="m">Search commands or pages…</span></button></div>
+          <p class="tap-hint">Tap the search field to open the command palette; tap outside it to close.</p></div>
       </div>
       <div class="scrim"></div>
-      <div class="pal" role="dialog" aria-label="Bảng lệnh">
-        <input type="text" placeholder="Gõ lệnh hoặc tìm trang…" aria-label="Tìm lệnh" role="combobox" aria-expanded="true" aria-controls="cp-list" autocomplete="off">
+      <div class="pal" role="dialog" aria-label="Command palette">
+        <input type="text" placeholder="Type a command or search…" aria-label="Search commands" role="combobox" aria-expanded="true" aria-controls="cp-list" autocomplete="off">
         <div class="list" id="cp-list" role="listbox"></div>
-        <div class="foot"><span><kbd>↑</kbd> <kbd>↓</kbd> chọn</span><span><kbd>Enter</kbd> chạy</span><span><kbd>Esc</kbd> đóng</span></div>
+        <div class="foot"><span><kbd>↑</kbd> <kbd>↓</kbd> select</span><span><kbd>Enter</kbd> run</span><span><kbd>Esc</kbd> close</span></div>
       </div>
       <div class="toast"></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>ứng dụng có nhiều trang và hành động (công cụ làm việc, dashboard, trình soạn thảo) mà người dùng mở hằng ngày; người dùng quen bàn phím thao tác nhanh hơn nhiều so với dùng menu.</p>
-      <p class="avoid"><b>Tránh khi</b>trang marketing hoặc sản phẩm dành cho người dùng mới: phím tắt ⌘K không tự hiển thị, nên bảng lệnh không thay thế được menu nhìn thấy được. Trên mobile luôn cần một nút mở bảng lệnh.</p>
+      <p class="use"><b>Use when</b>an app has many pages and actions (productivity tools, dashboards, editors) that people open every day; keyboard users work much faster this way than through menus.</p>
+      <p class="avoid"><b>Avoid when</b>the page is a marketing site or the product targets new users: the ⌘K shortcut is invisible, so a command palette cannot replace a visible menu. On mobile, always provide a button that opens it.</p>
     </div>
     <div class="kw"><button>command palette</button><button>⌘K / Ctrl+K shortcut</button><button>fuzzy search, diacritic-insensitive</button><button>grouped results with keyboard navigation</button><button>cmdk-style modal</button></div>
   </article>
@@ -548,27 +548,27 @@
   <!-- 7 -->
   <article class="pattern" id="empty-state">
     <h2>Empty state</h2>
-    <p class="vi"><b>Trạng thái trống.</b> Khi chưa có dữ liệu, giao diện hiển thị một hình minh hoạ nhỏ, một câu giải thích và một hành động chính để bắt đầu, thay vì để vùng nội dung trống. Nhấn “Tạo việc đầu tiên” hoặc “Dùng mẫu”, sau đó nhấn “Xoá hết” để quay lại trạng thái trống.</p>
+    <p class="vi"><b>What a screen shows before it has data.</b> When there is no data yet, the interface shows a small illustration, one sentence of explanation, and one primary action to get started, instead of leaving the content area blank. Press “Create first task” or “Use template”, then press “Clear all” to return to the empty state.</p>
     <div class="demo">
       <div class="mini">
         <div class="panel">
-          <div class="ph"><b>Việc cần làm</b><span class="cnt">0 việc</span><button class="sbtn add-one">+ Thêm</button></div>
+          <div class="ph"><b>To-do</b><span class="cnt">0 tasks</span><button class="sbtn add-one">+ Add</button></div>
           <div class="body">
             <ul class="tasks"></ul>
             <div class="empty">
               <div class="ill"><i>+</i></div>
-              <h4>Chưa có việc nào</h4>
-              <p>Thêm việc đầu tiên để bắt đầu, hoặc dùng mẫu Tuần làm việc gồm 3 việc có sẵn.</p>
-              <div class="acts"><button class="pbtn add-one">Tạo việc đầu tiên</button><button class="sbtn add-tpl">Dùng mẫu</button></div>
+              <h4>No tasks yet</h4>
+              <p>Add your first task to get started, or use the Work week template with 3 ready-made tasks.</p>
+              <div class="acts"><button class="pbtn add-one">Create first task</button><button class="sbtn add-tpl">Use template</button></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="demo-tools"><button class="clear-all">Xoá hết</button></div>
+      <div class="demo-tools"><button class="clear-all">Clear all</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>lần đầu dùng ứng dụng, tìm kiếm không có kết quả, giỏ hàng trống, hộp thư đã xử lý hết. Đây là vị trí hướng dẫn người dùng bước tiếp theo.</p>
-      <p class="avoid"><b>Tránh khi</b>vùng nội dung trống chỉ vì dữ liệu đang tải: khi đó dùng skeleton, nếu không người dùng sẽ hiểu nhầm là dữ liệu đã mất.</p>
+      <p class="use"><b>Use when</b>someone opens the app for the first time, a search returns no results, the cart is empty, or the inbox is cleared. This is the place to point people to the next step.</p>
+      <p class="avoid"><b>Avoid when</b>the area is empty only because data is still loading: use a skeleton instead, or people will assume their data is gone.</p>
     </div>
     <div class="kw"><button>empty state</button><button>friendly illustration + one-line explanation</button><button>primary action to create first item</button><button>starter template option</button><button>zero-data onboarding</button></div>
   </article>
@@ -576,22 +576,22 @@
   <!-- 8 -->
   <article class="pattern" id="skeleton-loading">
     <h2>Skeleton loading</h2>
-    <p class="vi"><b>Khung chờ dạng skeleton.</b> Trong lúc chờ dữ liệu, giao diện vẽ trước hình dạng xám của nội dung sắp hiển thị, kèm một vệt sáng chạy ngang (shimmer). Người dùng thấy bố cục ngay, nên thời gian chờ có cảm giác ngắn hơn so với spinner. Nhấn “Tải lại” để xem lại quá trình tải.</p>
+    <p class="vi"><b>Placeholder shapes while content loads.</b> While data loads, the interface draws gray placeholder shapes of the upcoming content, with a light band sweeping across them (shimmer). People see the layout right away, so the wait feels shorter than with a spinner. Press “Reload” to watch the loading sequence again.</p>
     <div class="demo">
       <div class="mini">
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:55%"></span><span class="sk ln" style="width:30%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:95%"></span><span class="sk ln" style="width:80%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#ffb27a"></span><div><div class="name">Linh Đặng</div><div class="time">12 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#ffd6a5,#ff7a45)"></span><div class="txt">Hoàng hôn ở Hội An chiều nay, chụp từ cầu An Hội.</div><div class="meta"><span>♥ 128</span><span>💬 14</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#ffb27a"></span><div><div class="name">Linda Davis</div><div class="time">12 min ago</div></div></div><span class="img" style="background:linear-gradient(135deg,#ffd6a5,#ff7a45)"></span><div class="txt">Sunset over the harbor this evening, taken from the old bridge.</div><div class="meta"><span>♥ 128</span><span>💬 14</span></div></div></div>
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:50%"></span><span class="sk ln" style="width:28%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:90%"></span><span class="sk ln" style="width:70%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#9fb6ff"></span><div><div class="name">Quang Võ</div><div class="time">40 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#c9d6ff,#4c6ef5)"></span><div class="txt">Hoàn thành bản thiết kế ứng dụng đặt lịch spa. Rất mong nhận góp ý về phần màu sắc.</div><div class="meta"><span>♥ 64</span><span>💬 9</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#9fb6ff"></span><div><div class="name">Quinn Walker</div><div class="time">40 min ago</div></div></div><span class="img" style="background:linear-gradient(135deg,#c9d6ff,#4c6ef5)"></span><div class="txt">Finished the design for a spa booking app. Feedback on the color palette is welcome.</div><div class="meta"><span>♥ 64</span><span>💬 9</span></div></div></div>
         <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:60%"></span><span class="sk ln" style="width:32%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:92%"></span><span class="sk ln" style="width:64%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
-          <div class="layer real"><div class="row"><span class="av" style="background:#8fe0b0"></span><div><div class="name">Mai Hồ</div><div class="time">2 giờ trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#d3f9d8,#2f9e5b)"></span><div class="txt">Công thức bánh chuối nướng không đường, mềm và thơm hơn mong đợi.</div><div class="meta"><span>♥ 302</span><span>💬 41</span></div></div></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#8fe0b0"></span><div><div class="name">Maya Ross</div><div class="time">2 hr ago</div></div></div><span class="img" style="background:linear-gradient(135deg,#d3f9d8,#2f9e5b)"></span><div class="txt">A sugar-free banana bread recipe that came out softer and more flavorful than expected.</div><div class="meta"><span>♥ 302</span><span>💬 41</span></div></div></div>
       </div>
-      <span class="status">đang tải…</span>
-      <div class="demo-tools"><button class="reload">↻ Tải lại</button></div>
+      <span class="status">loading…</span>
+      <div class="demo-tools"><button class="reload">↻ Reload</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tải danh sách, feed, thẻ sản phẩm, bảng: nội dung có hình dạng biết trước và thời gian chờ từ 0,3 giây đến vài giây.</p>
-      <p class="avoid"><b>Tránh khi</b>tác vụ chạy nền lâu hoặc kết quả không có hình dạng biết trước: dùng thanh tiến trình kèm thông báo trạng thái.</p>
+      <p class="use"><b>Use when</b>loading lists, feeds, product cards, or tables: content with a predictable shape and a wait between 0.3 seconds and a few seconds.</p>
+      <p class="avoid"><b>Avoid when</b>a background task runs long or the result has no predictable shape: use a progress bar with a status message.</p>
     </div>
     <div class="kw"><button>skeleton loading</button><button>shimmer placeholder</button><button>content-shaped placeholders</button><button>crossfade skeleton → content</button><button>perceived performance</button></div>
   </article>
@@ -611,7 +611,7 @@
     const upd = () => {
       const on = sc.scrollTop > 24;
       hdr.classList.toggle('shrunk', on);
-      st.textContent = 'trạng thái: ' + (on ? 'floating pill' : 'full-width');
+      st.textContent = 'state: ' + (on ? 'floating pill' : 'full-width');
       hint.style.opacity = sc.scrollTop > 10 ? 0 : 1;
     };
     sc.addEventListener('scroll', upd, { passive: true });
@@ -633,9 +633,9 @@
     sc.addEventListener('scroll', () => { hint.style.opacity = sc.scrollTop > 10 ? 0 : 1; }, { passive: true });
     $$('.add', root).forEach(b => b.addEventListener('click', () => {
       n++; badge.textContent = n; badge.classList.add('on');
-      $$('.add', root).forEach(x => { x.textContent = 'Đã thêm ✓ (' + n + ')'; x.classList.add('done'); });
+      $$('.add', root).forEach(x => { x.textContent = 'Added ✓ (' + n + ')'; x.classList.add('done'); });
       clearTimeout(root._t);
-      root._t = setTimeout(() => $$('.add', root).forEach(x => { x.textContent = 'Thêm vào giỏ'; x.classList.remove('done'); }), 1400);
+      root._t = setTimeout(() => $$('.add', root).forEach(x => { x.textContent = 'Add to cart'; x.classList.remove('done'); }), 1400);
     }));
   }
 
@@ -643,7 +643,7 @@
   {
     const root = $('#social-proof'), cnt = $('.count', root), slides = $$('.slide', root), dots = $$('.dots button', root);
     let i = 0, timer;
-    const fmt = v => Math.round(v).toLocaleString('vi-VN');
+    const fmt = v => Math.round(v).toLocaleString('en-US');
     const count = () => {
       const to = +cnt.dataset.to;
       if (reduce) { cnt.textContent = fmt(to); return; }
@@ -669,7 +669,7 @@
       $$('.pl', root).forEach(pl => {
         const v = $('.v', pl), bill = $('.bill', pl);
         const from = +v.textContent, to = +v.dataset[yearly ? 'y' : 'm'];
-        if (+v.dataset.m > 0) bill.textContent = yearly ? 'thanh toán ' + (to * 12 * 1000).toLocaleString('vi-VN') + 'đ mỗi năm' : 'thanh toán hằng tháng, huỷ bất cứ lúc nào';
+        if (+v.dataset.m > 0) bill.textContent = yearly ? 'billed $' + (to * 12).toLocaleString('en-US') + ' per year' : 'billed monthly, cancel anytime';
         if (reduce || from === to) { v.textContent = to; return; }
         const t0 = performance.now(), d = 450;
         const step = t => { const p = Math.min(1, (t - t0) / d); v.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
@@ -679,7 +679,7 @@
     sw.addEventListener('click', () => set(sw.getAttribute('aria-checked') !== 'true'));
     lbls.forEach(l => l.addEventListener('click', () => set(l.dataset.p === 'y')));
     set(false);
-    // mobile: các gói nằm trên một hàng cuộn ngang, mở đầu ở gói được đề xuất
+    // mobile: plans sit in one horizontally scrolling row, starting at the recommended plan
     const plans = $('.plans', root), rec = $('.rec', root);
     const center = () => { if (plans.scrollWidth > plans.clientWidth) plans.scrollLeft = rec.offsetLeft - (plans.clientWidth - rec.offsetWidth) / 2; };
     document.fonts.ready.then(center);
@@ -692,7 +692,7 @@
     const sel = (t, focus) => {
       tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).classList.toggle('on', on); });
       if (focus) t.focus();
-      // vị trí đo sau khi mô tả tab mở ra
+      // measure the position after the tab description expands
       requestAnimationFrame(() => place(t)); setTimeout(() => place(t), 420);
     };
     tabs.forEach((t, k) => {
@@ -712,16 +712,16 @@
   // 6. Command palette
   {
     const root = $('#command-palette'), demo = $('.demo', root), app = $('.app', root), input = $('input', root), list = $('.list', root), toast = $('.toast', root);
-    const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+    const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const cmds = [
-      { g: 'Điều hướng', t: 'Trang chủ', ic: '⌂', k: 'G H' },
-      { g: 'Điều hướng', t: 'Dự án', ic: '▤', k: 'G P' },
-      { g: 'Điều hướng', t: 'Ghi chú họp', ic: '✎' },
-      { g: 'Điều hướng', t: 'Cài đặt', ic: '⚙', k: '⌘ ,' },
-      { g: 'Hành động', t: 'Tạo tài liệu mới', ic: '+', k: '⌘ N' },
-      { g: 'Hành động', t: 'Mời thành viên', ic: '☺' },
-      { g: 'Hành động', t: 'Đổi giao diện tối', ic: '◐', k: '⌘ ⇧ L' },
-      { g: 'Hành động', t: 'Xuất PDF', ic: '⇩' },
+      { g: 'Navigation', t: 'Home', ic: '⌂', k: 'G H' },
+      { g: 'Navigation', t: 'Projects', ic: '▤', k: 'G P' },
+      { g: 'Navigation', t: 'Meeting notes', ic: '✎' },
+      { g: 'Navigation', t: 'Settings', ic: '⚙', k: '⌘ ,' },
+      { g: 'Actions', t: 'Create new document', ic: '+', k: '⌘ N' },
+      { g: 'Actions', t: 'Invite members', ic: '☺' },
+      { g: 'Actions', t: 'Switch to dark theme', ic: '◐', k: '⌘ ⇧ L' },
+      { g: 'Actions', t: 'Export PDF', ic: '⇩' },
     ];
     let shown = [], act = 0, lastFocus = null;
     const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
@@ -734,7 +734,7 @@
       const q = norm(input.value.trim());
       shown = cmds.filter(c => norm(c.t).includes(q) || norm(c.g).includes(q));
       act = Math.min(act, Math.max(0, shown.length - 1));
-      if (!shown.length) { list.innerHTML = '<div class="none">Không có lệnh nào khớp "' + esc(input.value) + '"</div>'; return; }
+      if (!shown.length) { list.innerHTML = '<div class="none">No commands match "' + esc(input.value) + '"</div>'; return; }
       let html = '', g = '';
       shown.forEach((c, i) => {
         if (c.g !== g) { g = c.g; html += '<div class="grp">' + g + '</div>'; }
@@ -749,10 +749,10 @@
     const run = i => {
       const c = shown[i]; if (!c) return;
       close();
-      if (c.t === 'Đổi giao diện tối') { app.classList.toggle('dark'); c.t = 'Đổi giao diện sáng'; c.ic = '◑'; }
-      else if (c.t === 'Đổi giao diện sáng') { app.classList.toggle('dark'); c.t = 'Đổi giao diện tối'; c.ic = '◐'; }
-      if (c.g === 'Điều hướng') $$('.side span', root).forEach(s => s.classList.toggle('cur', s.textContent === c.t));
-      toast.textContent = 'Đã chạy: ' + (c.g === 'Điều hướng' ? 'Mở ' + c.t : c.t === 'Đổi giao diện sáng' ? 'Giao diện tối' : c.t === 'Đổi giao diện tối' ? 'Giao diện sáng' : c.t);
+      if (c.t === 'Switch to dark theme') { app.classList.toggle('dark'); c.t = 'Switch to light theme'; c.ic = '◑'; }
+      else if (c.t === 'Switch to light theme') { app.classList.toggle('dark'); c.t = 'Switch to dark theme'; c.ic = '◐'; }
+      if (c.g === 'Navigation') $$('.side span', root).forEach(s => s.classList.toggle('cur', s.textContent === c.t));
+      toast.textContent = c.g === 'Navigation' ? 'Opened ' + c.t : c.t === 'Switch to light theme' ? 'Dark theme on' : c.t === 'Switch to dark theme' ? 'Light theme on' : 'Done: ' + c.t;
       toast.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('on'), 1600);
     };
     demo.addEventListener('keydown', e => {
@@ -773,19 +773,19 @@
   // 7. Empty state
   {
     const root = $('#empty-state'), ul = $('.tasks', root), empty = $('.empty', root), cnt = $('.cnt', root);
-    const ideas = ['Gửi báo giá cho Studio Gạo', 'Chuẩn bị slide họp thứ Hai', 'Gọi lại cho chị Hà', 'Duyệt thiết kế trang chủ', 'Đặt phòng họp tầng 3'];
+    const ideas = ['Send the quote to Harbor Studio', 'Prepare slides for Monday’s meeting', 'Call Hannah back', 'Review the homepage design', 'Book the third-floor meeting room'];
     let k = 0;
-    const sync = () => { const n = ul.children.length; empty.classList.toggle('gone', n > 0); cnt.textContent = n + ' việc'; };
+    const sync = () => { const n = ul.children.length; empty.classList.toggle('gone', n > 0); cnt.textContent = n + (n === 1 ? ' task' : ' tasks'); };
     const add = t => {
       const li = document.createElement('li');
-      li.innerHTML = '<label><input type="checkbox"><span></span></label><button class="del" aria-label="Xoá việc">×</button>';
+      li.innerHTML = '<label><input type="checkbox"><span></span></label><button class="del" aria-label="Delete task">×</button>';
       li.querySelector('span').textContent = t;
       li.querySelector('input').addEventListener('change', e => li.classList.toggle('done', e.target.checked));
       li.querySelector('.del').addEventListener('click', () => { li.remove(); sync(); });
       ul.appendChild(li); sync();
     };
     $$('.add-one', root).forEach(b => b.addEventListener('click', () => add(ideas[k++ % ideas.length])));
-    $('.add-tpl', root).addEventListener('click', () => ['Lên kế hoạch tuần', 'Trả lời email tồn', 'Tổng kết thứ Sáu'].forEach(add));
+    $('.add-tpl', root).addEventListener('click', () => ['Plan the week', 'Answer pending email', 'Friday wrap-up'].forEach(add));
     $('.clear-all', root).addEventListener('click', () => { ul.innerHTML = ''; sync(); });
   }
 
@@ -793,9 +793,9 @@
   {
     const root = $('#skeleton-loading'), mini = $('.mini', root), st = $('.status', root);
     const load = () => {
-      mini.classList.remove('loaded'); st.textContent = 'đang tải…';
+      mini.classList.remove('loaded'); st.textContent = 'loading…';
       clearTimeout(root._t);
-      root._t = setTimeout(() => { mini.classList.add('loaded'); st.textContent = 'đã tải xong'; }, 1800);
+      root._t = setTimeout(() => { mini.classList.add('loaded'); st.textContent = 'loaded'; }, 1800);
     };
     $('.reload', root).addEventListener('click', load);
     onView($('.demo', root), load);

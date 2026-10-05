@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Từ điển pattern thiết kế web — tên gọi và keyword cho từng pattern UI</title>
-<meta name="description" content="Từ điển pattern thiết kế web bằng tiếng Việt: mỗi pattern có demo tương tác, tên gọi chuẩn và keyword tiếng Anh để mô tả chính xác yêu cầu cho công cụ AI.">
+<title>Pattern Dictionary — names and keywords for web UI patterns</title>
+<meta name="description" content="A dictionary of web design patterns. Each pattern has an interactive demo, its standard name and the keywords to describe it precisely to an AI tool.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="vi_VN">
-<meta property="og:title" content="Từ điển pattern thiết kế web">
-<meta property="og:description" content="Các pattern UI/UX có demo tương tác, kèm tên gọi và keyword tiếng Anh để viết prompt cho AI.">
-<meta property="og:url" content="https://epistex0.github.io/tu-dien-pattern/">
-<link rel="canonical" href="https://epistex0.github.io/tu-dien-pattern/">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Pattern Dictionary">
+<meta property="og:description" content="UI/UX patterns with interactive demos, standard names and keywords for writing AI prompts.">
+<meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/">
+<link rel="canonical" href="https://epistex0.github.io/pattern-dictionary/">
 <meta name="theme-color" content="#f6f5f2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="assets/dict.css">
 <script>document.documentElement.classList.add('js')</script>
 <style>
-/* ===== Landing — chỉ trang này. Token/font lấy từ dict.css ===== */
+/* ===== Landing — this page only. Tokens and fonts come from dict.css ===== */
 :root{
   --spring:linear(0,.06 2.4%,.23 5.3%,.46 9.1%,.72 14%,.9 19%,1.01 25%,1.04 30%,1.035 36%,1.01 46%,.998 58%,1);
   --out:cubic-bezier(.2,.8,.2,1);
@@ -75,7 +75,7 @@ h1,h2,h3,p{margin:0}
 .stats{font:500 13px/1.7 var(--mono);text-wrap:balance;color:var(--mute);margin-top:28px;letter-spacing:.02em}
 .stats b{color:var(--ink);font-weight:500}
 
-/* Text reveal: chữ hiện sẵn (opacity >0 để không trễ LCP), chỉ dâng lên và đậm dần */
+/* Text reveal: text is visible from the start (opacity >0 so LCP is not delayed); it only rises and gains contrast */
 @media (prefers-reduced-motion:no-preference){
   .hero h1 .w{animation:wIn 1.1s var(--spring) backwards;animation-delay:calc(var(--i) * 70ms)}
   .note-hand{animation:noteIn 1s var(--spring) .9s backwards}
@@ -151,7 +151,7 @@ h1,h2,h3,p{margin:0}
 .panel[data-step="3"] .prompt-card{opacity:1;translate:none}
 .story-cap{display:none}
 
-/* ---------- Bento các nhóm ---------- */
+/* ---------- Group bento ---------- */
 .cluster+.cluster{margin-top:72px}
 .cl-h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .cl-h h3{font-size:26px;font-weight:800;letter-spacing:-.02em}
@@ -176,19 +176,19 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 .card.dark .pv{opacity:1}
 @media (min-width:901px){.card.dark{display:grid;grid-template-columns:1fr 1.6fr;grid-template-rows:auto 1fr;column-gap:12px;padding:10px}.card.dark .pv{grid-column:2;grid-row:1/3}.card.dark .meta{padding-top:26px}}
 
-/* Preview động mỗi nhóm (chỉ transform/opacity; dừng khi ngoài khung) */
+/* Animated preview per group (transform/opacity only; paused when off screen) */
 .pv{position:relative;height:168px;border-radius:14px;background:#f4f3ef;overflow:hidden}
 .card:not(.live) .pv *,.card:not(.live) .pv::before,.card:not(.live) .pv::after{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.pv *,.pv::before,.pv::after{animation:none!important}}
 .pv .c{position:absolute;inset:0;display:grid;place-items:center}
-/* Phong cách: ba bộ quần áo cho cùng chữ Aa */
+/* Visual styles: three styles for the same "Aa" */
 .pv-aes .s{position:absolute;inset:26px 30%;display:grid;place-items:center;border-radius:12px;font-size:44px;animation:aes 7.5s var(--out) infinite;animation-delay:calc(var(--i) * -2.5s)}
 .pv-aes .s1{background:#fff;font-family:Georgia,serif;font-weight:400;border:1px solid var(--line)}
 .pv-aes .s2{background:#ffe14d;font-family:var(--mono);font-weight:500;border:3px solid #111;border-radius:0;box-shadow:6px 6px 0 #111}
 .pv-aes .s3{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.8);font-weight:800;color:#3a2a6b;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .pv-aes{background:radial-gradient(60% 80% at 20% 30%,#ffc4a3,transparent 70%),radial-gradient(60% 80% at 85% 70%,#b8c7ff,transparent 70%),#f3e6ff}
 @keyframes aes{0%,30%{opacity:1;transform:none}36%,94%{opacity:0;transform:translateY(10px) scale(.96)}100%{opacity:1;transform:none}}
-/* Bố cục: lưới cột hiện ra, một khối đổi phía */
+/* Layout: column grid appears, one block switches sides */
 .pv-lay .g{position:absolute;inset:18px;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .pv-lay .g i{border-radius:4px;background:rgba(255,90,31,.12);animation:lay 4s ease-in-out infinite}
 .pv-lay .b{position:absolute;inset:30px 30px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -196,24 +196,24 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 .pv-lay .b i:first-child{background:var(--ink);animation:swap 4s var(--spring) infinite}
 @keyframes lay{0%,100%{opacity:0}35%,65%{opacity:1}}
 @keyframes swap{0%,40%{transform:none}50%,90%{transform:translateX(calc(100% + 10px))}}
-/* Chuyển động: stagger lò xo */
+/* Motion: spring stagger */
 .pv-mot .c{display:flex;gap:12px;justify-content:center;align-items:center}
 .pv-mot i{width:22px;height:56px;border-radius:999px;background:var(--ink);animation:mot 3.2s var(--spring) infinite;animation-delay:calc(var(--i) * 110ms)}
 .pv-mot i:nth-child(3){background:var(--acc)}
 @keyframes mot{0%{opacity:0;transform:translateY(34px)}30%,75%{opacity:1;transform:none}90%,100%{opacity:0;transform:translateY(-12px)}}
-/* Bề mặt: aurora + hạt nhiễu */
+/* Surfaces: aurora + grain */
 .pv-sur{background:#efe6f7}
 .pv-sur::before{content:"";position:absolute;left:50%;top:50%;width:max(160%,520px);aspect-ratio:1;margin:calc(max(160%,520px) / -2) 0 0 calc(max(160%,520px) / -2);background:radial-gradient(closest-side at 36% 42%,#ff9f73,transparent),radial-gradient(closest-side at 64% 46%,#9fb8ff,transparent),radial-gradient(closest-side at 50% 64%,#ffd38c,transparent);animation:spin 16s linear infinite}
 .pv-sur::after{content:"";position:absolute;inset:0;opacity:.32;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 @keyframes spin{to{transform:rotate(1turn)}}
-/* Điều hướng: bottom tab bar */
+/* Navigation: bottom tab bar */
 .pv-nav .bar{position:absolute;left:50%;bottom:22px;width:220px;margin-left:-110px;height:52px;border-radius:16px;background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);place-items:center}
 .pv-nav .bar i{width:16px;height:16px;border-radius:5px;background:#cfcbc3}
 .pv-nav .ind{position:absolute;left:5px;top:5px;width:calc(25% - 2.5px);height:40px;border-radius:12px;background:rgba(255,90,31,.14);animation:tab 6s var(--spring) infinite}
 .pv-nav .top{position:absolute;left:50%;top:22px;width:220px;margin-left:-110px;display:grid;gap:8px}
 .pv-nav .top i{height:10px;border-radius:4px;background:#dedad3}.pv-nav .top i:first-child{width:50%;background:var(--ink)}
 @keyframes tab{0%,20%{transform:none}25%,45%{transform:translateX(100%)}50%,70%{transform:translateX(200%)}75%,95%{transform:translateX(300%)}100%{transform:none}}
-/* Form: gõ → hợp lệ */
+/* Forms: typing → valid */
 .pv-form .f{position:absolute;left:50%;top:50%;width:230px;margin:-38px 0 0 -115px}
 .pv-form small{display:block;font:600 12px/1 var(--sans);color:var(--mute);margin-bottom:8px}
 .pv-form .in{position:relative;height:44px;border-radius:10px;background:#fff;border:1px solid var(--line);padding:0 14px;display:flex;align-items:center}
@@ -223,18 +223,18 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 @keyframes type{0%{transform:scaleX(0)}45%,100%{transform:scaleX(1)}}
 @keyframes okr{0%,48%{opacity:0}55%,92%{opacity:1}100%{opacity:0}}
 @keyframes pop{0%,48%{transform:scale(0)}58%,92%{transform:scale(1)}100%{transform:scale(0)}}
-/* Phản hồi: toast */
+/* Feedback: toast */
 .pv-fb .toast{position:absolute;left:50%;bottom:20px;width:230px;margin-left:-115px;height:46px;border-radius:12px;background:var(--ink);display:flex;align-items:center;gap:10px;padding:0 14px;animation:toast 4.5s var(--spring) infinite}
 .pv-fb .toast b{width:18px;height:18px;border-radius:50%;background:var(--acc);flex:none}
 .pv-fb .toast i{height:8px;width:60%;border-radius:4px;background:#77736d}
 .pv-fb .bg{position:absolute;inset:22px 30px auto;display:grid;gap:8px}.pv-fb .bg i{height:10px;border-radius:4px;background:#dedad3}.pv-fb .bg i:nth-child(2){width:70%}
 @keyframes toast{0%{opacity:0;transform:translateY(90px)}18%,70%{opacity:1;transform:none}82%,100%{opacity:0;transform:translateY(14px)}}
-/* Dữ liệu: biểu đồ cột */
+/* Data: bar chart */
 .pv-data .c{display:flex;align-items:flex-end;justify-content:center;gap:10px;padding-bottom:26px}
 .pv-data i{width:18px;height:var(--h);border-radius:5px 5px 2px 2px;background:var(--ink);transform-origin:bottom;animation:bar 4s var(--spring) infinite;animation-delay:calc(var(--i) * 80ms)}
 .pv-data i:nth-child(5){background:var(--acc)}
 @keyframes bar{0%{transform:scaleY(0)}25%,80%{transform:scaleY(1)}100%{transform:scaleY(0)}}
-/* Thành phần UX: command palette */
+/* UX components: command palette */
 .pv-ux .pal{position:absolute;left:50%;top:18px;width:240px;margin-left:-120px;border-radius:12px;background:#fff;border:1px solid var(--line);box-shadow:0 14px 30px -16px rgba(0,0,0,.3);padding:8px}
 .pv-ux .q{height:32px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 6px;font:500 12px var(--mono);color:var(--mute)}
 .pv-ux .q kbd{margin-left:auto;font:500 10px var(--mono);padding:2px 5px;border:1px solid var(--line);border-radius:4px}
@@ -345,13 +345,15 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   .end{padding:120px 0 104px}
   .foot .lw{grid-template-columns:1fr}.foot ul{columns:2}
 }
-/* mobile: chữ ≥12px, vùng chạm ≥32px (đặt cuối để thắng quy tắc ≤900px) */
+/* mobile: text ≥12px, tap targets ≥32px (placed last to win over the ≤900px rules) */
 @media (max-width:760px){
   .lnav .brand{min-height:40px}
   .tabs .tg{font-size:12px}
   .tabs .n{min-width:20px;height:20px;font-size:12px;line-height:20px}
   .tag,.prompt-card .lbl{font-size:12px}
   .pv-dark .modal small{font-size:12px}
+  .cl-h h3 span{display:block;margin:6px 0 0}
+  .card .cnt{white-space:nowrap}
   .foot li{padding:0}
   .foot a,.foot li span{display:flex;align-items:center;min-height:36px}
 }
@@ -361,23 +363,23 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 
 <header class="lnav" id="lnav">
   <div class="lnav-in">
-    <a class="brand" href="index.html" aria-current="page">Từ điển pattern</a>
-    <nav class="lnav-links" aria-label="Trong trang này">
-      <a href="#quy-trinh">Quy trình</a><a href="#nhom">Các nhóm</a><a href="#prompt">Ghép prompt</a>
+    <a class="brand" href="index.html" aria-current="page">Pattern Dictionary</a>
+    <nav class="lnav-links" aria-label="On this page">
+      <a href="#quy-trinh">How it works</a><a href="#nhom">Groups</a><a href="#prompt">Prompt builder</a>
     </nav>
-    <a class="btn btn-ink" href="aesthetic.html" data-first>Mở từ điển</a>
+    <a class="btn btn-ink" href="aesthetic.html" data-first>Browse</a>
   </div>
 </header>
 
 <main>
 <section class="hero">
   <div class="lw">
-    <span class="pill"><b>Từ điển học tập</b><span aria-hidden="true">·</span>UI/UX bằng tiếng Việt</span>
-    <h1><span class="w" style="--i:0">Nhận</span> <span class="w" style="--i:1">ra</span> <span class="w" style="--i:2">pattern,</span><br> <span class="w" style="--i:3">gọi</span> <span class="w" style="--i:4">đúng</span> <span class="anchor"><span class="w" style="--i:5"><em>tên</em>.</span><span class="note-hand" aria-hidden="true"><svg viewBox="0 0 60 44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M56 34C40 38 18 34 8 12"/><path d="M4 20 8 11l9 4"/></svg>keyword tiếng Anh<br>để viết prompt AI</span></span></h1>
-    <p class="lead">Mỗi pattern thiết kế web có <b>demo tương tác ngay trên trang</b>, kèm tên gọi và keyword tiếng Anh. Biết đúng tên giúp mô tả chính xác yêu cầu cho AI, thay vì chỉ nói “làm cho đẹp hơn”.</p>
+    <span class="pill"><b>Learning reference</b><span aria-hidden="true">·</span>UI/UX patterns</span>
+    <h1><span class="w" style="--i:0">See</span> <span class="w" style="--i:1">the</span> <span class="w" style="--i:2">pattern.</span><br> <span class="w" style="--i:3">Know</span> <span class="w" style="--i:4">its</span> <span class="anchor"><span class="w" style="--i:5"><em>name</em>.</span><span class="note-hand" aria-hidden="true"><svg viewBox="0 0 60 44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M56 34C40 38 18 34 8 12"/><path d="M4 20 8 11l9 4"/></svg>the keyword<br>for your AI prompt</span></span></h1>
+    <p class="lead">Each web design pattern has an <b>interactive demo on the page</b>, its standard name and the keywords that describe it. Knowing the name lets you state exactly what you want from an AI tool instead of asking it to “make it look better”.</p>
     <div class="cta-row">
-      <a class="btn btn-ink" href="aesthetic.html" data-first>Mở từ điển <span class="ar">→</span></a>
-      <a class="btn btn-ghost" href="#prompt">Ghép prompt</a>
+      <a class="btn btn-ink" href="aesthetic.html" data-first>Open the dictionary <span class="ar">→</span></a>
+      <a class="btn btn-ghost" href="#prompt">Build a prompt</a>
     </div>
     <p class="stats" id="stats" hidden></p>
   </div>
@@ -387,15 +389,15 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="sec" id="quy-trinh" aria-labelledby="qt-h">
   <div class="lw">
     <div class="sec-h rv">
-      <div class="eb">Quy trình</div>
-      <h2 id="qt-h">Từ cảm nhận tới câu lệnh</h2>
-      <p>Nhận ra một giao diện đẹp mới là bước đầu. Để mô tả lại, cần biết tên gọi của từng thành phần.</p>
+      <div class="eb">How it works</div>
+      <h2 id="qt-h">From impression to instruction</h2>
+      <p>Recognizing a well-made interface is the first step. Describing it requires the name of each part.</p>
     </div>
     <div class="story">
       <div class="steps">
-        <div class="step on" data-s="1"><span class="n">01</span><h3>Nhận ra</h3><p>Khi cuộn qua một trang, người xem cảm nhận được sự chỉn chu nhưng khó chỉ ra yếu tố nào tạo nên cảm nhận đó. <b>Có cảm nhận nhưng chưa có thuật ngữ.</b></p></div>
-        <div class="step" data-s="2"><span class="n">02</span><h3>Gọi tên</h3><p>Từ điển tách giao diện thành từng thành phần có tên: thanh điều hướng nổi dạng pill là <b>Floating nav</b>, lưới ô kích thước không đều là <b>Bento grid</b>, bề mặt kính mờ là <b>Glassmorphism</b>.</p></div>
-        <div class="step" data-s="3"><span class="n">03</span><h3>Viết prompt</h3><p>Khi đã có tên, mô tả cho AI là việc <b>ghép keyword</b>. Kết quả sát yêu cầu hơn nhiều so với câu “làm cho đẹp hơn”.</p></div>
+        <div class="step on" data-s="1"><span class="n">01</span><h3>Notice</h3><p>Scrolling through a page, you can tell it is well made but cannot point to what makes it so. <b>The impression is there; the vocabulary is not.</b></p></div>
+        <div class="step" data-s="2"><span class="n">02</span><h3>Name</h3><p>The dictionary breaks an interface into named parts: a pill-shaped navigation bar that floats over the page is a <b>Floating nav</b>, a grid of unequal tiles is a <b>Bento grid</b>, a frosted-glass surface is <b>Glassmorphism</b>.</p></div>
+        <div class="step" data-s="3"><span class="n">03</span><h3>Prompt</h3><p>With the names in hand, describing a design to an AI tool means <b>combining keywords</b>. The result matches the request far more closely than “make it look better”.</p></div>
       </div>
       <div class="panel" id="panel" data-step="1" aria-hidden="true">
         <div class="frame">
@@ -404,7 +406,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
             <div class="m-nav"><i></i><i></i><i></i><i></i><i></i></div>
             <div class="m-hero"><i></i><i></i><i></i></div>
             <div class="m-bento"><div class="big"><div class="glass"></div></div><div></div><div></div><div class="wide"></div></div>
-            <span class="wow">đẹp, nhưng chưa biết tên</span>
+            <span class="wow">no name for it yet</span>
           </div>
         </div>
         <span class="tag t1" style="--i:0">Floating nav</span>
@@ -420,9 +422,9 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="sec" id="nhom" aria-labelledby="nhom-h">
   <div class="lw">
     <div class="sec-h rv">
-      <div class="eb">Các nhóm</div>
-      <h2 id="nhom-h">Hai cách nhìn một giao diện</h2>
-      <p><b style="color:var(--ink);font-weight:600">Hình thức</b> mô tả giao diện trông như thế nào. <b style="color:var(--ink);font-weight:600">Chức năng</b> mô tả giao diện giúp người dùng làm gì. Mỗi thẻ dưới đây dẫn tới một trang.</p>
+      <div class="eb">Groups</div>
+      <h2 id="nhom-h">Two ways to read an interface</h2>
+      <p><b style="color:var(--ink);font-weight:600">Visual</b> describes how an interface looks. <b style="color:var(--ink);font-weight:600">Functional</b> describes what it helps users do. Each card below opens one page.</p>
     </div>
     <div id="clusters"></div>
   </div>
@@ -431,23 +433,23 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 <section class="sec" id="prompt" aria-labelledby="pb-h">
   <div class="lw">
     <div class="sec-h rv">
-      <div class="eb">Công cụ</div>
-      <h2 id="pb-h">Ghép keyword thành prompt</h2>
-      <p>Chọn các pattern cần dùng, prompt được cập nhật theo lựa chọn. Copy và dán vào công cụ AI đang dùng.</p>
+      <div class="eb">Tool</div>
+      <h2 id="pb-h">Turn keywords into a prompt</h2>
+      <p>Select the patterns you need. The prompt updates with each selection. Copy it and paste it into your AI tool.</p>
     </div>
     <div class="pb rv">
       <div class="pb-l">
-        <label class="pb-subj"><span>Sản phẩm cần thiết kế (tiếng Anh)</span><input id="subj" value="a note-taking app" autocomplete="off" spellcheck="false"></label>
-        <div class="tabs" role="tablist" aria-label="Nhóm keyword" id="tabs"></div>
+        <label class="pb-subj"><span>What you are building</span><input id="subj" value="a note-taking app" autocomplete="off" spellcheck="false"></label>
+        <div class="tabs" role="tablist" aria-label="Keyword groups" id="tabs"></div>
         <div class="chips" role="tabpanel" id="chips" aria-labelledby=""></div>
-        <p class="pb-hint">Chip trong nhóm <b>Dark patterns</b> được ghi vào dòng “Avoid” để AI tránh, không phải để áp dụng.</p>
+        <p class="pb-hint">Chips from <b>Dark patterns</b> go on the “Avoid” line, so the AI steers clear of them instead of applying them.</p>
       </div>
       <div class="pb-r">
         <span class="lbl">Prompt</span>
         <div class="pb-out" id="out" aria-live="polite"></div>
         <div class="pb-act">
           <button class="btn copy" type="button" id="copy">Copy prompt</button>
-          <button class="btn clear" type="button" id="clear">Bỏ chọn tất cả</button>
+          <button class="btn clear" type="button" id="clear">Clear all</button>
         </div>
       </div>
     </div>
@@ -456,12 +458,12 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 
 <section class="end">
   <div class="lw rv">
-    <div class="eb">Bắt đầu</div>
-    <h2>Gọi đúng tên, mô tả đúng ý.</h2>
-    <p>Mở một nhóm, xem pattern hoạt động trong khung demo và nhấn keyword để copy.</p>
+    <div class="eb">Get started</div>
+    <h2>Name it right. Get what you meant.</h2>
+    <p>Open a group, watch each pattern work in its demo frame and click a keyword to copy it.</p>
     <div class="cta-row">
-      <a class="btn btn-ink" href="aesthetic.html" data-first><span>Bắt đầu với <span data-first-name>Phong cách</span></span> <span class="ar">→</span></a>
-      <a class="btn btn-ghost" href="#nhom">Xem tất cả nhóm</a>
+      <a class="btn btn-ink" href="aesthetic.html" data-first><span>Start with <span data-first-name>Visual styles</span></span> <span class="ar">→</span></a>
+      <a class="btn btn-ghost" href="#nhom">See all groups</a>
     </div>
   </div>
 </section>
@@ -469,7 +471,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
 
 <footer class="foot">
   <div class="lw">
-    <div><b>Từ điển pattern</b>Dự án học tập, phi thương mại. Mọi sản phẩm, tên người và số liệu trong demo đều hư cấu.</div>
+    <div><b>Pattern Dictionary</b>A non-commercial learning project. All products, names and figures in the demos are fictional.</div>
     <ul id="foot-list"></ul>
   </div>
 </footer>
@@ -481,7 +483,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const pages = Dict.pages;
 
-  /* Tên pattern theo trang (marquee + prompt builder). Số liệu/nhóm vẫn lấy từ DICT_PAGES. */
+  /* Pattern names per page (marquee + prompt builder). Counts and groups still come from DICT_PAGES. */
   const NAMES = {
     'aesthetic.html': ['Swiss/Minimalism', 'Brutalism', 'Retro', 'Editorial', 'Glassmorphism', 'Neumorphism', 'Bento grid', 'Dark mode tech'],
     'layout.html': ['Hero centered', 'Split hero', 'Bento grid', 'Asymmetric grid', 'Full-bleed', 'Card grid'],
@@ -497,16 +499,16 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   };
   const LABEL = { 'aesthetic.html': 'Style', 'layout.html': 'Layout', 'motion.html': 'Motion', 'surface.html': 'Surface', 'navigation.html': 'Navigation', 'forms.html': 'Forms', 'feedback.html': 'Feedback', 'data.html': 'Data display', 'ux.html': 'Components', 'onboarding.html': 'Onboarding', 'dark-patterns.html': 'Avoid' };
 
-  /* ---------- số liệu + link "Mở từ điển" ---------- */
+  /* ---------- stats + "Open the dictionary" links ---------- */
   const open = pages.filter(p => p.count), total = open.reduce((s, p) => s + p.count, 0), soon = pages.length - open.length;
   const first = open[0] || pages[0];
   $$('[data-first]').forEach(a => a.href = first.file);
   $$('[data-first-name]').forEach(s => s.textContent = first.name);
   const st = $('#stats');
-  st.innerHTML = `<b>${total}</b> pattern có demo · <b>${open.length}</b> nhóm đã mở` + (soon ? ` · ${soon} nhóm sắp có` : '');
+  st.innerHTML = `<b>${total}</b> patterns with demos · <b>${open.length}</b> groups available` + (soon ? ` · ${soon} coming soon` : '');
   st.hidden = false;
 
-  /* ---------- marquee: hai hàng, ngược chiều ---------- */
+  /* ---------- marquee: two rows, opposite directions ---------- */
   const rowHTML = (files, dur, rev) => {
     const li = files.flatMap(f => (NAMES[f] || []).map(n => `<li><i>/</i>${esc(n)}</li>`)).join('');
     return `<div class="mq-row${rev ? ' rev' : ''}" style="--dur:${dur}s"><ul>${li}</ul><ul aria-hidden="true">${li}</ul></div>`;
@@ -514,7 +516,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const byGroup = g => pages.filter(p => p.group === g).map(p => p.file);
   $('#mq').innerHTML = rowHTML(byGroup(DICT_GROUPS[0]), 90, false) + rowHTML(byGroup(DICT_GROUPS[1]), 110, true);
 
-  /* ---------- bento các nhóm ---------- */
+  /* ---------- group bento ---------- */
   const R = (n, f) => Array.from({ length: n }, (_, i) => f(i)).join('');
   const PV = {
     'aesthetic.html': `<div class="s s1" style="--i:0">Aa</div><div class="s s2" style="--i:1">Aa</div><div class="s s3" style="--i:2">Aa</div>`,
@@ -525,12 +527,12 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
     'forms.html': `<div class="f"><small>Email</small><div class="in"><span class="txt"></span><span class="chk">✓</span><span class="ok-ring"></span></div></div>`,
     'feedback.html': `<div class="bg"><i></i><i></i><i></i></div><div class="toast"><b></b><i></i></div>`,
     'data.html': `<div class="c">${[40, 70, 52, 88, 110, 76, 96].map((h, i) => `<i style="--h:${h}px;--i:${i}"></i>`).join('')}</div>`,
-    'ux.html': `<div class="pal"><div class="q">⌘ Tìm lệnh…<kbd>esc</kbd></div><div class="rows"><span class="hl"></span><i style="--w:70%"></i><i style="--w:52%"></i><i style="--w:62%"></i></div></div>`,
+    'ux.html': `<div class="pal"><div class="q">⌘ Search commands…<kbd>esc</kbd></div><div class="rows"><span class="hl"></span><i style="--w:70%"></i><i style="--w:52%"></i><i style="--w:62%"></i></div></div>`,
     'onboarding.html': `<div class="list">${[70, 54, 80].map((w, i) => `<div class="row"><span class="bx" style="--i:${i}"></span><i style="--w:${w}%"></i></div>`).join('')}<div class="prog"><i></i></div></div>`,
-    'dark-patterns.html': `<div class="c"><span class="urg">Ưu đãi kết thúc sau 02:59</span><div class="modal"><b>Nâng cấp lên gói Pro?</b><span>Nâng cấp ngay</span><small>Không, tôi không thích tiết kiệm</small></div></div>`,
+    'dark-patterns.html': `<div class="c"><span class="urg">Offer ends in 02:59</span><div class="modal"><b>Upgrade to Pro?</b><span>Upgrade now</span><small>No thanks, I don’t like saving money</small></div></div>`,
   };
-  const SPAN = { 'Hình thức': [4, 2, 2, 4], 'Chức năng': [2, 2, 2, 2, 2, 2, 6] };
-  const SUB = { 'Hình thức': 'giao diện trông thế nào', 'Chức năng': 'giao diện giúp làm gì' };
+  const SPAN = { 'Visual': [4, 2, 2, 4], 'Functional': [2, 2, 2, 2, 2, 2, 6] };
+  const SUB = { 'Visual': 'how it looks', 'Functional': 'what it helps users do' };
   const card = (p, i, g) => {
     const span = (SPAN[g] || [])[i] || 2, dark = p.file === 'dark-patterns.html';
     const tag = p.count ? 'a' : 'div';
@@ -538,17 +540,17 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
     const pvc = { aest: 'aes', layo: 'lay', moti: 'mot', surf: 'sur', navi: 'nav', form: 'form', feed: 'fb', data: 'data', ux: 'ux', onbo: 'onb', dark: 'dark' }[slug] || 'mot';
     return `<${tag} class="card rv${p.count ? '' : ' soon'}${dark ? ' dark' : ''}${span >= 4 ? ' wide-m' : ''}" style="--span:${span};--i:${i}"${p.count ? ` href="${p.file}"` : ''}>` +
       `<div class="pv pv-${pvc}" aria-hidden="true">${PV[p.file] ?? PV['motion.html']}</div>` +
-      `<div class="meta"><h4>${esc(p.name)}</h4>${p.count ? `<span class="cnt">${p.count} pattern</span><span class="go" aria-hidden="true">→</span>` : '<span class="soon-b">Sắp có</span>'}</div>` +
+      `<div class="meta"><h4>${esc(p.name)}</h4>${p.count ? `<span class="cnt">${p.count} pattern${p.count === 1 ? '' : 's'}</span><span class="go" aria-hidden="true">→</span>` : '<span class="soon-b">Coming soon</span>'}</div>` +
       `<p>${esc(p.desc)}</p></${tag}>`;
   };
   $('#clusters').innerHTML = DICT_GROUPS.map(g => {
     const ps = pages.filter(p => p.group === g), n = ps.reduce((s, p) => s + p.count, 0);
-    return `<div class="cluster"><div class="cl-h rv"><h3>${esc(g)}<span>${SUB[g] || ''}</span></h3><small>${ps.length} nhóm${n ? ` · ${n} pattern` : ''}</small></div>` +
+    return `<div class="cluster"><div class="cl-h rv"><h3>${esc(g)}<span>${SUB[g] || ''}</span></h3><small>${ps.length} groups${n ? ` · ${n} patterns` : ''}</small></div>` +
       `<div class="bento">${ps.map((p, i) => card(p, i, g)).join('')}</div></div>`;
   }).join('');
 
   /* ---------- footer ---------- */
-  $('#foot-list').innerHTML = pages.map(p => p.count ? `<li><a href="${p.file}">${esc(p.name)}</a></li>` : `<li><span>${esc(p.name)} · sắp có</span></li>`).join('');
+  $('#foot-list').innerHTML = pages.map(p => p.count ? `<li><a href="${p.file}">${esc(p.name)}</a></li>` : `<li><span>${esc(p.name)} · coming soon</span></li>`).join('');
 
   /* ---------- prompt builder ---------- */
   const sel = new Map([['aesthetic.html', new Set(['Swiss/Minimalism'])], ['layout.html', new Set(['Hero centered', 'Bento grid'])], ['motion.html', new Set(['Scroll-triggered reveal'])]]);
@@ -560,7 +562,7 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const render = () => {
     const lines = [`<span class="k">Design a landing page for</span> ${esc(subj.value.trim() || 'a product')}<span class="k">.</span>`];
     bfiles.forEach(f => { const s = sel.get(f); if (s?.size) lines.push(`<span class="k">${LABEL[f]}:</span> ${[...s].map(n => `<mark>${esc(n.toLowerCase())}</mark>`).join(', ')}`); });
-    lines.push('<span class="k">Keep it responsive, accessible, and respect prefers-reduced-motion.</span>');
+    lines.push('<span class="k">Make it responsive and accessible, and respect prefers-reduced-motion.</span>');
     out.innerHTML = lines.join('\n');
     $$('#tabs [role=tab]').forEach(t => t.querySelector('.n').textContent = sel.get(t.dataset.f)?.size || '');
   };
@@ -587,12 +589,12 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const copyBtn = $('#copy');
   copyBtn.addEventListener('click', async () => {
     const ok = await Dict.copy(out.textContent);
-    copyBtn.textContent = ok ? 'Đã copy ✓' : 'Không copy được';
+    copyBtn.textContent = ok ? 'Copied ✓' : 'Couldn’t copy';
     clearTimeout(copyBtn._t); copyBtn._t = setTimeout(() => copyBtn.textContent = 'Copy prompt', 1600);
   });
   showTab(cur); render();
 
-  /* ---------- floating nav: nổi lên khi rời đầu trang ---------- */
+  /* ---------- floating nav: lifts off once the page leaves the top ---------- */
   const nav = $('#lnav'), sentinel = document.createElement('div');
   sentinel.style.cssText = 'position:absolute;top:0;left:0;height:24px;width:1px;pointer-events:none';
   document.body.prepend(sentinel);
@@ -602,11 +604,11 @@ a.card:hover .go{translate:4px 0;color:var(--acc)}
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
   $$('.rv').forEach(el => rio.observe(el));
 
-  /* ---------- chỉ chạy animation lặp khi đang trong khung ---------- */
+  /* ---------- run looping animations only while on screen ---------- */
   const lio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('live', e.isIntersecting)));
   $$('.card, #mq').forEach(el => lio.observe(el));
 
-  /* ---------- scrollytelling: bước nào qua giữa màn hình thì panel đổi theo ---------- */
+  /* ---------- scrollytelling: the panel follows whichever step crosses the trigger line ---------- */
   const panel = $('#panel'), steps = $$('.step');
   const sio = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;

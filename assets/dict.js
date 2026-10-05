@@ -1,22 +1,22 @@
-/* Từ điển pattern — khung trang chung (nav, mục lục, chip keyword, nút Xem lại).
-   Nạp bằng <script src="assets/dict.js"></script> ở CUỐI <body>, TRƯỚC script riêng của trang.
-   Xem SHELL.md. */
+/* Pattern Dictionary — shared page chrome (nav, table of contents, keyword chips, Replay button).
+   Load with <script src="assets/dict.js"></script> at the END of <body>, BEFORE the page's own script.
+   See SHELL.md. */
 
-/* Danh sách trang — nguồn duy nhất. Thêm trang mới = thêm một dòng.
-   count: số pattern (0 = chưa có / chưa điền). */
-const DICT_GROUPS = ['Hình thức', 'Chức năng'];
+/* Page list — the single source of truth. Adding a page = adding one line.
+   count: number of patterns (0 = not available yet). */
+const DICT_GROUPS = ['Visual', 'Functional'];
 const DICT_PAGES = [
-  { file: 'aesthetic.html',     name: 'Phong cách',         group: 'Hình thức', count: 8,  desc: 'Một nội dung trình bày theo tám phong cách thẩm mỹ khác nhau.' },
-  { file: 'layout.html',        name: 'Bố cục',             group: 'Hình thức', count: 6,  desc: 'Cách chia vùng trang: vị trí, thứ tự và số cột của từng khối nội dung.' },
-  { file: 'motion.html',        name: 'Chuyển động',        group: 'Hình thức', count: 11, desc: 'Hiệu ứng chuyển động phản hồi thao tác cuộn, nhấn và di chuột.' },
-  { file: 'surface.html',       name: 'Bề mặt',             group: 'Hình thức', count: 6,  desc: 'Chất liệu bề mặt: nhiễu hạt, dải chuyển màu, lưới chấm và hiệu ứng ánh sáng.' },
-  { file: 'navigation.html',    name: 'Điều hướng',         group: 'Chức năng', count: 7,  desc: 'Cấu trúc giúp người dùng biết vị trí hiện tại và đường đi tiếp theo.' },
-  { file: 'forms.html',         name: 'Form & nhập liệu',   group: 'Chức năng', count: 6,  desc: 'Ô nhập, lựa chọn và kiểm tra lỗi giúp người dùng điền nhanh và chính xác.' },
-  { file: 'feedback.html',      name: 'Phản hồi & lớp phủ', group: 'Chức năng', count: 7,  desc: 'Thông báo, hộp thoại và tooltip phản hồi kết quả thao tác của người dùng.' },
-  { file: 'data.html',          name: 'Hiển thị dữ liệu',   group: 'Chức năng', count: 6,  desc: 'Bảng, danh sách, thẻ chỉ số và biểu đồ trình bày dữ liệu rõ ràng.' },
-  { file: 'ux.html',            name: 'Thành phần UX',      group: 'Chức năng', count: 8,  desc: 'Các thành phần quen thuộc hỗ trợ người dùng ra quyết định nhanh hơn.' },
-  { file: 'onboarding.html',    name: 'Onboarding',         group: 'Chức năng', count: 4,  desc: 'Quy trình dẫn người dùng mới từ lần mở đầu tiên tới khi nhận ra giá trị sản phẩm.' },
-  { file: 'dark-patterns.html', name: 'Dark patterns',      group: 'Chức năng', count: 7,  desc: 'Thủ thuật giao diện dẫn người dùng tới lựa chọn bất lợi, kèm cách nhận diện và thay thế.' },
+  { file: 'aesthetic.html',     name: 'Visual styles',       group: 'Visual',     count: 8,  desc: 'One piece of content presented in eight distinct visual styles.' },
+  { file: 'layout.html',        name: 'Layout',              group: 'Visual',     count: 6,  desc: 'How a page is divided: the position, order and column count of each content block.' },
+  { file: 'motion.html',        name: 'Motion',              group: 'Visual',     count: 11, desc: 'Animation that responds to scrolling, tapping and pointer movement.' },
+  { file: 'surface.html',       name: 'Surfaces & texture',  group: 'Visual',     count: 6,  desc: 'Surface treatments: grain, gradients, halftone dots and light effects.' },
+  { file: 'navigation.html',    name: 'Navigation',          group: 'Functional', count: 7,  desc: 'Structures that show users where they are and where they can go next.' },
+  { file: 'forms.html',         name: 'Forms & input',       group: 'Functional', count: 6,  desc: 'Inputs, choices and validation that help users complete forms quickly and accurately.' },
+  { file: 'feedback.html',      name: 'Feedback & overlays', group: 'Functional', count: 7,  desc: 'Notifications, dialogs and tooltips that report the result of a user action.' },
+  { file: 'data.html',          name: 'Data display',        group: 'Functional', count: 6,  desc: 'Tables, lists, metric cards and charts that present data clearly.' },
+  { file: 'ux.html',            name: 'UX components',       group: 'Functional', count: 8,  desc: 'Familiar components that help users make decisions faster.' },
+  { file: 'onboarding.html',    name: 'Onboarding',          group: 'Functional', count: 4,  desc: 'Flows that take new users from first launch to the moment they see the product’s value.' },
+  { file: 'dark-patterns.html', name: 'Dark patterns',       group: 'Functional', count: 7,  desc: 'Interface tricks that steer users toward choices against their interest, with how to spot and replace them.' },
 ];
 
 const Dict = (() => {
@@ -26,15 +26,15 @@ const Dict = (() => {
   const page = DICT_PAGES.find(p => p.file === here);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  /* ---------- nav: thương hiệu + một popover cho mỗi cụm ---------- */
+  /* ---------- nav: brand + one popover per group ---------- */
   const nav = document.querySelector('nav.dnav');
   if (nav) {
-    nav.setAttribute('aria-label', 'Các nhóm pattern');
-    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Từ điển pattern — trang chủ"><span>Từ điển<span class="b2"> pattern</span></span></a>' +
+    nav.setAttribute('aria-label', 'Pattern groups');
+    nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Pattern Dictionary — home"><span>Pattern<span class="b2"> Dictionary</span></span></a>' +
       DICT_GROUPS.map((g, gi) => {
         const items = DICT_PAGES.filter(p => p.group === g);
         const cur = items.find(p => p === page);
-        return `<button type="button" class="dnav-btn${cur ? ' is-cur' : ''}" popovertarget="dnav-p${gi}" aria-label="${esc(g)}${cur ? ', đang xem ' + esc(cur.name) : ''}">` +
+        return `<button type="button" class="dnav-btn${cur ? ' is-cur' : ''}" popovertarget="dnav-p${gi}" aria-label="${esc(g)}${cur ? ', current page: ' + esc(cur.name) : ''}">` +
           `${esc(g)}${cur ? `<span class="dnav-here">${esc(cur.name)}</span>` : ''}<span class="dnav-car" aria-hidden="true">▾</span></button>` +
           `<div class="dnav-pop" id="dnav-p${gi}" popover><div class="dnav-gt">${esc(g)}</div>` +
           items.map(p => `<a href="${p.file}"${p === page ? ' aria-current="page"' : ''}>` +
@@ -64,20 +64,20 @@ const Dict = (() => {
     });
   }
 
-  /* ---------- đầu trang: nhãn nhóm + mục lục chip từ article.pattern ---------- */
+  /* ---------- page head: group eyebrow + chip table of contents from article.pattern ---------- */
   const arts = $$('article.pattern');
   const head = document.querySelector('header.head');
   if (head && arts.length) {
     const eb = document.createElement('div'); eb.className = 'eyebrow';
-    eb.textContent = `${page ? page.group + ' · ' : ''}${arts.length} pattern`;
+    eb.textContent = `${page ? page.group + ' · ' : ''}${arts.length} pattern${arts.length === 1 ? '' : 's'}`;
     head.prepend(eb);
-    const toc = document.createElement('nav'); toc.className = 'toc'; toc.setAttribute('aria-label', 'Mục lục');
+    const toc = document.createElement('nav'); toc.className = 'toc'; toc.setAttribute('aria-label', 'Contents');
     toc.innerHTML = arts.map((a, i) => `<a href="#${a.id}"><span>${String(i + 1).padStart(2, '0')}</span>` +
       `${esc(a.dataset.toc || a.querySelector(':scope>h2').textContent)}</a>`).join('');
     head.append(toc);
   }
 
-  /* ---------- chip keyword: bấm để copy ---------- */
+  /* ---------- keyword chips: click to copy ---------- */
   const copy = async t => {
     try { await navigator.clipboard.writeText(t); return true; } catch (_) {
       const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;opacity:0';
@@ -89,14 +89,14 @@ const Dict = (() => {
   document.addEventListener('click', async e => {
     const b = e.target.closest('.pattern>.kw button'); if (!b) return;
     const ok = await copy(b.textContent.trim());
-    b.dataset.msg = ok ? 'Đã copy' : 'Không copy được';
+    b.dataset.msg = ok ? 'Copied' : 'Couldn’t copy';
     b.classList.remove('ok', 'err'); b.classList.add(ok ? 'ok' : 'err');
     clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove('ok', 'err'), 1200);
   });
 
-  /* ---------- nút ↻ Xem lại ---------- */
+  /* ---------- ↻ Replay button ---------- */
   const replays = {};
-  const fixReplay = b => { b.type = 'button'; b.textContent = '↻ Xem lại'; };
+  const fixReplay = b => { b.type = 'button'; b.textContent = '↻ Replay'; };
   $$('.replay').forEach(fixReplay);
   document.addEventListener('click', e => {
     const b = e.target.closest('.demo .replay'); if (!b) return;
@@ -104,14 +104,14 @@ const Dict = (() => {
   });
   const replay = (id, fn) => { replays[id] = fn; };
 
-  /* ---------- chạy một lần khi phần tử vào khung nhìn ---------- */
+  /* ---------- run once when an element enters the viewport ---------- */
   const onView = (el, fn, threshold = .35) => {
     const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); fn(); } }, { threshold });
     io.observe(el);
   };
 
-  /* ---------- demo chuẩn: init khi vào khung, Xem lại = dựng lại từ HTML gốc ----------
-     init(demoEl, articleEl) -> cleanup | undefined. Article nhận class .on khi đã mount. */
+  /* ---------- standard demo: init on entering the viewport; Replay = rebuild from the original HTML ----------
+     init(demoEl, articleEl) -> cleanup | undefined. The article gets class .on once mounted. */
   const demo = (id, init) => {
     const a = document.getElementById(id), d = a.querySelector('.demo'), html = d.innerHTML;
     let clean = null;

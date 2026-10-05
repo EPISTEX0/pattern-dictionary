@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hiển thị dữ liệu — Từ điển pattern</title>
-<meta name="description" content="6 pattern hiển thị dữ liệu: data table, accordion, carousel, activity feed, comparison table, faceted search. Có demo thao tác được và keyword để prompt.">
+<title>Data display — Pattern Dictionary</title>
+<meta name="description" content="6 data display patterns: data table, accordion, carousel, activity feed, comparison table, faceted search. Each has an interactive demo and prompt keywords.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset scoped to demos, specificity 0 */
 :where(.pattern>.demo) :where(h3,h4,p,ul,ol,li,dl,dd,figure,blockquote,fieldset,legend){margin:0;padding:0}
 :where(.pattern>.demo) :where(ul,ol){list-style:none}
 :where(.pattern>.demo) :where(button,input,select){font:inherit;color:inherit}
@@ -140,6 +140,8 @@
   #carousel .demo .foot{padding-top:10px;gap:8px}
   #carousel .demo .dots{gap:0}
   #carousel .demo .dots button{width:32px;height:32px}
+  #carousel .demo .top h3{flex:1;min-width:0}
+  #carousel .demo .top .ctl{flex-shrink:0}
 }
 
 /* ===== 4. Activity feed ===== */
@@ -247,10 +249,10 @@
   #faceted-search .demo main{min-height:0}
 }
 /* ===== mobile (≤760px) =====
-   Data table: 6 cột không vừa 390px, nên chuyển mỗi hàng thành một thẻ; hàng tiêu đề thành dãy nút sắp xếp
-   (đúng khuyến nghị trong mục "Tránh khi" của chính pattern này).
-   Comparison table: chỉ 3 sản phẩm, giá trị ngắn, nên giữ dạng bảng và thu cột cho vừa bề ngang:
-   so sánh cần thấy cả ba cột cùng lúc; cột tiêu chí vẫn sticky nếu bảng rộng hơn. */
+   Data table: 6 columns do not fit 390px, so each row becomes a card and the header row becomes a strip of sort buttons
+   (as the pattern's own "Avoid when" note recommends).
+   Comparison table: only 3 products with short values, so it stays a table with narrower columns:
+   comparing needs all three columns in view; the criteria column stays sticky if the table gets wider. */
 @media (max-width:760px){
   #data-table .demo{height:560px}
   #data-table .demo .bar{padding:12px;gap:8px}
@@ -300,6 +302,9 @@
   #activity-feed .demo :is(.day,.pill,time){font-size:12px}
   #faceted-search .demo legend{font-size:12px}
   #faceted-search .demo aside label{padding:8px 6px}
+  #faceted-search .demo fieldset{min-width:0}
+  #faceted-search .demo aside{gap:10px}
+  #faceted-search .demo .card .meta span{font-size:12px}
   #faceted-search .demo :is(aside .n,.chip small){font-size:12px}
   #faceted-search .demo .chip{height:36px}
   #faceted-search .demo .rm{height:32px}
@@ -318,32 +323,32 @@
 
 <main class="wrap">
   <header class="head">
-    <h1>Hiển thị dữ liệu</h1>
-    <p>Pattern trình bày lượng thông tin lớn: bảng, danh sách có bộ lọc, nội dung thu gọn và mở ra khi cần. Mọi demo đều thao tác được bằng chuột, chạm và bàn phím.</p>
+    <h1>Data display</h1>
+    <p>Patterns for presenting large amounts of information: tables, filterable lists, and content that collapses until needed. Every demo works with mouse, touch and keyboard.</p>
   </header>
 
   <!-- 1 -->
   <article class="pattern" id="data-table">
     <h2>Data table</h2>
-    <p class="vi"><b>Bảng dữ liệu có sắp xếp, lọc và chọn nhiều hàng.</b> Hàng tiêu đề dính ở trên khi cuộn trong bảng. Trên màn hình hẹp, mỗi hàng chuyển thành một thẻ và tiêu đề cột chuyển thành dãy nút sắp xếp. Nhấn tiêu đề cột để sắp xếp (nhấn lần nữa để đảo chiều), nhập vào ô lọc để thu hẹp, chọn nhiều hàng để hiện thanh thao tác hàng loạt.</p>
+    <p class="vi"><b>A table of records with sorting, filtering and multi-row selection.</b> The header row sticks to the top while the table scrolls. On narrow screens, each row becomes a card and the column headers become a strip of sort buttons. Select a column header to sort (select it again to reverse), type in the filter to narrow the list, and select several rows to show the bulk actions bar.</p>
     <div class="demo">
       <div class="bar">
-        <div class="search"><label class="sr" for="dt-q">Lọc theo tên hoặc email</label><input id="dt-q" type="search" placeholder="Lọc theo tên hoặc email" autocomplete="off"></div>
-        <label class="sr" for="dt-st">Trạng thái</label>
-        <select id="dt-st"><option value="">Mọi trạng thái</option><option>Hoạt động</option><option>Đã mời</option><option>Tạm khoá</option></select>
+        <div class="search"><label class="sr" for="dt-q">Filter by name or email</label><input id="dt-q" type="search" placeholder="Filter by name or email" autocomplete="off"></div>
+        <label class="sr" for="dt-st">Status</label>
+        <select id="dt-st"><option value="">All statuses</option><option>Active</option><option>Invited</option><option>Suspended</option></select>
         <output class="cnt" aria-live="polite"></output>
-        <div class="bulk"><b></b><button type="button" class="pri exp">Xuất CSV</button><button type="button" class="unsel">Bỏ chọn</button></div>
+        <div class="bulk"><b></b><button type="button" class="pri exp">Export CSV</button><button type="button" class="unsel">Clear selection</button></div>
       </div>
-      <div class="wrapT" tabindex="0" role="region" aria-label="Bảng thành viên, cuộn được">
+      <div class="wrapT" tabindex="0" role="region" aria-label="Members table, scrollable">
         <table>
-          <caption class="sr">Thành viên dự án</caption>
+          <caption class="sr">Project members</caption>
           <thead><tr>
-            <th class="chk" scope="col"><label><input type="checkbox" class="all" aria-label="Chọn tất cả hàng đang hiện"></label></th>
-            <th scope="col" data-k="name" aria-sort="ascending"><button type="button">Thành viên<span class="ar" aria-hidden="true"></span></button></th>
-            <th scope="col" data-k="role"><button type="button">Vai trò<span class="ar" aria-hidden="true"></span></button></th>
-            <th scope="col" data-k="status"><button type="button">Trạng thái<span class="ar" aria-hidden="true"></span></button></th>
-            <th scope="col" data-k="projects" class="num"><button type="button">Dự án<span class="ar" aria-hidden="true"></span></button></th>
-            <th scope="col" data-k="seen" class="num"><button type="button">Hoạt động gần nhất<span class="ar" aria-hidden="true"></span></button></th>
+            <th class="chk" scope="col"><label><input type="checkbox" class="all" aria-label="Select all visible rows"></label></th>
+            <th scope="col" data-k="name" aria-sort="ascending"><button type="button">Member<span class="ar" aria-hidden="true"></span></button></th>
+            <th scope="col" data-k="role"><button type="button">Role<span class="ar" aria-hidden="true"></span></button></th>
+            <th scope="col" data-k="status"><button type="button">Status<span class="ar" aria-hidden="true"></span></button></th>
+            <th scope="col" data-k="projects" class="num"><button type="button">Projects<span class="ar" aria-hidden="true"></span></button></th>
+            <th scope="col" data-k="seen" class="num"><button type="button">Last active<span class="ar" aria-hidden="true"></span></button></th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -351,8 +356,8 @@
       <div class="toast" role="status"></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng cần so sánh nhiều bản ghi theo cùng thuộc tính, tìm một hàng cụ thể, hoặc thao tác trên nhiều hàng cùng lúc (xuất, xoá, đổi quyền): trang quản trị, danh sách đơn hàng, danh sách thành viên.</p>
-      <p class="avoid"><b>Tránh khi</b>mỗi bản ghi chỉ có 1–2 thuộc tính hoặc nội dung chủ yếu là hình ảnh: dùng danh sách hoặc lưới thẻ. Trên điện thoại, bảng có hơn 4 cột nên chuyển thành thẻ xếp chồng.</p>
+      <p class="use"><b>Use when</b>users need to compare many records on the same attributes, find a specific row, or act on several rows at once (export, delete, change permissions): admin consoles, order lists, member directories.</p>
+      <p class="avoid"><b>Avoid when</b>each record has only 1–2 attributes or the content is mostly images: use a list or a card grid. On phones, tables with more than 4 columns should become stacked cards.</p>
     </div>
     <div class="kw"><button>sortable data table</button><button>aria-sort column headers</button><button>sticky table header</button><button>row selection with bulk actions bar</button><button>select-all checkbox (indeterminate)</button><button>inline table filter</button><button>tabular numbers, right-aligned</button></div>
   </article>
@@ -360,27 +365,27 @@
   <!-- 2 -->
   <article class="pattern" id="accordion">
     <h2>Accordion</h2>
-    <p class="vi"><b>Danh sách mục thu gọn và mở rộng.</b> Mỗi mục chỉ hiện tiêu đề; phần nội dung mở ra bên dưới khi được chọn. Chế độ một mục mỗi lúc tự đóng mục cũ khi mở mục mới. Demo dùng phần tử <code>&lt;details&gt;</code> gốc của trình duyệt, nên Ctrl+F vẫn tìm thấy chữ trong mục đang đóng. Nhấn vào tiêu đề, hoặc Tab tới rồi nhấn Enter/Space.</p>
+    <p class="vi"><b>A list of sections that expand and collapse.</b> Each section shows only its heading; the content opens below it when selected. In one-at-a-time mode, opening a section closes the previous one. The demo uses the native <code>&lt;details&gt;</code> element, so Ctrl+F still finds text inside closed sections. Select a heading, or Tab to it and press Enter or Space.</p>
     <div class="demo">
       <div class="in">
         <div class="side">
-          <h3>Câu hỏi thường gặp</h3>
-          <p>Chưa có câu trả lời phù hợp: gửi câu hỏi cho đội hỗ trợ, phản hồi trong 1 ngày làm việc.</p>
-          <button type="button" class="excl" aria-pressed="true">Một mục mỗi lúc</button>
-          <p class="mode" aria-live="polite">Đang bật: mở mục mới sẽ đóng mục cũ</p>
+          <h3>Frequently asked questions</h3>
+          <p>Can't find an answer? Contact support. We reply within 1 business day.</p>
+          <button type="button" class="excl" aria-pressed="true">One at a time</button>
+          <p class="mode" aria-live="polite">On: opening a section closes the previous one</p>
         </div>
         <div class="list">
-          <details name="faq" open><summary>Ứng dụng có dùng được khi mất mạng không?</summary><div class="ans">Có. Các ghi chú mở gần đây được lưu trên máy; mọi chỉnh sửa khi ngoại tuyến sẽ tự đồng bộ khi có mạng trở lại.</div></details>
-          <details name="faq"><summary>Dữ liệu của tôi được sao lưu ở đâu?</summary><div class="ans">Mỗi giờ hệ thống tạo một bản sao lưu, giữ trong 30 ngày. Mỗi ghi chú khôi phục được về bất kỳ phiên bản nào trong khoảng đó.</div></details>
-          <details name="faq"><summary>Huỷ gói Pro thì ghi chú có bị mất không?</summary><div class="ans">Không. Tài khoản quay về gói Miễn phí, mọi ghi chú vẫn còn; chỉ các tính năng Pro (lịch sử phiên bản dài, tệp lớn) bị khoá lại.</div></details>
-          <details name="faq"><summary>Tôi dùng được trên bao nhiêu thiết bị?</summary><div class="ans">Gói Miễn phí: 2 thiết bị. Gói Pro: không giới hạn. Thiết bị cũ có thể gỡ trong <a href="#accordion">Cài đặt → Thiết bị</a>.</div></details>
-          <details name="faq"><summary>Làm sao mời người khác cùng sửa?</summary><div class="ans">Mở ghi chú, chọn Chia sẻ, nhập email. Người được mời có quyền Xem hoặc Sửa; quyền này đổi được bất cứ lúc nào.</div></details>
+          <details name="faq" open><summary>Does the app work offline?</summary><div class="ans">Yes. Recently opened notes are stored on your device, and edits made offline sync automatically when you reconnect.</div></details>
+          <details name="faq"><summary>Where is my data backed up?</summary><div class="ans">We create a backup every hour and keep it for 30 days. You can restore any note to any version from that period.</div></details>
+          <details name="faq"><summary>Will I lose my notes if I cancel Pro?</summary><div class="ans">No. Your account returns to the Free plan and all notes remain. Only Pro features (extended version history, large files) are locked.</div></details>
+          <details name="faq"><summary>How many devices can I use?</summary><div class="ans">Free plan: 2 devices. Pro plan: unlimited. You can remove old devices in <a href="#accordion">Settings → Devices</a>.</div></details>
+          <details name="faq"><summary>How do I invite someone to edit?</summary><div class="ans">Open the note, select Share and enter an email address. Invitees get View or Edit access, which you can change at any time.</div></details>
         </div>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>có nhiều mục nội dung độc lập và người đọc chỉ cần vài mục: FAQ, điều khoản chi tiết, bộ lọc nhiều nhóm, thông số kỹ thuật. Trang ngắn lại mà người dùng vẫn quét được mọi tiêu đề.</p>
-      <p class="avoid"><b>Tránh khi</b>người dùng cần đọc gần hết nội dung (mở từng mục là thêm thao tác), hoặc chỉ có 1–2 mục. Không đặt thông tin quyết định như giá, điều kiện huỷ trong mục đang đóng.</p>
+      <p class="use"><b>Use when</b>there are many independent sections and readers need only a few: FAQs, detailed terms, multi-group filters, technical specs. The page gets shorter while every heading stays scannable.</p>
+      <p class="avoid"><b>Avoid when</b>users need to read most of the content (opening each section adds work) or there are only 1–2 sections. Do not hide decision-critical information, such as price or cancellation terms, in a closed section.</p>
     </div>
     <div class="kw"><button>accordion</button><button>FAQ accordion</button><button>native &lt;details&gt; / &lt;summary&gt;</button><button>exclusive accordion (details name)</button><button>animated expand with chevron rotation</button><button>disclosure pattern, aria-expanded</button></div>
   </article>
@@ -388,31 +393,31 @@
   <!-- 3 -->
   <article class="pattern" id="carousel">
     <h2>Carousel / Slider</h2>
-    <p class="vi"><b>Dải nội dung trượt ngang.</b> Mỗi lần hiển thị một mục, kèm một phần mục kế tiếp để báo hiệu còn nội dung. Mặc định không tự chạy; khi bật Tự chạy, carousel dừng lúc con trỏ hoặc focus nằm trong khung. Vuốt ngang, nhấn ‹ › hoặc chấm chỉ báo, hoặc Tab vào khung rồi dùng phím ← →.</p>
+    <p class="vi"><b>A horizontal strip of content that slides.</b> It shows one item at a time, with part of the next item visible to signal there is more. It does not autoplay by default; when Autoplay is on, it pauses while the pointer or focus is inside. Swipe, use ‹ › or the dots, or Tab into the frame and use the ← → keys.</p>
     <div class="demo">
-      <section aria-roledescription="carousel" aria-label="Mẫu giao diện nổi bật">
+      <section aria-roledescription="carousel" aria-label="Featured templates">
         <div class="top">
-          <h3>Mẫu nổi bật tuần này</h3>
-          <button type="button" class="ctl play" aria-pressed="false">▶ Tự chạy</button>
-          <button type="button" class="ctl prv" aria-controls="car-track" aria-label="Slide trước">‹</button>
-          <button type="button" class="ctl nxt" aria-controls="car-track" aria-label="Slide sau">›</button>
+          <h3>Featured templates this week</h3>
+          <button type="button" class="ctl play" aria-pressed="false">▶ Autoplay</button>
+          <button type="button" class="ctl prv" aria-controls="car-track" aria-label="Previous slide">‹</button>
+          <button type="button" class="ctl nxt" aria-controls="car-track" aria-label="Next slide">›</button>
         </div>
-        <div class="track" id="car-track" tabindex="0" aria-live="polite" aria-label="Các slide, dùng phím mũi tên trái phải">
-          <div class="slide" role="group" aria-roledescription="slide" aria-label="1 trên 5" style="--bg:#ffd9c7;--fg:#b4370c"><div><h4>Kế hoạch tuần</h4><p>Bảy cột cho bảy ngày, kéo việc qua lại khi kế hoạch thay đổi.</p><button type="button" class="use">Dùng mẫu này</button></div><div class="prev" aria-hidden="true"><i class="b"></i><div class="cols"><i></i><i></i><i></i></div><i class="s"></i></div></div>
-          <div class="slide" role="group" aria-roledescription="slide" aria-label="2 trên 5" style="--bg:#cfe3ff;--fg:#2a55c9"><div><h4>Bảng Kanban</h4><p>Cần làm, Đang làm, Xong. Mỗi thẻ có người phụ trách và hạn chót.</p><button type="button" class="use">Dùng mẫu này</button></div><div class="prev" aria-hidden="true"><div class="cols"><i></i><i></i><i></i></div><i></i><i class="s"></i></div></div>
-          <div class="slide" role="group" aria-roledescription="slide" aria-label="3 trên 5" style="--bg:#d4f0dc;--fg:#1a7f4b"><div><h4>Nhật ký học tập</h4><p>Ghi lại mỗi buổi học trong 3 dòng, xem lại tiến bộ theo tháng.</p><button type="button" class="use">Dùng mẫu này</button></div><div class="prev" aria-hidden="true"><i class="s"></i><i></i><i></i><i class="b"></i><i class="s"></i></div></div>
-          <div class="slide" role="group" aria-roledescription="slide" aria-label="4 trên 5" style="--bg:#efe2ff;--fg:#6b3fc4"><div><h4>Báo cáo tháng</h4><p>Bảng số liệu và ba câu nhận xét, đủ để gửi cho cả nhóm.</p><button type="button" class="use">Dùng mẫu này</button></div><div class="prev" aria-hidden="true"><i class="b"></i><i class="b"></i><i class="s"></i></div></div>
-          <div class="slide" role="group" aria-roledescription="slide" aria-label="5 trên 5" style="--bg:#fff0b8;--fg:#8a6500"><div><h4>Việc nhà chia phiên</h4><p>Bảng phân công xoay vòng hằng tuần cho cả nhà, tự đổi lượt.</p><button type="button" class="use">Dùng mẫu này</button></div><div class="prev" aria-hidden="true"><div class="cols"><i></i><i></i><i></i></div><div class="cols"><i></i><i></i><i></i></div></div></div>
+        <div class="track" id="car-track" tabindex="0" aria-live="polite" aria-label="Slides, use the left and right arrow keys">
+          <div class="slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="--bg:#ffd9c7;--fg:#b4370c"><div><h4>Weekly planner</h4><p>Seven columns for seven days. Drag tasks between days when plans change.</p><button type="button" class="use">Use template</button></div><div class="prev" aria-hidden="true"><i class="b"></i><div class="cols"><i></i><i></i><i></i></div><i class="s"></i></div></div>
+          <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="--bg:#cfe3ff;--fg:#2a55c9"><div><h4>Kanban board</h4><p>To do, In progress, Done. Each card has an owner and a due date.</p><button type="button" class="use">Use template</button></div><div class="prev" aria-hidden="true"><div class="cols"><i></i><i></i><i></i></div><i></i><i class="s"></i></div></div>
+          <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="--bg:#d4f0dc;--fg:#1a7f4b"><div><h4>Study log</h4><p>Record each session in three lines and review progress by month.</p><button type="button" class="use">Use template</button></div><div class="prev" aria-hidden="true"><i class="s"></i><i></i><i></i><i class="b"></i><i class="s"></i></div></div>
+          <div class="slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="--bg:#efe2ff;--fg:#6b3fc4"><div><h4>Monthly report</h4><p>A metrics table and three takeaways, ready to share with the team.</p><button type="button" class="use">Use template</button></div><div class="prev" aria-hidden="true"><i class="b"></i><i class="b"></i><i class="s"></i></div></div>
+          <div class="slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="--bg:#fff0b8;--fg:#8a6500"><div><h4>Chore rotation</h4><p>A weekly rotating schedule for the household that advances automatically.</p><button type="button" class="use">Use template</button></div><div class="prev" aria-hidden="true"><div class="cols"><i></i><i></i><i></i></div><div class="cols"><i></i><i></i><i></i></div></div></div>
         </div>
         <div class="foot">
-          <div class="dots" role="group" aria-label="Chọn slide"></div>
+          <div class="dots" role="group" aria-label="Choose slide"></div>
           <span class="pos" aria-hidden="true">1 / 5</span>
         </div>
       </section>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>có một nhóm mục cùng loại, ngang hàng, người dùng xem lần lượt (ảnh sản phẩm, mẫu, bài nổi bật) và chiều cao trang bị giới hạn.</p>
-      <p class="avoid"><b>Tránh khi</b>thông điệp quan trọng nằm từ slide thứ 2 trở đi: rất ít người dùng xem tới. Không tự chạy mặc định; nếu có tự chạy, phải có nút dừng và dừng khi hover hoặc focus.</p>
+      <p class="use"><b>Use when</b>a group of peer items of the same type is browsed one by one (product photos, templates, featured articles) and vertical space is limited.</p>
+      <p class="avoid"><b>Avoid when</b>important messages sit on slide 2 or later: few users get that far. Do not autoplay by default; if autoplay exists, provide a pause button and pause on hover or focus.</p>
     </div>
     <div class="kw"><button>accessible carousel (WAI-ARIA APG)</button><button>CSS scroll-snap slider</button><button>swipeable, peek next slide</button><button>prev/next buttons + dot indicators</button><button>no autoplay by default, pause on hover/focus</button><button>aria-roledescription="slide"</button></div>
   </article>
@@ -420,24 +425,24 @@
   <!-- 4 -->
   <article class="pattern" id="activity-feed" data-toc="Timeline / Activity feed">
     <h2>Timeline / Activity feed</h2>
-    <p class="vi"><b>Dòng thời gian hoạt động.</b> Mỗi mục cho biết ai làm gì, với đối tượng nào, lúc nào; mục mới nhất ở trên, nhóm theo ngày và nối bằng một đường dọc. Lọc theo loại hoạt động, hoặc nhấn + Hoạt động mới để thêm một sự kiện vào đầu danh sách.</p>
+    <p class="vi"><b>A chronological list of activity.</b> Each entry states who did what, to which object, and when; the newest entry is on top, grouped by day and joined by a vertical line. Filter by activity type, or select + New activity to add an event to the top of the list.</p>
     <div class="demo">
       <div class="bar">
-        <h3>Dự án Website mới</h3>
-        <fieldset><legend class="sr">Lọc hoạt động</legend>
-          <label><input type="radio" name="af-f" value="all" checked>Tất cả</label>
-          <label><input type="radio" name="af-f" value="cmt">Bình luận</label>
-          <label><input type="radio" name="af-f" value="st">Trạng thái</label>
-          <label><input type="radio" name="af-f" value="file">Tệp</label>
+        <h3>Website redesign</h3>
+        <fieldset><legend class="sr">Filter activity</legend>
+          <label><input type="radio" name="af-f" value="all" checked>All</label>
+          <label><input type="radio" name="af-f" value="cmt">Comments</label>
+          <label><input type="radio" name="af-f" value="st">Status</label>
+          <label><input type="radio" name="af-f" value="file">Files</label>
         </fieldset>
       </div>
-      <div class="feed" tabindex="0" role="region" aria-label="Hoạt động gần đây"></div>
+      <div class="feed" tabindex="0" role="region" aria-label="Recent activity"></div>
       <p class="sr live" aria-live="polite"></p>
-      <div class="demo-tools"><button type="button" class="add">+ Hoạt động mới</button><button class="replay">↻ Xem lại</button></div>
+      <div class="demo-tools"><button type="button" class="add">+ New activity</button><button class="replay">↻ Replay</button></div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng cần biết những gì đã diễn ra trong thời gian vắng mặt: lịch sử dự án, theo dõi đơn hàng, nhật ký thay đổi, thông báo nhóm.</p>
-      <p class="avoid"><b>Tránh khi</b>người dùng cần trạng thái hiện tại thay vì lịch sử (dùng bảng hoặc thẻ tóm tắt). Khi sự kiện quá dày, gộp lại theo dạng “Minh và 4 người khác đã bình luận”.</p>
+      <p class="use"><b>Use when</b>users need to know what happened while they were away: project history, order tracking, change logs, team notifications.</p>
+      <p class="avoid"><b>Avoid when</b>users need the current state rather than history (use a table or summary cards). When events are dense, group them, for example “Marcus and 4 others commented”.</p>
     </div>
     <div class="kw"><button>activity feed</button><button>vertical timeline with connector line</button><button>grouped by day (Today, Yesterday)</button><button>actor · action · object · timestamp</button><button>filter by event type</button><button>new item highlight</button></div>
   </article>
@@ -445,49 +450,49 @@
   <!-- 5 -->
   <article class="pattern" id="comparison-table">
     <h2>Comparison table</h2>
-    <p class="vi"><b>Bảng so sánh sản phẩm theo tiêu chí.</b> Mỗi cột là một lựa chọn, mỗi hàng là một thuộc tính, các hàng được nhóm theo chủ đề. Hàng tên sản phẩm dính ở trên và cột tiêu chí dính bên trái khi cuộn. Bật Chỉ hiện điểm khác nhau để ẩn các hàng giống hệt; di chuột hoặc chạm vào một ô để tô sáng cả cột.</p>
+    <p class="vi"><b>A table that compares products criterion by criterion.</b> Each column is an option and each row an attribute, with rows grouped by topic. Product names stick to the top and criteria stick to the left while scrolling. Turn on Show differences only to hide identical rows; hover or tap a cell to highlight its column.</p>
     <div class="demo">
       <div class="bar">
-        <h3>So sánh ba mẫu loa không dây</h3>
-        <label class="sw"><input type="checkbox" class="diffT">Chỉ hiện điểm khác nhau</label>
+        <h3>Compare Pulse speakers</h3>
+        <label class="sw"><input type="checkbox" class="diffT">Show differences only</label>
       </div>
-      <div class="wrapT" tabindex="0" role="region" aria-label="Bảng so sánh, cuộn được">
+      <div class="wrapT" tabindex="0" role="region" aria-label="Comparison table, scrollable">
         <table>
-          <caption class="sr">So sánh ba mẫu loa</caption>
+          <caption class="sr">Comparison of three Pulse speakers</caption>
           <colgroup><col><col><col><col></colgroup>
           <thead><tr>
-            <th scope="col">Tiêu chí</th>
-            <th scope="col"><b>Mẫu S</b><span>890.000 ₫</span></th>
-            <th scope="col"><b>Mẫu M<span class="tag">Đề xuất</span></b><span>1.490.000 ₫</span></th>
-            <th scope="col"><b>Mẫu L</b><span>2.990.000 ₫</span></th>
+            <th scope="col">Criteria</th>
+            <th scope="col"><b>Mini</b><span>$59</span></th>
+            <th scope="col"><b>Core<span class="tag">Top pick</span></b><span>$99</span></th>
+            <th scope="col"><b>Max</b><span>$199</span></th>
           </tr></thead>
           <tbody>
-            <tr class="grp"><th scope="rowgroup" colspan="4">Âm thanh</th></tr>
-            <tr><th scope="row">Công suất</th><td>10 W</td><td>20 W</td><td>40 W</td></tr>
-            <tr><th scope="row">Loa trầm riêng</th><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td></tr>
-            <tr><th scope="row">Âm thanh vòm</th><td><span class="n" aria-hidden="true">—</span><span class="sr">Không</span></td><td><span class="n" aria-hidden="true">—</span><span class="sr">Không</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td></tr>
+            <tr class="grp"><th scope="rowgroup" colspan="4">Sound</th></tr>
+            <tr><th scope="row">Output power</th><td>10 W</td><td>20 W</td><td>40 W</td></tr>
+            <tr><th scope="row">Dedicated woofer</th><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td></tr>
+            <tr><th scope="row">Surround sound</th><td><span class="n" aria-hidden="true">—</span><span class="sr">No</span></td><td><span class="n" aria-hidden="true">—</span><span class="sr">No</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td></tr>
           </tbody>
           <tbody>
-            <tr class="grp"><th scope="rowgroup" colspan="4">Kết nối</th></tr>
+            <tr class="grp"><th scope="rowgroup" colspan="4">Connectivity</th></tr>
             <tr><th scope="row">Bluetooth</th><td>5.3</td><td>5.3</td><td>5.3</td></tr>
-            <tr><th scope="row">Wi‑Fi</th><td><span class="n" aria-hidden="true">—</span><span class="sr">Không</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td></tr>
-            <tr><th scope="row">Ghép đôi nhiều loa</th><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td></tr>
-            <tr><th scope="row">Cổng AUX</th><td><span class="n" aria-hidden="true">—</span><span class="sr">Không</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Có</span></td></tr>
+            <tr><th scope="row">Wi‑Fi</th><td><span class="n" aria-hidden="true">—</span><span class="sr">No</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td></tr>
+            <tr><th scope="row">Multi-speaker pairing</th><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td></tr>
+            <tr><th scope="row">AUX input</th><td><span class="n" aria-hidden="true">—</span><span class="sr">No</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td><td><span class="y" aria-hidden="true">✓</span><span class="sr">Yes</span></td></tr>
           </tbody>
           <tbody>
-            <tr class="grp"><th scope="rowgroup" colspan="4">Pin &amp; thân máy</th></tr>
-            <tr><th scope="row">Thời lượng pin</th><td>10 giờ</td><td>14 giờ</td><td>Cắm điện</td></tr>
-            <tr><th scope="row">Chống nước</th><td>IPX7</td><td>IPX7</td><td><span class="n" aria-hidden="true">—</span><span class="sr">Không</span></td></tr>
-            <tr><th scope="row">Khối lượng</th><td>0,4 kg</td><td>0,9 kg</td><td>2,1 kg</td></tr>
-            <tr><th scope="row">Bảo hành</th><td>12 tháng</td><td>12 tháng</td><td>12 tháng</td></tr>
+            <tr class="grp"><th scope="rowgroup" colspan="4">Battery &amp; build</th></tr>
+            <tr><th scope="row">Battery life</th><td>10 hrs</td><td>14 hrs</td><td>Plug-in</td></tr>
+            <tr><th scope="row">Water resistance</th><td>IPX7</td><td>IPX7</td><td><span class="n" aria-hidden="true">—</span><span class="sr">No</span></td></tr>
+            <tr><th scope="row">Weight</th><td>0.9 lb</td><td>2.0 lb</td><td>4.6 lb</td></tr>
+            <tr><th scope="row">Warranty</th><td>1 year</td><td>1 year</td><td>1 year</td></tr>
           </tbody>
         </table>
       </div>
       <p class="sr live" aria-live="polite"></p>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>người dùng đang chọn giữa 2–4 lựa chọn có cùng bộ thuộc tính (sản phẩm, gói dịch vụ, cấu hình) và cần thấy khác biệt theo từng tiêu chí, không chỉ giá.</p>
-      <p class="avoid"><b>Tránh khi</b>các lựa chọn quá khác loại để có tiêu chí chung, hoặc có hơn 5 cột: chia nhỏ bảng, hoặc cho người dùng tự chọn mục cần so sánh. Không dùng ✓/✗ khi giá trị thực là con số.</p>
+      <p class="use"><b>Use when</b>users are choosing between 2–4 options that share the same attributes (products, plans, configurations) and need to see differences on each criterion, not just price.</p>
+      <p class="avoid"><b>Avoid when</b>the options are too different to share criteria, or there are more than 5 columns: split the table or let users pick what to compare. Do not use ✓/✗ when the real value is a number.</p>
     </div>
     <div class="kw"><button>product comparison table</button><button>feature matrix</button><button>sticky header row and first column</button><button>"show differences only" toggle</button><button>grouped spec rows</button><button>column highlight on hover</button></div>
   </article>
@@ -495,23 +500,23 @@
   <!-- 6 -->
   <article class="pattern" id="faceted-search" data-toc="Filter chips / Faceted search">
     <h2>Filter chips / Faceted search</h2>
-    <p class="vi"><b>Lọc theo nhiều chiều, kết quả cập nhật ngay.</b> Cột bên trái chứa các facet (nhóm thuộc tính) như chủ đề, cấp độ; mỗi lựa chọn kèm số kết quả còn lại nếu được chọn. Hàng chip trên cùng là bộ lọc nhanh dạng bật/tắt. Mỗi bộ lọc đang áp dụng hiện thành một chip có dấu × để bỏ riêng. Chọn một facet hoặc chip để lọc.</p>
+    <p class="vi"><b>Filtering across several attributes, with results that update instantly.</b> The left column holds facets (attribute groups) such as topic and level; each option shows how many results remain if selected. The chip row at the top holds quick on/off filters. Each active filter appears as a chip with × to remove it. Select a facet or chip to filter.</p>
     <div class="demo">
       <div class="in">
-        <aside aria-label="Bộ lọc">
-          <fieldset class="f-topic"><legend>Chủ đề</legend></fieldset>
-          <fieldset class="f-level"><legend>Cấp độ</legend></fieldset>
+        <aside aria-label="Filters">
+          <fieldset class="f-topic"><legend>Topic</legend></fieldset>
+          <fieldset class="f-level"><legend>Level</legend></fieldset>
         </aside>
         <main>
-          <div class="quick" role="group" aria-label="Lọc nhanh"></div>
+          <div class="quick" role="group" aria-label="Quick filters"></div>
           <div class="act"><output tabindex="-1" aria-live="polite"></output></div>
-          <ul class="res" aria-label="Kết quả"></ul>
+          <ul class="res" aria-label="Results"></ul>
         </main>
       </div>
     </div>
     <div class="notes">
-      <p class="use"><b>Dùng khi</b>tập kết quả lớn có nhiều thuộc tính rõ ràng (cửa hàng, khoá học, việc làm, bất động sản) và người dùng thu hẹp dần thay vì biết trước tên mục cần tìm.</p>
-      <p class="avoid"><b>Tránh khi</b>có dưới khoảng 20 kết quả (một danh sách là đủ), hoặc bộ lọc buộc người dùng nhấn Áp dụng và tải lại trang mới thấy số lượng. Số kết quả cần hiện trước khi chọn để người dùng không lọc ra 0 kết quả.</p>
+      <p class="use"><b>Use when</b>a large result set has clear attributes (stores, courses, jobs, real estate) and users narrow it down gradually rather than knowing the exact item name.</p>
+      <p class="avoid"><b>Avoid when</b>there are fewer than about 20 results (a list is enough), or filters require an Apply button and a page reload before counts appear. Show counts before selection so users never filter down to zero results.</p>
     </div>
     <div class="kw"><button>faceted search</button><button>filter chips (toggle)</button><button>removable active filter chips</button><button>live result count</button><button>facet counts per option</button><button>disable zero-result options</button><button>"Clear all" filters</button></div>
   </article>
@@ -522,28 +527,28 @@
 (() => {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const RM = Dict.RM;
-  const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+  const fold = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   /* ---------- 1. Data table ---------- */
   const PEOPLE = [
-    ['Nguyễn Lan Anh', 'lananh@vidu.vn', 'Quản trị', 'Hoạt động', 8, '2026-10-05'],
-    ['Trần Minh Khoa', 'khoa.tm@vidu.vn', 'Biên tập', 'Hoạt động', 5, '2026-10-04'],
-    ['Lê Thu Hà', 'thuha@vidu.vn', 'Xem', 'Đã mời', 0, '2026-09-30'],
-    ['Phạm Quốc Bảo', 'bao.pq@vidu.vn', 'Biên tập', 'Hoạt động', 12, '2026-10-02'],
-    ['Đỗ Ngọc Mai', 'mai.dn@vidu.vn', 'Quản trị', 'Hoạt động', 3, '2026-09-28'],
-    ['Vũ Đức Thắng', 'thang.vd@vidu.vn', 'Xem', 'Tạm khoá', 1, '2026-08-14'],
-    ['Hoàng Yến Nhi', 'yennhi@vidu.vn', 'Biên tập', 'Hoạt động', 7, '2026-10-05'],
-    ['Bùi Gia Huy', 'huy.bg@vidu.vn', 'Xem', 'Đã mời', 0, '2026-10-01'],
-    ['Đặng Thảo Vy', 'vy.dt@vidu.vn', 'Biên tập', 'Hoạt động', 9, '2026-10-03'],
-    ['Ngô Tuấn Kiệt', 'kiet.nt@vidu.vn', 'Xem', 'Hoạt động', 2, '2026-09-21'],
-    ['Phan Mỹ Linh', 'mylinh@vidu.vn', 'Quản trị', 'Hoạt động', 11, '2026-10-01'],
-    ['Trịnh Hải Đăng', 'dang.th@vidu.vn', 'Biên tập', 'Tạm khoá', 4, '2026-07-30'],
-    ['Lý Khánh An', 'khanhan@vidu.vn', 'Xem', 'Hoạt động', 6, '2026-09-25'],
-    ['Cao Bảo Ngọc', 'ngoc.cb@vidu.vn', 'Biên tập', 'Đã mời', 0, '2026-10-04'],
+    ['Lauren Adams', 'lauren.adams@example.com', 'Admin', 'Active', 8, '2026-10-05'],
+    ['Marcus Kim', 'marcus.kim@example.com', 'Editor', 'Active', 5, '2026-10-04'],
+    ['Tessa Hall', 'tessa.hall@example.com', 'Viewer', 'Invited', 0, '2026-09-30'],
+    ['Quinn Baker', 'quinn.baker@example.com', 'Editor', 'Active', 12, '2026-10-02'],
+    ['Maya Diaz', 'maya.diaz@example.com', 'Admin', 'Active', 3, '2026-09-28'],
+    ['Victor Tran', 'victor.tran@example.com', 'Viewer', 'Suspended', 1, '2026-08-14'],
+    ['Yara Nolan', 'yara.nolan@example.com', 'Editor', 'Active', 7, '2026-10-05'],
+    ['Ben Gallagher', 'ben.gallagher@example.com', 'Viewer', 'Invited', 0, '2026-10-01'],
+    ['Daniel Vega', 'daniel.vega@example.com', 'Editor', 'Active', 9, '2026-10-03'],
+    ['Nora Kent', 'nora.kent@example.com', 'Viewer', 'Active', 2, '2026-09-21'],
+    ['Priya Lal', 'priya.lal@example.com', 'Admin', 'Active', 11, '2026-10-01'],
+    ['Henry Doyle', 'henry.doyle@example.com', 'Editor', 'Suspended', 4, '2026-07-30'],
+    ['Lily Andersen', 'lily.andersen@example.com', 'Viewer', 'Active', 6, '2026-09-25'],
+    ['Carlos Ortiz', 'carlos.ortiz@example.com', 'Editor', 'Invited', 0, '2026-10-04'],
   ].map(([name, mail, role, status, projects, seen], id) => ({ id, name, mail, role, status, projects, seen }));
-  const ST_C = { 'Hoạt động': '#1f9d55', 'Đã mời': '#d99a00', 'Tạm khoá': '#b3261e' };
-  const colLabel = { name: 'thành viên', role: 'vai trò', status: 'trạng thái', projects: 'số dự án', seen: 'hoạt động gần nhất' };
+  const ST_C = { 'Active': '#1f9d55', 'Invited': '#d99a00', 'Suspended': '#b3261e' };
+  const colLabel = { name: 'member', role: 'role', status: 'status', projects: 'projects', seen: 'last active' };
 
   Dict.demo('data-table', d => {
     const tb = $('tbody', d), all = $('.all', d), q = $('#dt-q', d), stSel = $('#dt-st', d), cnt = $('.cnt', d), toast = $('.toast', d);
@@ -551,20 +556,20 @@
     let key = 'name', dir = 1, vis = [], tt;
     const cmp = (a, b) => {
       const x = a[key], y = b[key];
-      return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y), 'vi')) * dir;
+      return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y), 'en')) * dir;
     };
     const render = () => {
       const f = fold(q.value.trim()), s = stSel.value;
       vis = PEOPLE.filter(p => (!f || fold(p.name + ' ' + p.mail).includes(f)) && (!s || p.status === s)).sort(cmp);
       tb.innerHTML = vis.length ? vis.map(p => `<tr data-id="${p.id}"${sel.has(p.id) ? ' class="sel"' : ''}>
-        <td class="chk"><input type="checkbox" aria-label="Chọn ${esc(p.name)}"${sel.has(p.id) ? ' checked' : ''}></td>
+        <td class="chk"><input type="checkbox" aria-label="Select ${esc(p.name)}"${sel.has(p.id) ? ' checked' : ''}></td>
         <th scope="row">${esc(p.name)}<small>${esc(p.mail)}</small></th>
-        <td data-l="Vai trò">${p.role}</td>
+        <td data-l="Role">${p.role}</td>
         <td><span class="st" style="--c:${ST_C[p.status]}">${p.status}</span></td>
-        <td class="num" data-l="Dự án">${p.projects}</td>
-        <td class="num" data-l="Gần nhất">${p.seen.slice(8).replace(/^0/, '')}/${p.seen.slice(5, 7).replace(/^0/, '')}/${p.seen.slice(0, 4)}</td></tr>`).join('')
-        : `<tr class="empty"><td colspan="6">Không có thành viên nào khớp bộ lọc.</td></tr>`;
-      cnt.textContent = vis.length === PEOPLE.length ? `${vis.length} thành viên` : `${vis.length} / ${PEOPLE.length} thành viên`;
+        <td class="num" data-l="Projects">${p.projects}</td>
+        <td class="num" data-l="Last active">${p.seen.slice(5, 7).replace(/^0/, '')}/${p.seen.slice(8).replace(/^0/, '')}/${p.seen.slice(0, 4)}</td></tr>`).join('')
+        : `<tr class="empty"><td colspan="6">No members match these filters.</td></tr>`;
+      cnt.textContent = vis.length === PEOPLE.length ? `${vis.length} members` : `${vis.length} of ${PEOPLE.length} members`;
       sync();
     };
     const sync = () => {
@@ -572,7 +577,7 @@
       all.checked = vis.length > 0 && n === vis.length;
       all.indeterminate = n > 0 && n < vis.length;
       d.classList.toggle('has-sel', sel.size > 0);
-      $('.bulk b', d).textContent = `${sel.size} hàng đã chọn`;
+      $('.bulk b', d).textContent = `${sel.size} selected`;
     };
     const toggle = (id, on) => {
       on ? sel.add(id) : sel.delete(id);
@@ -585,7 +590,7 @@
       dir = k === key ? -dir : 1; key = k;
       $$('thead th[data-k]', d).forEach(x => x.removeAttribute('aria-sort'));
       th.setAttribute('aria-sort', dir > 0 ? 'ascending' : 'descending');
-      $('caption', d).textContent = `Thành viên dự án, sắp xếp theo ${colLabel[k]}, ${dir > 0 ? 'tăng dần' : 'giảm dần'}`;
+      $('caption', d).textContent = `Project members, sorted by ${colLabel[k]}, ${dir > 0 ? 'ascending' : 'descending'}`;
       render();
     }));
     tb.addEventListener('click', e => {
@@ -599,7 +604,7 @@
     stSel.addEventListener('change', render);
     $('.unsel', d).addEventListener('click', () => { [...sel].forEach(id => toggle(id, false)); all.focus(); });
     $('.exp', d).addEventListener('click', () => {
-      toast.textContent = `Đã xuất ${sel.size} hàng ra CSV (mô phỏng)`;
+      toast.textContent = `Exported ${sel.size} rows to CSV (simulated)`;
       toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 1800);
     });
     render();
@@ -614,7 +619,7 @@
       b.setAttribute('aria-pressed', on);
       $$('details', d).forEach(x => on ? x.setAttribute('name', 'faq') : x.removeAttribute('name'));
       if (on) $$('details[open]', d).slice(1).forEach(x => x.open = false);
-      mode.textContent = on ? 'Đang bật: mở mục mới sẽ đóng mục cũ' : 'Đang tắt: mở được nhiều mục cùng lúc';
+      mode.textContent = on ? 'On: opening a section closes the previous one' : 'Off: several sections can be open at once';
     });
   });
 
@@ -623,7 +628,7 @@
     const sec = $('section', d), track = $('.track', d), slides = $$('.slide', d), dotsBox = $('.dots', d), pos = $('.pos', d);
     const prv = $('.prv', d), nxt = $('.nxt', d), play = $('.play', d);
     let i = 0, timer = null, raf = 0, hold = false;
-    dotsBox.innerHTML = slides.map((_, k) => `<button type="button" aria-label="Tới slide ${k + 1}" aria-controls="car-track"></button>`).join('');
+    dotsBox.innerHTML = slides.map((_, k) => `<button type="button" aria-label="Go to slide ${k + 1}" aria-controls="car-track"></button>`).join('');
     const dots = $$('button', dotsBox);
     const mark = k => {
       i = k;
@@ -637,7 +642,7 @@
       track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2, behavior: smooth && !RM ? 'smooth' : 'instant' });
       mark(k);
     };
-    // Đồng bộ chỉ báo theo vị trí cuộn (vuốt, touchpad): slide gần tâm nhất
+    // Sync indicators with scroll position (swipe, touchpad): the slide nearest the center
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
@@ -657,14 +662,14 @@
       if (dlt) { e.preventDefault(); if (i + dlt >= 0 && i + dlt < slides.length) go(i + dlt); if (e.target.closest('.dots')) dots[i].focus(); }
       if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); go(e.key === 'Home' ? 0 : slides.length - 1); }
     });
-    $$('.use', d).forEach(b => b.addEventListener('click', () => { b.textContent = 'Đã thêm ✓'; }));
-    // Tự chạy: chỉ khi người dùng bật; dừng khi hover/focus bên trong
+    $$('.use', d).forEach(b => b.addEventListener('click', () => { b.textContent = 'Added ✓'; }));
+    // Autoplay: only when the user turns it on; pauses on hover/focus inside
     const tick = () => { if (!hold) go(i + 1); };
     const setPlay = on => {
       clearInterval(timer); timer = on ? setInterval(tick, 4000) : null;
       play.setAttribute('aria-pressed', on);
-      play.textContent = on ? '❚❚ Dừng' : '▶ Tự chạy';
-      play.setAttribute('aria-label', on ? 'Dừng tự chạy' : 'Bật tự chạy');
+      play.textContent = on ? '❚❚ Pause' : '▶ Autoplay';
+      play.setAttribute('aria-label', on ? 'Pause autoplay' : 'Start autoplay');
       track.setAttribute('aria-live', on ? 'off' : 'polite');
       mark(i);
     };
@@ -678,23 +683,23 @@
   });
 
   /* ---------- 4. Activity feed ---------- */
-  const PPL = { LA: ['Lan Anh', '#e2683c'], MK: ['Minh Khoa', '#3f6fe8'], TH: ['Thu Hà', '#1f9d55'], QB: ['Quốc Bảo', '#8b5cf6'], YN: ['Yến Nhi', '#d99a00'] };
-  const PILL = { 'Cần làm': ['#efede8', '#555'], 'Đang làm': ['#e6efff', '#2a55c9'], 'Chờ duyệt': ['#fff4d6', '#8a6500'], 'Xong': ['#e3f5ea', '#1a7f4b'] };
+  const PPL = { LA: ['Lauren Adams', '#e2683c'], MK: ['Marcus Kim', '#3f6fe8'], TH: ['Tessa Hall', '#1f9d55'], QB: ['Quinn Baker', '#8b5cf6'], YN: ['Yara Nolan', '#d99a00'] };
+  const PILL = { 'To do': ['#efede8', '#555'], 'In progress': ['#e6efff', '#2a55c9'], 'In review': ['#fff4d6', '#8a6500'], 'Done': ['#e3f5ea', '#1a7f4b'] };
   const pill = s => `<span class="pill" style="--pb:${PILL[s][0]};--pc:${PILL[s][1]}">${s}</span>`;
   const EVENTS = [
-    { day: 'Hôm nay', t: '10:42', iso: '2026-10-05T10:42', p: 'LA', k: 'st', h: `đã chuyển <span class="obj">Thiết kế trang chủ</span> từ ${pill('Đang làm')} sang ${pill('Chờ duyệt')}` },
-    { day: 'Hôm nay', t: '09:15', iso: '2026-10-05T09:15', p: 'MK', k: 'cmt', h: `bình luận trong <span class="obj">Trang bảng giá</span>`, q: 'Bảng giá nên có thêm cột giá theo năm, nhiều khách hàng đã hỏi.' },
-    { day: 'Hôm nay', t: '08:30', iso: '2026-10-05T08:30', p: 'TH', k: 'file', h: `tải lên tệp trong <span class="obj">Bộ nhận diện</span>`, f: 'logo-ban-moi.svg · 24 KB' },
-    { day: 'Hôm qua', t: '17:05', iso: '2026-10-04T17:05', p: 'QB', k: 'st', h: `đánh dấu <span class="obj">Viết nội dung trang Giới thiệu</span> là ${pill('Xong')}` },
-    { day: 'Hôm qua', t: '14:20', iso: '2026-10-04T14:20', p: 'YN', k: 'cmt', h: `trả lời <b>Minh Khoa</b> trong <span class="obj">Trang bảng giá</span>`, q: 'Đồng ý, mình sẽ thêm vào bản nháp tiếp theo.' },
-    { day: 'Hôm qua', t: '11:48', iso: '2026-10-04T11:48', p: 'LA', k: 'asg', h: `giao <span class="obj">Kiểm thử trên điện thoại</span> cho <b>Quốc Bảo</b>` },
-    { day: 'Thứ Sáu, 2/10', t: '16:10', iso: '2026-10-02T16:10', p: 'MK', k: 'file', h: `tải lên tệp trong <span class="obj">Trang bảng giá</span>`, f: 'bang-gia-v2.pdf · 1,2 MB' },
-    { day: 'Thứ Sáu, 2/10', t: '09:00', iso: '2026-10-02T09:00', p: 'LA', k: 'new', h: `tạo dự án <span class="obj">Website mới</span>` },
+    { day: 'Today', t: '10:42 AM', iso: '2026-10-05T10:42', p: 'LA', k: 'st', h: `moved <span class="obj">Homepage design</span> from ${pill('In progress')} to ${pill('In review')}` },
+    { day: 'Today', t: '9:15 AM', iso: '2026-10-05T09:15', p: 'MK', k: 'cmt', h: `commented on <span class="obj">Pricing page</span>`, q: 'The pricing table should include annual prices. Several customers have asked.' },
+    { day: 'Today', t: '8:30 AM', iso: '2026-10-05T08:30', p: 'TH', k: 'file', h: `uploaded a file to <span class="obj">Brand kit</span>`, f: 'new-logo.svg · 24 KB' },
+    { day: 'Yesterday', t: '5:05 PM', iso: '2026-10-04T17:05', p: 'QB', k: 'st', h: `marked <span class="obj">Write About page copy</span> as ${pill('Done')}` },
+    { day: 'Yesterday', t: '2:20 PM', iso: '2026-10-04T14:20', p: 'YN', k: 'cmt', h: `replied to <b>Marcus Kim</b> on <span class="obj">Pricing page</span>`, q: 'Agreed. I will add it to the next draft.' },
+    { day: 'Yesterday', t: '11:48 AM', iso: '2026-10-04T11:48', p: 'LA', k: 'asg', h: `assigned <span class="obj">Mobile testing</span> to <b>Quinn Baker</b>` },
+    { day: 'Friday, Oct 2', t: '4:10 PM', iso: '2026-10-02T16:10', p: 'MK', k: 'file', h: `uploaded a file to <span class="obj">Pricing page</span>`, f: 'pricing-v2.pdf · 1.2 MB' },
+    { day: 'Friday, Oct 2', t: '9:00 AM', iso: '2026-10-02T09:00', p: 'LA', k: 'new', h: `created the project <span class="obj">Website redesign</span>` },
   ];
   const NEW = [
-    { p: 'YN', k: 'cmt', h: `bình luận trong <span class="obj">Thiết kế trang chủ</span>`, q: 'Ảnh hero hơi tối trên điện thoại, mình thử tăng sáng nhé.' },
-    { p: 'QB', k: 'st', h: `chuyển <span class="obj">Kiểm thử trên điện thoại</span> sang ${pill('Đang làm')}` },
-    { p: 'TH', k: 'file', h: `tải lên tệp trong <span class="obj">Thiết kế trang chủ</span>`, f: 'hero-sang-hon.png · 310 KB' },
+    { p: 'YN', k: 'cmt', h: `commented on <span class="obj">Homepage design</span>`, q: 'The hero image looks a little dark on phones. I will try a brighter version.' },
+    { p: 'QB', k: 'st', h: `moved <span class="obj">Mobile testing</span> to ${pill('In progress')}` },
+    { p: 'TH', k: 'file', h: `uploaded a file to <span class="obj">Homepage design</span>`, f: 'hero-brighter.png · 310 KB' },
   ];
   const svg = d => `<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   const ICON = {
@@ -716,25 +721,25 @@
     let n = 0, filter = 'all';
     const render = newIdx => {
       const shown = evs.map((e, k) => [e, k]).filter(([e]) => filter === 'all' || e.k === filter);
-      if (!shown.length) { feed.innerHTML = '<p class="none">Không có hoạt động loại này.</p>'; return; }
+      if (!shown.length) { feed.innerHTML = '<p class="none">No activity of this type.</p>'; return; }
       const days = [...new Set(shown.map(([e]) => e.day))];
       feed.innerHTML = days.map(day => `<h4 class="day">${day}</h4><ol>${shown.filter(([e]) => e.day === day).map(([e, k]) => evHTML(e, k === newIdx)).join('')}</ol>`).join('');
     };
     $$('input[name=af-f]', d).forEach(r => r.addEventListener('change', () => { filter = r.value; render(); }));
     add.addEventListener('click', () => {
       const base = NEW[n % NEW.length], now = new Date(2026, 9, 5, 10, 43 + n);
-      const e = { ...base, day: 'Hôm nay', t: now.toTimeString().slice(0, 5), iso: `2026-10-05T${now.toTimeString().slice(0, 5)}` };
+      const e = { ...base, day: 'Today', t: now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }), iso: `2026-10-05T${now.toTimeString().slice(0, 5)}` };
       n++; evs.unshift(e);
       render(0);
       feed.scrollTo({ top: 0, behavior: RM ? 'instant' : 'smooth' });
-      live.textContent = `Hoạt động mới: ${PPL[e.p][0]} ${e.h.replace(/<[^>]+>/g, '')}`;
-      if (filter !== 'all' && filter !== e.k) live.textContent += ' (đang bị bộ lọc ẩn)';
+      live.textContent = `New activity: ${PPL[e.p][0]} ${e.h.replace(/<[^>]+>/g, '')}`;
+      if (filter !== 'all' && filter !== e.k) live.textContent += ' (hidden by the current filter)';
     });
     render();
   });
 
   /* ---------- 5. Comparison table ---------- */
-  // Đánh dấu hàng giống nhau ở mọi cột (trước Dict.demo để HTML gốc dùng cho Xem lại đã có class)
+  // Mark rows identical across all columns (before Dict.demo, so the HTML saved for Replay already has the class)
   $$('#comparison-table tbody tr:not(.grp)').forEach(tr => {
     const tds = $$('td', tr);
     if (tds.every(td => td.textContent === tds[0].textContent)) tr.classList.add('same');
@@ -745,30 +750,30 @@
     const table = $('table', d);
     const pick = e => { const c = e.target.closest('td,th'); if (c && !c.matches('[scope=rowgroup]')) hl(c.cellIndex); };
     table.addEventListener('mouseover', pick);
-    table.addEventListener('click', pick); // chạm trên mobile
+    table.addEventListener('click', pick); // tap on mobile
     table.addEventListener('mouseleave', () => hl(-1));
     $('.diffT', d).addEventListener('change', e => {
       d.classList.toggle('diff', e.target.checked);
       const hidden = $$('tr.same', d).length;
-      live.textContent = e.target.checked ? `Đã ẩn ${hidden} tiêu chí giống nhau ở cả ba mẫu` : 'Hiện tất cả tiêu chí';
+      live.textContent = e.target.checked ? `Hid ${hidden} criteria that are identical across all three models` : 'Showing all criteria';
     });
   });
 
   /* ---------- 6. Faceted search ---------- */
   const COURSES = [
-    ['Nhập môn thiết kế giao diện', 'Thiết kế', 'Cơ bản', 1, 2.5, 1], ['Hệ thống màu cho sản phẩm số', 'Thiết kế', 'Trung cấp', 0, 4, 1],
-    ['Typography trên màn hình', 'Thiết kế', 'Trung cấp', 0, 3, 0], ['Phác thảo wireframe nhanh', 'Thiết kế', 'Cơ bản', 1, 1.5, 0],
-    ['Thiết kế cho người khiếm thị', 'Thiết kế', 'Nâng cao', 0, 5, 1], ['HTML & CSS căn bản', 'Lập trình', 'Cơ bản', 1, 6, 1],
-    ['JavaScript cho người mới', 'Lập trình', 'Cơ bản', 1, 2, 0], ['Viết API đầu tiên', 'Lập trình', 'Trung cấp', 0, 8, 1],
-    ['Kiểm thử tự động', 'Lập trình', 'Nâng cao', 0, 7, 1], ['Git trong 90 phút', 'Lập trình', 'Cơ bản', 1, 1.5, 0],
-    ['Bảng tính văn phòng', 'Dữ liệu', 'Cơ bản', 1, 2, 0], ['SQL cơ bản', 'Dữ liệu', 'Cơ bản', 0, 5, 1],
-    ['Trực quan hoá số liệu', 'Dữ liệu', 'Trung cấp', 0, 3, 1], ['Thống kê nhập môn', 'Dữ liệu', 'Trung cấp', 1, 4, 0],
-    ['Dự báo bằng chuỗi thời gian', 'Dữ liệu', 'Nâng cao', 0, 9, 1], ['Viết email rõ ràng', 'Kỹ năng', 'Cơ bản', 1, 1, 0],
-    ['Thuyết trình 10 phút', 'Kỹ năng', 'Cơ bản', 1, 2, 1], ['Quản lý thời gian', 'Kỹ năng', 'Trung cấp', 0, 3, 1],
-    ['Dẫn dắt cuộc họp', 'Kỹ năng', 'Nâng cao', 0, 2.5, 0], ['Phản hồi đồng nghiệp', 'Kỹ năng', 'Trung cấp', 1, 1, 0],
+    ['Introduction to UI design', 'Design', 'Beginner', 1, 2.5, 1], ['Color systems for digital products', 'Design', 'Intermediate', 0, 4, 1],
+    ['Typography for screens', 'Design', 'Intermediate', 0, 3, 0], ['Rapid wireframing', 'Design', 'Beginner', 1, 1.5, 0],
+    ['Designing for low vision', 'Design', 'Advanced', 0, 5, 1], ['HTML & CSS fundamentals', 'Development', 'Beginner', 1, 6, 1],
+    ['JavaScript for beginners', 'Development', 'Beginner', 1, 2, 0], ['Build your first API', 'Development', 'Intermediate', 0, 8, 1],
+    ['Automated testing', 'Development', 'Advanced', 0, 7, 1], ['Git in 90 minutes', 'Development', 'Beginner', 1, 1.5, 0],
+    ['Spreadsheets for work', 'Data', 'Beginner', 1, 2, 0], ['SQL basics', 'Data', 'Beginner', 0, 5, 1],
+    ['Data visualization', 'Data', 'Intermediate', 0, 3, 1], ['Introductory statistics', 'Data', 'Intermediate', 1, 4, 0],
+    ['Time series forecasting', 'Data', 'Advanced', 0, 9, 1], ['Writing clear emails', 'Skills', 'Beginner', 1, 1, 0],
+    ['The 10-minute presentation', 'Skills', 'Beginner', 1, 2, 1], ['Time management', 'Skills', 'Intermediate', 0, 3, 1],
+    ['Leading meetings', 'Skills', 'Advanced', 0, 2.5, 0], ['Giving peer feedback', 'Skills', 'Intermediate', 1, 1, 0],
   ].map(([t, topic, level, free, hours, cert]) => ({ t, topic, level, free: !!free, hours, cert: !!cert }));
-  const TOPICS = ['Thiết kế', 'Lập trình', 'Dữ liệu', 'Kỹ năng'], LEVELS = ['Cơ bản', 'Trung cấp', 'Nâng cao'];
-  const QUICK = [['free', 'Miễn phí', c => c.free], ['short', 'Dưới 3 giờ', c => c.hours < 3], ['cert', 'Có chứng chỉ', c => c.cert]];
+  const TOPICS = ['Design', 'Development', 'Data', 'Skills'], LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
+  const QUICK = [['free', 'Free', c => c.free], ['short', 'Under 3 hours', c => c.hours < 3], ['cert', 'Certificate', c => c.cert]];
 
   Dict.demo('faceted-search', d => {
     const st = { topic: new Set(), level: new Set(), quick: new Set() };
@@ -777,7 +782,7 @@
     fT.insertAdjacentHTML('beforeend', TOPICS.map(v => box('topic', v)).join(''));
     fL.insertAdjacentHTML('beforeend', LEVELS.map(v => box('level', v)).join(''));
     quick.innerHTML = QUICK.map(([k, l]) => `<button type="button" class="chip" data-q="${k}" aria-pressed="false">${l} <small></small></button>`).join('');
-    // Một khoá học khớp mọi nhóm trừ nhóm `skip` (để đếm số cho từng lựa chọn của chính nhóm đó)
+    // A course matches every group except `skip` (to count each option within its own group)
     const match = (c, skip) =>
       (skip === 'topic' || !st.topic.size || st.topic.has(c.topic)) &&
       (skip === 'level' || !st.level.size || st.level.has(c.level)) &&
@@ -798,13 +803,13 @@
         b.querySelector('small').textContent = n;
         b.disabled = !n && !st.quick.has(k);
       });
-      out.textContent = `${hits.length} khoá học`;
+      out.textContent = `${hits.length} ${hits.length === 1 ? 'course' : 'courses'}`;
       const chips = [...st.topic].map(v => ['topic', v, v]).concat([...st.level].map(v => ['level', v, v]), [...st.quick].map(k => ['quick', k, QUICK.find(q => q[0] === k)[1]]));
       $$('.rm,.clear', act).forEach(x => x.remove());
-      act.insertAdjacentHTML('beforeend', chips.map(([g, v, l]) => `<button type="button" class="rm" data-g="${g}" data-v="${v}" aria-label="Bỏ lọc ${l}">${l}</button>`).join('') +
-        (chips.length > 1 ? '<button type="button" class="clear">Xoá tất cả</button>' : ''));
-      res.innerHTML = hits.length ? hits.map(c => `<li class="card"><b>${c.t}</b><div class="meta"><span>${c.topic}</span><span>${c.level}</span><span>${String(c.hours).replace('.', ',')} giờ</span>${c.free ? '<span class="free">Miễn phí</span>' : ''}${c.cert ? '<span>Chứng chỉ</span>' : ''}</div></li>`).join('')
-        : '<li class="zero">Không có khoá học phù hợp. Bỏ bớt một bộ lọc để xem thêm kết quả.</li>';
+      act.insertAdjacentHTML('beforeend', chips.map(([g, v, l]) => `<button type="button" class="rm" data-g="${g}" data-v="${v}" aria-label="Remove filter ${l}">${l}</button>`).join('') +
+        (chips.length > 1 ? '<button type="button" class="clear">Clear all</button>' : ''));
+      res.innerHTML = hits.length ? hits.map(c => `<li class="card"><b>${c.t}</b><div class="meta"><span>${c.topic}</span><span>${c.level}</span><span>${c.hours} hrs</span>${c.free ? '<span class="free">Free</span>' : ''}${c.cert ? '<span>Certificate</span>' : ''}</div></li>`).join('')
+        : '<li class="zero">No courses match. Remove a filter to see more results.</li>';
     };
     d.addEventListener('change', e => {
       const i = e.target; if (!i.matches('aside input')) return;

@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Form &amp; nhập liệu — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Sáu pattern form và nhập liệu: kiểm lỗi tại chỗ, form nhiều bước, combobox, date picker, thước đo mật khẩu và input mask, kèm demo dùng được bằng bàn phím.">
+<title>Forms &amp; input — Pattern Dictionary</title>
+<meta name="description" content="Six form and input patterns: inline validation, multi-step form, combobox, date picker, password strength meter and input mask, with demos that work with the keyboard.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset inside demos only, zero specificity */
 :where(.demo *){margin:0;padding:0}
 :where(.demo) :where(button,input,select){font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){
   :where(.demo *),:where(.demo *)::before,:where(.demo *)::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 
-/* ===== thành phần dùng chung cho 6 demo của trang này ===== */
+/* ===== shared parts for the 6 demos on this page ===== */
 :where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo{
   --p:#2f5bea;--p-soft:rgba(47,91,234,.16);--t:#1d1d1f;--t2:#66666b;--bd:#d5d4cf;--err:#c0341d;--ok:#1a7f4b;--surf:#f4f3ef;
   background:var(--surf);color:var(--t);font-size:14px;line-height:1.45}
@@ -237,7 +237,7 @@
 #input-mask .demo .raw dd.v::after{content:" ✓";color:#7ee0a5}
 #input-mask .demo .side>p{margin-top:14px}
 
-/* ===== màn hình hẹp ===== */
+/* ===== narrow screens ===== */
 @media (max-width:760px){
   :where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo{height:auto;min-height:380px}
   #inline-validation .demo .cmp,#autocomplete-combobox .demo .ac,#date-picker .demo .dp,#password-strength-meter .demo .pw,#input-mask .demo .im{position:relative;grid-template-columns:1fr;padding:56px 16px 20px;gap:20px}
@@ -257,8 +257,9 @@
   #date-picker .demo .col:has(>.pop:not([hidden])){min-height:430px}
   #input-mask .demo .im{align-items:start}
   #input-mask .demo form{grid-template-columns:1fr 1fr}
+  #input-mask .demo .fld:has(#im-cc){grid-column:1/-1}
 }
-/* ===== màn hình hẹp: chữ ≥12px, vùng chạm ≥32px (đặt cuối để thắng quy tắc từng demo) ===== */
+/* ===== narrow screens: text >=12px, tap targets >=32px (last, so it overrides per-demo rules) ===== */
 @media (max-width:760px){
   :where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo :is(.side h4,kbd){font-size:12px}
   #inline-validation .demo .tag i{font-size:12px}
@@ -274,6 +275,12 @@
   #date-picker .demo .col:has(>.pop:not([hidden])){min-height:480px}
   #password-strength-meter .demo .eye{height:32px;top:4px}
   #password-strength-meter .demo .try button{min-height:34px;padding:8px 10px}
+  #multi-step-form .demo .wz{grid-template-columns:minmax(0,1fr)}
+}
+/* ===== very narrow screens (<380px): fit the 3-step rail in ~294px ===== */
+@media (max-width:379px){
+  #multi-step-form .demo .steps{gap:2px}
+  #multi-step-form .demo .steps button{padding:6px 2px;gap:4px}
 }
 </style>
 </head>
@@ -282,39 +289,39 @@
 
 <main class="wrap">
 <header class="head">
-  <h1>Form &amp; nhập liệu</h1>
-  <p>Form là nơi người dùng <b>thao tác</b> chứ không chỉ đọc: mỗi lỗi báo sai thời điểm, mỗi định dạng buộc gõ lại đều làm tăng tỉ lệ bỏ ngang. Sáu pattern dưới đây giúp người dùng điền nhanh hơn và ít sai hơn. Mọi demo đều nhập liệu, nhấn và điều khiển bằng bàn phím được.</p>
+  <h1>Forms &amp; input</h1>
+  <p>Forms are where people <b>act</b>, not only read. An error reported at the wrong moment, or a format that forces retyping, increases abandonment. The six patterns below help people complete forms faster and with fewer errors. Every demo accepts real input and works with the keyboard.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="inline-validation">
   <h2>Inline validation</h2>
-  <p class="vi"><b>Báo lỗi ngay tại ô nhập, đúng thời điểm.</b> Thay vì chờ người dùng nhấn Gửi rồi hiện một loạt lỗi, form kiểm tra từng ô khi người dùng <b>rời</b> ô đó và gỡ thông báo lỗi ngay khi giá trị hợp lệ. Hai form trong khung demo giống hệt nhau, chỉ khác thời điểm báo lỗi. Gõ một email thiếu “@” rồi nhấn Tab ở cả hai form, sau đó thử tên đăng nhập “minhanh” (đã được sử dụng).</p>
+  <p class="vi"><b>Reports errors at the field, at the right moment.</b> Instead of waiting for submit and then listing every error, the form checks each field when the user <b>leaves</b> it and removes the message as soon as the value is valid. The two forms in the demo are identical except for when they report errors. Type an email without “@” and press Tab in both forms, then try the username “alexm”, which is already taken.</p>
   <div class="demo">
-    <p class="cap">Cùng một form, <b>hai thời điểm báo lỗi</b></p>
+    <p class="cap">One form, <b>two error timings</b></p>
     <div class="cmp">
       <form class="card" data-mode="submit" novalidate>
-        <p class="tag"><i>A</i>Chỉ báo lỗi khi nhấn Gửi</p>
+        <p class="tag"><i>A</i>Errors shown on submit only</p>
         <div class="sum" tabindex="-1" role="alert" hidden></div>
         <div class="fld"><label for="iv-a-email">Email</label><div class="box"><input class="inp" id="iv-a-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-a-email-err"></div><p class="err" id="iv-a-email-err"></p></div>
-        <div class="fld"><label for="iv-a-user">Tên đăng nhập</label><div class="box"><input class="inp" id="iv-a-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-a-user-err"></div><p class="err" id="iv-a-user-err"></p></div>
-        <button class="btn">Tạo tài khoản</button>
-        <div class="done" role="status"><i>✓</i><b>Đã tạo tài khoản</b><span></span></div>
+        <div class="fld"><label for="iv-a-user">Username</label><div class="box"><input class="inp" id="iv-a-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-a-user-err"></div><p class="err" id="iv-a-user-err"></p></div>
+        <button class="btn">Create account</button>
+        <div class="done" role="status"><i>✓</i><b>Account created</b><span></span></div>
       </form>
       <form class="card" data-mode="live" novalidate>
-        <p class="tag"><i>B</i>Báo khi rời ô, gỡ ngay khi sửa đúng</p>
+        <p class="tag"><i>B</i>Shown on blur, cleared when fixed</p>
         <div class="fld"><label for="iv-b-email">Email</label><div class="box"><input class="inp" id="iv-b-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-b-email-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-email-err" aria-live="polite"></p></div>
-        <div class="fld"><label for="iv-b-user">Tên đăng nhập</label><div class="box"><input class="inp" id="iv-b-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-b-user-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-user-err" aria-live="polite"></p></div>
-        <button class="btn">Tạo tài khoản</button>
-        <div class="done" role="status"><i>✓</i><b>Đã tạo tài khoản</b><span></span></div>
+        <div class="fld"><label for="iv-b-user">Username</label><div class="box"><input class="inp" id="iv-b-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-b-user-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-user-err" aria-live="polite"></p></div>
+        <button class="btn">Create account</button>
+        <div class="done" role="status"><i>✓</i><b>Account created</b><span></span></div>
       </form>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ô có quy tắc rõ ràng mà người dùng dễ nhập sai: email, tên đăng nhập trùng, mã giảm giá, số điện thoại. Báo lỗi khi rời ô; sau khi đã báo lỗi thì kiểm tra lại theo từng phím để lỗi biến mất ngay khi sửa đúng.</p>
-    <p class="avoid"><b>Tránh khi</b>báo lỗi ngay từ ký tự đầu tiên (“email không hợp lệ” khi mới gõ “l”), hoặc báo đỏ ô trống chỉ vì người dùng nhấn Tab đi qua. Vẫn cần kiểm tra lại khi Gửi và đưa focus tới ô sai đầu tiên.</p>
-    <p class="tip">Mẹo prompt: nêu rõ <i>thời điểm</i> (“validate on blur, re-validate on input once an error is shown”); nếu không, AI thường báo lỗi theo từng phím.</p>
+    <p class="use"><b>Use when</b>a field has clear rules that people often get wrong: email, a username that may be taken, a promo code, a phone number. Report the error on blur. Once an error is shown, re-check on every keystroke so the message clears as soon as the value is fixed.</p>
+    <p class="avoid"><b>Avoid when</b>the check fires from the first character (“invalid email” after typing “a”), or an empty field turns red only because the user tabbed past it. Still validate on submit and move focus to the first invalid field.</p>
+    <p class="tip">Prompt tip: state the <i>timing</i> (“validate on blur, re-validate on input once an error is shown”). Without it, AI tools usually validate on every keystroke.</p>
   </div>
   <div class="kw"><button>inline form validation</button><button>validate on blur</button><button>re-validate on input after first error</button><button>error message below field</button><button>aria-invalid + aria-describedby</button><button>:user-invalid</button><button>async username availability check</button></div>
 </article>
@@ -322,61 +329,61 @@
 <!-- 2 -->
 <article class="pattern" id="multi-step-form" data-toc="Multi-step form">
   <h2>Multi-step form / Wizard</h2>
-  <p class="vi"><b>Chia form dài thành nhiều bước.</b> Mỗi màn hình chỉ hỏi vài câu cùng chủ đề, thanh tiến độ cho biết còn bao nhiêu bước, và người dùng có thể quay lại sửa mà không mất dữ liệu đã điền. Bước cuối hiển thị toàn bộ thông tin để kiểm tra trước khi gửi. Điền form, nhấn “Quay lại” hoặc nhấn tên một bước đã hoàn tất để chuyển bước.</p>
+  <p class="vi"><b>Splits a long form into steps.</b> Each screen asks a few related questions, a progress indicator shows how many steps remain, and users can go back and edit without losing what they entered. The last step shows every answer for review before submitting. Fill in the form, then select “Back” or a completed step name to move between steps.</p>
   <div class="demo">
     <div class="wz">
       <div class="rail">
-        <p class="ttl">Thiết lập không gian</p>
-        <p class="cnt">Bước <b>1</b> / 3</p>
+        <p class="ttl">Set up your workspace</p>
+        <p class="cnt">Step <b>1</b> of 3</p>
         <div class="bar" aria-hidden="true"><i></i></div>
-        <ol class="steps" aria-label="Các bước">
-          <li aria-current="step"><button type="button" data-go="0" disabled><i>1</i><span>Tài khoản<small>Email và mật khẩu</small></span></button></li>
-          <li><button type="button" data-go="1" disabled><i>2</i><span>Không gian<small>Tên nhóm, quy mô</small></span></button></li>
-          <li><button type="button" data-go="2" disabled><i>3</i><span>Xác nhận<small>Xem lại và tạo</small></span></button></li>
+        <ol class="steps" aria-label="Steps">
+          <li aria-current="step"><button type="button" data-go="0" disabled><i>1</i><span>Account<small>Email and password</small></span></button></li>
+          <li><button type="button" data-go="1" disabled><i>2</i><span>Workspace<small>Team name, size</small></span></button></li>
+          <li><button type="button" data-go="2" disabled><i>3</i><span>Review<small>Check and create</small></span></button></li>
         </ol>
-        <p class="foot">Dữ liệu được giữ khi quay lại.</p>
+        <p class="foot">Your entries are kept when you go back.</p>
       </div>
       <form novalidate>
         <section class="step" data-i="0">
-          <h3 tabindex="-1">Tạo tài khoản</h3>
-          <p>Bạn sẽ dùng email này để đăng nhập.</p>
-          <div class="fld"><label for="wz-email">Email công việc</label><input class="inp" id="wz-email" name="email" type="email" autocomplete="email" spellcheck="false" enterkeyhint="next" aria-describedby="wz-email-err"><p class="err" id="wz-email-err"></p></div>
-          <div class="fld"><label for="wz-pw">Mật khẩu <span class="hint">(ít nhất 8 ký tự)</span></label><input class="inp" id="wz-pw" name="pw" type="password" autocomplete="new-password" minlength="8" enterkeyhint="next" aria-describedby="wz-pw-err"><p class="err" id="wz-pw-err"></p></div>
+          <h3 tabindex="-1">Create your account</h3>
+          <p>You will use this email to sign in.</p>
+          <div class="fld"><label for="wz-email">Work email</label><input class="inp" id="wz-email" name="email" type="email" autocomplete="email" spellcheck="false" enterkeyhint="next" aria-describedby="wz-email-err"><p class="err" id="wz-email-err"></p></div>
+          <div class="fld"><label for="wz-pw">Password <span class="hint">(at least 8 characters)</span></label><input class="inp" id="wz-pw" name="pw" type="password" autocomplete="new-password" minlength="8" enterkeyhint="next" aria-describedby="wz-pw-err"><p class="err" id="wz-pw-err"></p></div>
         </section>
         <section class="step" data-i="1" hidden>
-          <h3 tabindex="-1">Không gian làm việc</h3>
-          <p>Có thể đổi tên và mời thêm người sau.</p>
-          <div class="fld"><label for="wz-team">Tên nhóm</label><input class="inp" id="wz-team" name="team" type="text" autocomplete="organization" placeholder="Ví dụ: Nhóm Thiết kế" enterkeyhint="next" aria-describedby="wz-team-err"><p class="err" id="wz-team-err"></p></div>
-          <fieldset class="fld" aria-describedby="wz-size-err"><legend>Quy mô</legend>
+          <h3 tabindex="-1">Your workspace</h3>
+          <p>You can rename it and invite people later.</p>
+          <div class="fld"><label for="wz-team">Team name</label><input class="inp" id="wz-team" name="team" type="text" autocomplete="organization" placeholder="For example: Design Team" enterkeyhint="next" aria-describedby="wz-team-err"><p class="err" id="wz-team-err"></p></div>
+          <fieldset class="fld" aria-describedby="wz-size-err"><legend>Team size</legend>
             <div class="seg">
-              <label><input type="radio" name="size" value="Chỉ mình tôi"><span>Chỉ mình tôi</span></label>
-              <label><input type="radio" name="size" value="2–10 người"><span>2–10 người</span></label>
-              <label><input type="radio" name="size" value="Hơn 10 người"><span>Hơn 10 người</span></label>
+              <label><input type="radio" name="size" value="Just me"><span>Just me</span></label>
+              <label><input type="radio" name="size" value="2–10 people"><span>2–10 people</span></label>
+              <label><input type="radio" name="size" value="More than 10"><span>More than 10</span></label>
             </div><p class="err" id="wz-size-err"></p></fieldset>
         </section>
         <section class="step" data-i="2" hidden>
-          <h3 tabindex="-1">Kiểm tra lại</h3>
-          <p>Nhấn “Sửa” để quay lại đúng bước đó.</p>
+          <h3 tabindex="-1">Review your details</h3>
+          <p>Select “Edit” to return to that step.</p>
           <dl>
-            <dt>Email</dt><dd data-k="email"></dd><button type="button" data-go="0" aria-label="Sửa email">Sửa</button>
-            <dt>Mật khẩu</dt><dd data-k="pw"></dd><button type="button" data-go="0" aria-label="Sửa mật khẩu">Sửa</button>
-            <dt>Tên nhóm</dt><dd data-k="team"></dd><button type="button" data-go="1" aria-label="Sửa tên nhóm">Sửa</button>
-            <dt>Quy mô</dt><dd data-k="size"></dd><button type="button" data-go="1" aria-label="Sửa quy mô">Sửa</button>
+            <dt>Email</dt><dd data-k="email"></dd><button type="button" data-go="0" aria-label="Edit email">Edit</button>
+            <dt>Password</dt><dd data-k="pw"></dd><button type="button" data-go="0" aria-label="Edit password">Edit</button>
+            <dt>Team name</dt><dd data-k="team"></dd><button type="button" data-go="1" aria-label="Edit team name">Edit</button>
+            <dt>Team size</dt><dd data-k="size"></dd><button type="button" data-go="1" aria-label="Edit team size">Edit</button>
           </dl>
         </section>
         <section class="step done-v" data-i="3" hidden>
-          <i>✓</i><h3 tabindex="-1">Đã tạo “<span data-k="team"></span>”</h3><p>Bước tiếp theo: mời đồng đội vào không gian.</p>
+          <i>✓</i><h3 tabindex="-1">Created “<span data-k="team"></span>”</h3><p>Next: invite teammates to the workspace.</p>
         </section>
-        <div class="nav"><button type="button" class="btn ghost back" hidden>← Quay lại</button><button class="btn next">Tiếp: Không gian →</button></div>
+        <div class="nav"><button type="button" class="btn ghost back" hidden>← Back</button><button class="btn next">Next: Workspace →</button></div>
         <p class="sr live" role="status"></p>
       </form>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>form dài trên 6–8 ô và chia được thành các nhóm có nghĩa (tài khoản → thông tin → thanh toán): đăng ký, onboarding, đặt hàng, hồ sơ xin việc. Mỗi bước ngắn giúp giảm tải nhận thức, và dữ liệu bước trước có thể dùng cho bước sau.</p>
-    <p class="avoid"><b>Tránh khi</b>form chỉ có 3–5 ô (tách bước chỉ thêm thao tác), hoặc người dùng cần nhìn mọi ô cùng lúc để so sánh. Không làm wizard thiếu nút quay lại hoặc làm mất dữ liệu khi lùi bước.</p>
-    <p class="tip">Mẹo prompt: nêu đủ ba yêu cầu hay bị bỏ sót: “back button keeps entered data”, “review step with edit links”, “focus moves to step heading on change”.</p>
+    <p class="use"><b>Use when</b>the form has more than 6–8 fields that fall into meaningful groups (account → details → payment): sign-up, onboarding, checkout, job applications. Short steps reduce cognitive load, and answers from earlier steps can prefill later ones.</p>
+    <p class="avoid"><b>Avoid when</b>the form has only 3–5 fields (steps only add clicks), or users need to see all fields at once to compare them. Do not ship a wizard without a Back button, or one that loses data when the user goes back.</p>
+    <p class="tip">Prompt tip: name the three requirements most often missed: “back button keeps entered data”, “review step with edit links”, “focus moves to step heading on change”.</p>
   </div>
   <div class="kw"><button>multi-step form</button><button>wizard with progress stepper</button><button>step indicator (aria-current="step")</button><button>back button preserves data</button><button>per-step validation</button><button>review &amp; edit summary step</button><button>descriptive next button label</button></div>
 </article>
@@ -384,31 +391,31 @@
 <!-- 3 -->
 <article class="pattern" id="autocomplete-combobox" data-toc="Autocomplete / Combobox">
   <h2>Autocomplete / Combobox</h2>
-  <p class="vi"><b>Ô nhập kèm danh sách gợi ý.</b> Khi người dùng gõ, danh sách thu hẹp còn các mục khớp; chọn bằng chuột, chạm hoặc phím ↑ ↓ Enter. Với tiếng Việt, việc so khớp phải bỏ qua dấu: “da nang”, “danang” và “Đà Nẵng” cho cùng một kết quả. Gõ “hue”, “sai gon” hoặc “ca” rồi chọn bằng bàn phím.</p>
+  <p class="vi"><b>A text input with a list of suggestions.</b> As the user types, the list narrows to matching items; the user chooses one with a pointer, touch, or ↑ ↓ Enter. Matching ignores case, accents and spaces, so “sao paulo”, “saopaulo” and “São Paulo” return the same result. Type “zurich”, “saigon” or “san”, then choose a result with the keyboard.</p>
   <div class="demo">
     <div class="ac">
       <div class="main">
-        <label class="lab" for="cb-in" id="cb-lab">Thành phố nhận hàng</label>
+        <label class="lab" for="cb-in" id="cb-lab">Delivery city</label>
         <div class="cb">
-          <input id="cb-in" class="inp" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" spellcheck="false" placeholder="Gõ tên thành phố, có dấu hay không đều được">
-          <button type="button" class="clr" aria-label="Xoá ô thành phố" hidden>×</button>
+          <input id="cb-in" class="inp" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" spellcheck="false" placeholder="Type a city; accents are optional">
+          <button type="button" class="clr" aria-label="Clear city" hidden>×</button>
           <ul id="cb-list" role="listbox" aria-labelledby="cb-lab" hidden></ul>
         </div>
         <p class="picked" aria-live="polite"></p>
         <p class="sr cnt" role="status"></p>
       </div>
       <div class="side">
-        <h4>Cách so khớp</h4>
-        <div class="mt"><span>Đã gõ</span><code class="q1">…</code><span>Chuỗi so khớp</span><code class="q2">…</code></div>
-        <div class="keys"><span><kbd>↓</kbd> <kbd>↑</kbd></span><span>Đi qua các gợi ý</span><span><kbd>Enter</kbd></span><span>Chọn gợi ý đang sáng</span><span><kbd>Esc</kbd></span><span>Đóng danh sách, nhấn lần nữa để xoá</span><span><kbd>Alt</kbd> <kbd>↓</kbd></span><span>Mở danh sách khi ô trống</span></div>
+        <h4>How matching works</h4>
+        <div class="mt"><span>Typed</span><code class="q1">…</code><span>Matched as</span><code class="q2">…</code></div>
+        <div class="keys"><span><kbd>↓</kbd> <kbd>↑</kbd></span><span>Move through suggestions</span><span><kbd>Enter</kbd></span><span>Choose the highlighted suggestion</span><span><kbd>Esc</kbd></span><span>Close the list; press again to clear</span><span><kbd>Alt</kbd> <kbd>↓</kbd></span><span>Open the list when the field is empty</span></div>
       </div>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>chọn một mục trong danh sách dài (thành phố, quốc gia, sản phẩm, thành viên nhóm) khi người dùng đã biết mình cần gì: gõ ba ký tự nhanh hơn cuộn một <code>&lt;select&gt;</code> 60 dòng.</p>
-    <p class="avoid"><b>Tránh khi</b>chỉ có dưới 7 lựa chọn (dùng radio hoặc select), hoặc người dùng chưa biết có những lựa chọn nào (cho duyệt danh sách). Không tự điền đè lên chữ người dùng đang gõ, và không so khớp phân biệt dấu với tiếng Việt.</p>
-    <p class="tip">Mẹo prompt: nhấn mạnh “diacritic-insensitive matching for Vietnamese (normalize NFD, đ → d)” và “WAI-ARIA combobox pattern”, nếu không, AI thường tạo một danh sách div không dùng được bằng bàn phím.</p>
+    <p class="use"><b>Use when</b>the user picks one item from a long list (cities, countries, products, team members) and already knows what they want: typing three characters is faster than scrolling a 60-option <code>&lt;select&gt;</code>.</p>
+    <p class="avoid"><b>Avoid when</b>there are fewer than 7 options (use radio buttons or a select), or users do not yet know what the options are (let them browse a list). Do not overwrite the text the user is typing, and do not require exact accents or capitalization for a match.</p>
+    <p class="tip">Prompt tip: ask for “accent- and case-insensitive matching (normalize NFD, strip combining marks)” and the “WAI-ARIA combobox pattern”. Without them, AI tools often build a list of divs that does not work with the keyboard.</p>
   </div>
   <div class="kw"><button>autocomplete combobox</button><button>WAI-ARIA combobox with listbox popup</button><button>aria-activedescendant keyboard navigation</button><button>diacritic-insensitive search</button><button>highlight matched substring</button><button>typeahead suggestions</button><button>no results state</button></div>
 </article>
@@ -416,40 +423,40 @@
 <!-- 4 -->
 <article class="pattern" id="date-picker">
   <h2>Date picker</h2>
-  <p class="vi"><b>Chọn ngày trên lịch tháng.</b> Ô ngày vừa cho gõ trực tiếp (dd/mm/yyyy) vừa có nút mở lịch tháng, đánh dấu ngày hôm nay và làm mờ các ngày không được chọn. Bên cạnh (dưới trên mobile) là ô ngày native của trình duyệt để so sánh. Nhấn biểu tượng lịch, rồi chọn ngày bằng chạm hoặc phím mũi tên, PgUp / PgDn, Enter, Esc.</p>
+  <p class="vi"><b>Picks a date from a month calendar.</b> The date field accepts typed input (MM/DD/YYYY) and has a button that opens a month view, which marks today and disables dates that cannot be chosen. Next to it (below it on mobile) is the browser’s native date input for comparison. Select the calendar icon, then choose a date by tapping or with the arrow keys, Page Up, Page Down, Enter and Esc.</p>
   <div class="demo">
     <div class="dp">
       <div class="col">
-        <label class="lab" for="dp-in">Ngày hẹn tư vấn</label>
-        <p class="hint" id="dp-hint">Gõ theo dạng dd/mm/yyyy hoặc chọn trên lịch</p>
+        <label class="lab" for="dp-in">Consultation date</label>
+        <p class="hint" id="dp-hint">Type MM/DD/YYYY or choose from the calendar</p>
         <div class="field">
-          <input id="dp-in" class="inp" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/yyyy" aria-describedby="dp-hint dp-err">
-          <button type="button" class="cal-btn" aria-label="Chọn ngày trên lịch" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-pop"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg></button>
+          <input id="dp-in" class="inp" type="text" inputmode="numeric" autocomplete="off" placeholder="MM/DD/YYYY" aria-describedby="dp-hint dp-err">
+          <button type="button" class="cal-btn" aria-label="Choose date from calendar" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-pop"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg></button>
         </div>
         <p class="echo" aria-live="polite"></p>
         <p class="err" id="dp-err" aria-live="polite"></p>
-        <div class="pop" id="dp-pop" role="dialog" aria-label="Chọn ngày hẹn" hidden>
-          <div class="ph"><button type="button" class="prev" aria-label="Tháng trước">‹</button><h4 id="dp-month" aria-live="polite"></h4><button type="button" class="next" aria-label="Tháng sau">›</button></div>
+        <div class="pop" id="dp-pop" role="dialog" aria-label="Choose consultation date" hidden>
+          <div class="ph"><button type="button" class="prev" aria-label="Previous month">‹</button><h4 id="dp-month" aria-live="polite"></h4><button type="button" class="next" aria-label="Next month">›</button></div>
           <table role="grid" aria-labelledby="dp-month">
-            <thead><tr><th scope="col" abbr="Thứ Hai">T2</th><th scope="col" abbr="Thứ Ba">T3</th><th scope="col" abbr="Thứ Tư">T4</th><th scope="col" abbr="Thứ Năm">T5</th><th scope="col" abbr="Thứ Sáu">T6</th><th scope="col" abbr="Thứ Bảy">T7</th><th scope="col" abbr="Chủ Nhật">CN</th></tr></thead>
+            <thead><tr><th scope="col" abbr="Sunday">Su</th><th scope="col" abbr="Monday">Mo</th><th scope="col" abbr="Tuesday">Tu</th><th scope="col" abbr="Wednesday">We</th><th scope="col" abbr="Thursday">Th</th><th scope="col" abbr="Friday">Fr</th><th scope="col" abbr="Saturday">Sa</th></tr></thead>
             <tbody></tbody>
           </table>
-          <div class="pf"><span>Ngày đã qua bị khoá</span><span><button type="button" class="today">Hôm nay</button><button type="button" class="close">Đóng</button></span></div>
+          <div class="pf"><span>Past dates unavailable</span><span><button type="button" class="today">Today</button><button type="button" class="close">Close</button></span></div>
         </div>
       </div>
       <div class="col side nat">
-        <h4>Cùng việc đó, bản native</h4>
-        <label class="lab" for="dp-nat">Ngày hẹn tư vấn</label>
+        <h4>The native equivalent</h4>
+        <label class="lab" for="dp-nat">Consultation date</label>
         <input id="dp-nat" class="inp" type="date">
-        <p><code>&lt;input type="date"&gt;</code>: trình duyệt tự vẽ lịch, có sẵn bàn phím và trình đọc màn hình, không cần một dòng JS. Đổi lại, hình dáng và định dạng ngày khác nhau theo trình duyệt, hệ điều hành và ngôn ngữ máy.</p>
+        <p><code>&lt;input type="date"&gt;</code>: the browser draws the calendar and provides keyboard and screen reader support without any JavaScript. In exchange, its appearance and date format vary by browser, operating system and system language.</p>
       </div>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>ngày cần chọn ở gần hiện tại và thứ trong tuần quan trọng: đặt lịch hẹn, đặt phòng, hạn chót, chọn khoảng ngày. Lịch giúp xác định ngay “thứ Bảy tuần sau” mà không phải tính nhẩm.</p>
-    <p class="avoid"><b>Tránh khi</b>ngày ở xa và người dùng đã nhớ sẵn, như ngày sinh: lùi 30 năm trên lịch mất nhiều thao tác, ba ô ngày/tháng/năm hoặc gõ trực tiếp nhanh hơn. Luôn cho phép gõ tay song song với lịch.</p>
-    <p class="tip">Mẹo prompt: ghi rõ “week starts on Monday, Vietnamese locale, dd/mm/yyyy” và “keyboard: arrows, PageUp/PageDown, Home/End, Esc returns focus”, mặc định AI thường tạo lịch kiểu Mỹ bắt đầu từ Chủ Nhật.</p>
+    <p class="use"><b>Use when</b>the date is close to today and the day of the week matters: appointments, bookings, deadlines, date ranges. A calendar shows “next Saturday” at a glance, without mental arithmetic.</p>
+    <p class="avoid"><b>Avoid when</b>the date is far away and already known, such as a date of birth: going back 30 years in a calendar takes many steps, and three separate fields or a typed date are faster. Always allow typing alongside the calendar.</p>
+    <p class="tip">Prompt tip: state the locale, for example “week starts on Sunday, en-US, MM/DD/YYYY” or “week starts on Monday, en-GB, DD/MM/YYYY”, and “keyboard: arrows, PageUp/PageDown, Home/End, Esc returns focus”. Without a locale, AI tools default to one that may not match your users.</p>
   </div>
   <div class="kw"><button>date picker</button><button>calendar popover with month grid</button><button>typeable date input with calendar button</button><button>disabled past dates</button><button>today indicator</button><button>WAI-ARIA date picker dialog (role=grid)</button><button>native input type="date"</button></div>
 </article>
@@ -457,41 +464,41 @@
 <!-- 5 -->
 <article class="pattern" id="password-strength-meter" data-toc="Password strength meter">
   <h2>Password strength meter</h2>
-  <p class="vi"><b>Thước đo độ mạnh mật khẩu.</b> Thanh 4 nấc đổi màu theo từng phím, kèm một gợi ý cụ thể để tăng độ mạnh và danh sách tiêu chí tự đánh dấu. Điểm mấu chốt: độ <b>dài</b> quan trọng hơn ký tự đặc biệt. Nhập “matkhau123”, sau đó nhập một câu dài như “ba con meo treo cay cau”.</p>
+  <p class="vi"><b>Rates password strength as the user types.</b> A four-segment bar changes color on each keystroke, with one specific suggestion for a stronger password and a checklist that updates itself. Length matters more than special characters. Enter “password123”, then a long passphrase such as “correct horse battery staple”.</p>
   <div class="demo">
     <div class="pw">
       <form class="card" novalidate>
-        <h3>Đặt mật khẩu mới</h3>
-        <p>Tài khoản: lan.pham@vidu.com</p>
-        <input class="sr" type="email" name="username" autocomplete="username" value="lan.pham@vidu.com" tabindex="-1" aria-hidden="true">
-        <label class="lab" for="pw-in">Mật khẩu mới</label>
+        <h3>Set a new password</h3>
+        <p>Account: alex.morgan@example.com</p>
+        <input class="sr" type="email" name="username" autocomplete="username" value="alex.morgan@example.com" tabindex="-1" aria-hidden="true">
+        <label class="lab" for="pw-in">New password</label>
         <div class="box">
           <input id="pw-in" class="inp" type="password" autocomplete="new-password" spellcheck="false" aria-describedby="pw-lvl pw-rules">
-          <button type="button" class="eye" aria-pressed="false" aria-label="Hiện mật khẩu">Hiện</button>
+          <button type="button" class="eye" aria-pressed="false" aria-label="Show password">Show</button>
         </div>
         <div class="meter" data-l="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <p class="lvl"><b id="pw-lvl" aria-live="polite">Độ mạnh: chưa có</b><span class="sug">Nên dùng 12 ký tự trở lên.</span></p>
-        <button class="btn">Lưu mật khẩu</button>
+        <p class="lvl"><b id="pw-lvl" aria-live="polite">Strength: none yet</b><span class="sug">Use 12 or more characters.</span></p>
+        <button class="btn">Save password</button>
         <p class="res" aria-live="polite"></p>
       </form>
       <div class="side">
-        <h4>Tiêu chí</h4>
+        <h4>Requirements</h4>
         <ul class="rules" id="pw-rules">
-          <li data-r="len8">Ít nhất 8 ký tự</li>
-          <li data-r="len12">Từ 12 ký tự trở lên (càng dài càng khó đoán)</li>
-          <li data-r="mix">Trộn 3 loại: chữ thường, hoa, số, ký hiệu</li>
-          <li data-r="common">Không phải mật khẩu phổ biến hay dãy dễ đoán</li>
-          <li data-r="name">Không chứa tên hay email của bạn</li>
+          <li data-r="len8">At least 8 characters</li>
+          <li data-r="len12">12 or more characters (longer is harder to guess)</li>
+          <li data-r="mix">Mixes 3 of: lowercase, uppercase, numbers, symbols</li>
+          <li data-r="common">Not a common password or predictable sequence</li>
+          <li data-r="name">Does not contain your name or email</li>
         </ul>
-        <div class="try">Ví dụ nhanh:<br><button type="button">matkhau123</button><button type="button">LanPham@2026</button><button type="button">ba con meo treo cay cau</button></div>
+        <div class="try">Try an example:<br><button type="button">password123</button><button type="button">AlexMorgan@2026</button><button type="button">correct horse battery staple</button></div>
       </div>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>người dùng tự đặt mật khẩu: đăng ký, đổi mật khẩu, đặt lại mật khẩu. Phản hồi theo từng phím giúp người dùng chỉnh ngay thay vì bị từ chối sau khi nhấn Lưu.</p>
-    <p class="avoid"><b>Tránh khi</b>ô đăng nhập (chỉ nhập mật khẩu hiện có, không cần đo). Không chấm điểm theo kiểu “có ký hiệu là Mạnh”: “P@ssw0rd” vẫn bị đoán trong vài giây; nên chặn danh sách mật khẩu phổ biến và ưu tiên độ dài.</p>
-    <p class="tip">Mẹo prompt: ghi “zxcvbn-style scoring, reward length, block common passwords” và “show / hide password toggle” để tránh thước đo chỉ đếm ký tự đặc biệt.</p>
+    <p class="use"><b>Use when</b>users create their own password: sign-up, password change, password reset. Feedback on each keystroke lets them adjust the password before the form rejects it.</p>
+    <p class="avoid"><b>Avoid when</b>the field is for signing in (users enter an existing password, so there is nothing to rate). Do not score by rules such as “contains a symbol means strong”: “P@ssw0rd” is cracked in seconds. Block common passwords and reward length instead.</p>
+    <p class="tip">Prompt tip: write “zxcvbn-style scoring, reward length, block common passwords” and “show / hide password toggle” so the meter does not only count special characters.</p>
   </div>
   <div class="kw"><button>password strength meter</button><button>4-segment strength bar</button><button>live requirement checklist</button><button>show / hide password toggle</button><button>zxcvbn-style scoring</button><button>autocomplete="new-password"</button></div>
 </article>
@@ -499,28 +506,28 @@
 <!-- 6 -->
 <article class="pattern" id="input-mask">
   <h2>Input mask</h2>
-  <p class="vi"><b>Ô nhập tự định dạng khi gõ.</b> Người dùng chỉ gõ chữ số; ô tự chèn khoảng trắng hoặc dấu “/” đúng vị trí và hiện phần khuôn còn thiếu bằng chữ mờ. Dữ liệu gửi đi vẫn là chuỗi số không định dạng. Nhập số, sửa một chữ số ở giữa, xoá qua dấu cách hoặc dán “+84 912 345 678”.</p>
+  <p class="vi"><b>Formats input as the user types.</b> The user types digits only; the field inserts parentheses, spaces, hyphens or “/” in the right places and shows the rest of the format in light gray. The submitted value is still the unformatted digit string. Type a number, edit a digit in the middle, delete across a separator, or paste “+1 (555) 123-4567”.</p>
   <div class="demo">
     <div class="im">
       <form class="card" novalidate>
-        <div class="fld wide"><label for="im-tel">Số điện thoại</label><div class="box"><input class="inp" id="im-tel" type="tel" inputmode="tel" autocomplete="tel-national" data-mask="tel" aria-describedby="im-tel-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-tel-err" aria-live="polite"></p></div>
-        <div class="fld"><label for="im-cc">Số thẻ</label><div class="box"><input class="inp" id="im-cc" type="text" inputmode="numeric" autocomplete="cc-number" data-mask="cc" aria-describedby="im-cc-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-cc-err" aria-live="polite"></p></div>
-        <div class="fld"><label for="im-exp">Hết hạn <span class="hint">(MM/YY)</span></label><div class="box"><input class="inp" id="im-exp" type="text" inputmode="numeric" autocomplete="cc-exp" data-mask="exp" aria-describedby="im-exp-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-exp-err" aria-live="polite"></p></div>
+        <div class="fld wide"><label for="im-tel">Phone number</label><div class="box"><input class="inp" id="im-tel" type="tel" inputmode="tel" autocomplete="tel-national" data-mask="tel" aria-describedby="im-tel-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-tel-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-cc">Card number</label><div class="box"><input class="inp" id="im-cc" type="text" inputmode="numeric" autocomplete="cc-number" data-mask="cc" aria-describedby="im-cc-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-cc-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-exp">Expiry <span class="hint">(MM/YY)</span></label><div class="box"><input class="inp" id="im-exp" type="text" inputmode="numeric" autocomplete="cc-exp" data-mask="exp" aria-describedby="im-exp-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-exp-err" aria-live="polite"></p></div>
       </form>
       <div class="side">
         <div class="raw">
-          <h4>Giá trị thật gửi đi</h4>
+          <h4>Submitted value</h4>
           <dl><dt>tel</dt><dd data-k="tel"></dd><dt>cc-number</dt><dd data-k="cc"></dd><dt>cc-exp</dt><dd data-k="exp"></dd></dl>
         </div>
-        <p>Số thẻ thử nghiệm: <code>4111 1111 1111 1111</code> (hợp lệ theo thuật toán Luhn). Mask chỉ là cách <b>hiển thị</b>; máy chủ nhận và kiểm tra chuỗi số không định dạng.</p>
+        <p>Test card number: <code>4111 1111 1111 1111</code> (passes the Luhn check). The mask only changes the <b>display</b>; the server receives and validates the unformatted digits.</p>
       </div>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>dữ liệu có khuôn cố định và việc chia nhóm giúp đọc lại: số điện thoại, số thẻ, ngày hết hạn, mã số thuế, số tài khoản. Nhóm 4 chữ số dễ soát lỗi hơn một dãy 16 chữ số liền.</p>
-    <p class="avoid"><b>Tránh khi</b>dữ liệu không có khuôn cố định (tên, địa chỉ, số điện thoại quốc tế với nhiều độ dài khác nhau). Mask làm nhảy con trỏ, chặn dán hoặc không cho xoá qua dấu cách còn gây hại hơn không dùng mask.</p>
-    <p class="tip">Mẹo prompt: đòi rõ “preserve caret position when editing in the middle”, “backspace across separators”, “accept pasted values with spaces or +84”, đây là ba điểm mask tự viết thường lỗi.</p>
+    <p class="use"><b>Use when</b>the data has a fixed format and grouping helps proofreading: phone numbers, card numbers, expiry dates, tax IDs, account numbers. Groups of 4 digits are easier to check than 16 digits in a row.</p>
+    <p class="avoid"><b>Avoid when</b>the data has no fixed format (names, addresses, international phone numbers of varying length). A mask that moves the caret, blocks paste or prevents deleting across separators does more harm than no mask.</p>
+    <p class="tip">Prompt tip: ask for “preserve caret position when editing in the middle”, “backspace across separators” and “accept pasted values with spaces, parentheses or +1”. These are the three points where hand-written masks most often fail.</p>
   </div>
   <div class="kw"><button>input mask</button><button>auto-format phone number as you type</button><button>credit card number grouping (4-4-4-4)</button><button>MM/YY expiry auto slash</button><button>ghost placeholder showing remaining format</button><button>inputmode="numeric"</button><button>caret-preserving formatter</button></div>
 </article>
@@ -534,20 +541,20 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const YEAR = new Date().getFullYear();
 
 /* ---------- 1. Inline validation ---------- */
-const TAKEN = ['minhanh', 'admin', 'lan.pham'];
+const TAKEN = ['alexm', 'admin', 'alex.morgan'];
 const ivRule = {
   email(v) {
     v = v.trim();
-    if (!v) return 'Nhập email để nhận mã xác nhận.';
-    if (!v.includes('@')) return 'Email cần có “@”, ví dụ lan@vidu.com.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Phần sau “@” chưa đúng, ví dụ vidu.com.';
+    if (!v) return 'Enter an email address to receive a confirmation code.';
+    if (!v.includes('@')) return 'Include “@” in the email address, like alex@example.com.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Check the part after “@”, like example.com.';
     return '';
   },
   user(v, withServer = true) {
-    if (!v) return 'Chọn một tên đăng nhập.';
-    if (v.length < 3 || v.length > 20) return `Cần 3–20 ký tự (đang có ${v.length}).`;
-    if (/[^a-z0-9._]/.test(v)) return 'Chỉ dùng chữ thường không dấu, số, dấu chấm hoặc gạch dưới.';
-    if (withServer && TAKEN.includes(v)) return `“${v}” đã được sử dụng. Có thể dùng “${v}.${YEAR}”.`;
+    if (!v) return 'Choose a username.';
+    if (v.length < 3 || v.length > 20) return `Use 3–20 characters (currently ${v.length}).`;
+    if (/[^a-z0-9._]/.test(v)) return 'Use only lowercase letters, numbers, periods or underscores.';
+    if (withServer && TAKEN.includes(v)) return `“${v}” is taken. Try “${v}.${YEAR}”.`;
     return '';
   }
 };
@@ -559,13 +566,13 @@ Dict.demo('inline-validation', d => {
     inp.setAttribute('aria-invalid', msg ? 'true' : 'false');
   };
   const success = (form) => {
-    $('.done span', form).textContent = 'Tên đăng nhập: ' + form.elements.user.value;
+    $('.done span', form).textContent = 'Username: ' + form.elements.user.value;
     form.classList.add('sent');
     [...form.children].forEach(c => { if (!c.classList.contains('done')) c.inert = true; });
     const dn = $('.done', form); dn.tabIndex = -1; dn.focus({ preventScroll: true });
   };
 
-  /* A: chỉ kiểm khi bấm Gửi, lỗi đứng yên tới lần Gửi sau */
+  /* A: validate on submit only; errors stay until the next submit */
   const fa = $('form[data-mode=submit]', d), sum = $('.sum', fa);
   fa.addEventListener('submit', e => {
     e.preventDefault();
@@ -575,7 +582,7 @@ Dict.demo('inline-validation', d => {
       if (m) bad.push([inp, m]);
     }
     if (!bad.length) { sum.hidden = true; return success(fa); }
-    sum.innerHTML = `<b>${bad.length} ô cần sửa:</b>` +
+    sum.innerHTML = `<b>${bad.length === 1 ? '1 field needs' : bad.length + ' fields need'} fixing:</b>` +
       bad.map(([i]) => `<a href="#${i.id}">${i.labels[0].textContent}</a>`).join('');
     sum.hidden = false; sum.focus();
   });
@@ -584,19 +591,19 @@ Dict.demo('inline-validation', d => {
     e.preventDefault(); $(a.getAttribute('href'), fa).focus();
   });
 
-  /* B: kiểm khi rời ô; đã báo lỗi thì kiểm lại theo từng phím */
+  /* B: validate on blur; once an error is shown, re-validate on every keystroke */
   const fb = $('form[data-mode=live]', d);
   const st = new WeakMap();
   let token = 0;
   const setOk = (inp, ok) => inp.closest('.fld').classList.toggle('ok', ok);
   const note = (inp, t) => { $('.note', inp.closest('.fld')).textContent = t; inp.closest('.fld').classList.toggle('chk', !!t); };
   const check = (inp, fromBlur) => {
-    const v = inp.name === 'email' ? inp.value : inp.value;
+    const v = inp.value;
     if (inp.name === 'user' && fromBlur) {
       const m = ivRule.user(v, false);
       if (m) { note(inp, ''); show(inp, m); setOk(inp, false); return; }
-      /* giả lập hỏi máy chủ tên đã có người dùng chưa */
-      const my = ++token; note(inp, 'Đang kiểm tra tên…'); show(inp, ''); setOk(inp, false);
+      /* simulate a server check for username availability */
+      const my = ++token; note(inp, 'Checking availability…'); show(inp, ''); setOk(inp, false);
       timers.push(setTimeout(() => {
         if (my !== token) return;
         note(inp, ''); const m2 = ivRule.user(inp.value); show(inp, m2); setOk(inp, !m2);
@@ -616,7 +623,7 @@ Dict.demo('inline-validation', d => {
       } else setOk(inp, false);
     });
     inp.addEventListener('blur', () => {
-      if (!st.get(inp).dirty && !inp.value) return;  // Tab đi qua ô trống: chưa báo
+      if (!st.get(inp).dirty && !inp.value) return;  // tabbing past an empty field: no error yet
       check(inp, true);
     });
   }
@@ -636,13 +643,13 @@ Dict.demo('inline-validation', d => {
 Dict.demo('multi-step-form', d => {
   const form = $('form', d), steps = $$('.step', form), lis = $$('.steps li', d);
   const back = $('.back', form), next = $('.next', form), live = $('.live', form), nav = $('.nav', form);
-  const NAMES = ['Tài khoản', 'Không gian làm việc', 'Xác nhận'];
+  const NAMES = ['Account', 'Workspace', 'Review'];
   let cur = 0, reached = 0;
   const v = {
     email: x => ivRule.email(x),
-    pw: x => !x ? 'Đặt một mật khẩu.' : x.length < 8 ? `Cần ít nhất 8 ký tự (đang có ${x.length}).` : '',
-    team: x => x.trim() ? '' : 'Đặt tên cho không gian, ví dụ “Nhóm Thiết kế”.',
-    size: x => x ? '' : 'Chọn quy mô gần đúng nhất.'
+    pw: x => !x ? 'Create a password.' : x.length < 8 ? `Use at least 8 characters (currently ${x.length}).` : '',
+    team: x => x.trim() ? '' : 'Name the workspace, for example “Design Team”.',
+    size: x => x ? '' : 'Select the closest team size.'
   };
   const fieldOf = n => n === 'size' ? $('fieldset', form) : form.elements[n];
   const errOf = n => $(`#wz-${n}-err`, form);
@@ -655,7 +662,7 @@ Dict.demo('multi-step-form', d => {
     if (first) (first === 'size' ? form.elements.size[0] : form.elements[first]).focus();
     return !first;
   };
-  /* đã báo lỗi thì gỡ ngay khi sửa đúng */
+  /* once an error is shown, clear it as soon as the value is fixed */
   form.addEventListener('input', e => {
     const n = e.target.name; if (!v[n]) return;
     if (fieldOf(n).getAttribute('aria-invalid') === 'true') setErr(n, v[n](val(n)));
@@ -668,24 +675,24 @@ Dict.demo('multi-step-form', d => {
       if (i === cur) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
       $('button', li).disabled = done || i === cur || i > reached;
     });
-    $('.rail .cnt', d).innerHTML = done ? 'Hoàn tất' : `Bước <b>${cur + 1}</b> / 3`;
+    $('.rail .cnt', d).innerHTML = done ? 'Complete' : `Step <b>${cur + 1}</b> of 3`;
     $('.rail .bar i', d).style.width = done ? '100%' : ((cur + 1) / 3 * 100) + '%';
     back.hidden = cur === 0 || done;
     nav.hidden = done;
-    next.textContent = cur === 2 ? 'Tạo không gian' : (reached === 2 ? 'Lưu, về Xác nhận →' : `Tiếp: ${cur === 0 ? 'Không gian' : 'Xác nhận'} →`);
+    next.textContent = cur === 2 ? 'Create workspace' : (reached === 2 ? 'Save and review →' : `Next: ${cur === 0 ? 'Workspace' : 'Review'} →`);
     if (cur >= 2) {
       $$('[data-k]', form).forEach(el => {
         const k = el.dataset.k;
         el.textContent = k === 'pw' ? '•'.repeat(val('pw').length) : val(k);
       });
     }
-    live.textContent = done ? 'Đã tạo không gian.' : `Bước ${cur + 1} trên 3: ${NAMES[cur]}`;
+    live.textContent = done ? 'Workspace created.' : `Step ${cur + 1} of 3: ${NAMES[cur]}`;
     if (focus) $('h3', steps[cur]).focus({ preventScroll: true });
   };
   const go = (i) => {
     form.dataset.dir = i > cur ? 'fwd' : 'back';
     cur = i; reached = Math.max(reached, Math.min(i, 2));
-    /* chạy lại animation vào bước */
+    /* restart the step entrance animation */
     steps[cur].style.animation = 'none'; void steps[cur].offsetWidth; steps[cur].style.animation = '';
     render(true);
   };
@@ -704,21 +711,22 @@ Dict.demo('multi-step-form', d => {
 });
 
 /* ---------- 3. Autocomplete / Combobox ---------- */
+/* [name, country, aliases] */
 const CITIES = [
-  ['Hà Nội', 'Miền Bắc'], ['Hải Phòng', 'Miền Bắc'], ['Hạ Long', 'Miền Bắc'], ['Thái Nguyên', 'Miền Bắc'], ['Bắc Ninh', 'Miền Bắc'],
-  ['Nam Định', 'Miền Bắc'], ['Lào Cai', 'Miền Bắc'], ['Điện Biên Phủ', 'Miền Bắc'], ['Thanh Hoá', 'Miền Trung'], ['Vinh', 'Miền Trung'],
-  ['Đồng Hới', 'Miền Trung'], ['Huế', 'Miền Trung'], ['Đà Nẵng', 'Miền Trung'], ['Hội An', 'Miền Trung'], ['Quảng Ngãi', 'Miền Trung'],
-  ['Quy Nhơn', 'Miền Trung'], ['Tuy Hoà', 'Miền Trung'], ['Nha Trang', 'Miền Trung'], ['Phan Thiết', 'Miền Trung'], ['Buôn Ma Thuột', 'Tây Nguyên'],
-  ['Pleiku', 'Tây Nguyên'], ['Đà Lạt', 'Tây Nguyên'], ['Kon Tum', 'Tây Nguyên'], ['TP. Hồ Chí Minh', 'Miền Nam', ['Sài Gòn', 'HCM']],
-  ['Biên Hoà', 'Miền Nam'], ['Thủ Dầu Một', 'Miền Nam'], ['Vũng Tàu', 'Miền Nam'], ['Mỹ Tho', 'Miền Nam'], ['Bến Tre', 'Miền Nam'],
-  ['Cần Thơ', 'Miền Nam'], ['Long Xuyên', 'Miền Nam'], ['Châu Đốc', 'Miền Nam'], ['Rạch Giá', 'Miền Nam'], ['Cà Mau', 'Miền Nam'],
-  ['Sóc Trăng', 'Miền Nam'], ['Bạc Liêu', 'Miền Nam']
+  ['New York', 'USA', ['NYC']], ['Los Angeles', 'USA', ['LA']], ['San Francisco', 'USA'], ['San Diego', 'USA'], ['San Antonio', 'USA'],
+  ['Chicago', 'USA'], ['Houston', 'USA'], ['Seattle', 'USA'], ['Boston', 'USA'], ['Miami', 'USA'], ['Denver', 'USA'], ['Austin', 'USA'],
+  ['Toronto', 'Canada'], ['Vancouver', 'Canada'], ['Montréal', 'Canada'], ['Mexico City', 'Mexico', ['CDMX']], ['San José', 'Costa Rica'],
+  ['Bogotá', 'Colombia'], ['Santiago', 'Chile'], ['São Paulo', 'Brazil'], ['Rio de Janeiro', 'Brazil'], ['Buenos Aires', 'Argentina'],
+  ['London', 'United Kingdom'], ['Paris', 'France'], ['Berlin', 'Germany'], ['Munich', 'Germany', ['München']], ['Cologne', 'Germany', ['Köln']],
+  ['Düsseldorf', 'Germany'], ['Zürich', 'Switzerland'], ['Málaga', 'Spain'], ['Kraków', 'Poland'], ['Malmö', 'Sweden'], ['Reykjavík', 'Iceland'],
+  ['Istanbul', 'Türkiye'], ['Tokyo', 'Japan'], ['Seoul', 'South Korea'], ['Mumbai', 'India', ['Bombay']], ['Ho Chi Minh City', 'Vietnam', ['Saigon']],
+  ['Hanoi', 'Vietnam'], ['Singapore', 'Singapore'], ['Sydney', 'Australia'], ['Auckland', 'New Zealand']
 ];
-/* bỏ dấu từng ký tự để chỉ số vẫn khớp với chuỗi gốc (dùng cho tô đậm) */
-const fold1 = c => c.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[đĐ]/g, 'd').toLowerCase().charAt(0) || c;
+/* fold one character at a time so indexes still map to the original string (used for highlighting) */
+const fold1 = c => c.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\u0111\u0110]/g, 'd').toLowerCase().charAt(0) || c;
 const fold = s => [...s].map(fold1).join('');
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-/* so khớp không dấu, không phân biệt khoảng trắng: trả [vị trí đầu, vị trí cuối] trong chuỗi gốc */
+/* case-, accent- and space-insensitive match: returns [start, end] in the original string */
 const findIn = (text, q) => {
   const f = fold(text), idx = [], compact = [];
   [...f].forEach((c, i) => { if (c !== ' ') { compact.push(c); idx.push(i); } });
@@ -749,11 +757,11 @@ Dict.demo('autocomplete-combobox', d => {
     items = search(raw);
     list.innerHTML = items.length ? items.map(({ c, hit, al }, i) => {
       const n = c[0], name = hit ? esc(n.slice(0, hit[0])) + '<mark>' + esc(n.slice(hit[0], hit[1])) + '</mark>' + esc(n.slice(hit[1])) : esc(n);
-      return `<li role="option" id="cb-o-${i}" aria-selected="${chosen === n}"><span>${name}${al ? ` <small style="margin:0">· còn gọi là ${esc(al)}</small>` : ''}</span><small>${c[1]}</small></li>`;
-    }).join('') : `<li class="none" role="presentation">Không có thành phố nào khớp “${esc(raw)}”.</li>`;
+      return `<li role="option" id="cb-o-${i}" aria-selected="${chosen === n}"><span>${name}${al ? ` <small style="margin:0">· also known as ${esc(al)}</small>` : ''}</span><small>${c[1]}</small></li>`;
+    }).join('') : `<li class="none" role="presentation">No cities match “${esc(raw)}”.</li>`;
     act = -1; inp.removeAttribute('aria-activedescendant');
     clearTimeout(cntT);
-    cntT = setTimeout(() => { cnt.textContent = items.length ? `${items.length} gợi ý` : 'Không có gợi ý'; }, 400);
+    cntT = setTimeout(() => { cnt.textContent = items.length ? `${items.length} ${items.length === 1 ? 'suggestion' : 'suggestions'}` : 'No suggestions'; }, 400);
   };
   const setAct = i => {
     const opts = $$('[role=option]', list); if (!opts.length) return;
@@ -765,7 +773,7 @@ Dict.demo('autocomplete-combobox', d => {
   const choose = i => {
     const it = items[i]; if (!it) return;
     chosen = it.c[0]; inp.value = chosen; clr.hidden = false;
-    picked.innerHTML = `Giao tới: <b>${esc(chosen)}</b> · ${it.c[1]}`;
+    picked.innerHTML = `Deliver to: <b>${esc(chosen)}</b> · ${it.c[1]}`;
     close(); inp.focus();
   };
   inp.addEventListener('input', () => {
@@ -788,7 +796,7 @@ Dict.demo('autocomplete-combobox', d => {
     } else if (e.key === 'Tab') close();
   });
   inp.addEventListener('blur', () => setTimeout(() => { if (!d.contains(document.activeElement) || document.activeElement !== inp) close(); }, 0));
-  list.addEventListener('mousedown', e => e.preventDefault()); // giữ focus ở ô nhập
+  list.addEventListener('mousedown', e => e.preventDefault()); // keep focus in the input
   list.addEventListener('click', e => {
     const o = e.target.closest('[role=option]'); if (o) choose(+o.id.split('-').pop());
   });
@@ -796,11 +804,13 @@ Dict.demo('autocomplete-combobox', d => {
   return () => clearTimeout(cntT);
 });
 
-/* ---------- 4. Date picker ---------- */
-const MONTHS = m => 'Tháng ' + (m + 1);
-const WD = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+/* ---------- 4. Date picker (en-US: weeks start on Sunday, MM/DD/YYYY) ---------- */
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS = m => MONTH_NAMES[m];
+const WD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const ymd = dt => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
-const dmy = dt => `${String(dt.getDate()).padStart(2, '0')}/${String(dt.getMonth() + 1).padStart(2, '0')}/${dt.getFullYear()}`;
+const mdy = dt => `${String(dt.getMonth() + 1).padStart(2, '0')}/${String(dt.getDate()).padStart(2, '0')}/${dt.getFullYear()}`;
+const longDate = dt => `${WD[dt.getDay()]}, ${MONTHS(dt.getMonth())} ${dt.getDate()}, ${dt.getFullYear()}`;
 const addD = (dt, n) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + n);
 const addM = (dt, n) => { const t = new Date(dt.getFullYear(), dt.getMonth() + n, 1); const last = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate(); t.setDate(Math.min(dt.getDate(), last)); return t; };
 Dict.demo('date-picker', d => {
@@ -810,9 +820,9 @@ Dict.demo('date-picker', d => {
   nat.min = ymd(today);
   let sel = null, foc = today;
   const draw = () => {
-    title.textContent = `${MONTHS(foc.getMonth())}, ${foc.getFullYear()}`;
+    title.textContent = `${MONTHS(foc.getMonth())} ${foc.getFullYear()}`;
     const first = new Date(foc.getFullYear(), foc.getMonth(), 1);
-    let cur = addD(first, -((first.getDay() + 6) % 7));
+    let cur = addD(first, -first.getDay());
     let html = '';
     for (let r = 0; r < 6; r++) {
       html += '<tr>';
@@ -820,7 +830,7 @@ Dict.demo('date-picker', d => {
         const k = ymd(cur), past = cur < today, out = cur.getMonth() !== foc.getMonth();
         html += `<td${sel && k === ymd(sel) ? ' aria-selected="true"' : ''}><button type="button" data-d="${k}" tabindex="${k === ymd(foc) ? 0 : -1}"` +
           `${out ? ' class="out"' : ''}${past ? ' aria-disabled="true"' : ''}${k === ymd(today) ? ' aria-current="date"' : ''}` +
-          ` aria-label="${WD[cur.getDay()]}, ${cur.getDate()} ${MONTHS(cur.getMonth()).toLowerCase()} ${cur.getFullYear()}${k === ymd(today) ? ', hôm nay' : ''}">${cur.getDate()}</button></td>`;
+          ` aria-label="${longDate(cur)}${k === ymd(today) ? ', today' : ''}">${cur.getDate()}</button></td>`;
         cur = addD(cur, 1);
       }
       html += '</tr>';
@@ -837,8 +847,8 @@ Dict.demo('date-picker', d => {
     pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (ret) btn.focus();
   };
   const setSel = dt => {
-    sel = dt; inp.value = dmy(dt); inp.setAttribute('aria-invalid', 'false'); err.textContent = '';
-    echo.textContent = `✓ ${WD[dt.getDay()]}, ${dt.getDate()} ${MONTHS(dt.getMonth()).toLowerCase()} ${dt.getFullYear()}`;
+    sel = dt; inp.value = mdy(dt); inp.setAttribute('aria-invalid', 'false'); err.textContent = '';
+    echo.textContent = `✓ ${longDate(dt)}`;
   };
   const pick = b => {
     if (!b || b.getAttribute('aria-disabled') === 'true') return;
@@ -852,7 +862,7 @@ Dict.demo('date-picker', d => {
   $('.close', pop).addEventListener('click', () => closeCal());
   body.addEventListener('click', e => pick(e.target.closest('button')));
   body.addEventListener('keydown', e => {
-    const k = e.key, wd = (foc.getDay() + 6) % 7;
+    const k = e.key, wd = foc.getDay();
     const map = { ArrowLeft: () => addD(foc, -1), ArrowRight: () => addD(foc, 1), ArrowUp: () => addD(foc, -7), ArrowDown: () => addD(foc, 7),
       Home: () => addD(foc, -wd), End: () => addD(foc, 6 - wd),
       PageUp: () => addM(foc, e.shiftKey ? -12 : -1), PageDown: () => addM(foc, e.shiftKey ? 12 : 1) };
@@ -862,23 +872,23 @@ Dict.demo('date-picker', d => {
   pop.addEventListener('keydown', e => {
     if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeCal(); return; }
     if (e.key !== 'Tab') return;
-    /* giữ Tab trong hộp lịch: tháng trước, tháng sau, ngày đang focus, Hôm nay, Đóng */
+    /* keep Tab inside the calendar: previous month, next month, focused day, Today, Close */
     const f = [$('.prev', pop), $('.next', pop), $('[tabindex="0"]', body), $('.today', pop), $('.close', pop)];
     const i = f.indexOf(document.activeElement.closest('button'));
     e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
   });
   const outside = e => { if (!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) closeCal(false); };
   document.addEventListener('pointerdown', outside);
-  /* gõ tay: chấp nhận 5/1/2027, 05-01-2027, 05012027 */
+  /* typed input: accepts 1/5/2027, 01-05-2027, 01052027 (month first) */
   const parse = () => {
     const t = inp.value.trim();
     if (!t) { sel = null; echo.textContent = ''; err.textContent = ''; inp.setAttribute('aria-invalid', 'false'); return; }
     let m = t.match(/^(\d{1,2})[\/.\-\s](\d{1,2})[\/.\-\s](\d{4})$/) || t.match(/^(\d{2})(\d{2})(\d{4})$/);
     const bad = msg => { sel = null; echo.textContent = ''; err.textContent = msg; inp.setAttribute('aria-invalid', 'true'); };
-    if (!m) return bad('Chưa đúng dạng. Gõ dd/mm/yyyy, ví dụ ' + dmy(addD(today, 7)) + '.');
-    const dt = new Date(+m[3], +m[2] - 1, +m[1]);
-    if (dt.getMonth() !== +m[2] - 1 || dt.getDate() !== +m[1]) return bad(`Không có ngày ${m[1]}/${m[2]}/${m[3]}.`);
-    if (dt < today) return bad('Ngày này đã qua. Chọn từ hôm nay trở đi.');
+    if (!m) return bad('Use the format MM/DD/YYYY, for example ' + mdy(addD(today, 7)) + '.');
+    const dt = new Date(+m[3], +m[1] - 1, +m[2]);
+    if (dt.getMonth() !== +m[1] - 1 || dt.getDate() !== +m[2]) return bad(`${m[1]}/${m[2]}/${m[3]} is not a valid date.`);
+    if (dt < today) return bad('This date has passed. Choose today or a later date.');
     setSel(dt);
   };
   inp.addEventListener('change', parse);
@@ -890,7 +900,7 @@ Dict.demo('date-picker', d => {
 });
 
 /* ---------- 5. Password strength meter ---------- */
-const COMMON = ['123456', '12345678', '123456789', '1234567890', 'password', 'password1', 'matkhau', 'matkhau123', 'qwerty', 'qwerty123', 'abc123', '111111', '000000', '00000000', 'iloveyou', 'admin', 'admin123', 'letmein', 'p@ssw0rd', 'anhyeuem', 'emyeuanh'];
+const COMMON = ['123456', '12345678', '123456789', '1234567890', 'password', 'password1', 'password123', 'qwerty', 'qwerty123', 'abc123', '111111', '000000', '00000000', 'iloveyou', 'admin', 'admin123', 'letmein', 'welcome', 'welcome1', 'monkey', 'dragon', 'sunshine', 'football', 'p@ssw0rd'];
 const pwScore = (p, ids) => {
   const low = p.toLowerCase(), plain = low.replace(/[^a-z0-9]/g, '');
   const r = {
@@ -899,27 +909,27 @@ const pwScore = (p, ids) => {
     common: !!p && !COMMON.includes(low) && !COMMON.includes(plain) && !/(.)\1{3,}/.test(p) && !/(0123|1234|2345|3456|4567|5678|6789|abcd|qwer|asdf)/.test(low),
     name: !!p && !ids.some(x => low.includes(x))
   };
-  let l = 0, sug = 'Nên dùng 12 ký tự trở lên.';
+  let l = 0, sug = 'Use 12 or more characters.';
   if (p) {
-    if (!r.common) { l = 1; sug = 'Mật khẩu này nằm trong danh sách hay bị đoán.'; }
-    else if (!r.name) { l = 1; sug = 'Bỏ tên hoặc email của bạn ra khỏi mật khẩu.'; }
-    else if (!r.len8) { l = 1; sug = `Thêm ${8 - p.length} ký tự nữa.`; }
+    if (!r.common) { l = 1; sug = 'This password is on a list of commonly guessed passwords.'; }
+    else if (!r.name) { l = 1; sug = 'Remove your name or email from the password.'; }
+    else if (!r.len8) { l = 1; sug = `Add ${8 - p.length} more ${8 - p.length === 1 ? 'character' : 'characters'}.`; }
     else {
       l = Math.min(4, 1 + (p.length >= 12) + (p.length >= 16) + (p.length >= 20) + r.mix);
-      sug = l === 4 ? 'Mật khẩu mạnh. Nên lưu vào trình quản lý mật khẩu.' : p.length < 16 ? 'Thêm vài từ nữa: câu dài dễ nhớ mà khó đoán.' : 'Thêm chữ hoa, số hoặc ký hiệu.';
+      sug = l === 4 ? 'Strong password. Save it in a password manager.' : p.length < 16 ? 'Add a few more words: a long phrase is easy to remember and hard to guess.' : 'Add uppercase letters, numbers or symbols.';
     }
   }
   return { r, l, sug };
 };
-const PW_LV = ['chưa có', 'Yếu', 'Tạm được', 'Khá', 'Mạnh'];
+const PW_LV = ['none yet', 'Weak', 'Fair', 'Good', 'Strong'];
 Dict.demo('password-strength-meter', d => {
   const inp = $('#pw-in', d), eye = $('.eye', d), meter = $('.meter', d), lvl = $('#pw-lvl', d), sug = $('.sug', d), res = $('.res', d), form = $('form', d);
-  const ids = ['lan', 'pham', 'phạm'];
+  const ids = ['alex', 'morgan'];
   let last = -1;
   const upd = () => {
     const { r, l, sug: s } = pwScore(inp.value, ids);
     meter.dataset.l = l; sug.textContent = s; lvl.dataset.l = l;
-    if (l !== last) { lvl.textContent = 'Độ mạnh: ' + PW_LV[l]; last = l; } // chỉ đổi chữ khi đổi nấc → trình đọc màn hình không bị dội
+    if (l !== last) { lvl.textContent = 'Strength: ' + PW_LV[l]; last = l; } // update only when the level changes, so screen readers are not flooded
     $$('.rules li', d).forEach(li => {
       const ok = r[li.dataset.r], has = !!inp.value;
       li.classList.toggle('on', has && ok);
@@ -931,7 +941,7 @@ Dict.demo('password-strength-meter', d => {
   eye.addEventListener('click', () => {
     const on = eye.getAttribute('aria-pressed') !== 'true';
     eye.setAttribute('aria-pressed', on); inp.type = on ? 'text' : 'password';
-    eye.textContent = on ? 'Ẩn' : 'Hiện'; eye.setAttribute('aria-label', on ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+    eye.textContent = on ? 'Hide' : 'Show'; eye.setAttribute('aria-label', on ? 'Hide password' : 'Show password');
   });
   $('.try', d).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
@@ -940,26 +950,28 @@ Dict.demo('password-strength-meter', d => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const { l } = pwScore(inp.value, ids);
-    if (l >= 3) { res.className = 'res okm'; res.textContent = '✓ Đã lưu mật khẩu mới.'; }
-    else { res.className = 'res bad'; res.textContent = inp.value ? 'Mật khẩu còn yếu, cần đạt ít nhất mức “Khá”.' : 'Nhập mật khẩu mới.'; inp.focus(); }
+    if (l >= 3) { res.className = 'res okm'; res.textContent = '✓ New password saved.'; }
+    else { res.className = 'res bad'; res.textContent = inp.value ? 'This password is too weak. It must reach at least “Good”.' : 'Enter a new password.'; inp.focus(); }
   });
   upd();
 });
 
 /* ---------- 6. Input mask ---------- */
 const MASKS = {
-  tel: { max: 10, tpl: '0000 000 000', fmt: s => [s.slice(0, 4), s.slice(4, 7), s.slice(7, 10)].filter(Boolean).join(' '),
-    clean: (v, digits) => (/^\s*(\+|00)?84/.test(v) && digits.length >= 11) ? '0' + digits.replace(/^(00)?84/, '') : digits,
-    check: s => !s ? '' : s.length < 10 ? `Thiếu ${10 - s.length} số.` : !/^0[35789]/.test(s) ? 'Số di động Việt Nam bắt đầu bằng 03, 05, 07, 08 hoặc 09.' : '' },
+  /* US phone: (555) 123-4567; a pasted +1 country code is dropped */
+  tel: { max: 10, tpl: '(000) 000-0000',
+    fmt: s => !s ? '' : '(' + s.slice(0, 3) + (s.length > 3 ? ') ' + s.slice(3, 6) : '') + (s.length > 6 ? '-' + s.slice(6, 10) : ''),
+    clean: (v, digits) => (digits.length === 11 && digits[0] === '1') ? digits.slice(1) : digits,
+    check: s => !s ? '' : s.length < 10 ? `Enter ${10 - s.length} more ${10 - s.length === 1 ? 'digit' : 'digits'}.` : /^[01]/.test(s) ? 'US area codes do not start with 0 or 1.' : '' },
   cc: { max: 16, tpl: '0000 0000 0000 0000', fmt: s => s.replace(/(\d{4})(?=\d)/g, '$1 '),
-    check: s => !s ? '' : s.length < 16 ? `Thiếu ${16 - s.length} số.` : !luhn(s) ? 'Số thẻ sai, kiểm lại từng nhóm 4 số.' : '' },
+    check: s => !s ? '' : s.length < 16 ? `Enter ${16 - s.length} more ${16 - s.length === 1 ? 'digit' : 'digits'}.` : !luhn(s) ? 'This card number is not valid. Check each group of 4 digits.' : '' },
   exp: { max: 4, tpl: 'MM/YY', fmt: s => s.length > 2 ? s.slice(0, 2) + '/' + s.slice(2) : s,
     clean: (v, digits) => /^[2-9]/.test(digits) ? '0' + digits : digits,
     check: s => {
-      if (!s) return ''; if (s.length < 4) return 'Gõ đủ tháng và năm, ví dụ 08/29.';
+      if (!s) return ''; if (s.length < 4) return 'Enter the month and year, for example 08/29.';
       const m = +s.slice(0, 2), y = 2000 + +s.slice(2), n = new Date();
-      if (m < 1 || m > 12) return 'Tháng chỉ từ 01 đến 12.';
-      if (y < n.getFullYear() || (y === n.getFullYear() && m < n.getMonth() + 1)) return 'Thẻ đã hết hạn.';
+      if (m < 1 || m > 12) return 'Enter a month from 01 to 12.';
+      if (y < n.getFullYear() || (y === n.getFullYear() && m < n.getMonth() + 1)) return 'This card has expired.';
       return '';
     } }
 };
@@ -976,21 +988,21 @@ Dict.demo('input-mask', d => {
       out.textContent = s; out.classList.toggle('v', s.length === M.max && !bad);
       if (shown || (s.length === M.max)) { err.textContent = bad; inp.setAttribute('aria-invalid', bad ? 'true' : 'false'); if (bad) shown = true; }
     };
-    /* đặt lại giá trị và giữ con trỏ sau đúng chữ số thứ n */
+    /* set the formatted value and keep the caret after the nth digit */
     const apply = (raw, nBefore) => {
       inp.value = M.fmt(raw.slice(0, M.max));
       let pos = 0, seen = 0;
       while (pos < inp.value.length && seen < nBefore) { if (/\d/.test(inp.value[pos])) seen++; pos++; }
-      if (M.tpl[pos] && !/[0-9MY]/.test(M.tpl[pos]) && inp.value.length > pos) pos++;
+      while (M.tpl[pos] && !/[0-9MY]/.test(M.tpl[pos]) && inp.value.length > pos) pos++;
       inp.setSelectionRange(pos, pos); paint();
     };
     inp.addEventListener('beforeinput', e => {
-      /* Backspace / Delete ngay cạnh dấu cách hoặc “/”: xoá luôn chữ số bên kia */
+      /* Backspace / Delete next to a separator: delete the digit on the other side */
       const a = inp.selectionStart, b = inp.selectionEnd, v = inp.value;
       if (a !== b) return;
       if (e.inputType === 'deleteContentBackward' && a > 0 && /\D/.test(v[a - 1])) {
         e.preventDefault(); const n = v.slice(0, a).replace(/\D/g, '').length; const s = digits();
-        apply(s.slice(0, n - 1) + s.slice(n), n - 1);
+        if (n > 0) apply(s.slice(0, n - 1) + s.slice(n), n - 1);
       } else if (e.inputType === 'deleteContentForward' && a < v.length && /\D/.test(v[a])) {
         e.preventDefault(); const n = v.slice(0, a).replace(/\D/g, '').length; const s = digits();
         apply(s.slice(0, n) + s.slice(n + 1), n);

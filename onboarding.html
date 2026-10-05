@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Onboarding — Từ điển pattern thiết kế web</title>
-<meta name="description" content="Bốn pattern onboarding kèm demo tương tác: coachmark và hotspot, progressive disclosure, onboarding checklist và product tour.">
+<title>Onboarding — Pattern Dictionary</title>
+<meta name="description" content="Four onboarding patterns with interactive demos: coachmarks and hotspots, progressive disclosure, onboarding checklist, and product tour.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
-/* reset chỉ trong demo, specificity 0 */
+/* reset scoped to demos, specificity 0 */
 :where(.demo) :where(h3,h4,h5,p,ul,ol,dl,dd,figure){margin:0;padding:0}
 :where(.demo) :where(ul,ol){list-style:none}
 :where(.demo) :where(button,input,select){font:inherit;color:inherit}
@@ -70,7 +70,7 @@
   #coachmarks-hotspots .demo .stat{left:18px;bottom:18px;font-size:12px;padding:10px 12px}
   #coachmarks-hotspots .demo .doc h3{font-size:22px}
   #coachmarks-hotspots .demo .doc p{font-size:14px}
-  /* chấm vẫn nhỏ, nhưng vùng chạm 32px */
+  /* the dot stays small, but the touch target is 32px */
   #coachmarks-hotspots .demo .hs,#coachmarks-hotspots .demo .hs.seen{width:32px;height:32px;top:-14px;right:-14px;border:0;background:radial-gradient(circle,#ff5a1f 0 6px,#fff 6.5px 9px,transparent 9.5px);box-shadow:none}
   #coachmarks-hotspots .demo .hs.seen{background:radial-gradient(circle,#b9bccb 0 5px,#fff 5.5px 7px,transparent 7.5px)}
   #coachmarks-hotspots .demo .hs::after{inset:7px}
@@ -124,7 +124,7 @@
 #progressive-disclosure .demo .meter li small{font-size:12px}
 #progressive-disclosure .demo .meter li.on{color:#161616}
 #progressive-disclosure .demo .meter li.on b{background:#3b5bdb}
-/* mobile: bộ đếm thu thành một dòng phía trên thẻ */
+/* mobile: the counter collapses into one line above the card */
 @media (max-width:760px){
   #progressive-disclosure .demo{--demo-h-m:520px}
   #progressive-disclosure .demo .lay{flex-direction:column-reverse;justify-content:flex-start;align-items:stretch;gap:10px;padding:12px}
@@ -200,7 +200,7 @@
 #onboarding-checklist .demo .yay button{margin-top:6px;height:34px;padding:0 14px;border-radius:9px;border:1px solid #d9dbe3;background:#fff;font-weight:600;cursor:pointer}
 #onboarding-checklist .demo .reopen{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:12.5px;cursor:pointer}
 #onboarding-checklist .demo>.replay{top:auto;bottom:14px;right:auto;left:20px}
-/* mobile: app thu thành lưới 2×2 phía trên, danh sách bên dưới */
+/* mobile: the app collapses into a 2×2 grid on top, with the list below */
 @media (max-width:760px){
   #onboarding-checklist .demo{--demo-h-m:680px}
   #onboarding-checklist .demo .lay{flex-direction:column;gap:12px;padding:12px}
@@ -315,55 +315,55 @@
 <main class="wrap">
 <header class="head">
   <h1>Onboarding</h1>
-  <p>Các pattern dẫn người dùng mới từ lần mở đầu tiên tới thời điểm <b>nhận ra giá trị của sản phẩm</b>, không cần đọc tài liệu hướng dẫn. Bốn mức can thiệp, từ nhẹ tới mạnh: chấm gợi ý, ẩn bớt tuỳ chọn nâng cao, danh sách việc cần làm và tour hướng dẫn từng bước.</p>
+  <p>Patterns that take new users from their first visit to the moment they <b>see the value of the product</b>, without reading documentation. Four levels of intervention, from light to strong: hint dots, hidden advanced options, a task checklist, and a step-by-step tour.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="coachmarks-hotspots">
   <h2>Coachmarks / Hotspots</h2>
-  <p class="vi"><b>Chấm gợi ý và bong bóng mẹo.</b> Các chấm nhỏ nhấp nháy (hotspot) đặt cạnh tính năng mới hoặc dễ bị bỏ qua. Người dùng tự chọn thời điểm nhấn vào, khi đó một bong bóng mẹo (coachmark) hiện ra; sau khi xem, chấm ngừng nhấp nháy nhưng vẫn còn để xem lại. Nhấn hoặc chạm từng chấm cam (hoặc Tab tới chấm rồi nhấn Space), đóng bằng nút “Đã hiểu”, phím Esc hoặc nhấn ra ngoài.</p>
+  <p class="vi"><b>Hint dots and tip bubbles.</b> Small pulsing dots (hotspots) sit next to features that are new or easy to miss. The user decides when to select one, and a tip bubble (coachmark) appears; once seen, the dot stops pulsing but stays available. Close a tip with “Got it”, Esc, or a click outside. Click or tap each orange dot, or Tab to a dot and press Space.</p>
   <div class="demo">
     <div class="app">
       <div class="tb">
-        <b>Kế hoạch quý 4</b><small>Đã lưu · 2 phút trước</small>
-        <span class="anc"><button class="ib" type="button" aria-label="Lịch sử phiên bản"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></button>
-          <button class="hs" type="button" popovertarget="cm-hist" aria-label="Mẹo: Lịch sử phiên bản"></button></span>
-        <button class="ib" type="button" aria-label="Bình luận"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></button>
-        <span class="anc"><button class="share" type="button">Chia sẻ</button>
-          <button class="hs" type="button" popovertarget="cm-share" aria-label="Mẹo: Chia sẻ"></button></span>
+        <b>Q4 plan</b><small>Saved · 2 min ago</small>
+        <span class="anc"><button class="ib" type="button" aria-label="Version history"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></button>
+          <button class="hs" type="button" popovertarget="cm-hist" aria-label="Tip: Version history"></button></span>
+        <button class="ib" type="button" aria-label="Comments"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></button>
+        <span class="anc"><button class="share" type="button">Share</button>
+          <button class="hs" type="button" popovertarget="cm-share" aria-label="Tip: Share"></button></span>
       </div>
       <aside class="outline">
-        <span class="anc"><h4>Mục lục</h4><button class="hs" type="button" popovertarget="cm-toc" aria-label="Mẹo: Mục lục tự động"></button></span>
-        <ul><li>Mục tiêu</li><li class="sub">Chỉ số chính</li><li>Lộ trình</li><li class="sub">Tháng 10</li><li class="sub">Tháng 11</li><li>Ngân sách</li><li>Rủi ro</li></ul>
+        <span class="anc"><h4>Contents</h4><button class="hs" type="button" popovertarget="cm-toc" aria-label="Tip: Automatic table of contents"></button></span>
+        <ul><li>Goals</li><li class="sub">Key metrics</li><li>Roadmap</li><li class="sub">October</li><li class="sub">November</li><li>Budget</li><li>Risks</li></ul>
       </aside>
       <div class="doc">
-        <h3>Mục tiêu quý 4</h3>
-        <p>Tăng số nhóm dùng thường xuyên lên 30% và rút ngắn thời gian từ lúc đăng ký tới khi tạo dự án đầu tiên xuống dưới 5 phút.</p>
+        <h3>Q4 goals</h3>
+        <p>Grow the number of regularly active teams by 30% and cut the time from sign-up to first project to under 5 minutes.</p>
         <div class="ln" style="width:92%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:60%"></div>
       </div>
     </div>
     <div class="cm" id="cm-share" popover role="dialog" aria-labelledby="cm-share-t">
-      <em>Mới</em><h4 id="cm-share-t">Chia sẻ có thời hạn</h4>
-      <p>Đặt ngày hết hạn cho liên kết chia sẻ, phù hợp với tài liệu gửi đối tác bên ngoài.</p>
-      <div class="ft"><button type="button" popovertarget="cm-share" popovertargetaction="hide">Đã hiểu</button></div>
+      <em>New</em><h4 id="cm-share-t">Expiring share links</h4>
+      <p>Set an expiration date on a share link, useful for documents sent to external partners.</p>
+      <div class="ft"><button type="button" popovertarget="cm-share" popovertargetaction="hide">Got it</button></div>
     </div>
     <div class="cm" id="cm-hist" popover role="dialog" aria-labelledby="cm-hist-t">
-      <em>Mẹo</em><h4 id="cm-hist-t">Khôi phục phiên bản cũ</h4>
-      <p>Mọi thay đổi được lưu thành phiên bản. Mở Lịch sử phiên bản để so sánh hoặc khôi phục.</p>
-      <div class="ft"><button type="button" popovertarget="cm-hist" popovertargetaction="hide">Đã hiểu</button></div>
+      <em>Tip</em><h4 id="cm-hist-t">Restore an earlier version</h4>
+      <p>Every change is saved as a version. Open Version history to compare or restore.</p>
+      <div class="ft"><button type="button" popovertarget="cm-hist" popovertargetaction="hide">Got it</button></div>
     </div>
     <div class="cm" id="cm-toc" popover role="dialog" aria-labelledby="cm-toc-t">
-      <em>Mẹo</em><h4 id="cm-toc-t">Mục lục tự cập nhật</h4>
-      <p>Mỗi tiêu đề trong tài liệu tự động xuất hiện ở đây. Nhấn vào một mục để chuyển tới đoạn tương ứng.</p>
-      <div class="ft"><button type="button" popovertarget="cm-toc" popovertargetaction="hide">Đã hiểu</button></div>
+      <em>Tip</em><h4 id="cm-toc-t">Self-updating contents</h4>
+      <p>Every heading in the document appears here automatically. Select an entry to jump to that section.</p>
+      <div class="ft"><button type="button" popovertarget="cm-toc" popovertargetaction="hide">Got it</button></div>
     </div>
-    <p class="stat" aria-live="polite">Đã xem 0/3 mẹo</p>
-    <button class="replay">↻ Xem lại</button>
+    <p class="stat" aria-live="polite">0/3 tips viewed</p>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giới thiệu tính năng mới cho người dùng hiện tại, hoặc chỉ ra 2–4 vị trí dễ bị bỏ sót trong một màn hình phức tạp. Người dùng tự chọn thời điểm xem nên công việc không bị gián đoạn.</p>
-    <p class="avoid"><b>Tránh khi</b>đặt quá nhiều chấm trên một màn hình (tối đa vài chấm), hoặc nội dung là các bước bắt buộc theo thứ tự: khi đó dùng product tour hoặc onboarding checklist. Chấm cần ngừng nhấp nháy sau khi người dùng đã xem.</p>
-    <p class="tip">Mẹo prompt: phân biệt hotspot (chấm, người dùng tự nhấn) với tooltip tour (các bước tự hiện lần lượt). Yêu cầu “dismiss on Esc and outside click, remember seen state”.</p>
+    <p class="use"><b>Use when</b>introducing a new feature to existing users, or pointing out 2–4 easily missed spots on a complex screen. People choose when to look, so their work is not interrupted.</p>
+    <p class="avoid"><b>Avoid when</b>a screen would need many dots (keep it to a few), or the content is a set of required steps in order: use a product tour or an onboarding checklist instead. Dots should stop pulsing once the user has seen them.</p>
+    <p class="tip">Prompt tip: distinguish hotspots (dots the user selects) from tour tooltips (steps that appear in sequence on their own). Ask for “dismiss on Esc and outside click, remember seen state”.</p>
   </div>
   <div class="kw"><button>hotspot beacon</button><button>pulsing dot on new feature</button><button>coachmark tooltip with arrow</button><button>popover API (light dismiss, Esc)</button><button>"Got it" dismiss, remember seen state</button><button>non-blocking feature discovery</button></div>
 </article>
@@ -371,47 +371,47 @@
 <!-- 2 -->
 <article class="pattern" id="progressive-disclosure">
   <h2>Progressive disclosure</h2>
-  <p class="vi"><b>Hiển thị dần theo nhu cầu.</b> Giao diện chỉ hiển thị các tuỳ chọn mà đa số người dùng cần; phần còn lại xuất hiện khi người dùng chọn một tuỳ chọn liên quan hoặc mở mục nâng cao. Người dùng mới không bị quá tải, người dùng thành thạo vẫn có đủ công cụ. Đổi “Quyền truy cập chung”, mở “Tuỳ chọn nâng cao”, bật hạn chót hoặc mật khẩu, rồi theo dõi bộ đếm điều khiển.</p>
+  <p class="vi"><b>Showing options as they are needed.</b> The interface shows only the options most people need; the rest appear when the user picks a related option or opens an advanced section. New users are not overwhelmed, and experienced users still have every tool. Change “General access”, open “Advanced options”, turn on an expiration date or a password, and watch the control counter.</p>
   <div class="demo">
     <div class="lay">
       <form class="card" onsubmit="return false" aria-labelledby="pd-t">
-        <h3 id="pd-t">Chia sẻ “Kế hoạch quý 4”</h3>
-        <div class="row"><input class="ctl" data-l="1" type="email" placeholder="Thêm người bằng email" aria-label="Email người được mời" autocomplete="off"><button class="btn ctl" data-l="1" type="button">Mời</button></div>
-        <div class="who"><i aria-hidden="true">TH</i><div><b>Lê Thu Hà</b> (bạn)</div><span>Chủ sở hữu</span></div>
-        <label class="lbl" for="pd-access">Quyền truy cập chung</label>
+        <h3 id="pd-t">Share “Q4 plan”</h3>
+        <div class="row"><input class="ctl" data-l="1" type="email" placeholder="Add people by email" aria-label="Invitee email" autocomplete="off"><button class="btn ctl" data-l="1" type="button">Invite</button></div>
+        <div class="who"><i aria-hidden="true">HL</i><div><b>Hannah Lee</b> (you)</div><span>Owner</span></div>
+        <label class="lbl" for="pd-access">General access</label>
         <select class="ctl" data-l="1" id="pd-access">
-          <option value="private">Chỉ người được mời</option>
-          <option value="link">Ai có liên kết</option>
+          <option value="private">Only invited people</option>
+          <option value="link">Anyone with the link</option>
         </select>
         <div class="reveal" data-for="link" hidden>
-          <label for="pd-role">Người có liên kết có thể</label>
-          <select class="ctl" data-l="2" id="pd-role"><option>Xem</option><option>Bình luận</option><option>Chỉnh sửa</option></select>
+          <label for="pd-role">People with the link can</label>
+          <select class="ctl" data-l="2" id="pd-role"><option>View</option><option>Comment</option><option>Edit</option></select>
         </div>
         <details>
-          <summary>Tuỳ chọn nâng cao <small>(hết hạn, mật khẩu, tải xuống)</small></summary>
-          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-exp">Đặt ngày hết hạn cho liên kết</label>
-            <input class="ctl" data-l="3" type="date" id="pd-exp" aria-label="Ngày hết hạn" value="2026-12-31" hidden></div>
-          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-pw">Yêu cầu mật khẩu</label>
-            <input class="ctl" data-l="3" type="password" id="pd-pw" aria-label="Mật khẩu cho liên kết" placeholder="Mật khẩu" autocomplete="new-password" hidden></div>
-          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" checked>Cho phép tải xuống, in và sao chép</label></div>
+          <summary>Advanced options <small>(expiration, password, downloads)</small></summary>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-exp">Set an expiration date for the link</label>
+            <input class="ctl" data-l="3" type="date" id="pd-exp" aria-label="Expiration date" value="2026-12-31" hidden></div>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-pw">Require a password</label>
+            <input class="ctl" data-l="3" type="password" id="pd-pw" aria-label="Link password" placeholder="Password" autocomplete="new-password" hidden></div>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" checked>Allow downloading, printing, and copying</label></div>
         </details>
-        <div class="foot"><button class="btn ctl" data-l="1" type="button" data-copy>Sao chép liên kết</button><button class="btn pri ctl" data-l="1" type="button">Xong</button></div>
+        <div class="foot"><button class="btn ctl" data-l="1" type="button" data-copy>Copy link</button><button class="btn pri ctl" data-l="1" type="button">Done</button></div>
       </form>
       <div class="meter" aria-hidden="true">
-        <h4>Đang hiện</h4>
-        <p class="big"><span class="n">5</span> <small>/ <span class="m">11</span> điều khiển</small></p>
+        <h4>Visible now</h4>
+        <p class="big"><span class="n">5</span> <small>/ <span class="m">11</span> controls</small></p>
         <ul>
-          <li data-l="1" class="on"><b>1</b><span>Luôn hiện</span><small>thao tác phổ biến: mời, chọn quyền</small></li>
-          <li data-l="2"><b>2</b><span>Hiện theo lựa chọn</span><small>chỉ khi chọn “Ai có liên kết”</small></li>
-          <li data-l="3"><b>3</b><span>Nâng cao</span><small>giấu sau một mục mở/đóng</small></li>
+          <li data-l="1" class="on"><b>1</b><span>Always visible</span><small>common actions: invite, set access</small></li>
+          <li data-l="2"><b>2</b><span>Shown on selection</span><small>only with “Anyone with the link”</small></li>
+          <li data-l="3"><b>3</b><span>Advanced</span><small>behind an expandable section</small></li>
         </ul>
       </div>
     </div>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>một màn hình phục vụ cả người dùng mới lẫn người dùng thành thạo: form cài đặt, hộp thoại chia sẻ, bộ lọc tìm kiếm, trình chỉnh sửa. Khoảng 80% người dùng chỉ cần 20% số tuỳ chọn.</p>
-    <p class="avoid"><b>Tránh khi</b>tuỳ chọn bị ẩn là thứ đa số người dùng cần, hoặc có tác động lớn (quyền riêng tư, chi phí): ẩn các tuỳ chọn đó khiến người dùng hiểu sai. Không lồng quá hai lớp nâng cao.</p>
-    <p class="tip">Mẹo prompt: nêu rõ lớp nào luôn hiển thị, lớp nào hiển thị theo điều kiện. Với phần nâng cao, yêu cầu dùng <code>&lt;details&gt;</code> native để có sẵn hỗ trợ bàn phím và trạng thái mở/đóng cho trình đọc màn hình.</p>
+    <p class="use"><b>Use when</b>one screen serves both new and experienced users: settings forms, share dialogs, search filters, editors. Roughly 80% of users need only 20% of the options.</p>
+    <p class="avoid"><b>Avoid when</b>the hidden option is something most people need, or has a large impact (privacy, cost): hiding it leads people to wrong conclusions. Do not nest more than two advanced levels.</p>
+    <p class="tip">Prompt tip: state which layer is always visible and which appears conditionally. For the advanced part, ask for a native <code>&lt;details&gt;</code> element to get keyboard support and an open/closed state for screen readers.</p>
   </div>
   <div class="kw"><button>progressive disclosure</button><button>"Advanced options" collapsible section</button><button>conditional fields revealed on selection</button><button>native details / summary</button><button>sensible defaults, hide rarely used settings</button><button>animate height with interpolate-size</button></div>
 </article>
@@ -419,52 +419,52 @@
 <!-- 3 -->
 <article class="pattern" id="onboarding-checklist">
   <h2>Onboarding checklist</h2>
-  <p class="vi"><b>Danh sách việc cần làm để bắt đầu.</b> Một khung nhỏ liệt kê 3–6 việc đưa người dùng mới tới thời điểm nhận ra giá trị sản phẩm, kèm thanh tiến độ. Việc đầu tiên được đánh dấu hoàn thành sẵn để tạo đà. Mỗi việc hoàn thành sẽ cập nhật giao diện ứng dụng và tự mở việc kế tiếp. Nhấn nút xanh trong từng việc, thử “Bỏ qua” ở việc tuỳ chọn, và thu nhỏ khung bằng nút mũi tên.</p>
+  <p class="vi"><b>Getting-started task list.</b> A small panel lists 3–6 tasks that lead a new user to the moment they see the product’s value, with a progress bar. The first task is already checked off to build momentum. Each completed task updates the app and opens the next one. Press the blue button in each task, try “Skip” on the optional task, and minimize the panel with the arrow button.</p>
   <div class="demo">
     <div class="lay">
       <div class="dash">
-        <h3>Chào Minh Anh</h3>
-        <p>Đây là không gian làm việc của bạn.</p>
+        <h3>Welcome, Mia</h3>
+        <p>This is your workspace.</p>
         <div class="tiles">
-          <div class="tile" data-t="project"><h4>Dự án</h4><span>Chưa có dự án nào</span></div>
-          <div class="tile" data-t="team"><h4>Thành viên</h4><div class="avs"><i style="--c:#ffd8c2">MA</i></div><span>Chỉ có bạn</span></div>
-          <div class="tile" data-t="cal"><h4>Lịch</h4><span>Chưa kết nối</span></div>
-          <div class="tile" data-t="mobile"><h4>Di động</h4><span>Chưa cài ứng dụng</span></div>
+          <div class="tile" data-t="project"><h4>Projects</h4><span>No projects yet</span></div>
+          <div class="tile" data-t="team"><h4>Members</h4><div class="avs"><i style="--c:#ffd8c2">MA</i></div><span>Just you</span></div>
+          <div class="tile" data-t="cal"><h4>Calendar</h4><span>Not connected</span></div>
+          <div class="tile" data-t="mobile"><h4>Mobile</h4><span>App not installed</span></div>
         </div>
-        <button class="reopen" type="button" hidden>Mở lại danh sách “Bắt đầu”</button>
+        <button class="reopen" type="button" hidden>Reopen the “Get started” list</button>
       </div>
       <section class="ck" aria-labelledby="ob-t">
         <div class="ckh">
-          <h4 id="ob-t">Bắt đầu với Workspace</h4>
-          <p class="cnt" aria-live="polite">1/5 xong · còn khoảng 4 phút</p>
-          <button class="min" type="button" aria-expanded="true" aria-controls="ob-body" aria-label="Thu nhỏ danh sách"><svg class="i" aria-hidden="true"><use href="#i-chev"/></svg></button>
-          <progress max="5" value="1" aria-label="Tiến độ bắt đầu">1/5</progress>
+          <h4 id="ob-t">Get started with Workspace</h4>
+          <p class="cnt" aria-live="polite">1/5 done · about 4 min left</p>
+          <button class="min" type="button" aria-expanded="true" aria-controls="ob-body" aria-label="Minimize list"><svg class="i" aria-hidden="true"><use href="#i-chev"/></svg></button>
+          <progress max="5" value="1" aria-label="Getting started progress">1/5</progress>
         </div>
         <div class="ckb" id="ob-body">
-          <details name="ob" class="done" data-k="account"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo tài khoản</span><small>Xong</small></summary>
-            <div class="bd">Hoàn tất khi bạn đăng ký tài khoản.</div></details>
-          <details name="ob" open data-k="project"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo dự án đầu tiên</span><small>1 phút</small></summary>
-            <div class="bd">Dự án gom việc, tệp và người liên quan vào một chỗ.<div class="acts"><button class="pri" type="button" data-do>Tạo dự án</button></div></div></details>
-          <details name="ob" data-k="team"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Mời một đồng đội</span><small>1 phút</small></summary>
-            <div class="bd">Ứng dụng phát huy tác dụng rõ nhất khi làm việc nhóm. Chỉ cần mời một người để bắt đầu.<div class="acts"><button class="pri" type="button" data-do>Gửi lời mời</button></div></div></details>
-          <details name="ob" data-k="cal"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Kết nối lịch</span><small>30 giây</small></summary>
-            <div class="bd">Hạn chót sẽ hiện ngay trong lịch bạn đang dùng.<div class="acts"><button class="pri" type="button" data-do>Kết nối</button></div></div></details>
-          <details name="ob" data-k="mobile"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Cài ứng dụng di động</span><small>tuỳ chọn</small></summary>
-            <div class="bd">Nhận thông báo và duyệt việc khi không ngồi máy tính.<div class="acts"><button class="pri" type="button" data-do>Gửi link tải</button><button type="button" data-skip>Bỏ qua</button></div></div></details>
+          <details name="ob" class="done" data-k="account"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Create an account</span><small>Done</small></summary>
+            <div class="bd">Completed when you signed up.</div></details>
+          <details name="ob" open data-k="project"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Create your first project</span><small>1 min</small></summary>
+            <div class="bd">A project keeps related tasks, files, and people in one place.<div class="acts"><button class="pri" type="button" data-do>Create project</button></div></div></details>
+          <details name="ob" data-k="team"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Invite a teammate</span><small>1 min</small></summary>
+            <div class="bd">The app is most useful when a team works in it together. Invite one person to start.<div class="acts"><button class="pri" type="button" data-do>Send invite</button></div></div></details>
+          <details name="ob" data-k="cal"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Connect your calendar</span><small>30 sec</small></summary>
+            <div class="bd">Deadlines appear directly in the calendar you already use.<div class="acts"><button class="pri" type="button" data-do>Connect</button></div></div></details>
+          <details name="ob" data-k="mobile"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Install the mobile app</span><small>optional</small></summary>
+            <div class="bd">Get notifications and review tasks away from your computer.<div class="acts"><button class="pri" type="button" data-do>Send download link</button><button type="button" data-skip>Skip</button></div></div></details>
         </div>
         <div class="yay" hidden>
           <span class="big"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
-          <b>Mọi thứ đã sẵn sàng</b>
-          <p>Bạn đã hoàn tất các bước bắt đầu. Có thể mở lại danh sách này trong mục Trợ giúp.</p>
-          <button type="button" class="hide">Ẩn danh sách</button>
+          <b>You are all set</b>
+          <p>You have completed the getting-started steps. You can reopen this list from Help.</p>
+          <button type="button" class="hide">Hide list</button>
         </div>
       </section>
     </div>
-    <button class="replay">↻ Xem lại</button>
+    <button class="replay">↻ Replay</button>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>sản phẩm cần người dùng tự hoàn tất vài bước cài đặt mới thấy giá trị (tạo dự án, mời thành viên, kết nối dữ liệu). Tiến độ có sẵn (endowed progress, hiệu ứng Zeigarnik) thúc đẩy người dùng hoàn tất các bước còn lại.</p>
-    <p class="avoid"><b>Tránh khi</b>sản phẩm dùng được ngay mà không cần cài đặt, hoặc danh sách dài hơn 6–7 việc. Không ép thứ tự cứng và không để khung chiếm chỗ lâu dài: cho phép thu nhỏ, bỏ qua và ẩn hẳn khi hoàn tất.</p>
+    <p class="use"><b>Use when</b>people must complete a few setup steps before they see value (create a project, invite members, connect data). Starting with progress already made (endowed progress, the Zeigarnik effect) encourages people to finish the remaining steps.</p>
+    <p class="avoid"><b>Avoid when</b>the product works right away without setup, or the list is longer than 6–7 tasks. Do not enforce a strict order or let the panel take up space indefinitely: allow minimizing, skipping, and hiding it entirely once complete.</p>
   </div>
   <div class="kw"><button>onboarding checklist</button><button>getting started widget with progress bar</button><button>endowed progress (first step pre-completed)</button><button>accordion steps with inline CTA</button><button>skip optional step</button><button>completion celebration + dismiss</button></div>
 </article>
@@ -472,36 +472,36 @@
 <!-- 4 -->
 <article class="pattern" id="product-tour">
   <h2>Product tour</h2>
-  <p class="vi"><b>Tour hướng dẫn từng bước.</b> Lần đầu vào ứng dụng, một chuỗi thẻ ngắn lần lượt làm nổi bật từng khu vực chính (phần còn lại bị làm tối) và giải thích bằng một câu. Tour luôn có nút Bỏ qua, cho phép quay lại bước trước và hiển thị bước hiện tại. Nhấn “Bắt đầu”, chuyển bước bằng nút hoặc phím ← →, nhấn Esc để thoát; nút <b>?</b> trên thanh trên cùng mở lại tour.</p>
+  <p class="vi"><b>Step-by-step guided tour.</b> On the first visit to the app, a sequence of short cards highlights each main area in turn (the rest is dimmed) and explains it in one sentence. The tour always has a Skip button, allows going back a step, and shows the current step. Move between steps with the buttons or the ← → keys, and press Esc to exit; the <b>?</b> button in the top bar reopens the tour. Press “Start” to begin.</p>
   <div class="demo">
     <div class="app">
       <div class="tb">
         <span class="logo" aria-hidden="true">W</span>
-        <div class="search" data-step="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Tìm việc, tệp, người…<kbd>/</kbd></div>
+        <div class="search" data-step="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Search tasks, files, people…<kbd>/</kbd></div>
         <span class="sp"></span>
-        <button class="ib help" type="button" aria-label="Xem lại hướng dẫn"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg></button>
-        <button class="ib bell" type="button" aria-label="Thông báo, có mục mới"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg></button>
+        <button class="ib help" type="button" aria-label="Replay the tour"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg></button>
+        <button class="ib bell" type="button" aria-label="Notifications, new items"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg></button>
         <span class="me" aria-hidden="true">MA</span>
       </div>
-      <nav class="side" aria-label="Ứng dụng">
+      <nav class="side" aria-label="App">
         <ul>
-          <li><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Tổng quan</li>
-          <li class="on"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>Việc của tôi</li>
-          <li><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Lịch</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Overview</li>
+          <li class="on"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>My tasks</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Calendar</li>
         </ul>
-        <div class="projects"><h4>Dự án</h4><ul>
-          <li><i style="--c:#3b5bdb"></i>Ra mắt ứng dụng</li>
-          <li><i style="--c:#e8590c"></i>Nghiên cứu</li>
-          <li><i style="--c:#2b8a3e"></i>Website mới</li>
+        <div class="projects"><h4>Projects</h4><ul>
+          <li><i style="--c:#3b5bdb"></i>App launch</li>
+          <li><i style="--c:#e8590c"></i>Research</li>
+          <li><i style="--c:#2b8a3e"></i>New website</li>
         </ul></div>
       </nav>
       <main>
-        <div class="mh"><h3>Việc của tôi</h3><button class="new" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Tạo mới</button></div>
+        <div class="mh"><h3>My tasks</h3><button class="new" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>New</button></div>
         <ul class="tasks">
-          <li>Duyệt bản thiết kế màn hình đăng nhập<span>Hôm nay</span></li>
-          <li>Viết ghi chú phát hành v2.4<span>Thứ Tư</span></li>
-          <li>Gọi lại cho nhóm khảo sát<span>Thứ Năm</span></li>
-          <li>Chuẩn bị số liệu họp quý<span>Thứ Sáu</span></li>
+          <li>Review the login screen design<span>Today</span></li>
+          <li>Write release notes for v2.4<span>Wednesday</span></li>
+          <li>Call the survey team back<span>Thursday</span></li>
+          <li>Prepare figures for the quarterly meeting<span>Friday</span></li>
         </ul>
       </main>
     </div>
@@ -513,18 +513,18 @@
         <div aria-live="polite"><h4 id="pt-title"></h4><p id="pt-text"></p></div>
         <div class="ft">
           <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <button type="button" class="skip">Bỏ qua</button>
-          <button type="button" class="back">Quay lại</button>
-          <button type="button" class="pri next">Tiếp</button>
+          <button type="button" class="skip">Skip</button>
+          <button type="button" class="back">Back</button>
+          <button type="button" class="pri next">Next</button>
         </div>
       </div>
     </div>
     <p class="toast" role="status"></p>
   </div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>giao diện có vài khu vực không tự giải thích được và người dùng mới cần biết vị trí của chúng trước khi bắt đầu. Tour ngắn (3–5 bước), mỗi bước một ý, chỉ chạy một lần và mở lại được.</p>
-    <p class="avoid"><b>Tránh khi</b>dùng tour để bù cho một giao diện khó hiểu, hoặc tour dài 10 bước khiến người dùng chỉ nhấn “Tiếp” cho xong. Luôn giữ nút “Bỏ qua”. Thông thường, để người dùng tự thao tác (checklist) hiệu quả hơn xem giới thiệu.</p>
-    <p class="tip">Mẹo prompt: yêu cầu “spotlight cutout overlay”, “step counter 2/4”, “Skip / Back / Next”, “arrow keys and Esc”, “focus moves into tour card” và “relaunch from help menu”.</p>
+    <p class="use"><b>Use when</b>the interface has a few areas that do not explain themselves and new users need to know where they are before starting. Keep the tour short (3–5 steps), one idea per step, run it once, and make it possible to reopen.</p>
+    <p class="avoid"><b>Avoid when</b>the tour compensates for a confusing interface, or runs to 10 steps so that people press “Next” just to get through it. Always keep a “Skip” button. Letting people do the tasks themselves (a checklist) usually works better than watching an introduction.</p>
+    <p class="tip">Prompt tip: ask for a “spotlight cutout overlay”, “step counter 2/4”, “Skip / Back / Next”, “arrow keys and Esc”, “focus moves into tour card”, and “relaunch from help menu”.</p>
   </div>
   <div class="kw"><button>product tour</button><button>step-by-step walkthrough</button><button>spotlight overlay with cutout</button><button>tooltip card anchored to element</button><button>Skip / Back / Next + step counter</button><button>welcome modal → guided steps</button><button>relaunch tour from help button</button></div>
 </article>
@@ -543,16 +543,16 @@
     else if (!e.shiftKey && document.activeElement === f.at(-1)) { e.preventDefault(); focus(f[0]); }
   };
 
-  /* 1. Coachmarks / Hotspots — popover="auto": Esc và bấm ra ngoài đóng sẵn */
+  /* 1. Coachmarks / Hotspots — popover="auto": Esc and outside clicks close it natively */
   Dict.demo('coachmarks-hotspots', d => {
     const ac = new AbortController(), o = { signal: ac.signal };
     const pops = $$('.cm', d), seen = new Set();
     const hsOf = p => $(`[popovertarget="${p.id}"].hs`, d);
     const place = p => {
       const r = hsOf(p).getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight, vw = document.documentElement.clientWidth;
-      if (r.bottom < 64 || r.top > innerHeight) /* 64 = thanh điều hướng dính */ { p.hidePopover(); return; }
+      if (r.bottom < 64 || r.top > innerHeight) /* 64 = sticky navigation bar */ { p.hidePopover(); return; }
       const below = r.bottom + 12 + h < innerHeight;
-      const dr = d.getBoundingClientRect(); // giữ bong bóng trong khung demo
+      const dr = d.getBoundingClientRect(); // keep the bubble inside the demo frame
       const lo = Math.max(8, dr.left + 12), hi = Math.min(vw, dr.right - 12) - w;
       const left = Math.max(lo, Math.min(r.left + r.width / 2 - w / 2, hi));
       p.dataset.side = below ? 'below' : 'above';
@@ -566,14 +566,14 @@
       const hs = hsOf(p);
       if (!seen.has(p.id)) {
         seen.add(p.id); hs.classList.add('seen');
-        hs.setAttribute('aria-label', hs.getAttribute('aria-label') + ' (đã xem)');
+        hs.setAttribute('aria-label', hs.getAttribute('aria-label') + ' (viewed)');
         stat();
       }
     }, o));
-    // đếm theo số chấm đang hiện (màn hẹp giấu mục lục nên chỉ còn 2)
+    // count visible dots only (narrow screens hide the contents panel, leaving 2)
     function stat() {
       const vis = $$('.hs', d).filter(h => h.checkVisibility()), n = vis.filter(h => h.classList.contains('seen')).length;
-      $('.stat', d).textContent = n === vis.length ? `Đã xem hết ${n} mẹo` : `Đã xem ${n}/${vis.length} mẹo`;
+      $('.stat', d).textContent = n === vis.length ? 'All tips viewed' : `${n}/${vis.length} tips viewed`;
     }
     stat();
     const re = () => pops.filter(p => p.matches(':popover-open')).forEach(place);
@@ -591,7 +591,7 @@
       $('.n', d).textContent = vis.length; $('.m', d).textContent = ctls.length;
       $$('.meter li', d).forEach(li => li.classList.toggle('on', vis.some(c => c.dataset.l === li.dataset.l)));
     };
-    // cuộn trong thẻ (không cuộn trang) để phần vừa hiện nằm trong tầm nhìn
+    // scroll inside the card (not the page) so the newly shown part is in view
     const card = $('.card', d), sm = Dict.RM ? 'auto' : 'smooth';
     const show = el => {
       const cr = card.getBoundingClientRect(), r = el.getBoundingClientRect();
@@ -607,8 +607,8 @@
     }, o);
     $('[data-copy]', d).addEventListener('click', async e => {
       const b = e.currentTarget, ok = await Dict.copy('https://app.example/d/ke-hoach-q4');
-      b.textContent = ok ? 'Đã sao chép ✓' : 'Không sao chép được';
-      setTimeout(() => { b.textContent = 'Sao chép liên kết'; }, 1400);
+      b.textContent = ok ? 'Copied ✓' : "Couldn't copy";
+      setTimeout(() => { b.textContent = 'Copy link'; }, 1400);
     }, o);
     count();
     return () => ac.abort();
@@ -620,23 +620,23 @@
     const items = $$('details', d), total = items.length, prog = $('progress', d);
     const mins = { account: 0, project: 1, team: 1, cal: .5, mobile: 1 };
     const effect = {
-      project: t => { t.innerHTML = '<h4>Dự án</h4><b>Ra mắt website</b><span>0/12 việc · tạo vừa xong</span>'; },
-      team: t => { t.innerHTML = '<h4>Thành viên</h4><div class="avs"><i style="--c:#ffd8c2">MA</i><i style="--c:#d6e0ff">PL</i></div><span>Đã mời Phạm Lan</span>'; },
-      cal: t => { t.innerHTML = '<h4>Lịch</h4><b>3 sự kiện tuần này</b><span>Đồng bộ 2 phút trước</span>'; },
-      mobile: t => { t.innerHTML = '<h4>Di động</h4><b>Đã gửi link tải</b><span>Kiểm tra email của bạn</span>'; },
+      project: t => { t.innerHTML = '<h4>Projects</h4><b>Website launch</b><span>0/12 tasks · just created</span>'; },
+      team: t => { t.innerHTML = '<h4>Members</h4><div class="avs"><i style="--c:#ffd8c2">MA</i><i style="--c:#d6e0ff">PL</i></div><span>Invited Paula Lane</span>'; },
+      cal: t => { t.innerHTML = '<h4>Calendar</h4><b>3 events this week</b><span>Synced 2 min ago</span>'; },
+      mobile: t => { t.innerHTML = '<h4>Mobile</h4><b>Download link sent</b><span>Check your email</span>'; },
     };
     const sync = () => {
       const done = items.filter(i => i.matches('.done,.skip'));
       const left = items.filter(i => !i.matches('.done,.skip')).reduce((s, i) => s + mins[i.dataset.k], 0);
       prog.value = done.length; prog.textContent = `${done.length}/${total}`;
       const sk = items.filter(i => i.matches('.skip')).length;
-      $('.cnt', d).textContent = done.length === total ? (sk ? `Đã xong · bỏ qua ${sk} việc tuỳ chọn` : 'Đã xong tất cả') : `${done.length}/${total} xong · còn khoảng ${left < 1 ? '30 giây' : Math.ceil(left) + ' phút'}`;
+      $('.cnt', d).textContent = done.length === total ? (sk ? `Done · ${sk} optional ${sk === 1 ? 'task' : 'tasks'} skipped` : 'All done') : `${done.length}/${total} done · about ${left < 1 ? '30 sec' : Math.ceil(left) + ' min'} left`;
       if (done.length === total) {
         timers.push(setTimeout(() => { $('.ckb', d).hidden = true; $('.min', d).hidden = true; $('.yay', d).hidden = false; focus($('.yay .hide', d)); }, 500));
       }
     };
     const finish = (det, how) => {
-      det.classList.add(how); $('small', det).textContent = how === 'done' ? 'Xong' : 'Đã bỏ qua';
+      det.classList.add(how); $('small', det).textContent = how === 'done' ? 'Done' : 'Skipped';
       det.open = false;
       const next = items.find(i => !i.matches('.done,.skip'));
       if (next) {
@@ -650,13 +650,13 @@
       const b = e.target.closest('button'); if (!b) return;
       const det = b.closest('details');
       if ('skip' in b.dataset) return finish(det, 'skip');
-      b.disabled = true; b.textContent = 'Đang làm…';
+      b.disabled = true; b.textContent = 'Working…';
       timers.push(setTimeout(() => { const t = $(`.tile[data-t=${det.dataset.k}]`, d); effect[det.dataset.k](t); t.classList.add('ok'); finish(det, 'done'); }, 650));
     }, o);
     const min = $('.min', d);
     min.addEventListener('click', () => {
       const open = min.getAttribute('aria-expanded') !== 'true';
-      min.setAttribute('aria-expanded', open); min.setAttribute('aria-label', open ? 'Thu nhỏ danh sách' : 'Mở rộng danh sách');
+      min.setAttribute('aria-expanded', open); min.setAttribute('aria-label', open ? 'Minimize list' : 'Expand list');
       $('.ckb', d).hidden = !open;
     }, o);
     $('.yay .hide', d).addEventListener('click', () => { $('.ck', d).hidden = true; const r = $('.reopen', d); r.hidden = false; focus(r); }, o);
@@ -670,24 +670,24 @@
     const app = $('.app', d), tour = $('.tour', d), spot = $('.spot', d), card = $('.card', d), toast = $('.toast', d);
     const [skip, back, next] = ['.skip', '.back', '.next'].map(s => $(s, card));
     const ALL = [
-      { t: 'Chào mừng tới Workspace', p: 'Xem nhanh các điểm chính, mất chưa tới 30 giây. Bạn có thể bỏ qua bất cứ lúc nào.' },
-      { el: '.search', t: 'Tìm mọi thứ', p: 'Gõ tên việc, tệp hay người. Nhấn phím / ở bất kỳ đâu để mở nhanh.' },
-      { el: '.new', t: 'Tạo nhanh', p: 'Tạo việc, tài liệu hoặc dự án mới từ một nút duy nhất.' },
-      { el: '.projects', t: 'Dự án của bạn', p: 'Mọi dự án bạn tham gia nằm ở đây. Kéo để sắp xếp, ghim dự án thường dùng lên đầu.' },
-      { el: '.bell', t: 'Thông báo', p: 'Khi ai đó nhắc tới bạn hoặc giao việc, chấm đỏ sẽ hiện ở đây.' },
+      { t: 'Welcome to Workspace', p: 'A quick look at the main areas takes less than 30 seconds. You can skip at any time.' },
+      { el: '.search', t: 'Find anything', p: 'Type the name of a task, file, or person. Press / anywhere to open search.' },
+      { el: '.new', t: 'Create quickly', p: 'Create a task, document, or project from a single button.' },
+      { el: '.projects', t: 'Your projects', p: 'Every project you belong to is listed here. Drag to reorder, and pin the ones you use most to the top.' },
+      { el: '.bell', t: 'Notifications', p: 'When someone mentions you or assigns you a task, a red dot appears here.' },
     ];
-    // bỏ bước có đích bị ẩn (vd. sidebar trên màn hẹp) để không chiếu sáng một vùng rỗng
+    // drop steps whose target is hidden (e.g. the sidebar on narrow screens) so the spotlight never lands on an empty area
     const pick = () => ALL.filter(s => !s.el || $(s.el, app).getBoundingClientRect().width > 24);
     let i = 0, toastT, steps = ALL;
     const rel = el => { const a = el.getBoundingClientRect(), b = tour.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height }; };
     const render = moveFocus => {
       const s = steps[i], W = tour.clientWidth, H = tour.clientHeight;
       $('#pt-title', card).textContent = s.t; $('#pt-text', card).textContent = s.p;
-      $('.stp', card).textContent = i ? `Bước ${i} / ${steps.length - 1}` : 'Hướng dẫn nhanh';
+      $('.stp', card).textContent = i ? `Step ${i} / ${steps.length - 1}` : 'Quick tour';
       $$('.dots i', card).forEach((x, k) => { x.classList.toggle('on', k === i - 1); x.hidden = k >= steps.length - 1; });
-      skip.textContent = i ? 'Bỏ qua' : 'Để sau';
+      skip.textContent = i ? 'Skip' : 'Later';
       back.hidden = i < 2;
-      next.textContent = i === 0 ? 'Bắt đầu' : i === steps.length - 1 ? 'Xong' : 'Tiếp';
+      next.textContent = i === 0 ? 'Start' : i === steps.length - 1 ? 'Done' : 'Next';
       if (!s.el) {
         spot.classList.add('none'); Object.assign(spot.style, { left: W / 2 + 'px', top: H / 2 + 'px', width: 0, height: 0 });
         card.dataset.side = 'center';
@@ -713,7 +713,7 @@
       tour.hidden = true; app.inert = false;
       const help = $('.help', app);
       help.classList.remove('ping'); void help.offsetWidth; help.classList.add('ping');
-      toast.innerHTML = 'Mở lại hướng dẫn bất cứ lúc nào bằng nút <b>?</b> trên thanh trên cùng.'; toast.classList.add('show');
+      toast.innerHTML = 'Reopen the tour at any time with the <b>?</b> button in the top bar.'; toast.classList.add('show');
       clearTimeout(toastT); toastT = setTimeout(() => { toast.classList.remove('show'); }, 4000);
       focus(help);
     };
@@ -730,7 +730,7 @@
     $('.help', app).addEventListener('click', () => start(1, true), o);
     const ro = new ResizeObserver(() => { if (!tour.hidden) { const cur = steps[i]; steps = pick(); i = Math.max(0, steps.indexOf(cur)); render(false); } });
     ro.observe(d);
-    start(0, false); // tự mở lời chào khi vào khung nhìn, không cướp focus của người đang cuộn trang
+    start(0, false); // open the welcome card when the frame scrolls into view, without stealing focus from someone scrolling the page
     return () => { ro.disconnect(); clearTimeout(toastT); ac.abort(); app.inert = false; };
   });
 })();

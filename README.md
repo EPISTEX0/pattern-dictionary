@@ -1,5 +1,5 @@
-# Từ điển pattern thiết kế web
+# Pattern Dictionary
 
-76 pattern UI/UX trong 11 nhóm, mỗi pattern có demo chạy thật, giải thích tiếng Việt và keyword tiếng Anh để prompt cho AI.
+76 UI/UX patterns in 11 groups. Each pattern has a working demo, a short explanation and the English keywords to use when prompting an AI tool.
 
-Trang tĩnh thuần HTML/CSS/JS, không cần build. Mở `index.html` hoặc xem bản host trên GitHub Pages.
+A static HTML/CSS/JS site with no build step. Open `index.html` locally or visit the hosted version on GitHub Pages: https://epistex0.github.io/pattern-dictionary/

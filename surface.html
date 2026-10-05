@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bề mặt và chất liệu — Từ điển pattern</title>
-<meta name="description" content="Sáu kỹ thuật bề mặt trong thiết kế web: grain, gradient mesh, halftone, chú thích vẽ tay, device mockup và spotlight theo con trỏ.">
+<title>Surfaces &amp; texture — Pattern Dictionary</title>
+<meta name="description" content="Six surface techniques in web design: grain, gradient mesh, halftone, hand-drawn annotation, device mockup and cursor spotlight.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;700&family=Patrick+Hand&family=Fraunces:ital,wght@0,600;0,900;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
 
-/* reduced motion cho demo trang này */
+/* reduced motion for this page's demos */
 @media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 
@@ -134,7 +134,7 @@
   #aurora .stage .at h3{font-size:clamp(38px,11vw,48px)}
   #aurora .stage .at p{font-size:16px}
   #aurora .stage .tog{min-height:36px;padding:6px 16px}
-  /* Halftone: ảnh gốc trên, halftone dưới */
+  /* Halftone: original on top, halftone below */
   #halftone .demo{--demo-h-m:540px}
   #halftone .stage canvas{left:0;width:100%;height:50%}
   #halftone .stage .src{top:0;left:0}#halftone .stage .ht{top:50%;left:0}
@@ -142,17 +142,18 @@
   #halftone .stage .lab.r{left:16px;top:calc(50% + 14px)}
   #halftone .stage .ctl{min-height:40px;font-size:13px}
   #halftone .stage .ctl input{height:32px;width:120px}
-  /* Hand-drawn: bố cục dọc, bộ nét vẽ riêng cho mobile */
+  /* Hand-drawn: vertical layout, separate stroke set for mobile */
   #hand .demo{--demo-h-m:520px}
   #hand .stage .comp{width:340px;height:500px}
   #hand .stage .card{left:20px;top:96px;width:300px;padding:18px 20px}
   #hand .stage .sv-d{display:none}#hand .stage .sv-m{display:block}
   #hand .stage .note{font-size:21px}
+  #hand .stage .card small{font-size:13.5px}
   #hand .stage .n1{left:14px;top:14px;width:auto}
   #hand .stage .n2{left:auto;right:6px;top:330px;width:auto}
   #hand .stage .n3{left:96px;top:424px;width:auto}
   #hand .stage .n4{left:10px;top:330px;width:auto}
-  /* Device: laptop phía sau, điện thoại đặt chồng phía trước */
+  /* Device: laptop behind, phone overlapping in front */
   #device .stage .scene{width:320px;height:380px;margin:0}
   #device .stage .laptop{left:20px;top:10px;width:250px}
   #device .stage .lid{padding:8px 8px 12px;border-radius:12px 12px 4px 4px}
@@ -171,7 +172,7 @@
   #device .stage .p-img{height:76px;border-radius:12px}
   #device .stage .p-row{font-size:12px;margin-top:8px}
   #device .stage .p-btn{margin-top:8px;padding:7px}
-  /* Spotlight: ba thẻ xếp dọc, quầng sáng nhỏ lại */
+  /* Spotlight: three cards stacked, smaller glow */
   #spot .demo{--demo-h-m:440px}
   #spot .stage{padding:16px 16px 48px;place-content:center stretch}
   #spot .stage::before{background:radial-gradient(260px circle at var(--x) var(--y),rgba(255,120,50,.32),rgba(255,120,50,.08) 30%,transparent 55%)}
@@ -191,23 +192,23 @@
 
 <main class="wrap">
 <header class="head">
-  <h1>Bề mặt và chất liệu</h1>
-  <p>Các lớp phủ, kết cấu và hiệu ứng ánh sáng giúp màn hình phẳng có chiều sâu và chất liệu: hạt nhiễu, dải chuyển màu, chấm in, nét vẽ tay, khung thiết bị và vùng sáng.</p>
+  <h1>Surfaces &amp; texture</h1>
+  <p>Overlays, textures and lighting effects that give a flat screen depth and material: grain, color gradients, print dots, hand-drawn strokes, device frames and spotlights.</p>
 </header>
 
 <!-- 1 -->
 <article class="pattern" id="grain">
   <h2>Grain / Noise texture</h2>
-  <p class="vi">Lớp hạt nhiễu (grain): phủ một lớp nhiễu mịn lên nền màu hoặc gradient để giảm vẻ phẳng của đồ hoạ số, tạo cảm giác giấy in, phim ảnh, ấm và chân thực hơn.</p>
+  <p class="vi">Grain: a fine noise layer over a solid color or gradient that reduces the flatness of digital graphics and makes them feel like printed paper or film, warmer and more tactile.</p>
   <div class="demo"><div class="stage">
     <div class="noise" aria-hidden="true"></div><div class="split" aria-hidden="true"></div>
-    <span class="lab l">Không có grain</span><span class="lab r">Có grain</span>
-    <div class="gt"><h3>Bộ sưu tập Thu</h3><p>Chất liệu ấm, mộc như giấy in</p></div>
-    <div class="zoom l"><span>phóng to:<br>không hạt</span></div><div class="zoom r"><span>phóng to:<br>có hạt</span></div>
+    <span class="lab l">Without grain</span><span class="lab r">With grain</span>
+    <div class="gt"><h3>Fall Collection</h3><p>Warm, natural, like printed paper</p></div>
+    <div class="zoom l"><span>zoomed:<br>no grain</span></div><div class="zoom r"><span>zoomed:<br>grain</span></div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Nền gradient diện tích lớn trông phẳng và thiếu chất liệu; thương hiệu cần cảm giác thủ công, analog, cao cấp (thời trang, F&amp;B, nghệ thuật).</p>
-    <p class="avoid"><b>Tránh khi</b>Giao diện cần độ sắc nét tuyệt đối như bảng số liệu, hoặc lớp nhiễu nằm đè lên chữ nhỏ làm giảm khả năng đọc.</p>
+    <p class="use"><b>Use when</b>a large gradient background looks flat and lacks texture, or the brand needs a handmade, analog, premium feel (fashion, food and beverage, art).</p>
+    <p class="avoid"><b>Avoid when</b>the interface needs perfect sharpness, such as a data table, or the noise sits over small text and reduces readability.</p>
   </div>
   <div class="kw"><button>grain texture overlay</button><button>subtle noise</button><button>film grain</button><button>grainy gradient</button><button>SVG feTurbulence noise</button><button>mix-blend-mode overlay</button></div>
 </article>
@@ -215,15 +216,15 @@
 <!-- 2 -->
 <article class="pattern" id="aurora">
   <h2>Gradient mesh / Aurora</h2>
-  <p class="vi">Gradient mesh, hay hiệu ứng cực quang (aurora): nhiều mảng màu được làm nhoè, hoà vào nhau và di chuyển rất chậm. Nhấn nút trong khung demo để xem các mảng màu gốc trước khi làm mờ.</p>
+  <p class="vi">Gradient mesh, or aurora effect: several color shapes are blurred, blend into each other and drift very slowly. Tap the button in the frame to see the original shapes before the blur.</p>
   <div class="demo"><div class="stage">
     <div class="blobs" aria-hidden="true"><div class="bb x1"></div><div class="bb x2"></div><div class="bb x3"></div><div class="bb x4"></div></div>
-    <div class="at"><h3>Chào buổi sáng</h3><p>Hôm nay có 3 việc cần hoàn thành.</p></div>
-    <button class="tog">Xem mảng màu gốc (tắt blur)</button>
+    <div class="at"><h3>Good morning</h3><p>You have 3 tasks to finish today.</p></div>
+    <button class="tog">Show original shapes (blur off)</button>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Hero của landing page, màn hình chào, thẻ nổi bật; cần không khí mơ màng, hiện đại mà không dùng ảnh.</p>
-    <p class="avoid"><b>Tránh khi</b>Nền phía sau khối chữ dài, hoặc sản phẩm chạy trên thiết bị cấu hình thấp: blur diện rộng kết hợp chuyển động liên tục tiêu tốn GPU và pin.</p>
+    <p class="use"><b>Use when</b>a landing page hero, welcome screen or featured card needs a soft, modern atmosphere without using photos.</p>
+    <p class="avoid"><b>Avoid when</b>it sits behind long text, or the product runs on low-end devices. Large blurs in constant motion drain GPU and battery.</p>
   </div>
   <div class="kw"><button>gradient mesh</button><button>aurora background</button><button>blurred color blobs</button><button>slowly animated gradient</button><button>soft glow</button><button>mix-blend-mode screen</button></div>
 </article>
@@ -231,15 +232,15 @@
 <!-- 3 -->
 <article class="pattern" id="halftone">
   <h2>Halftone</h2>
-  <p class="vi">Halftone (lưới chấm in): diễn tả sắc độ bằng các chấm to nhỏ, vùng tối chấm lớn, vùng sáng chấm nhỏ, như trên báo in, truyện tranh, tranh pop art. Kéo thanh trượt để đổi cỡ chấm.</p>
+  <p class="vi">Halftone: tone is shown with dots of varying size, large in dark areas and small in light areas, as in newspapers, comics and pop art. Drag the slider to change the dot size.</p>
   <div class="demo"><div class="stage">
     <canvas class="src"></canvas><canvas class="ht"></canvas><div class="split" aria-hidden="true"></div>
-    <span class="lab l">Ảnh gốc</span><span class="lab r">Halftone</span>
-    <label class="ctl">cỡ chấm <input type="range" min="6" max="20" value="10"></label>
+    <span class="lab l">Original</span><span class="lab r">Halftone</span>
+    <label class="ctl">dot size <input type="range" min="6" max="20" value="10"></label>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Cần chất in ấn, retro, pop art, zine; biến ảnh thường thành đồ hoạ có cá tính và đồng bộ màu thương hiệu.</p>
-    <p class="avoid"><b>Tránh khi</b>Ảnh cần thể hiện chi tiết thật, như ảnh sản phẩm để bán hoặc ảnh chân dung nhận diện: lưới chấm làm mất chi tiết.</p>
+    <p class="use"><b>Use when</b>you want a print, retro, pop art or zine feel, or need to turn ordinary photos into graphics with character that match brand colors.</p>
+    <p class="avoid"><b>Avoid when</b>the photo must show real detail, such as product photos for sale or identifying portraits. The dot pattern loses detail.</p>
   </div>
   <div class="kw"><button>halftone</button><button>halftone dot pattern</button><button>pop art</button><button>Ben-Day dots</button><button>risograph print</button><button>comic print texture</button></div>
 </article>
@@ -247,10 +248,10 @@
 <!-- 4 -->
 <article class="pattern" id="hand">
   <h2>Hand-drawn annotation</h2>
-  <p class="vi">Chú thích vẽ tay (hand-drawn annotation): chữ viết tay, mũi tên và vòng khoanh như nét bút dạ, đặt lên một giao diện gọn gàng để giải thích từng chi tiết.</p>
+  <p class="vi">Hand-drawn annotation: handwriting, arrows and circles that look like marker strokes, placed over a clean interface to explain each detail.</p>
   <div class="demo"><div class="stage">
     <div class="comp">
-      <div class="card"><small>Khoá học · Mới ra mắt</small><h4>Nhiếp ảnh căn bản</h4><p>12 bài học ngắn, tự chọn tiến độ.</p><div class="row"><span class="pr">99.000đ</span><button>Đăng ký</button></div></div>
+      <div class="card"><small>Course · Just launched</small><h4>Photography Basics</h4><p>12 short lessons at your own pace.</p><div class="row"><span class="pr">$29.99</span><button>Enroll</button></div></div>
       <svg class="sv-d" viewBox="0 0 820 340" aria-hidden="true">
         <!-- underline title -->
         <path class="red" pathLength="1" style="animation-delay:.1s" d="M268 153 C 330 150, 400 155, 460 152 S 530 151, 552 153"/>
@@ -284,15 +285,15 @@
         <path class="blue" pathLength="1" style="animation-delay:3.6s" d="M20 296 L 28 284 L 37 294"/>
         <path class="red" pathLength="1" style="animation-delay:3.9s" d="M300 37 L 306 55 L 324 55 L 310 66 L 316 84 L 300 73 L 285 84 L 291 66 L 277 55 L 295 55 Z"/>
       </svg>
-      <div class="note n1" style="animation-delay:1.9s">tên khoá học lớn,<br>đọc là hiểu ngay</div>
-      <div class="note n2" style="animation-delay:2.6s">nút chính: màu<br>đậm nhất trang</div>
-      <div class="note n3" style="animation-delay:3.3s">bóng đổ mềm,<br>bo góc 16px</div>
-      <div class="note n4" style="animation-delay:1.2s">giá đặt sát<br>nút mua</div>
+      <div class="note n1" style="animation-delay:1.9s">big course title,<br>clear at a glance</div>
+      <div class="note n2" style="animation-delay:2.6s">main button: darkest<br>color on the page</div>
+      <div class="note n3" style="animation-delay:3.3s">soft shadow,<br>16px corners</div>
+      <div class="note n4" style="animation-delay:1.2s">price sits next<br>to the button</div>
     </div>
-  </div><button class="replay">↻ Xem lại</button></div>
+  </div><button class="replay">↻ Replay</button></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Trang cần giọng điệu thân thiện, gần gũi: chỉ ra tính năng trên ảnh chụp sản phẩm, onboarding, landing page của startup.</p>
-    <p class="avoid"><b>Tránh khi</b>Bối cảnh trang trọng (pháp lý, tài chính), hoặc giao diện đã nhiều chi tiết: nét vẽ tay làm rối mắt.</p>
+    <p class="use"><b>Use when</b>the page needs a friendly, informal tone: pointing out features on a product screenshot, onboarding, startup landing pages.</p>
+    <p class="avoid"><b>Avoid when</b>the context is formal (legal, finance), or the interface is already detailed. Hand-drawn strokes add visual noise.</p>
   </div>
   <div class="kw"><button>hand-drawn annotations</button><button>handwritten notes</button><button>sketchy arrows</button><button>marker circle highlight</button><button>doodle accents</button><button>animated SVG stroke drawing</button></div>
 </article>
@@ -300,30 +301,30 @@
 <!-- 5 -->
 <article class="pattern" id="device">
   <h2>Device mockup</h2>
-  <p class="vi">Device mockup (khung thiết bị): đặt ảnh giao diện vào khung laptop, điện thoại để người xem hình dung sản phẩm khi chạy trên thiết bị thật.</p>
+  <p class="vi">Device mockup: a screenshot of the interface placed inside a laptop or phone frame so users can picture the product running on a real device.</p>
   <div class="demo"><div class="stage">
-    <div class="scene" role="img" aria-label="Ứng dụng Ghi chú hiển thị trên laptop và điện thoại">
+    <div class="scene" role="img" aria-label="The Notes app shown on a laptop and a phone">
       <div class="laptop" aria-hidden="true">
         <div class="lid"><div class="scr">
-          <div class="web-nav"><b>Ghi chú</b><span>Tính năng</span><span>Bảng giá</span><span>Tải về</span></div>
-          <div class="web-hero"><div><h4>Ghi chú gọn gàng</h4><p>Ghi lại mọi ý tưởng, xếp theo dự án, đồng bộ giữa laptop và điện thoại.</p><span class="btn">Tải miễn phí</span></div><div class="web-img"></div></div>
+          <div class="web-nav"><b>Notes</b><span>Features</span><span>Pricing</span><span>Download</span></div>
+          <div class="web-hero"><div><h4>Tidy notes</h4><p>Capture every idea, sort by project, sync between laptop and phone.</p><span class="btn">Download free</span></div><div class="web-img"></div></div>
         </div></div>
         <div class="base"></div>
       </div>
       <div class="phone" aria-hidden="true"><div class="pscr">
         <div class="island"></div>
-        <small>Ghi chú · Hôm nay</small>
-        <h5>Họp nhóm thứ Hai</h5>
+        <small>Notes · Today</small>
+        <h5>Monday team meeting</h5>
         <div class="p-img"></div>
-        <div class="p-row"><span>3 việc</span><span>★ 4,9</span></div>
-        <div class="p-btn">Mở ghi chú</div>
+        <div class="p-row"><span>3 tasks</span><span>★ 4.9</span></div>
+        <div class="p-btn">Open note</div>
         <div class="p-bar"></div>
       </div></div>
     </div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Giới thiệu ứng dụng hoặc website trên landing page, portfolio, App Store; cần bối cảnh cho thấy sản phẩm đang hoạt động.</p>
-    <p class="avoid"><b>Tránh khi</b>Chính trang đó là sản phẩm: lồng giao diện vào khung thiết bị bên trong giao diện chỉ thêm rối và thu nhỏ nội dung.</p>
+    <p class="use"><b>Use when</b>you present an app or website on a landing page, portfolio or App Store listing and need context that shows the product in use.</p>
+    <p class="avoid"><b>Avoid when</b>the page itself is the product. Nesting the interface in a device frame inside the interface only adds clutter and shrinks the content.</p>
   </div>
   <div class="kw"><button>device mockup</button><button>iPhone mockup with dynamic island</button><button>laptop mockup</button><button>app screenshot in device frame</button><button>multi-device hero</button><button>CSS device frame</button></div>
 </article>
@@ -331,18 +332,18 @@
 <!-- 6 -->
 <article class="pattern" id="spot">
   <h2>Spotlight / Glow</h2>
-  <p class="vi">Spotlight (vùng sáng theo con trỏ): một quầng sáng di chuyển theo con trỏ trên nền tối, viền các thẻ gần con trỏ cũng sáng lên. Khi không có con trỏ, vùng sáng tự di chuyển.</p>
+  <p class="vi">Cursor spotlight: a glow follows the pointer across a dark background, and the borders of nearby cards light up too. Without a pointer, the glow moves on its own. Hover or touch the frame.</p>
   <div class="demo"><div class="stage">
     <div class="grid">
-      <div class="c"><div class="ci"><small>01 · CÁ NHÂN</small><h4>Gói Free</h4><p>Ba dự án, một thiết bị.</p><b>0đ</b></div></div>
-      <div class="c"><div class="ci"><small>02 · NHÓM</small><h4>Gói Pro</h4><p>Không giới hạn dự án và thiết bị.</p><b>199.000đ</b></div></div>
-      <div class="c"><div class="ci"><small>03 · CÔNG TY</small><h4>Gói Business</h4><p>Phân quyền, nhật ký, đăng nhập SSO.</p><b>499.000đ</b></div></div>
+      <div class="c"><div class="ci"><small>01 · PERSONAL</small><h4>Free</h4><p>Three projects, one device.</p><b>$0</b></div></div>
+      <div class="c"><div class="ci"><small>02 · TEAM</small><h4>Pro</h4><p>Unlimited projects and devices.</p><b>$19/mo</b></div></div>
+      <div class="c"><div class="ci"><small>03 · COMPANY</small><h4>Business</h4><p>Roles, audit log, SSO sign-in.</p><b>$49/mo</b></div></div>
     </div>
-    <div class="hint">Di chuột hoặc chạm vào khung demo để điều khiển vùng sáng.</div>
+    <div class="hint">Hover or touch the frame to move the spotlight.</div>
   </div></div>
   <div class="notes">
-    <p class="use"><b>Dùng khi</b>Trang nền tối cần cảm giác tương tác cao cấp: lưới tính năng, bảng giá, thẻ sản phẩm công nghệ.</p>
-    <p class="avoid"><b>Tránh khi</b>Sản phẩm dùng chủ yếu trên thiết bị cảm ứng (không có con trỏ), hoặc nền sáng: quầng sáng gần như không nhìn thấy.</p>
+    <p class="use"><b>Use when</b>a dark page needs a premium interactive feel: feature grids, pricing tables, tech product cards.</p>
+    <p class="avoid"><b>Avoid when</b>the product is used mostly on touch devices (no pointer), or the background is light. The glow is barely visible.</p>
   </div>
   <div class="kw"><button>spotlight effect</button><button>cursor-following glow</button><button>mouse-tracking radial gradient</button><button>glowing card border on hover</button><button>dark UI</button></div>
 </article>
@@ -356,7 +357,7 @@ const inits = {};
 inits.aurora = s => {
   const a = s.closest('.pattern'), b = s.querySelector('.tog');
   a.classList.remove('raw');
-  b.onclick = () => { const r = a.classList.toggle('raw'); b.textContent = r ? 'Bật lại blur' : 'Xem mảng màu gốc (tắt blur)'; };
+  b.onclick = () => { const r = a.classList.toggle('raw'); b.textContent = r ? 'Turn blur back on' : 'Show original shapes (blur off)'; };
 };
 
 inits.halftone = s => {
@@ -364,7 +365,7 @@ inits.halftone = s => {
   const dpr = devicePixelRatio || 1, w = src.clientWidth, h = src.clientHeight;
   [src, ht].forEach(c => { c.width = w * dpr; c.height = h * dpr; });
   const g = src.getContext('2d'); g.scale(dpr, dpr);
-  // ảnh nguồn: một quả cầu được chiếu sáng trên mặt bàn
+  // source image: a lit sphere on a tabletop
   let gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#fbe3c4'); gr.addColorStop(1, '#a8582f');
   g.fillStyle = gr; g.fillRect(0, 0, w, h);
   const k = Math.min(1, Math.min(w, h) / 310), cx = w * .5, cy = h * .55;
@@ -385,6 +386,20 @@ inits.halftone = s => {
     }
   };
   rng.oninput = draw; draw();
+};
+
+// Hand-drawn: scale the fixed-size composition down when the frame is narrower than it
+inits.hand = s => {
+  const c = s.querySelector('.comp');
+  // scale from the left edge, then shift so the scaled box is centered in the frame
+  const fit = () => {
+    const W = s.clientWidth, w = c.offsetWidth, k = Math.min(1, (W - 8) / w);
+    c.style.transformOrigin = k < 1 ? '0 50%' : '';
+    c.style.scale = k < 1 ? k : '';
+    c.style.translate = k < 1 ? (W - k * w) / 2 - c.offsetLeft + 'px 0' : '';
+  };
+  fit(); const ro = new ResizeObserver(fit); ro.observe(s);
+  return () => ro.disconnect();
 };
 
 inits.spot = s => {
