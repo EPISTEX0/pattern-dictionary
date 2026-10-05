@@ -1,7 +1,7 @@
 /* Pattern Dictionary — shared page chrome. Styles only the "chrome" (nav, page head, pattern frame).
    Every selector here is anchored with > or its own class so it never touches .demo content.
    Demo CSS lives in each page, scoped as #slug .demo … (see SHELL.md). */
-:root{
+:root{color-scheme:only light;
   --bg:#f6f5f2;--ink:#161616;--mute:#6b6b6b;--line:#e2e0db;--acc:#ff5a1f;
   --sans:'Be Vietnam Pro',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
   --wrap:1120px;--nav-h:60px
