@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Form &amp; nhập liệu — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset chỉ trong demo, specificity 0 */
+:where(.demo *){margin:0;padding:0}
+:where(.demo) :where(button,input,select){font:inherit;color:inherit}
+@media (prefers-reduced-motion:reduce){
+  :where(.demo *),:where(.demo *)::before,:where(.demo *)::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ===== thành phần dùng chung cho 6 demo của trang này ===== */
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo{
+  --p:#2f5bea;--p-soft:rgba(47,91,234,.16);--t:#1d1d1f;--t2:#66666b;--bd:#d5d4cf;--err:#c0341d;--ok:#1a7f4b;--surf:#f4f3ef;
+  background:var(--surf);color:var(--t);font-size:14px;line-height:1.45}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo :is(.fld){display:grid;gap:5px}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo :is(.fld>label,.lab){font-size:13px;font-weight:600}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .hint{font-size:12px;color:var(--t2)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp{display:block;width:100%;height:40px;border:1px solid var(--bd);border-radius:9px;background:#fff;padding:0 12px;font-size:14.5px;outline:none;transition:border-color .15s,box-shadow .15s,background-color .15s}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp::placeholder{color:#a3a3a8}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p-soft)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp[aria-invalid=true]{border-color:var(--err);background-color:#fff7f5}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp[aria-invalid=true]:focus{box-shadow:0 0 0 3px rgba(192,52,29,.16)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .err{min-height:17px;font-size:12.5px;line-height:1.35;color:var(--err);display:flex;gap:6px;align-items:flex-start}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .err:not(:empty)::before{content:"!";flex:none;width:15px;height:15px;margin-top:1px;border-radius:50%;background:var(--err);color:#fff;font:800 10px/15px var(--sans);text-align:center}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .btn{height:40px;padding:0 16px;border-radius:9px;border:1px solid var(--p);background:var(--p);color:#fff;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;transition:filter .15s}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .btn:hover{filter:brightness(1.08)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .btn.ghost{background:#fff;border-color:var(--bd);color:var(--t)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .btn.ghost:hover{filter:none;border-color:#9d9c97}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo :focus-visible{outline:2px solid var(--p);outline-offset:2px}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .inp:focus-visible{outline:none}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .card{background:#fff;border:1px solid #e4e3de;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px -14px rgba(0,0,0,.16)}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .side{font-size:13px;color:var(--t2);line-height:1.55}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo .side h4{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:10px}
+:where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo kbd{font:500 11px/1 var(--mono);border:1px solid var(--bd);border-bottom-width:2px;border-radius:5px;padding:3px 5px;background:#fff;color:var(--t)}
+
+/* ===== 1. Inline validation ===== */
+#inline-validation .demo{height:420px}
+#date-picker .demo{height:456px}
+#inline-validation .demo .cmp{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:52px 28px 18px}
+#inline-validation .demo .cap{position:absolute;top:18px;left:28px;font-size:13px;color:var(--t2)}
+#inline-validation .demo .cap b{color:var(--t)}
+#inline-validation .demo form{position:relative;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+#inline-validation .demo .tag{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--t2)}
+#inline-validation .demo .tag i{font:500 11px/1 var(--mono);font-style:normal;background:var(--surf);border:1px solid #e4e3de;border-radius:5px;padding:4px 6px;color:var(--t)}
+#inline-validation .demo .sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;border:1px solid #f0c4ba;background:#fff4f1;border-radius:9px;padding:7px 12px;font-size:12.5px;color:var(--err);outline:none}
+#inline-validation .demo .sum[hidden]{display:none}
+#inline-validation .demo .sum b{font-size:13px;margin-right:auto}
+#inline-validation .demo .sum a{color:var(--err)}
+#inline-validation .demo .fld .box{position:relative}
+#inline-validation .demo .fld.ok .inp{border-color:#9fd3b4;padding-right:36px}
+#inline-validation .demo .fld.ok .box::after{content:"";position:absolute;right:12px;top:12px;width:16px;height:16px;border-radius:50%;background:var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");animation:ivPop .25s cubic-bezier(.3,1.6,.5,1)}
+#inline-validation .demo .fld.chk .box::after{content:"";position:absolute;right:12px;top:12px;width:16px;height:16px;border-radius:50%;border:2px solid #cfd6f5;border-top-color:var(--p);animation:ivSpin .7s linear infinite}
+#inline-validation .demo .fld .note{min-height:17px;font-size:12.5px;line-height:1.35;color:var(--t2)}
+#inline-validation .demo .fld .note:empty{display:none}
+#inline-validation .demo .fld .note:not(:empty)+.err{display:none}
+#inline-validation .demo form .btn{margin-top:auto;align-self:flex-start}
+#inline-validation .demo .done{position:absolute;inset:0;border-radius:14px;background:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px}
+#inline-validation .demo .done i{width:44px;height:44px;border-radius:50%;background:#e3f4ea;color:var(--ok);display:grid;place-items:center;font:800 22px/1 var(--sans);font-style:normal}
+#inline-validation .demo .done b{font-size:16px}
+#inline-validation .demo .done span{font-size:13px;color:var(--t2)}
+#inline-validation .demo form.sent .done{display:flex;animation:ivFade .3s}
+@keyframes ivPop{from{transform:scale(.3)}}
+@keyframes ivSpin{to{transform:rotate(1turn)}}
+@keyframes ivFade{from{opacity:0}}
+
+/* ===== 2. Multi-step form ===== */
+#multi-step-form .demo .wz{position:absolute;inset:0;display:grid;grid-template-columns:250px 1fr}
+#multi-step-form .demo .rail{background:#1f2433;color:#c9cdd8;padding:26px 24px;display:flex;flex-direction:column}
+#multi-step-form .demo .rail .ttl{font-weight:800;color:#fff;font-size:15px}
+#multi-step-form .demo .rail .cnt{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#8d93a5;margin-top:6px}
+#multi-step-form .demo .rail .bar{height:4px;border-radius:2px;background:#353b4d;margin:14px 0 22px;overflow:hidden}
+#multi-step-form .demo .rail .bar i{display:block;height:100%;width:33.33%;background:#7c9bff;border-radius:2px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+#multi-step-form .demo .steps{list-style:none;display:grid;gap:4px;position:relative}
+#multi-step-form .demo .steps li{position:relative}
+#multi-step-form .demo .steps li:not(:last-child)::after{content:"";position:absolute;left:23px;top:38px;bottom:-8px;width:2px;background:#353b4d}
+#multi-step-form .demo .steps li.done:not(:last-child)::after{background:#7c9bff}
+#multi-step-form .demo .steps button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:none;padding:6px 10px;border-radius:9px;color:#8d93a5;font-size:14px;cursor:pointer}
+#multi-step-form .demo .steps button:disabled{cursor:default}
+#multi-step-form .demo .steps button:not(:disabled):hover{background:rgba(255,255,255,.06);color:#fff}
+#multi-step-form .demo .steps i{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid #474e63;display:grid;place-items:center;font:600 12px/1 var(--sans);font-style:normal;transition:background .3s,border-color .3s}
+#multi-step-form .demo .steps li.done i{background:#7c9bff;border-color:#7c9bff;color:#1f2433;font-size:0}
+#multi-step-form .demo .steps li.done i::before{content:"✓";font-size:14px;font-weight:800}
+#multi-step-form .demo .steps li[aria-current=step] button{color:#fff;font-weight:600}
+#multi-step-form .demo .steps li[aria-current=step] i{border-color:#7c9bff;color:#fff;box-shadow:0 0 0 4px rgba(124,155,255,.18)}
+#multi-step-form .demo .steps small{display:block;font-size:11.5px;font-weight:400;color:#8d93a5}
+#multi-step-form .demo .rail .foot{margin-top:auto;font-size:12px;color:#8d93a5}
+#multi-step-form .demo form{position:relative;padding:28px 40px 24px;display:flex;flex-direction:column;background:#fff;overflow:hidden}
+#multi-step-form .demo .step{display:flex;flex-direction:column;gap:10px;max-width:440px}
+#multi-step-form .demo .step[hidden]{display:none}
+#multi-step-form .demo form[data-dir=fwd] .step{animation:wzIn .35s cubic-bezier(.2,.8,.2,1)}
+#multi-step-form .demo form[data-dir=back] .step{animation:wzBack .35s cubic-bezier(.2,.8,.2,1)}
+#multi-step-form .demo .step h3{font-size:21px;font-weight:800;letter-spacing:-.01em;line-height:1.2;outline:none}
+#multi-step-form .demo .step h3+p{font-size:13px;color:var(--t2);margin-top:-6px;margin-bottom:4px}
+#multi-step-form .demo fieldset{border:0;display:grid;gap:6px}
+#multi-step-form .demo legend{font-size:13px;font-weight:600;margin-bottom:6px}
+#multi-step-form .demo .seg{display:flex;gap:8px;flex-wrap:wrap}
+#multi-step-form .demo .seg label{position:relative;cursor:pointer}
+#multi-step-form .demo .seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+#multi-step-form .demo .seg span{display:block;border:1px solid var(--bd);border-radius:9px;padding:9px 14px;font-size:13.5px;background:#fff;transition:border-color .15s,background .15s}
+#multi-step-form .demo .seg input:checked+span{border-color:var(--p);background:#eef2ff;color:#1e3fae;font-weight:600}
+#multi-step-form .demo .seg input:focus-visible+span{outline:2px solid var(--p);outline-offset:2px}
+#multi-step-form .demo fieldset[aria-invalid=true] .seg span{border-color:#e7a597}
+#multi-step-form .demo dl{display:grid;grid-template-columns:110px 1fr auto;gap:0 14px;border:1px solid #e8e7e2;border-radius:12px;overflow:hidden;font-size:13.5px}
+#multi-step-form .demo dl>*{padding:10px 14px;border-top:1px solid #efeee9}
+#multi-step-form .demo dl>:nth-child(-n+3){border-top:0}
+#multi-step-form .demo dt{color:var(--t2)}
+#multi-step-form .demo dd{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#multi-step-form .demo dl button{border:0;background:none;color:var(--p);font-weight:600;font-size:13px;cursor:pointer;padding:10px 14px}
+#multi-step-form .demo .nav{display:flex;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px;max-width:440px}
+#multi-step-form .demo .nav[hidden]{display:none}
+#multi-step-form .demo .nav .back[hidden]{display:inline-block;visibility:hidden}
+#multi-step-form .demo .done-v{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:auto 0}
+#multi-step-form .demo .done-v i{width:48px;height:48px;border-radius:50%;background:#e3f4ea;color:var(--ok);display:grid;place-items:center;font:800 24px/1 var(--sans);font-style:normal}
+#multi-step-form .demo .done-v p{color:var(--t2);font-size:13.5px}
+@keyframes wzIn{from{opacity:0;transform:translateX(18px)}}
+@keyframes wzBack{from{opacity:0;transform:translateX(-18px)}}
+
+/* ===== 3. Autocomplete / Combobox ===== */
+#autocomplete-combobox .demo .ac{position:absolute;inset:0;display:grid;grid-template-columns:1fr 300px;gap:40px;padding:34px 40px}
+#autocomplete-combobox .demo .main{display:flex;flex-direction:column;gap:5px;max-width:460px}
+#autocomplete-combobox .demo .cb{position:relative}
+#autocomplete-combobox .demo .cb .inp{padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='9' cy='9' r='5.5' fill='none' stroke='%2399999e' stroke-width='1.8'/%3E%3Cpath d='M13 13l3.5 3.5' stroke='%2399999e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 12px 50%/18px;padding-left:38px}
+#autocomplete-combobox .demo .clr{position:absolute;right:6px;top:6px;width:28px;height:28px;border:0;border-radius:7px;background:none;font-size:18px;line-height:1;color:var(--t2);cursor:pointer}
+#autocomplete-combobox .demo .clr:hover{background:var(--surf)}
+#autocomplete-combobox .demo [role=listbox]{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 6px);max-height:232px;overflow-y:auto;list-style:none;background:#fff;border:1px solid #e1e0db;border-radius:11px;box-shadow:0 16px 40px -12px rgba(0,0,0,.22);padding:5px;scrollbar-width:thin}
+#autocomplete-combobox .demo [role=option]{display:flex;align-items:baseline;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:14px}
+#autocomplete-combobox .demo [role=option] small{margin-left:auto;font-size:12px;color:var(--t2);white-space:nowrap}
+#autocomplete-combobox .demo [role=option] mark{background:none;color:inherit;font-weight:800;text-decoration:underline;text-decoration-color:rgba(47,91,234,.45);text-decoration-thickness:2px;text-underline-offset:3px}
+#autocomplete-combobox .demo [role=option]:hover{background:#f4f4f1}
+#autocomplete-combobox .demo [role=option].act{background:#eef2ff;color:#1e3fae}
+#autocomplete-combobox .demo [role=option][aria-selected=true]::after{content:"✓";color:var(--p);font-weight:800;margin-left:6px}
+#autocomplete-combobox .demo .none{padding:12px 10px;color:var(--t2);font-size:13px}
+#autocomplete-combobox .demo .picked{margin-top:8px;font-size:13px;color:var(--t2);min-height:20px}
+#autocomplete-combobox .demo .picked b{color:var(--t)}
+#autocomplete-combobox .demo .side{padding-top:4px}
+#autocomplete-combobox .demo .mt{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:baseline;background:#fff;border:1px solid #e4e3de;border-radius:11px;padding:12px 14px;margin-bottom:16px;font-size:12.5px}
+#autocomplete-combobox .demo .mt code{font:500 13px/1.3 var(--mono);color:var(--t);word-break:break-all}
+#autocomplete-combobox .demo .keys{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:12.5px}
+
+/* ===== 4. Date picker ===== */
+#date-picker .demo .dp{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:24px 40px}
+#date-picker .demo .col{position:relative;display:flex;flex-direction:column;gap:5px;max-width:330px}
+#date-picker .demo .field{position:relative}
+#date-picker .demo .field .inp{padding-right:46px;font-variant-numeric:tabular-nums}
+#date-picker .demo .cal-btn{position:absolute;right:4px;top:4px;width:32px;height:32px;border:0;border-radius:7px;background:none;display:grid;place-items:center;cursor:pointer;color:#55555a}
+#date-picker .demo .cal-btn:hover,#date-picker .demo .cal-btn[aria-expanded=true]{background:#eef2ff;color:var(--p)}
+#date-picker .demo .echo{font-size:12.5px;color:var(--ok);min-height:17px}
+#date-picker .demo .echo:empty{display:none}
+#date-picker .demo .echo:not(:empty)+.err{display:none}
+#date-picker .demo .pop{position:absolute;z-index:5;left:0;top:94px;width:312px;padding:12px;background:#fff;border:1px solid #e1e0db;border-radius:14px;box-shadow:0 18px 46px -14px rgba(0,0,0,.28);transform-origin:top left;animation:dpIn .18s cubic-bezier(.2,.8,.2,1)}
+#date-picker .demo .pop[hidden]{display:none}
+#date-picker .demo .ph{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+#date-picker .demo .ph h4{flex:1;text-align:center;font-size:14px;font-weight:800}
+#date-picker .demo .ph button{width:30px;height:30px;border:0;border-radius:8px;background:none;font-size:18px;line-height:1;cursor:pointer;color:var(--t)}
+#date-picker .demo .ph button:hover{background:var(--surf)}
+#date-picker .demo table{width:100%;border-collapse:collapse;table-layout:fixed}
+#date-picker .demo th{font:600 11px/1 var(--sans);color:var(--t2);height:24px}
+#date-picker .demo td{padding:1px;text-align:center}
+#date-picker .demo td button{width:36px;height:29px;border:0;border-radius:8px;background:none;font-size:13px;cursor:pointer;font-variant-numeric:tabular-nums;color:var(--t)}
+#date-picker .demo td button:hover{background:#f1f1ee}
+#date-picker .demo td button.out{color:#b5b5b9}
+#date-picker .demo td button[aria-disabled=true]{color:#c3c3c7;text-decoration:line-through;cursor:not-allowed}
+#date-picker .demo td button[aria-current=date]{box-shadow:inset 0 0 0 1.5px var(--p);font-weight:700;color:var(--p)}
+#date-picker .demo td[aria-selected=true] button{background:var(--p);color:#fff;font-weight:700}
+#date-picker .demo td button:focus-visible{outline:2px solid var(--p);outline-offset:1px}
+#date-picker .demo .pf{white-space:nowrap;gap:8px;display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #efeee9;font-size:11.5px;color:var(--t2)}
+#date-picker .demo .pf button{border:0;background:none;color:var(--p);font-weight:600;font-size:12.5px;cursor:pointer;padding:4px 6px;border-radius:6px}
+#date-picker .demo .nat{padding-top:0}
+#date-picker .demo .nat .inp{max-width:240px;margin:5px 0 12px}
+#date-picker .demo .nat p{max-width:330px}
+@keyframes dpIn{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+
+/* ===== 5. Password strength meter ===== */
+#password-strength-meter .demo .pw{position:absolute;inset:0;display:grid;grid-template-columns:1fr 320px;gap:40px;padding:30px 40px;align-items:start}
+#password-strength-meter .demo form{padding:22px 24px;display:flex;flex-direction:column;gap:6px;max-width:470px}
+#password-strength-meter .demo form h3{font-size:17px;font-weight:800;margin-bottom:2px}
+#password-strength-meter .demo form h3+p{font-size:12.5px;color:var(--t2);margin-bottom:10px}
+#password-strength-meter .demo .box{position:relative}
+#password-strength-meter .demo .box .inp{padding-right:84px;font-size:15px}
+#password-strength-meter .demo .eye{position:absolute;right:5px;top:5px;height:30px;padding:0 10px;border:0;border-radius:7px;background:none;font-size:12.5px;font-weight:600;color:var(--p);cursor:pointer}
+#password-strength-meter .demo .eye:hover{background:#eef2ff}
+#password-strength-meter .demo .meter{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px}
+#password-strength-meter .demo .meter i{height:6px;border-radius:3px;background:#e7e6e1;transition:background .3s}
+#password-strength-meter .demo .meter[data-l="1"] i:nth-child(-n+1){background:#d4442b}
+#password-strength-meter .demo .meter[data-l="2"] i:nth-child(-n+2){background:#e58a1f}
+#password-strength-meter .demo .meter[data-l="3"] i:nth-child(-n+3){background:#7fae2e}
+#password-strength-meter .demo .meter[data-l="4"] i{background:var(--ok)}
+#password-strength-meter .demo .lvl{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--t2);min-height:36px}
+#password-strength-meter .demo .lvl b{font-weight:700;color:var(--t);white-space:nowrap}
+#password-strength-meter .demo .lvl b[data-l="1"]{color:#c0341d}
+#password-strength-meter .demo .lvl b[data-l="2"]{color:#b8650c}
+#password-strength-meter .demo .lvl b[data-l="3"]{color:#4d7a12}
+#password-strength-meter .demo .lvl b[data-l="4"]{color:var(--ok)}
+#password-strength-meter .demo .lvl span{text-align:right}
+#password-strength-meter .demo form .btn{align-self:flex-start;margin-top:4px}
+#password-strength-meter .demo .res{font-size:12.5px;min-height:17px}
+#password-strength-meter .demo .res.okm{color:var(--ok)}
+#password-strength-meter .demo .res.bad{color:var(--err)}
+#password-strength-meter .demo .rules{list-style:none;display:grid;gap:9px;font-size:13px}
+#password-strength-meter .demo .rules li{display:flex;gap:10px;align-items:flex-start;color:var(--t2);transition:color .2s}
+#password-strength-meter .demo .rules li::before{content:"";flex:none;width:16px;height:16px;margin-top:1px;border-radius:50%;border:1.5px solid #c9c8c3;background:#fff;transition:background .2s,border-color .2s}
+#password-strength-meter .demo .rules li.on{color:var(--t)}
+#password-strength-meter .demo .rules li.on::before{border-color:var(--ok);background:var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100%}
+#password-strength-meter .demo .rules li.no{color:var(--err)}
+#password-strength-meter .demo .rules li.no::before{border-color:var(--err);background:var(--err) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.5 5.5l5 5M10.5 5.5l-5 5' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/100%}
+#password-strength-meter .demo .try{margin-top:16px;font-size:12.5px}
+#password-strength-meter .demo .try button{font:500 12px/1 var(--mono);border:1px dashed #b9b8b3;background:#fff;border-radius:6px;padding:5px 7px;margin:4px 4px 0 0;cursor:pointer}
+#password-strength-meter .demo .try button:hover{border-color:var(--p);color:var(--p)}
+
+/* ===== 6. Input mask ===== */
+#input-mask .demo .im{position:absolute;inset:0;display:grid;grid-template-columns:1fr 340px;gap:40px;padding:56px 40px 28px;align-items:center}
+#input-mask .demo form{padding:20px 24px;display:grid;grid-template-columns:1fr 130px;gap:4px 16px;max-width:480px}
+#input-mask .demo .fld.wide{grid-column:1/-1}
+#input-mask .demo .box{position:relative}
+#input-mask .demo .box .inp,#input-mask .demo .ghost{font:500 15px/40px var(--mono);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+#input-mask .demo .box .inp{background:transparent;position:relative;z-index:1}
+#input-mask .demo .ghost{position:absolute;inset:0;padding:0 13px;color:#bdbdc2;white-space:pre;pointer-events:none;background:#fff;border-radius:9px}
+#input-mask .demo .ghost i{font-style:normal;color:transparent}
+#input-mask .demo .inp[aria-invalid=true]~.ghost{background:#fff7f5}
+#input-mask .demo .fld .hint{order:-1}
+#input-mask .demo .raw{background:#1f2433;color:#c9cdd8;border-radius:14px;padding:18px 20px;font:400 13px/1.5 var(--mono)}
+#input-mask .demo .raw h4{color:#8d93a5}
+#input-mask .demo .raw dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px}
+#input-mask .demo .raw dt{color:#8d93a5}
+#input-mask .demo .raw dd{color:#fff;word-break:break-all}
+#input-mask .demo .raw dd:empty::before{content:"—";color:#59607a}
+#input-mask .demo .raw dd.v::after{content:" ✓";color:#7ee0a5}
+#input-mask .demo .side>p{margin-top:14px}
+
+/* ===== màn hình hẹp ===== */
+@media (max-width:760px){
+  :where(#inline-validation,#multi-step-form,#autocomplete-combobox,#date-picker,#password-strength-meter,#input-mask) .demo{height:auto;min-height:380px}
+  #inline-validation .demo .cmp,#autocomplete-combobox .demo .ac,#date-picker .demo .dp,#password-strength-meter .demo .pw,#input-mask .demo .im{position:relative;grid-template-columns:1fr;padding:56px 16px 20px;gap:20px}
+  #inline-validation .demo .cap{left:16px;right:120px}
+  #inline-validation .demo form{min-height:300px}
+  #multi-step-form .demo .wz{position:relative;grid-template-columns:1fr}
+  #multi-step-form .demo .rail{padding:18px 16px}
+  #multi-step-form .demo .rail :is(.ttl,.cnt){padding-right:110px}
+  #multi-step-form .demo .steps{grid-template-columns:repeat(3,auto);justify-content:start}
+  #multi-step-form .demo .steps small,#multi-step-form .demo .steps li::after,#multi-step-form .demo .rail .foot{display:none}
+  #multi-step-form .demo .steps button{padding:6px 4px;font-size:12.5px;gap:6px}
+  #multi-step-form .demo form{padding:22px 16px;min-height:340px}
+  #multi-step-form .demo dl{grid-template-columns:90px 1fr auto}
+  #inline-validation .demo,#date-picker .demo{height:auto}
+  #autocomplete-combobox .demo .main{min-height:300px}
+  #date-picker .demo .pop{width:auto;right:0}
+  #date-picker .demo .col:has(>.pop:not([hidden])){min-height:430px}
+  #input-mask .demo .im{align-items:start}
+  #input-mask .demo form{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+<header class="head">
+  <h1>Form &amp; nhập liệu</h1>
+  <p>Ô nhập là chỗ người dùng <b>làm việc</b> chứ không chỉ xem: mỗi lỗi báo sai lúc, mỗi định dạng bắt gõ lại là một lý do bỏ ngang. Sáu pattern dưới đây giúp điền nhanh hơn và ít sai hơn. Mọi demo đều gõ, bấm và dùng bàn phím được thật.</p>
+</header>
+
+<!-- 1 -->
+<article class="pattern" id="inline-validation">
+  <h2>Inline validation</h2>
+  <p class="vi"><b>Báo lỗi ngay tại ô, đúng lúc.</b> Thay vì đợi bấm Gửi rồi mới đổ ra một loạt lỗi, form kiểm từng ô khi người dùng <b>rời</b> ô đó, và gỡ lỗi ngay khi họ sửa đúng. Hai form dưới giống hệt nhau, chỉ khác thời điểm báo lỗi. Gõ email thiếu “@” rồi nhấn Tab ở cả hai; thử tên đăng nhập “minhanh” (đã có người dùng).</p>
+  <div class="demo">
+    <p class="cap">Cùng một form, <b>hai thời điểm báo lỗi</b></p>
+    <div class="cmp">
+      <form class="card" data-mode="submit" novalidate>
+        <p class="tag"><i>A</i>Chỉ báo khi bấm Gửi</p>
+        <div class="sum" tabindex="-1" role="alert" hidden></div>
+        <div class="fld"><label for="iv-a-email">Email</label><div class="box"><input class="inp" id="iv-a-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-a-email-err"></div><p class="err" id="iv-a-email-err"></p></div>
+        <div class="fld"><label for="iv-a-user">Tên đăng nhập</label><div class="box"><input class="inp" id="iv-a-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-a-user-err"></div><p class="err" id="iv-a-user-err"></p></div>
+        <button class="btn">Tạo tài khoản</button>
+        <div class="done" role="status"><i>✓</i><b>Đã tạo tài khoản</b><span></span></div>
+      </form>
+      <form class="card" data-mode="live" novalidate>
+        <p class="tag"><i>B</i>Báo khi rời ô, gỡ ngay khi sửa đúng</p>
+        <div class="fld"><label for="iv-b-email">Email</label><div class="box"><input class="inp" id="iv-b-email" name="email" type="email" autocomplete="email" spellcheck="false" aria-describedby="iv-b-email-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-email-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="iv-b-user">Tên đăng nhập</label><div class="box"><input class="inp" id="iv-b-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="iv-b-user-err"></div><p class="note" aria-live="polite"></p><p class="err" id="iv-b-user-err" aria-live="polite"></p></div>
+        <button class="btn">Tạo tài khoản</button>
+        <div class="done" role="status"><i>✓</i><b>Đã tạo tài khoản</b><span></span></div>
+      </form>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>ô có quy tắc rõ ràng mà người dùng dễ sai: email, tên đăng nhập trùng, mã giảm giá, số điện thoại. Báo lúc rời ô, và khi đã báo lỗi thì kiểm lại theo từng phím để lỗi biến mất ngay lúc sửa đúng.</p>
+    <p class="avoid"><b>Tránh khi</b>báo lỗi ngay từ ký tự đầu tiên (“email không hợp lệ” khi mới gõ “l”), hoặc báo đỏ ô trống chỉ vì người dùng Tab đi qua. Vẫn cần kiểm lại khi Gửi và đưa focus tới ô sai đầu tiên.</p>
+    <p class="tip">Mẹo prompt: nói rõ <i>thời điểm</i> (“validate on blur, re-validate on input once an error is shown”), nếu không AI thường làm kiểu báo lỗi theo từng phím.</p>
+  </div>
+  <div class="kw"><button>inline form validation</button><button>validate on blur</button><button>re-validate on input after first error</button><button>error message below field</button><button>aria-invalid + aria-describedby</button><button>:user-invalid</button><button>async username availability check</button></div>
+</article>
+
+<!-- 2 -->
+<article class="pattern" id="multi-step-form" data-toc="Multi-step form">
+  <h2>Multi-step form / Wizard</h2>
+  <p class="vi"><b>Chia form dài thành từng bước.</b> Mỗi màn hình chỉ hỏi vài câu cùng chủ đề, thanh tiến độ cho biết còn bao xa, và có thể quay lại sửa mà không mất dữ liệu đã điền. Bước cuối cho xem lại toàn bộ trước khi gửi. Điền thử, bấm “Quay lại”, hoặc bấm tên bước đã xong ở cột trái.</p>
+  <div class="demo">
+    <div class="wz">
+      <div class="rail">
+        <p class="ttl">Thiết lập không gian</p>
+        <p class="cnt">Bước <b>1</b> / 3</p>
+        <div class="bar" aria-hidden="true"><i></i></div>
+        <ol class="steps" aria-label="Các bước">
+          <li aria-current="step"><button type="button" data-go="0" disabled><i>1</i><span>Tài khoản<small>Email và mật khẩu</small></span></button></li>
+          <li><button type="button" data-go="1" disabled><i>2</i><span>Không gian<small>Tên nhóm, quy mô</small></span></button></li>
+          <li><button type="button" data-go="2" disabled><i>3</i><span>Xác nhận<small>Xem lại và tạo</small></span></button></li>
+        </ol>
+        <p class="foot">Dữ liệu được giữ khi quay lại.</p>
+      </div>
+      <form novalidate>
+        <section class="step" data-i="0">
+          <h3 tabindex="-1">Tạo tài khoản</h3>
+          <p>Bạn sẽ dùng email này để đăng nhập.</p>
+          <div class="fld"><label for="wz-email">Email công việc</label><input class="inp" id="wz-email" name="email" type="email" autocomplete="email" spellcheck="false" enterkeyhint="next" aria-describedby="wz-email-err"><p class="err" id="wz-email-err"></p></div>
+          <div class="fld"><label for="wz-pw">Mật khẩu <span class="hint">(ít nhất 8 ký tự)</span></label><input class="inp" id="wz-pw" name="pw" type="password" autocomplete="new-password" minlength="8" enterkeyhint="next" aria-describedby="wz-pw-err"><p class="err" id="wz-pw-err"></p></div>
+        </section>
+        <section class="step" data-i="1" hidden>
+          <h3 tabindex="-1">Không gian làm việc</h3>
+          <p>Có thể đổi tên và mời thêm người sau.</p>
+          <div class="fld"><label for="wz-team">Tên nhóm</label><input class="inp" id="wz-team" name="team" type="text" autocomplete="organization" placeholder="Ví dụ: Nhóm Thiết kế" enterkeyhint="next" aria-describedby="wz-team-err"><p class="err" id="wz-team-err"></p></div>
+          <fieldset class="fld" aria-describedby="wz-size-err"><legend>Quy mô</legend>
+            <div class="seg">
+              <label><input type="radio" name="size" value="Chỉ mình tôi"><span>Chỉ mình tôi</span></label>
+              <label><input type="radio" name="size" value="2–10 người"><span>2–10 người</span></label>
+              <label><input type="radio" name="size" value="Hơn 10 người"><span>Hơn 10 người</span></label>
+            </div><p class="err" id="wz-size-err"></p></fieldset>
+        </section>
+        <section class="step" data-i="2" hidden>
+          <h3 tabindex="-1">Kiểm tra lại</h3>
+          <p>Bấm “Sửa” để quay lại đúng bước đó.</p>
+          <dl>
+            <dt>Email</dt><dd data-k="email"></dd><button type="button" data-go="0" aria-label="Sửa email">Sửa</button>
+            <dt>Mật khẩu</dt><dd data-k="pw"></dd><button type="button" data-go="0" aria-label="Sửa mật khẩu">Sửa</button>
+            <dt>Tên nhóm</dt><dd data-k="team"></dd><button type="button" data-go="1" aria-label="Sửa tên nhóm">Sửa</button>
+            <dt>Quy mô</dt><dd data-k="size"></dd><button type="button" data-go="1" aria-label="Sửa quy mô">Sửa</button>
+          </dl>
+        </section>
+        <section class="step done-v" data-i="3" hidden>
+          <i>✓</i><h3 tabindex="-1">Đã tạo “<span data-k="team"></span>”</h3><p>Bước tiếp theo: mời đồng đội vào không gian.</p>
+        </section>
+        <div class="nav"><button type="button" class="btn ghost back" hidden>← Quay lại</button><button class="btn next">Tiếp: Không gian →</button></div>
+        <p class="sr live" role="status"></p>
+      </form>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>form dài trên 6–8 ô và chia được thành nhóm có nghĩa (tài khoản → thông tin → thanh toán): đăng ký, onboarding, đặt hàng, hồ sơ xin việc. Mỗi bước ngắn nên bớt ngợp, và dữ liệu bước trước có thể dùng cho bước sau.</p>
+    <p class="avoid"><b>Tránh khi</b>form chỉ có 3–5 ô (tách bước chỉ thêm cú bấm), hoặc người dùng cần nhìn mọi ô cùng lúc để so sánh. Đừng làm wizard không cho quay lại, hay mất dữ liệu khi lùi bước.</p>
+    <p class="tip">Mẹo prompt: nêu đủ ba thứ hay bị quên: “back button keeps entered data”, “review step with edit links”, “focus moves to step heading on change”.</p>
+  </div>
+  <div class="kw"><button>multi-step form</button><button>wizard with progress stepper</button><button>step indicator (aria-current="step")</button><button>back button preserves data</button><button>per-step validation</button><button>review &amp; edit summary step</button><button>descriptive next button label</button></div>
+</article>
+
+<!-- 3 -->
+<article class="pattern" id="autocomplete-combobox" data-toc="Autocomplete / Combobox">
+  <h2>Autocomplete / Combobox</h2>
+  <p class="vi"><b>Ô gõ kèm danh sách gợi ý.</b> Gõ vài chữ là danh sách thu lại còn mục khớp, chọn bằng chuột hoặc phím ↑ ↓ Enter. Với tiếng Việt, khớp phải bỏ qua dấu: gõ “da nang”, “danang” hay “Đà Nẵng” đều ra một kết quả. Thử “hue”, “sai gon”, “ca” rồi dùng bàn phím.</p>
+  <div class="demo">
+    <div class="ac">
+      <div class="main">
+        <label class="lab" for="cb-in" id="cb-lab">Thành phố nhận hàng</label>
+        <div class="cb">
+          <input id="cb-in" class="inp" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" spellcheck="false" placeholder="Gõ tên thành phố, có dấu hay không đều được">
+          <button type="button" class="clr" aria-label="Xoá ô thành phố" hidden>×</button>
+          <ul id="cb-list" role="listbox" aria-labelledby="cb-lab" hidden></ul>
+        </div>
+        <p class="picked" aria-live="polite"></p>
+        <p class="sr cnt" role="status"></p>
+      </div>
+      <div class="side">
+        <h4>Máy so khớp thế nào</h4>
+        <div class="mt"><span>Bạn gõ</span><code class="q1">…</code><span>Đem so</span><code class="q2">…</code></div>
+        <div class="keys"><span><kbd>↓</kbd> <kbd>↑</kbd></span><span>Đi qua các gợi ý</span><span><kbd>Enter</kbd></span><span>Chọn gợi ý đang sáng</span><span><kbd>Esc</kbd></span><span>Đóng danh sách, nhấn lần nữa để xoá</span><span><kbd>Alt</kbd> <kbd>↓</kbd></span><span>Mở danh sách khi ô trống</span></div>
+      </div>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>chọn một mục trong danh sách dài (thành phố, quốc gia, sản phẩm, người trong nhóm) mà người dùng biết mình muốn gì: gõ ba chữ nhanh hơn cuộn một <code>&lt;select&gt;</code> 60 dòng.</p>
+    <p class="avoid"><b>Tránh khi</b>chỉ có dưới 7 lựa chọn (dùng radio hoặc select), hoặc người dùng chưa biết có gì để chọn (cho duyệt danh sách). Đừng tự điền đè chữ người dùng đang gõ, và đừng khớp phân biệt dấu với tiếng Việt.</p>
+    <p class="tip">Mẹo prompt: nhấn mạnh “diacritic-insensitive matching for Vietnamese (normalize NFD, đ → d)” và “WAI-ARIA combobox pattern”, nếu không AI hay làm một danh sách div không dùng được bằng bàn phím.</p>
+  </div>
+  <div class="kw"><button>autocomplete combobox</button><button>WAI-ARIA combobox with listbox popup</button><button>aria-activedescendant keyboard navigation</button><button>diacritic-insensitive search</button><button>highlight matched substring</button><button>typeahead suggestions</button><button>no results state</button></div>
+</article>
+
+<!-- 4 -->
+<article class="pattern" id="date-picker">
+  <h2>Date picker</h2>
+  <p class="vi"><b>Chọn ngày trên lịch.</b> Một ô ngày vừa cho gõ thẳng (dd/mm/yyyy) vừa có nút mở lịch tháng để chọn, đánh dấu hôm nay, làm mờ ngày không được chọn. Bấm biểu tượng lịch, rồi dùng phím mũi tên, PgUp / PgDn, Enter, Esc. Bên phải là ô ngày native của trình duyệt để so sánh.</p>
+  <div class="demo">
+    <div class="dp">
+      <div class="col">
+        <label class="lab" for="dp-in">Ngày hẹn tư vấn</label>
+        <p class="hint" id="dp-hint">Gõ theo dạng dd/mm/yyyy hoặc chọn trên lịch</p>
+        <div class="field">
+          <input id="dp-in" class="inp" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/yyyy" aria-describedby="dp-hint dp-err">
+          <button type="button" class="cal-btn" aria-label="Chọn ngày trên lịch" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-pop"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg></button>
+        </div>
+        <p class="echo" aria-live="polite"></p>
+        <p class="err" id="dp-err" aria-live="polite"></p>
+        <div class="pop" id="dp-pop" role="dialog" aria-label="Chọn ngày hẹn" hidden>
+          <div class="ph"><button type="button" class="prev" aria-label="Tháng trước">‹</button><h4 id="dp-month" aria-live="polite"></h4><button type="button" class="next" aria-label="Tháng sau">›</button></div>
+          <table role="grid" aria-labelledby="dp-month">
+            <thead><tr><th scope="col" abbr="Thứ Hai">T2</th><th scope="col" abbr="Thứ Ba">T3</th><th scope="col" abbr="Thứ Tư">T4</th><th scope="col" abbr="Thứ Năm">T5</th><th scope="col" abbr="Thứ Sáu">T6</th><th scope="col" abbr="Thứ Bảy">T7</th><th scope="col" abbr="Chủ Nhật">CN</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="pf"><span>Ngày đã qua bị khoá</span><span><button type="button" class="today">Hôm nay</button><button type="button" class="close">Đóng</button></span></div>
+        </div>
+      </div>
+      <div class="col side nat">
+        <h4>Cùng việc đó, bản native</h4>
+        <label class="lab" for="dp-nat">Ngày hẹn tư vấn</label>
+        <input id="dp-nat" class="inp" type="date">
+        <p><code>&lt;input type="date"&gt;</code>: trình duyệt tự vẽ lịch, có sẵn bàn phím và trình đọc màn hình, không cần một dòng JS. Đổi lại, hình dáng và định dạng ngày khác nhau theo trình duyệt, hệ điều hành và ngôn ngữ máy.</p>
+      </div>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>ngày gần và cần biết thứ trong tuần: đặt lịch hẹn, đặt phòng, hạn chót, chọn khoảng ngày. Lịch giúp thấy ngay “thứ Bảy tuần sau” mà không phải tính nhẩm.</p>
+    <p class="avoid"><b>Tránh khi</b>ngày ở xa và người dùng đã thuộc lòng, như ngày sinh: bấm lùi 30 năm trên lịch rất cực, ba ô ngày/tháng/năm hoặc gõ thẳng nhanh hơn. Luôn cho gõ tay song song với lịch.</p>
+    <p class="tip">Mẹo prompt: ghi rõ “week starts on Monday, Vietnamese locale, dd/mm/yyyy” và “keyboard: arrows, PageUp/PageDown, Home/End, Esc returns focus”, mặc định AI hay làm lịch kiểu Mỹ bắt đầu từ Chủ Nhật.</p>
+  </div>
+  <div class="kw"><button>date picker</button><button>calendar popover with month grid</button><button>typeable date input with calendar button</button><button>disabled past dates</button><button>today indicator</button><button>WAI-ARIA date picker dialog (role=grid)</button><button>native input type="date"</button></div>
+</article>
+
+<!-- 5 -->
+<article class="pattern" id="password-strength-meter" data-toc="Password strength meter">
+  <h2>Password strength meter</h2>
+  <p class="vi"><b>Thước đo độ mạnh mật khẩu.</b> Thanh 4 nấc đổi màu theo từng phím, kèm một câu gợi ý cụ thể để mạnh hơn và danh sách tiêu chí tự tích. Điểm mấu chốt: độ <b>dài</b> quan trọng hơn ký tự lạ. Thử “matkhau123” rồi thử một câu dài như “ba con meo treo cay cau”.</p>
+  <div class="demo">
+    <div class="pw">
+      <form class="card" novalidate>
+        <h3>Đặt mật khẩu mới</h3>
+        <p>Tài khoản: lan.pham@vidu.com</p>
+        <input class="sr" type="email" name="username" autocomplete="username" value="lan.pham@vidu.com" tabindex="-1" aria-hidden="true">
+        <label class="lab" for="pw-in">Mật khẩu mới</label>
+        <div class="box">
+          <input id="pw-in" class="inp" type="password" autocomplete="new-password" spellcheck="false" aria-describedby="pw-lvl pw-rules">
+          <button type="button" class="eye" aria-pressed="false" aria-label="Hiện mật khẩu">Hiện</button>
+        </div>
+        <div class="meter" data-l="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="lvl"><b id="pw-lvl" aria-live="polite">Độ mạnh: chưa có</b><span class="sug">Nên dùng 12 ký tự trở lên.</span></p>
+        <button class="btn">Lưu mật khẩu</button>
+        <p class="res" aria-live="polite"></p>
+      </form>
+      <div class="side">
+        <h4>Tiêu chí</h4>
+        <ul class="rules" id="pw-rules">
+          <li data-r="len8">Ít nhất 8 ký tự</li>
+          <li data-r="len12">Từ 12 ký tự trở lên (càng dài càng khó đoán)</li>
+          <li data-r="mix">Trộn 3 loại: chữ thường, hoa, số, ký hiệu</li>
+          <li data-r="common">Không phải mật khẩu phổ biến hay dãy dễ đoán</li>
+          <li data-r="name">Không chứa tên hay email của bạn</li>
+        </ul>
+        <div class="try">Thử nhanh:<br><button type="button">matkhau123</button><button type="button">LanPham@2026</button><button type="button">ba con meo treo cay cau</button></div>
+      </div>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>người dùng tự đặt mật khẩu: đăng ký, đổi mật khẩu, đặt lại. Phản hồi theo từng phím giúp họ chỉnh ngay thay vì bị từ chối sau khi bấm Lưu.</p>
+    <p class="avoid"><b>Tránh khi</b>ô đăng nhập (chỉ gõ mật khẩu cũ, không cần đo). Đừng chấm điểm kiểu “có ký hiệu là Mạnh”: “P@ssw0rd” vẫn bị đoán trong vài giây; nên chặn danh sách mật khẩu phổ biến và thưởng độ dài.</p>
+    <p class="tip">Mẹo prompt: ghi “zxcvbn-style scoring, reward length, block common passwords” và “show / hide password toggle” để tránh kiểu thước đo chỉ đếm ký tự đặc biệt.</p>
+  </div>
+  <div class="kw"><button>password strength meter</button><button>4-segment strength bar</button><button>live requirement checklist</button><button>show / hide password toggle</button><button>zxcvbn-style scoring</button><button>autocomplete="new-password"</button></div>
+</article>
+
+<!-- 6 -->
+<article class="pattern" id="input-mask">
+  <h2>Input mask</h2>
+  <p class="vi"><b>Ô tự định dạng khi gõ.</b> Người dùng chỉ gõ chữ số, ô tự chèn khoảng trắng hay dấu “/” đúng chỗ và hiện phần khuôn còn thiếu bằng chữ mờ. Dữ liệu gửi đi vẫn là chuỗi số sạch. Gõ thử, sửa một số ở giữa, xoá qua dấu cách, hoặc dán “+84 912 345 678”.</p>
+  <div class="demo">
+    <div class="im">
+      <form class="card" novalidate>
+        <div class="fld wide"><label for="im-tel">Số điện thoại</label><div class="box"><input class="inp" id="im-tel" type="tel" inputmode="tel" autocomplete="tel-national" data-mask="tel" aria-describedby="im-tel-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-tel-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-cc">Số thẻ</label><div class="box"><input class="inp" id="im-cc" type="text" inputmode="numeric" autocomplete="cc-number" data-mask="cc" aria-describedby="im-cc-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-cc-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="im-exp">Hết hạn <span class="hint">(MM/YY)</span></label><div class="box"><input class="inp" id="im-exp" type="text" inputmode="numeric" autocomplete="cc-exp" data-mask="exp" aria-describedby="im-exp-err"><span class="ghost" aria-hidden="true"></span></div><p class="err" id="im-exp-err" aria-live="polite"></p></div>
+      </form>
+      <div class="side">
+        <div class="raw">
+          <h4>Giá trị thật gửi đi</h4>
+          <dl><dt>tel</dt><dd data-k="tel"></dd><dt>cc-number</dt><dd data-k="cc"></dd><dt>cc-exp</dt><dd data-k="exp"></dd></dl>
+        </div>
+        <p>Thẻ thử: <code>4111 1111 1111 1111</code> (số kiểm tra Luhn hợp lệ). Mask chỉ là cách <b>hiển thị</b>; máy chủ nhận và kiểm số trần.</p>
+      </div>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>dữ liệu có khuôn cố định và chia nhóm giúp đọc lại: số điện thoại, số thẻ, ngày hết hạn, mã số thuế, số tài khoản. Nhóm 4 số dễ soát lỗi hơn một dãy 16 số liền.</p>
+    <p class="avoid"><b>Tránh khi</b>dữ liệu không có khuôn chắc chắn (tên, địa chỉ, số điện thoại quốc tế đủ loại độ dài). Mask làm nhảy con trỏ, chặn dán hay không cho xoá qua dấu cách thì còn tệ hơn không có mask.</p>
+    <p class="tip">Mẹo prompt: đòi rõ “preserve caret position when editing in the middle”, “backspace across separators”, “accept pasted values with spaces or +84”, đó là ba chỗ mask tự viết hay hỏng.</p>
+  </div>
+  <div class="kw"><button>input mask</button><button>auto-format phone number as you type</button><button>credit card number grouping (4-4-4-4)</button><button>MM/YY expiry auto slash</button><button>ghost placeholder showing remaining format</button><button>inputmode="numeric"</button><button>caret-preserving formatter</button></div>
+</article>
+
+</main>
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const YEAR = new Date().getFullYear();
+
+/* ---------- 1. Inline validation ---------- */
+const TAKEN = ['minhanh', 'admin', 'lan.pham'];
+const ivRule = {
+  email(v) {
+    v = v.trim();
+    if (!v) return 'Nhập email để nhận mã xác nhận.';
+    if (!v.includes('@')) return 'Email cần có “@”, ví dụ lan@vidu.com.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Phần sau “@” chưa đúng, ví dụ vidu.com.';
+    return '';
+  },
+  user(v, withServer = true) {
+    if (!v) return 'Chọn một tên đăng nhập.';
+    if (v.length < 3 || v.length > 20) return `Cần 3–20 ký tự (đang có ${v.length}).`;
+    if (/[^a-z0-9._]/.test(v)) return 'Chỉ dùng chữ thường không dấu, số, dấu chấm hoặc gạch dưới.';
+    if (withServer && TAKEN.includes(v)) return `“${v}” đã có người dùng. Thử “${v}.${YEAR}”?`;
+    return '';
+  }
+};
+Dict.demo('inline-validation', d => {
+  const timers = [];
+  const show = (inp, msg) => {
+    const f = inp.closest('.fld');
+    $('.err', f).textContent = msg;
+    inp.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  };
+  const success = (form) => {
+    $('.done span', form).textContent = 'Tên đăng nhập: ' + form.elements.user.value;
+    form.classList.add('sent');
+    [...form.children].forEach(c => { if (!c.classList.contains('done')) c.inert = true; });
+    const dn = $('.done', form); dn.tabIndex = -1; dn.focus({ preventScroll: true });
+  };
+
+  /* A: chỉ kiểm khi bấm Gửi, lỗi đứng yên tới lần Gửi sau */
+  const fa = $('form[data-mode=submit]', d), sum = $('.sum', fa);
+  fa.addEventListener('submit', e => {
+    e.preventDefault();
+    const bad = [];
+    for (const inp of [fa.elements.email, fa.elements.user]) {
+      const m = ivRule[inp.name](inp.value); show(inp, m);
+      if (m) bad.push([inp, m]);
+    }
+    if (!bad.length) { sum.hidden = true; return success(fa); }
+    sum.innerHTML = `<b>${bad.length} ô cần sửa:</b>` +
+      bad.map(([i]) => `<a href="#${i.id}">${i.labels[0].textContent}</a>`).join('');
+    sum.hidden = false; sum.focus();
+  });
+  sum.addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a) return;
+    e.preventDefault(); $(a.getAttribute('href'), fa).focus();
+  });
+
+  /* B: kiểm khi rời ô; đã báo lỗi thì kiểm lại theo từng phím */
+  const fb = $('form[data-mode=live]', d);
+  const st = new WeakMap();
+  let token = 0;
+  const setOk = (inp, ok) => inp.closest('.fld').classList.toggle('ok', ok);
+  const note = (inp, t) => { $('.note', inp.closest('.fld')).textContent = t; inp.closest('.fld').classList.toggle('chk', !!t); };
+  const check = (inp, fromBlur) => {
+    const v = inp.name === 'email' ? inp.value : inp.value;
+    if (inp.name === 'user' && fromBlur) {
+      const m = ivRule.user(v, false);
+      if (m) { note(inp, ''); show(inp, m); setOk(inp, false); return; }
+      /* giả lập hỏi máy chủ tên đã có người dùng chưa */
+      const my = ++token; note(inp, 'Đang kiểm tra tên…'); show(inp, ''); setOk(inp, false);
+      timers.push(setTimeout(() => {
+        if (my !== token) return;
+        note(inp, ''); const m2 = ivRule.user(inp.value); show(inp, m2); setOk(inp, !m2);
+      }, 650));
+      return;
+    }
+    const m = ivRule[inp.name](v); show(inp, m); setOk(inp, !m);
+  };
+  for (const inp of [fb.elements.email, fb.elements.user]) {
+    st.set(inp, { dirty: false });
+    inp.addEventListener('input', () => {
+      st.get(inp).dirty = true;
+      if (inp.name === 'user') { token++; note(inp, ''); }
+      if (inp.getAttribute('aria-invalid') === 'true') {
+        const m = ivRule[inp.name](inp.value);
+        if (!m) { show(inp, ''); setOk(inp, true); } else if (m !== $('.err', inp.closest('.fld')).textContent) show(inp, m);
+      } else setOk(inp, false);
+    });
+    inp.addEventListener('blur', () => {
+      if (!st.get(inp).dirty && !inp.value) return;  // Tab đi qua ô trống: chưa báo
+      check(inp, true);
+    });
+  }
+  fb.addEventListener('submit', e => {
+    e.preventDefault(); token++;
+    let first = null;
+    for (const inp of [fb.elements.email, fb.elements.user]) {
+      note(inp, ''); const m = ivRule[inp.name](inp.value); show(inp, m); setOk(inp, !m);
+      if (m && !first) first = inp;
+    }
+    if (first) first.focus(); else success(fb);
+  });
+  return () => timers.forEach(clearTimeout);
+});
+
+/* ---------- 2. Multi-step form ---------- */
+Dict.demo('multi-step-form', d => {
+  const form = $('form', d), steps = $$('.step', form), lis = $$('.steps li', d);
+  const back = $('.back', form), next = $('.next', form), live = $('.live', form), nav = $('.nav', form);
+  const NAMES = ['Tài khoản', 'Không gian làm việc', 'Xác nhận'];
+  let cur = 0, reached = 0;
+  const v = {
+    email: x => ivRule.email(x),
+    pw: x => !x ? 'Đặt một mật khẩu.' : x.length < 8 ? `Cần ít nhất 8 ký tự (đang có ${x.length}).` : '',
+    team: x => x.trim() ? '' : 'Đặt tên cho không gian, ví dụ “Nhóm Thiết kế”.',
+    size: x => x ? '' : 'Chọn quy mô gần đúng nhất.'
+  };
+  const fieldOf = n => n === 'size' ? $('fieldset', form) : form.elements[n];
+  const errOf = n => $(`#wz-${n}-err`, form);
+  const val = n => n === 'size' ? (form.elements.size.value || '') : form.elements[n].value;
+  const NEED = [['email', 'pw'], ['team', 'size'], []];
+  const setErr = (n, m) => { errOf(n).textContent = m; fieldOf(n).setAttribute('aria-invalid', m ? 'true' : 'false'); };
+  const validate = i => {
+    let first = null;
+    for (const n of NEED[i]) { const m = v[n](val(n)); setErr(n, m); if (m && !first) first = n; }
+    if (first) (first === 'size' ? form.elements.size[0] : form.elements[first]).focus();
+    return !first;
+  };
+  /* đã báo lỗi thì gỡ ngay khi sửa đúng */
+  form.addEventListener('input', e => {
+    const n = e.target.name; if (!v[n]) return;
+    if (fieldOf(n).getAttribute('aria-invalid') === 'true') setErr(n, v[n](val(n)));
+  });
+  const render = (focus) => {
+    steps.forEach((s, i) => s.hidden = i !== cur);
+    const done = cur === 3;
+    lis.forEach((li, i) => {
+      li.classList.toggle('done', done || i < reached || (i < cur));
+      if (i === cur) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      $('button', li).disabled = done || i === cur || i > reached;
+    });
+    $('.rail .cnt', d).innerHTML = done ? 'Hoàn tất' : `Bước <b>${cur + 1}</b> / 3`;
+    $('.rail .bar i', d).style.width = done ? '100%' : ((cur + 1) / 3 * 100) + '%';
+    back.hidden = cur === 0 || done;
+    nav.hidden = done;
+    next.textContent = cur === 2 ? 'Tạo không gian' : (reached === 2 ? 'Lưu, về Xác nhận →' : `Tiếp: ${cur === 0 ? 'Không gian' : 'Xác nhận'} →`);
+    if (cur >= 2) {
+      $$('[data-k]', form).forEach(el => {
+        const k = el.dataset.k;
+        el.textContent = k === 'pw' ? '•'.repeat(val('pw').length) : val(k);
+      });
+    }
+    live.textContent = done ? 'Đã tạo không gian.' : `Bước ${cur + 1} trên 3: ${NAMES[cur]}`;
+    if (focus) $('h3', steps[cur]).focus({ preventScroll: true });
+  };
+  const go = (i) => {
+    form.dataset.dir = i > cur ? 'fwd' : 'back';
+    cur = i; reached = Math.max(reached, Math.min(i, 2));
+    /* chạy lại animation vào bước */
+    steps[cur].style.animation = 'none'; void steps[cur].offsetWidth; steps[cur].style.animation = '';
+    render(true);
+  };
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validate(cur)) return;
+    if (cur === 2) return go(3);
+    go(reached === 2 ? 2 : cur + 1);
+  });
+  back.addEventListener('click', () => go(cur - 1));
+  d.querySelector('.wz').addEventListener('click', e => {
+    const b = e.target.closest('[data-go]'); if (!b || b.disabled) return;
+    go(+b.dataset.go);
+  });
+  render(false);
+});
+
+/* ---------- 3. Autocomplete / Combobox ---------- */
+const CITIES = [
+  ['Hà Nội', 'Miền Bắc'], ['Hải Phòng', 'Miền Bắc'], ['Hạ Long', 'Miền Bắc'], ['Thái Nguyên', 'Miền Bắc'], ['Bắc Ninh', 'Miền Bắc'],
+  ['Nam Định', 'Miền Bắc'], ['Lào Cai', 'Miền Bắc'], ['Điện Biên Phủ', 'Miền Bắc'], ['Thanh Hoá', 'Miền Trung'], ['Vinh', 'Miền Trung'],
+  ['Đồng Hới', 'Miền Trung'], ['Huế', 'Miền Trung'], ['Đà Nẵng', 'Miền Trung'], ['Hội An', 'Miền Trung'], ['Quảng Ngãi', 'Miền Trung'],
+  ['Quy Nhơn', 'Miền Trung'], ['Tuy Hoà', 'Miền Trung'], ['Nha Trang', 'Miền Trung'], ['Phan Thiết', 'Miền Trung'], ['Buôn Ma Thuột', 'Tây Nguyên'],
+  ['Pleiku', 'Tây Nguyên'], ['Đà Lạt', 'Tây Nguyên'], ['Kon Tum', 'Tây Nguyên'], ['TP. Hồ Chí Minh', 'Miền Nam', ['Sài Gòn', 'HCM']],
+  ['Biên Hoà', 'Miền Nam'], ['Thủ Dầu Một', 'Miền Nam'], ['Vũng Tàu', 'Miền Nam'], ['Mỹ Tho', 'Miền Nam'], ['Bến Tre', 'Miền Nam'],
+  ['Cần Thơ', 'Miền Nam'], ['Long Xuyên', 'Miền Nam'], ['Châu Đốc', 'Miền Nam'], ['Rạch Giá', 'Miền Nam'], ['Cà Mau', 'Miền Nam'],
+  ['Sóc Trăng', 'Miền Nam'], ['Bạc Liêu', 'Miền Nam']
+];
+/* bỏ dấu từng ký tự để chỉ số vẫn khớp với chuỗi gốc (dùng cho tô đậm) */
+const fold1 = c => c.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[đĐ]/g, 'd').toLowerCase().charAt(0) || c;
+const fold = s => [...s].map(fold1).join('');
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+/* so khớp không dấu, không phân biệt khoảng trắng: trả [vị trí đầu, vị trí cuối] trong chuỗi gốc */
+const findIn = (text, q) => {
+  const f = fold(text), idx = [], compact = [];
+  [...f].forEach((c, i) => { if (c !== ' ') { compact.push(c); idx.push(i); } });
+  const p = compact.join('').indexOf(q);
+  return p < 0 ? null : [idx[p], idx[p + q.length - 1] + 1];
+};
+Dict.demo('autocomplete-combobox', d => {
+  const inp = $('#cb-in', d), list = $('#cb-list', d), clr = $('.clr', d), picked = $('.picked', d), cnt = $('.cnt', d);
+  const q1 = $('.q1', d), q2 = $('.q2', d);
+  let items = [], act = -1, chosen = null, cntT;
+  const open = () => { list.hidden = false; inp.setAttribute('aria-expanded', 'true'); };
+  const close = () => { list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); act = -1; };
+  const search = raw => {
+    const q = fold(raw).replace(/\s+/g, '');
+    if (!q) return CITIES.map(c => ({ c, r: 0 }));
+    const out = [];
+    for (const c of CITIES) {
+      const hit = findIn(c[0], q);
+      if (hit) { const s = hit[0], r = s === 0 ? 0 : c[0][s - 1] === ' ' ? 1 : 2; out.push({ c, hit, r }); continue; }
+      const al = (c[2] || []).find(a => findIn(a, q));
+      if (al) out.push({ c, al, r: 3 });
+    }
+    return out.sort((a, b) => a.r - b.r);
+  };
+  const render = () => {
+    const raw = inp.value, q = fold(raw).replace(/\s+/g, '');
+    q1.textContent = raw ? `"${raw}"` : '…'; q2.textContent = raw ? `"${q}"` : '…';
+    items = search(raw);
+    list.innerHTML = items.length ? items.map(({ c, hit, al }, i) => {
+      const n = c[0], name = hit ? esc(n.slice(0, hit[0])) + '<mark>' + esc(n.slice(hit[0], hit[1])) + '</mark>' + esc(n.slice(hit[1])) : esc(n);
+      return `<li role="option" id="cb-o-${i}" aria-selected="${chosen === n}"><span>${name}${al ? ` <small style="margin:0">· còn gọi là ${esc(al)}</small>` : ''}</span><small>${c[1]}</small></li>`;
+    }).join('') : `<li class="none" role="presentation">Không có thành phố nào khớp “${esc(raw)}”.</li>`;
+    act = -1; inp.removeAttribute('aria-activedescendant');
+    clearTimeout(cntT);
+    cntT = setTimeout(() => { cnt.textContent = items.length ? `${items.length} gợi ý` : 'Không có gợi ý'; }, 400);
+  };
+  const setAct = i => {
+    const opts = $$('[role=option]', list); if (!opts.length) return;
+    act = (i + opts.length) % opts.length;
+    opts.forEach((o, k) => o.classList.toggle('act', k === act));
+    inp.setAttribute('aria-activedescendant', opts[act].id);
+    opts[act].scrollIntoView({ block: 'nearest' });
+  };
+  const choose = i => {
+    const it = items[i]; if (!it) return;
+    chosen = it.c[0]; inp.value = chosen; clr.hidden = false;
+    picked.innerHTML = `Giao tới: <b>${esc(chosen)}</b> · ${it.c[1]}`;
+    close(); inp.focus();
+  };
+  inp.addEventListener('input', () => {
+    chosen = null; picked.textContent = ''; clr.hidden = !inp.value;
+    render(); if (inp.value) open(); else close();
+  });
+  inp.addEventListener('keydown', e => {
+    const isOpen = !list.hidden;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!isOpen) { render(); open(); if (!e.altKey) setAct(0); } else setAct(act + 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!isOpen) { render(); open(); setAct(-1); } else setAct(act - 1);
+    } else if (e.key === 'Enter') {
+      if (isOpen && act >= 0) { e.preventDefault(); choose(act); }
+    } else if (e.key === 'Escape') {
+      if (isOpen) { e.preventDefault(); close(); }
+      else if (inp.value) { e.preventDefault(); inp.value = ''; chosen = null; picked.textContent = ''; clr.hidden = true; render(); }
+    } else if (e.key === 'Tab') close();
+  });
+  inp.addEventListener('blur', () => setTimeout(() => { if (!d.contains(document.activeElement) || document.activeElement !== inp) close(); }, 0));
+  list.addEventListener('mousedown', e => e.preventDefault()); // giữ focus ở ô nhập
+  list.addEventListener('click', e => {
+    const o = e.target.closest('[role=option]'); if (o) choose(+o.id.split('-').pop());
+  });
+  clr.addEventListener('click', () => { inp.value = ''; chosen = null; picked.textContent = ''; clr.hidden = true; render(); close(); inp.focus(); });
+  return () => clearTimeout(cntT);
+});
+
+/* ---------- 4. Date picker ---------- */
+const MONTHS = m => 'Tháng ' + (m + 1);
+const WD = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+const ymd = dt => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+const dmy = dt => `${String(dt.getDate()).padStart(2, '0')}/${String(dt.getMonth() + 1).padStart(2, '0')}/${dt.getFullYear()}`;
+const addD = (dt, n) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + n);
+const addM = (dt, n) => { const t = new Date(dt.getFullYear(), dt.getMonth() + n, 1); const last = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate(); t.setDate(Math.min(dt.getDate(), last)); return t; };
+Dict.demo('date-picker', d => {
+  const inp = $('#dp-in', d), btn = $('.cal-btn', d), pop = $('#dp-pop', d), body = $('tbody', pop), title = $('#dp-month', pop);
+  const err = $('#dp-err', d), echo = $('.echo', d), nat = $('#dp-nat', d);
+  const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  nat.min = ymd(today);
+  let sel = null, foc = today;
+  const draw = () => {
+    title.textContent = `${MONTHS(foc.getMonth())}, ${foc.getFullYear()}`;
+    const first = new Date(foc.getFullYear(), foc.getMonth(), 1);
+    let cur = addD(first, -((first.getDay() + 6) % 7));
+    let html = '';
+    for (let r = 0; r < 6; r++) {
+      html += '<tr>';
+      for (let c = 0; c < 7; c++) {
+        const k = ymd(cur), past = cur < today, out = cur.getMonth() !== foc.getMonth();
+        html += `<td${sel && k === ymd(sel) ? ' aria-selected="true"' : ''}><button type="button" data-d="${k}" tabindex="${k === ymd(foc) ? 0 : -1}"` +
+          `${out ? ' class="out"' : ''}${past ? ' aria-disabled="true"' : ''}${k === ymd(today) ? ' aria-current="date"' : ''}` +
+          ` aria-label="${WD[cur.getDay()]}, ${cur.getDate()} ${MONTHS(cur.getMonth()).toLowerCase()} ${cur.getFullYear()}${k === ymd(today) ? ', hôm nay' : ''}">${cur.getDate()}</button></td>`;
+        cur = addD(cur, 1);
+      }
+      html += '</tr>';
+    }
+    body.innerHTML = html;
+  };
+  const focusDay = () => $(`[data-d="${ymd(foc)}"]`, body).focus();
+  const moveTo = dt => { foc = dt; draw(); focusDay(); };
+  const openCal = () => {
+    foc = sel || today; draw(); pop.hidden = false; btn.setAttribute('aria-expanded', 'true'); focusDay();
+  };
+  const closeCal = (ret = true) => {
+    if (pop.hidden) return;
+    pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (ret) btn.focus();
+  };
+  const setSel = dt => {
+    sel = dt; inp.value = dmy(dt); inp.setAttribute('aria-invalid', 'false'); err.textContent = '';
+    echo.textContent = `✓ ${WD[dt.getDay()]}, ${dt.getDate()} ${MONTHS(dt.getMonth()).toLowerCase()} ${dt.getFullYear()}`;
+  };
+  const pick = b => {
+    if (!b || b.getAttribute('aria-disabled') === 'true') return;
+    const [y, m, dd] = b.dataset.d.split('-').map(Number);
+    setSel(new Date(y, m - 1, dd)); closeCal();
+  };
+  btn.addEventListener('click', () => pop.hidden ? openCal() : closeCal());
+  $('.prev', pop).addEventListener('click', () => { foc = addM(foc, -1); draw(); });
+  $('.next', pop).addEventListener('click', () => { foc = addM(foc, 1); draw(); });
+  $('.today', pop).addEventListener('click', () => { setSel(today); closeCal(); });
+  $('.close', pop).addEventListener('click', () => closeCal());
+  body.addEventListener('click', e => pick(e.target.closest('button')));
+  body.addEventListener('keydown', e => {
+    const k = e.key, wd = (foc.getDay() + 6) % 7;
+    const map = { ArrowLeft: () => addD(foc, -1), ArrowRight: () => addD(foc, 1), ArrowUp: () => addD(foc, -7), ArrowDown: () => addD(foc, 7),
+      Home: () => addD(foc, -wd), End: () => addD(foc, 6 - wd),
+      PageUp: () => addM(foc, e.shiftKey ? -12 : -1), PageDown: () => addM(foc, e.shiftKey ? 12 : 1) };
+    if (map[k]) { e.preventDefault(); moveTo(map[k]()); }
+    else if (k === 'Enter' || k === ' ') { e.preventDefault(); pick(e.target.closest('button')); }
+  });
+  pop.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeCal(); return; }
+    if (e.key !== 'Tab') return;
+    /* giữ Tab trong hộp lịch: tháng trước, tháng sau, ngày đang focus, Hôm nay, Đóng */
+    const f = [$('.prev', pop), $('.next', pop), $('[tabindex="0"]', body), $('.today', pop), $('.close', pop)];
+    const i = f.indexOf(document.activeElement.closest('button'));
+    e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+  });
+  const outside = e => { if (!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) closeCal(false); };
+  document.addEventListener('pointerdown', outside);
+  /* gõ tay: chấp nhận 5/1/2027, 05-01-2027, 05012027 */
+  const parse = () => {
+    const t = inp.value.trim();
+    if (!t) { sel = null; echo.textContent = ''; err.textContent = ''; inp.setAttribute('aria-invalid', 'false'); return; }
+    let m = t.match(/^(\d{1,2})[\/.\-\s](\d{1,2})[\/.\-\s](\d{4})$/) || t.match(/^(\d{2})(\d{2})(\d{4})$/);
+    const bad = msg => { sel = null; echo.textContent = ''; err.textContent = msg; inp.setAttribute('aria-invalid', 'true'); };
+    if (!m) return bad('Chưa đúng dạng. Gõ dd/mm/yyyy, ví dụ ' + dmy(addD(today, 7)) + '.');
+    const dt = new Date(+m[3], +m[2] - 1, +m[1]);
+    if (dt.getMonth() !== +m[2] - 1 || dt.getDate() !== +m[1]) return bad(`Không có ngày ${m[1]}/${m[2]}/${m[3]}.`);
+    if (dt < today) return bad('Ngày này đã qua. Chọn từ hôm nay trở đi.');
+    setSel(dt);
+  };
+  inp.addEventListener('change', parse);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); parse(); }
+    if (e.key === 'ArrowDown' && e.altKey) { e.preventDefault(); openCal(); }
+  });
+  return () => document.removeEventListener('pointerdown', outside);
+});
+
+/* ---------- 5. Password strength meter ---------- */
+const COMMON = ['123456', '12345678', '123456789', '1234567890', 'password', 'password1', 'matkhau', 'matkhau123', 'qwerty', 'qwerty123', 'abc123', '111111', '000000', '00000000', 'iloveyou', 'admin', 'admin123', 'letmein', 'p@ssw0rd', 'anhyeuem', 'emyeuanh'];
+const pwScore = (p, ids) => {
+  const low = p.toLowerCase(), plain = low.replace(/[^a-z0-9]/g, '');
+  const r = {
+    len8: p.length >= 8, len12: p.length >= 12,
+    mix: [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter(x => x.test(p)).length >= 3,
+    common: !!p && !COMMON.includes(low) && !COMMON.includes(plain) && !/(.)\1{3,}/.test(p) && !/(0123|1234|2345|3456|4567|5678|6789|abcd|qwer|asdf)/.test(low),
+    name: !!p && !ids.some(x => low.includes(x))
+  };
+  let l = 0, sug = 'Nên dùng 12 ký tự trở lên.';
+  if (p) {
+    if (!r.common) { l = 1; sug = 'Mật khẩu này nằm trong danh sách hay bị đoán.'; }
+    else if (!r.name) { l = 1; sug = 'Bỏ tên hoặc email của bạn ra khỏi mật khẩu.'; }
+    else if (!r.len8) { l = 1; sug = `Thêm ${8 - p.length} ký tự nữa.`; }
+    else {
+      l = Math.min(4, 1 + (p.length >= 12) + (p.length >= 16) + (p.length >= 20) + r.mix);
+      sug = l === 4 ? 'Tốt. Lưu vào trình quản lý mật khẩu nhé.' : p.length < 16 ? 'Thêm vài từ nữa: câu dài dễ nhớ mà khó đoán.' : 'Thêm chữ hoa, số hoặc ký hiệu.';
+    }
+  }
+  return { r, l, sug };
+};
+const PW_LV = ['chưa có', 'Yếu', 'Tạm được', 'Khá', 'Mạnh'];
+Dict.demo('password-strength-meter', d => {
+  const inp = $('#pw-in', d), eye = $('.eye', d), meter = $('.meter', d), lvl = $('#pw-lvl', d), sug = $('.sug', d), res = $('.res', d), form = $('form', d);
+  const ids = ['lan', 'pham', 'phạm'];
+  let last = -1;
+  const upd = () => {
+    const { r, l, sug: s } = pwScore(inp.value, ids);
+    meter.dataset.l = l; sug.textContent = s; lvl.dataset.l = l;
+    if (l !== last) { lvl.textContent = 'Độ mạnh: ' + PW_LV[l]; last = l; } // chỉ đổi chữ khi đổi nấc → trình đọc màn hình không bị dội
+    $$('.rules li', d).forEach(li => {
+      const ok = r[li.dataset.r], has = !!inp.value;
+      li.classList.toggle('on', has && ok);
+      li.classList.toggle('no', has && !ok && (li.dataset.r === 'common' || li.dataset.r === 'name'));
+    });
+    res.textContent = ''; res.className = 'res';
+  };
+  inp.addEventListener('input', upd);
+  eye.addEventListener('click', () => {
+    const on = eye.getAttribute('aria-pressed') !== 'true';
+    eye.setAttribute('aria-pressed', on); inp.type = on ? 'text' : 'password';
+    eye.textContent = on ? 'Ẩn' : 'Hiện'; eye.setAttribute('aria-label', on ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+  });
+  $('.try', d).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    inp.value = b.textContent; upd(); inp.focus();
+  });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const { l } = pwScore(inp.value, ids);
+    if (l >= 3) { res.className = 'res okm'; res.textContent = '✓ Đã lưu mật khẩu mới.'; }
+    else { res.className = 'res bad'; res.textContent = inp.value ? 'Mật khẩu còn yếu, cần đạt ít nhất mức “Khá”.' : 'Nhập mật khẩu mới.'; inp.focus(); }
+  });
+  upd();
+});
+
+/* ---------- 6. Input mask ---------- */
+const MASKS = {
+  tel: { max: 10, tpl: '0000 000 000', fmt: s => [s.slice(0, 4), s.slice(4, 7), s.slice(7, 10)].filter(Boolean).join(' '),
+    clean: (v, digits) => (/^\s*(\+|00)?84/.test(v) && digits.length >= 11) ? '0' + digits.replace(/^(00)?84/, '') : digits,
+    check: s => !s ? '' : s.length < 10 ? `Thiếu ${10 - s.length} số.` : !/^0[35789]/.test(s) ? 'Số di động Việt Nam bắt đầu bằng 03, 05, 07, 08 hoặc 09.' : '' },
+  cc: { max: 16, tpl: '0000 0000 0000 0000', fmt: s => s.replace(/(\d{4})(?=\d)/g, '$1 '),
+    check: s => !s ? '' : s.length < 16 ? `Thiếu ${16 - s.length} số.` : !luhn(s) ? 'Số thẻ sai, kiểm lại từng nhóm 4 số.' : '' },
+  exp: { max: 4, tpl: 'MM/YY', fmt: s => s.length > 2 ? s.slice(0, 2) + '/' + s.slice(2) : s,
+    clean: (v, digits) => /^[2-9]/.test(digits) ? '0' + digits : digits,
+    check: s => {
+      if (!s) return ''; if (s.length < 4) return 'Gõ đủ tháng và năm, ví dụ 08/29.';
+      const m = +s.slice(0, 2), y = 2000 + +s.slice(2), n = new Date();
+      if (m < 1 || m > 12) return 'Tháng chỉ từ 01 đến 12.';
+      if (y < n.getFullYear() || (y === n.getFullYear() && m < n.getMonth() + 1)) return 'Thẻ đã hết hạn.';
+      return '';
+    } }
+};
+function luhn(s) { let sum = 0; [...s].reverse().forEach((c, i) => { let n = +c; if (i % 2) { n *= 2; if (n > 9) n -= 9; } sum += n; }); return sum % 10 === 0; }
+Dict.demo('input-mask', d => {
+  for (const inp of $$('[data-mask]', d)) {
+    const M = MASKS[inp.dataset.mask], ghost = inp.nextElementSibling, out = $(`[data-k="${inp.dataset.mask}"]`, d), err = $(`#${inp.getAttribute('aria-describedby')}`, d);
+    let shown = false;
+    const digits = () => inp.value.replace(/\D/g, '');
+    const paint = () => {
+      const v = inp.value;
+      ghost.innerHTML = `<i>${v}</i>${M.tpl.slice(v.length)}`;
+      const s = digits(), bad = M.check(s);
+      out.textContent = s; out.classList.toggle('v', s.length === M.max && !bad);
+      if (shown || (s.length === M.max)) { err.textContent = bad; inp.setAttribute('aria-invalid', bad ? 'true' : 'false'); if (bad) shown = true; }
+    };
+    /* đặt lại giá trị và giữ con trỏ sau đúng chữ số thứ n */
+    const apply = (raw, nBefore) => {
+      inp.value = M.fmt(raw.slice(0, M.max));
+      let pos = 0, seen = 0;
+      while (pos < inp.value.length && seen < nBefore) { if (/\d/.test(inp.value[pos])) seen++; pos++; }
+      if (M.tpl[pos] && !/[0-9MY]/.test(M.tpl[pos]) && inp.value.length > pos) pos++;
+      inp.setSelectionRange(pos, pos); paint();
+    };
+    inp.addEventListener('beforeinput', e => {
+      /* Backspace / Delete ngay cạnh dấu cách hoặc “/”: xoá luôn chữ số bên kia */
+      const a = inp.selectionStart, b = inp.selectionEnd, v = inp.value;
+      if (a !== b) return;
+      if (e.inputType === 'deleteContentBackward' && a > 0 && /\D/.test(v[a - 1])) {
+        e.preventDefault(); const n = v.slice(0, a).replace(/\D/g, '').length; const s = digits();
+        apply(s.slice(0, n - 1) + s.slice(n), n - 1);
+      } else if (e.inputType === 'deleteContentForward' && a < v.length && /\D/.test(v[a])) {
+        e.preventDefault(); const n = v.slice(0, a).replace(/\D/g, '').length; const s = digits();
+        apply(s.slice(0, n) + s.slice(n + 1), n);
+      }
+    });
+    inp.addEventListener('input', () => {
+      const v = inp.value, caret = inp.selectionStart;
+      let s = v.replace(/\D/g, ''), n = v.slice(0, caret).replace(/\D/g, '').length;
+      if (M.clean) { const c = M.clean(v, s); if (c !== s) { n = c.length - (s.length - n); n = Math.max(0, Math.min(n, c.length)); s = c; } }
+      apply(s, Math.min(n, M.max));
+    });
+    inp.addEventListener('blur', () => { if (digits()) { shown = true; paint(); } });
+    paint();
+  }
+});
+})();
+</script>
+</body>
+</html>

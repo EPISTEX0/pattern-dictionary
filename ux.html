@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thành phần UX — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset cũ của trang, giờ chỉ áp trong demo (specificity 0 như trước) */
+:where(.demo *){margin:0;padding:0}
+:where(.demo button){font:inherit;color:inherit}
+.mini{position:absolute;inset:0;overflow:hidden}
+.scroller{overflow-y:auto;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.hint{position:absolute;left:12px;bottom:12px;z-index:30;font:500 11px/1 var(--mono);background:var(--ink);color:#fff;padding:7px 10px;border-radius:999px;pointer-events:none;transition:opacity .4s}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ===== 1. Floating / shrinking nav ===== */
+#floating-shrinking-nav .mini{background:#f3f1ec}
+#floating-shrinking-nav .scroller{position:absolute;inset:0;padding-top:64px}
+#floating-shrinking-nav .hdr{position:absolute;z-index:5;top:0;left:0;right:0;height:64px;display:flex;align-items:center;gap:26px;padding:0 32px;background:#f3f1ec;border-bottom:1px solid #e2dfd8;border-radius:0;font-size:13px;color:#555;
+  transition:top .5s cubic-bezier(.3,1.3,.5,1),left .5s cubic-bezier(.3,1.3,.5,1),right .5s cubic-bezier(.3,1.3,.5,1),height .4s,border-radius .5s,background .4s,box-shadow .4s,padding .4s,border-color .4s}
+#floating-shrinking-nav .hdr .logo{font-weight:800;font-size:17px;color:#111;margin-right:auto;letter-spacing:-.02em;transition:font-size .4s}
+#floating-shrinking-nav .hdr .cta{background:#111;color:#fff;border-radius:999px;padding:8px 14px;font-weight:600;font-size:12px}
+#floating-shrinking-nav .hdr.shrunk{top:14px;left:calc(50% - 280px);right:calc(50% - 280px);height:48px;border-radius:999px;padding:0 8px 0 22px;background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:rgba(0,0,0,.06);box-shadow:0 10px 30px rgba(0,0,0,.12)}
+#floating-shrinking-nav .hdr.shrunk .logo{font-size:15px}
+#floating-shrinking-nav .hero{padding:44px 32px 30px;max-width:720px}
+#floating-shrinking-nav .hero h3{font-size:44px;line-height:1.15;font-weight:800;letter-spacing:-.03em;color:#111}
+#floating-shrinking-nav .hero p{color:#666;margin-top:10px;font-size:14px;max-width:460px}
+#floating-shrinking-nav .sec{margin:0 32px 18px;height:200px;border-radius:18px;display:flex;align-items:end;padding:22px;font-weight:800;font-size:20px;color:#fff;letter-spacing:-.01em}
+#floating-shrinking-nav .state{position:absolute;right:118px;bottom:16px;z-index:30;font:500 11px/1 var(--mono);background:#fff;border:1px solid var(--line);padding:6px 9px;border-radius:999px;color:var(--mute)}
+
+/* ===== 2. Sticky CTA ===== */
+#sticky-cta .mini{background:#fff;color:#151515}
+#sticky-cta .scroller{position:absolute;inset:0}
+#sticky-cta .top{height:50px;display:flex;align-items:center;padding:0 28px;border-bottom:1px solid #eee;font-size:12.5px;gap:22px;color:#666;position:sticky;top:0;background:#fff;z-index:2}
+#sticky-cta .top b{font-size:16px;color:#111;margin-right:auto;letter-spacing:-.02em}
+#sticky-cta .cart{position:relative;font-size:16px}
+#sticky-cta .cart i{position:absolute;top:-6px;right:-10px;min-width:16px;height:16px;border-radius:8px;background:var(--acc);color:#fff;font:600 10px/16px var(--sans);text-align:center;font-style:normal;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+#sticky-cta .cart i.on{transform:scale(1)}
+#sticky-cta .prod{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;padding:26px 28px}
+#sticky-cta .ph{height:250px;border-radius:16px;background:radial-gradient(circle at 50% 45%,#ffe2c9 0 28%,transparent 29%),linear-gradient(135deg,#ffb27a,#ff5a1f);position:relative}
+#sticky-cta .ph::after{content:"";position:absolute;left:50%;top:44%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;border:14px solid #1d1d1d;border-bottom-color:transparent;border-left-color:#1d1d1d}
+#sticky-cta .info h3{font-size:26px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+#sticky-cta .price{font-size:22px;font-weight:800;margin:8px 0 4px}
+#sticky-cta .price s{font-size:14px;color:#999;font-weight:400;margin-left:6px}
+#sticky-cta .info p{font-size:13px;color:#666;line-height:1.6}
+#sticky-cta .sw{display:flex;gap:8px;margin:14px 0}
+#sticky-cta .sw i{width:24px;height:24px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px #fff,0 0 0 3px #ddd}
+#sticky-cta .sw i:first-child{box-shadow:0 0 0 2px #fff,0 0 0 3px #111}
+#sticky-cta .add{display:block;width:100%;height:46px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:600;font-size:14px;cursor:pointer}
+#sticky-cta .add.done{background:#1f8a4c}
+#sticky-cta .long{padding:8px 28px 90px;font-size:13px;color:#555;line-height:1.7;max-width:640px}
+#sticky-cta .long h4{font-size:16px;color:#111;margin:18px 0 6px}
+#sticky-cta .bar{position:absolute;left:0;right:0;bottom:0;z-index:10;display:flex;align-items:center;gap:14px;padding:12px 28px;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid #eee;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-size:13px}
+#sticky-cta .bar.show{transform:none}
+#sticky-cta .bar .thumb{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#ffb27a,#ff5a1f)}
+#sticky-cta .bar b{display:block;font-size:13.5px}
+#sticky-cta .bar span{color:#777;font-size:12px}
+#sticky-cta .bar .add{width:auto;padding:0 22px;height:40px;margin-left:auto}
+
+/* ===== 3. Social proof ===== */
+#social-proof .mini{background:#0e0e10;color:#f2f2f2;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:36px 40px}
+#social-proof .mini>div:first-child{align-self:center}
+#social-proof .rate{display:flex;align-items:center;gap:14px}
+#social-proof .rate .n{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+#social-proof .stars{color:#ffc53d;font-size:18px;letter-spacing:2px}
+#social-proof .rate small{display:block;color:#9a9aa3;font-size:12px}
+#social-proof .avs{display:flex;align-items:center;margin-top:22px}
+#social-proof .avs i{width:38px;height:38px;border-radius:50%;border:3px solid #0e0e10;margin-left:-10px;background:var(--c);display:grid;place-items:center;font:600 12px/1 var(--sans);font-style:normal;color:#111}
+#social-proof .avs i:first-child{margin-left:0}
+#social-proof .avs p{margin-left:14px;font-size:13px;color:#9a9aa3;line-height:1.4}
+#social-proof .avs p b{color:#fff;font-size:18px;font-weight:800;display:block}
+#social-proof .logos-l{font:500 10.5px/1 var(--mono);color:#6d6d75;letter-spacing:.1em;text-transform:uppercase;margin-top:34px}
+#social-proof .logos{display:flex;gap:26px;align-items:center;margin-top:14px;color:#8d8d96;filter:grayscale(1)}
+#social-proof .logos span{font-size:18px;white-space:nowrap}
+#social-proof .tcard{background:#18181c;border:1px solid #26262c;border-radius:18px;padding:26px;position:relative;height:100%;display:flex;flex-direction:column}
+#social-proof .tq{font-size:56px;line-height:.6;color:var(--acc);font-family:Georgia,serif;height:30px}
+#social-proof .slides{position:relative;flex:1}
+#social-proof .slide{position:absolute;inset:0;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
+#social-proof .slide.on{opacity:1;transform:none;pointer-events:auto}
+#social-proof .slide blockquote{font-size:17px;line-height:1.55;font-weight:600;letter-spacing:-.005em}
+#social-proof .who{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:12.5px;color:#9a9aa3}
+#social-proof .who i{width:34px;height:34px;border-radius:50%;background:var(--c)}
+#social-proof .who b{color:#fff;display:block;font-size:13px}
+#social-proof .dots{display:flex;gap:6px}
+#social-proof .dots button{width:22px;height:5px;border-radius:3px;border:0;background:#3a3a42;cursor:pointer;padding:0}
+#social-proof .dots button[aria-current="true"]{background:#fff;width:34px}
+#social-proof .dots button{transition:width .3s,background .3s}
+
+/* ===== 4. Pricing table ===== */
+#pricing-table .mini{background:#f4f2ee;color:#151515;display:flex;flex-direction:column;align-items:center;padding-top:20px}
+#pricing-table .tg{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+#pricing-table .sw{width:46px;height:26px;border-radius:999px;background:#151515;border:0;position:relative;cursor:pointer}
+#pricing-table .sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+#pricing-table .sw[aria-checked="true"]::after{transform:translateX(20px)}
+#pricing-table .tg .lbl{color:#999;transition:color .2s;cursor:pointer}
+#pricing-table .tg .lbl.on{color:#151515}
+#pricing-table .save{font:500 10.5px/1 var(--mono);background:#d9f5e3;color:#18794e;padding:5px 7px;border-radius:999px}
+#pricing-table .plans{display:grid;grid-template-columns:repeat(3,236px);gap:16px;margin-top:20px;align-items:center}
+#pricing-table .pl{background:#fff;border:1px solid #e6e3dd;border-radius:16px;padding:20px;font-size:12.5px;color:#555;height:266px;display:flex;flex-direction:column}
+#pricing-table .pl h4{font-size:14px;color:#151515;font-weight:800}
+#pricing-table .pl .amt{font-size:34px;font-weight:800;color:#151515;letter-spacing:-.03em;margin-top:6px;line-height:1.15;font-variant-numeric:tabular-nums}
+#pricing-table .pl .amt small{font-size:12px;color:#888;font-weight:400;letter-spacing:0}
+#pricing-table .pl .bill{font-size:11px;color:#999;min-height:16px}
+#pricing-table .pl ul{list-style:none;margin:12px 0;display:grid;gap:6px}
+#pricing-table .pl li::before{content:"✓";color:#18794e;font-weight:800;margin-right:8px}
+#pricing-table .pl .go{margin-top:auto;height:38px;border-radius:10px;border:1px solid #d6d2ca;background:#fff;font-weight:600;font-size:13px;cursor:pointer}
+#pricing-table .pl.rec{background:#151515;color:#c9c9c9;border-color:#151515;height:296px;box-shadow:0 24px 50px -12px rgba(0,0,0,.35);position:relative}
+#pricing-table .pl.rec h4,#pricing-table .pl.rec .amt{color:#fff}
+#pricing-table .pl.rec .go{background:var(--acc);border-color:var(--acc);color:#fff}
+#pricing-table .pl.rec li::before{color:#7ee0a5}
+#pricing-table .badge{position:absolute;top:-11px;left:20px;background:var(--acc);color:#fff;font:600 11px/1 var(--sans);padding:6px 10px;border-radius:999px}
+
+/* ===== 5. Feature tabs ===== */
+#feature-tabs .mini{background:#fff;color:#151515;display:grid;grid-template-columns:300px 1fr;gap:28px;padding:30px 36px}
+#feature-tabs [role=tablist]{display:flex;flex-direction:column;gap:6px;position:relative}
+#feature-tabs [role=tab]{text-align:left;border:0;background:transparent;padding:14px 16px 14px 20px;border-radius:12px;cursor:pointer;position:relative;transition:background .25s}
+#feature-tabs [role=tab] b{display:block;font-size:15px;font-weight:800;color:#999;transition:color .25s}
+#feature-tabs [role=tab] span{display:block;font-size:12.5px;color:#999;line-height:1.5;max-height:0;overflow:hidden;opacity:0;transition:max-height .4s,opacity .3s,margin .3s}
+#feature-tabs [role=tab][aria-selected="true"]{background:#f6f5f2}
+#feature-tabs [role=tab][aria-selected="true"] b{color:#151515}
+#feature-tabs [role=tab][aria-selected="true"] span{max-height:60px;opacity:1;margin-top:4px;color:#666}
+#feature-tabs .ind{position:absolute;z-index:1;left:0;width:3px;border-radius:2px;background:var(--acc);transition:top .4s cubic-bezier(.3,1.2,.5,1),height .4s}
+#feature-tabs .stage{position:relative;border-radius:16px;background:#f6f5f2;overflow:hidden}
+#feature-tabs [role=tabpanel]{position:absolute;inset:18px;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.07);padding:18px;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .4s,transform .5s cubic-bezier(.2,.8,.2,1);font-size:12px;color:#555}
+#feature-tabs [role=tabpanel].on{opacity:1;transform:none}
+#feature-tabs [role=tabpanel] h5{font-size:13px;color:#151515;margin-bottom:12px}
+#feature-tabs .cal{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+#feature-tabs .cal i{height:44px;border-radius:8px;background:#f2f1ee}
+#feature-tabs .cal i.ev{background:var(--c);color:#fff;font:600 10px/1.3 var(--sans);font-style:normal;padding:6px}
+#feature-tabs .mail{display:grid;gap:8px}
+#feature-tabs .mail div{display:flex;align-items:center;gap:10px;padding:9px;border-radius:9px;background:#f8f7f4}
+#feature-tabs .mail div i{width:26px;height:26px;border-radius:50%;background:var(--c);flex:none}
+#feature-tabs .mail div b{color:#151515;font-size:12px}
+#feature-tabs .mail div span{margin-left:auto;font:500 10px/1 var(--mono);color:#999}
+#feature-tabs .chart{display:flex;align-items:end;gap:10px;height:170px;padding-top:10px;border-bottom:1px solid #eee}
+#feature-tabs .chart i{flex:1;background:linear-gradient(#7aa7ff,#3f6fe8);border-radius:6px 6px 0 0;height:var(--h);transform-origin:bottom;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+#feature-tabs [role=tabpanel]:not(.on) .chart i{transform:scaleY(.1)}
+
+/* ===== 6. Command palette ===== */
+#command-palette .demo{outline:none}
+#command-palette .demo:focus-visible,#command-palette .demo:focus{box-shadow:0 0 0 3px rgba(255,90,31,.35)}
+#command-palette .app{position:absolute;inset:0;display:grid;grid-template-columns:200px 1fr;background:#fbfbfa;color:#1b1b1b;transition:background .4s,color .4s}
+#command-palette .app.dark{background:#16171a;color:#e8e8e8}
+#command-palette .side{border-right:1px solid rgba(128,128,128,.18);padding:18px 14px;font-size:12.5px;display:flex;flex-direction:column;gap:4px}
+#command-palette .side b{font-size:14px;margin-bottom:10px}
+#command-palette .side span{padding:6px 8px;border-radius:6px;opacity:.7}
+#command-palette .side span.cur{background:rgba(128,128,128,.14);opacity:1}
+#command-palette .doc{padding:28px 36px}
+#command-palette .doc h3{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+#command-palette .doc .ln{height:9px;border-radius:5px;background:rgba(128,128,128,.18);margin-top:12px}
+#command-palette .kbd-hint{margin-top:26px;display:flex;align-items:center;gap:10px;font-size:13px;color:#888;flex-wrap:wrap}
+#command-palette kbd{font:500 12px/1 var(--mono);border:1px solid rgba(128,128,128,.35);border-bottom-width:2px;border-radius:6px;padding:4px 7px;background:rgba(255,255,255,.6);color:inherit}
+#command-palette .app.dark kbd{background:rgba(255,255,255,.08)}
+#command-palette .open-btn{font:600 12.5px/1 var(--sans);border:1px solid rgba(128,128,128,.35);background:transparent;padding:8px 12px;border-radius:8px;cursor:pointer;color:inherit}
+#command-palette .scrim{position:absolute;inset:0;z-index:20;background:rgba(10,10,12,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s}
+#command-palette .pal{position:absolute;z-index:21;left:50%;top:34px;width:520px;transform:translate(-50%,-8px) scale(.97);opacity:0;pointer-events:none;transition:opacity .18s,transform .22s cubic-bezier(.2,.9,.3,1.2);background:#fff;color:#1b1b1b;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);overflow:hidden}
+#command-palette .open .scrim{opacity:1;pointer-events:auto}
+#command-palette .open .pal{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#command-palette .pal input{width:100%;border:0;border-bottom:1px solid #eee;padding:16px 18px 16px 44px;font:400 15px/1.2 var(--sans);outline:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 18px 50% no-repeat}
+#command-palette .list{max-height:228px;overflow-y:auto;padding:6px;scrollbar-width:thin}
+#command-palette .grp{font:500 10.5px/1 var(--mono);color:#999;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px 6px}
+#command-palette .it{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13.5px;cursor:pointer}
+#command-palette .it .ic{width:22px;height:22px;border-radius:6px;background:#f1f0ed;display:grid;place-items:center;font-size:12px}
+#command-palette .it kbd{margin-left:auto;font-size:10.5px;color:#888;background:#fff}
+#command-palette .it.act{background:#fff1ea;color:#c2410c}
+#command-palette .it.act .ic{background:var(--acc);color:#fff}
+#command-palette .it mark{background:none;color:var(--acc);font-weight:800}
+#command-palette .none{padding:24px;text-align:center;color:#999;font-size:13px}
+#command-palette .foot{display:flex;gap:14px;padding:9px 14px;border-top:1px solid #eee;font-size:11px;color:#999;background:#fafafa}
+#command-palette .foot kbd{font-size:10px;padding:2px 5px}
+#command-palette .toast{position:absolute;z-index:25;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#1b1b1b;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;transition:opacity .25s,transform .35s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
+#command-palette .toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ===== 7. Empty state ===== */
+#empty-state .mini{background:#f4f3f0;display:grid;place-items:center}
+#empty-state .panel{width:560px;height:320px;background:#fff;border-radius:16px;border:1px solid #e8e6e1;display:flex;flex-direction:column;overflow:hidden}
+#empty-state .ph{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid #eee}
+#empty-state .ph b{font-size:15px;margin-right:auto}
+#empty-state .ph .cnt{font:500 11px/1 var(--mono);color:#999;margin-right:12px}
+#empty-state .sbtn{font:600 12px/1 var(--sans);padding:8px 12px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
+#empty-state .body{flex:1;position:relative;overflow-y:auto}
+#empty-state .empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 40px;transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.2,1)}
+#empty-state .empty.gone{opacity:0;transform:scale(.96);pointer-events:none}
+#empty-state .ill{width:88px;height:70px;position:relative;margin-bottom:14px}
+#empty-state .ill::before{content:"";position:absolute;left:14px;top:4px;width:60px;height:66px;border-radius:10px;background:#fff6f1;border:2px solid #ffc7ae;transform:rotate(-6deg)}
+#empty-state .ill::after{content:"";position:absolute;left:24px;top:22px;width:34px;height:4px;border-radius:2px;background:#ffc7ae;box-shadow:0 11px 0 #ffc7ae,0 22px 0 #ffe0d2;transform:rotate(-6deg)}
+#empty-state .ill i{position:absolute;right:2px;top:0;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font:800 18px/1 var(--sans);font-style:normal;box-shadow:0 6px 14px rgba(255,90,31,.4);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+#empty-state .empty h4{font-size:17px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+#empty-state .empty p{font-size:13px;color:#777;margin:6px 0 16px;max-width:320px;line-height:1.5}
+#empty-state .acts{display:flex;gap:8px}
+#empty-state .pbtn{font:600 13px/1 var(--sans);padding:11px 16px;border-radius:10px;border:0;background:var(--acc);color:#fff;cursor:pointer}
+#empty-state ul{list-style:none;padding:8px}
+#empty-state li{display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13.5px;animation:liIn .35s cubic-bezier(.2,.8,.2,1)}
+#empty-state li:hover{background:#f7f6f3}
+#empty-state li input{accent-color:var(--acc);width:16px;height:16px}
+#empty-state li.done span{text-decoration:line-through;color:#aaa}
+#empty-state li .del{margin-left:auto;border:0;background:none;color:#bbb;cursor:pointer;font-size:16px;padding:0 4px}
+#empty-state li .del:hover{color:#d33}
+@keyframes liIn{from{opacity:0;transform:translateY(-6px)}}
+
+/* ===== 8. Skeleton loading ===== */
+#skeleton-loading .mini{background:#f4f3f0;padding:26px 36px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-content:start}
+#skeleton-loading .post{background:#fff;border-radius:14px;border:1px solid #eae8e3;padding:16px;height:300px;display:flex;flex-direction:column;gap:10px;position:relative}
+#skeleton-loading .row{display:flex;align-items:center;gap:10px}
+#skeleton-loading .av{width:36px;height:36px;border-radius:50%;flex:none}
+#skeleton-loading .img{height:130px;border-radius:10px}
+#skeleton-loading .name{font-size:13px;font-weight:600}
+#skeleton-loading .time{font-size:11px;color:#999}
+#skeleton-loading .txt{font-size:12.5px;color:#555;line-height:1.5}
+#skeleton-loading .meta{margin-top:auto;font-size:11.5px;color:#888;display:flex;gap:14px}
+#skeleton-loading .sk{background:#e7e5e0;border-radius:6px;position:relative;overflow:hidden}
+#skeleton-loading .sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:shim 1.3s infinite}
+@keyframes shim{to{transform:translateX(100%)}}
+#skeleton-loading .ln{height:10px}
+#skeleton-loading .sk.av{border-radius:50%}
+#skeleton-loading .layer{position:absolute;inset:16px;display:flex;flex-direction:column;gap:10px;transition:opacity .45s}
+#skeleton-loading .real{opacity:0}
+#skeleton-loading .loaded .real{opacity:1}
+#skeleton-loading .loaded .skel{opacity:0}
+#skeleton-loading .loaded .post:nth-child(2) .real{transition-delay:.08s}
+#skeleton-loading .loaded .post:nth-child(3) .real{transition-delay:.16s}
+#skeleton-loading .status{position:absolute;left:12px;bottom:12px;z-index:30;font:500 11px/1 var(--mono);background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--mute)}
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+  <header class="head">
+    <h1>Thành phần UX</h1>
+    <p>Những mảnh giao diện người dùng chạm vào: thanh điều hướng, nút mua, bảng giá, ô tìm lệnh. Mọi demo dưới đây đều bấm, gõ, cuộn được thật.</p>
+  </header>
+
+  <!-- 1 -->
+  <article class="pattern" id="floating-shrinking-nav">
+    <h2>Floating / shrinking nav</h2>
+    <p class="vi"><b>Thanh điều hướng co lại thành viên thuốc.</b> Ở đầu trang, header trải hết chiều ngang. Khi bắt đầu cuộn, nó tách khỏi mép, thu nhỏ, bo tròn và nổi lên trên nội dung với nền mờ kính. Cuộn bên trong khung để thấy.</p>
+    <div class="demo">
+      <div class="mini">
+        <header class="hdr"><span class="logo">Nhịp</span><span>Sản phẩm</span><span>Bảng giá</span><span>Blog</span><span class="cta">Dùng thử</span></header>
+        <div class="scroller">
+          <div class="hero"><h3>Lịch làm việc tự sắp xếp theo nhịp của bạn</h3><p>Nhịp đọc lịch, việc và thói quen của bạn rồi xếp thời gian tập trung vào lúc bạn làm tốt nhất.</p></div>
+          <div class="sec" style="background:linear-gradient(135deg,#ff8a5c,#ff5a1f)">Tập trung sâu</div>
+          <div class="sec" style="background:linear-gradient(135deg,#6c8cff,#3a55d8)">Họp ít hơn</div>
+          <div class="sec" style="background:linear-gradient(135deg,#2f9e5b,#1d6b3c)">Nghỉ đúng lúc</div>
+        </div>
+      </div>
+      <span class="state">trạng thái: full-width</span>
+      <span class="hint">↓ Cuộn trong khung</span>
+      <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>landing page dài, người dùng cần điều hướng ở mọi điểm cuộn nhưng nội dung (ảnh, hero) cần được thở. Pill nổi chiếm ít chỗ hơn header full-width.</p>
+      <p class="avoid"><b>Tránh khi</b>app nhiều menu, cần thanh công cụ đầy đủ; pill quá hẹp sẽ phải giấu bớt mục quan trọng.</p>
+    </div>
+    <div class="kw"><button>floating pill nav</button><button>shrinking header on scroll</button><button>detached navbar with backdrop blur</button><button>full-width → pill transition</button><button>spring easing</button></div>
+  </article>
+
+  <!-- 2 -->
+  <article class="pattern" id="sticky-cta">
+    <h2>Sticky CTA</h2>
+    <p class="vi"><b>Nút hành động bám theo.</b> Khi nút "Thêm vào giỏ" chính trôi khỏi màn hình, một thanh nhỏ trượt lên ở đáy mang theo tên, giá và cùng nút đó. Cuộn khung xuống để nó hiện, cuộn lên để nó ẩn. Bấm thử nút.</p>
+    <div class="demo">
+      <div class="mini">
+        <div class="scroller">
+          <div class="top"><b>Âm.</b><span>Tai nghe</span><span>Loa</span><span class="cart">🛒<i>0</i></span></div>
+          <div class="prod">
+            <div class="ph"></div>
+            <div class="info">
+              <h3>Tai nghe Âm Studio 2</h3>
+              <div class="price">2.490.000đ<s>2.990.000đ</s></div>
+              <p>Chống ồn chủ động, pin 40 giờ, đệm tai mút nhớ. Bảo hành 24 tháng.</p>
+              <div class="sw"><i style="--c:#ff6a2b"></i><i style="--c:#1d1d1d"></i><i style="--c:#d9d4c8"></i></div>
+              <button class="add main-add">Thêm vào giỏ</button>
+            </div>
+          </div>
+          <div class="long">
+            <h4>Âm thanh</h4><p>Màng loa 40mm, đáp ứng tần số 5Hz–40kHz. Chế độ EQ chỉnh trên app với 10 dải.</p>
+            <h4>Chống ồn</h4><p>Sáu micro lọc tiếng ồn ở văn phòng, máy bay, nơi công cộng. Chế độ xuyên âm để nghe người khác nói mà không cần tháo tai.</p>
+            <h4>Pin</h4><p>40 giờ khi tắt chống ồn, 30 giờ khi bật. Sạc 10 phút dùng 5 giờ.</p>
+            <h4>Trong hộp</h4><p>Tai nghe, hộp đựng vải, cáp USB-C, cáp 3,5mm, sách hướng dẫn.</p>
+          </div>
+        </div>
+        <div class="bar" aria-hidden="true"><span class="thumb"></span><div><b>Âm Studio 2</b><span>2.490.000đ · Cam</span></div><button class="add bar-add" tabindex="-1">Thêm vào giỏ</button></div>
+      </div>
+      <span class="hint">↓ Cuộn trong khung</span>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>trang sản phẩm hoặc trang đăng ký dài, nơi người dùng đọc nhiều rồi mới quyết định; nút mua phải luôn trong tầm tay khi họ sẵn sàng.</p>
+      <p class="avoid"><b>Tránh khi</b>trang ngắn vừa một màn hình, hoặc đã có quá nhiều thứ dính ở đáy (chat bubble, banner cookie) chồng lên nhau.</p>
+    </div>
+    <div class="kw"><button>sticky CTA bar</button><button>appears when primary CTA scrolls out of view</button><button>IntersectionObserver</button><button>bottom sticky add-to-cart</button><button>slide-up with blur backdrop</button></div>
+  </article>
+
+  <!-- 3 -->
+  <article class="pattern" id="social-proof">
+    <h2>Social proof</h2>
+    <p class="vi"><b>Bằng chứng từ người khác.</b> Điểm đánh giá, số người dùng, hàng avatar, logo khách hàng và lời chứng thực: những tín hiệu nói "người giống bạn đã tin cái này". Bấm vạch dưới thẻ để đổi lời chứng thực.</p>
+    <div class="demo">
+      <div class="mini">
+        <div>
+          <div class="rate"><span class="n">4,9</span><div><div class="stars">★★★★★</div><small>trung bình từ 2.381 đánh giá</small></div></div>
+          <div class="avs"><i style="--c:#ffb27a">L</i><i style="--c:#9fb6ff">M</i><i style="--c:#8fe0b0">T</i><i style="--c:#ffd86b">H</i><i style="--c:#f2a7c3">+</i><p><b><span class="count" data-to="12000">0</span>+ nhóm</b>đang dùng mỗi ngày</p></div>
+          <div class="logos-l">Được tin dùng bởi</div>
+          <div class="logos"><span style="font-weight:800;letter-spacing:-.04em">mây.</span><span style="font-family:Georgia,serif;font-style:italic">Gạo Studio</span><span style="font:600 15px var(--mono)">LÚA</span><span style="font-weight:800">Bến</span><span style="font-family:Georgia,serif">Sóng</span></div>
+        </div>
+        <div class="tcard">
+          <div class="tq">"</div>
+          <div class="slides">
+            <div class="slide on"><blockquote>Từ khi chuyển sang đây, đội mình bớt được hai buổi họp mỗi tuần. Mọi thứ nằm ở một chỗ, ai cũng biết việc của mình.</blockquote><div class="who"><i style="--c:#ffb27a"></i><div><b>Lan Phạm</b>Trưởng nhóm sản phẩm, Fintech</div></div></div>
+            <div class="slide"><blockquote>Mình đã thử bốn công cụ trong một năm. Đây là cái đầu tiên cả đội kế toán chịu dùng mà không cần ép.</blockquote><div class="who"><i style="--c:#9fb6ff"></i><div><b>Minh Trần</b>COO, chuỗi bán lẻ 12 cửa hàng</div></div></div>
+            <div class="slide"><blockquote>Thiết lập mất mười phút. Đến cuối tuần đầu tiên, khách hàng đã khen báo cáo của mình gửi đi đẹp hơn.</blockquote><div class="who"><i style="--c:#8fe0b0"></i><div><b>Thảo Nguyễn</b>Freelancer thiết kế</div></div></div>
+          </div>
+          <div class="dots" role="tablist" aria-label="Lời chứng thực"><button aria-current="true" aria-label="Lời 1"></button><button aria-current="false" aria-label="Lời 2"></button><button aria-current="false" aria-label="Lời 3"></button></div>
+        </div>
+      </div>
+      <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>ngay dưới hero hoặc cạnh nút đăng ký/mua, đúng lúc người dùng đang do dự. Số cụ thể ("2.381 đánh giá") đáng tin hơn số tròn.</p>
+      <p class="avoid"><b>Tránh khi</b>số liệu còn nhỏ hoặc logo không thật: social proof giả bị phát hiện thì mất niềm tin nhanh hơn không có.</p>
+    </div>
+    <div class="kw"><button>social proof section</button><button>star rating + review count</button><button>avatar stack</button><button>grayscale logo cloud</button><button>testimonial carousel</button><button>animated counter</button></div>
+  </article>
+
+  <!-- 4 -->
+  <article class="pattern" id="pricing-table">
+    <h2>Pricing table</h2>
+    <p class="vi"><b>Bảng giá.</b> Các gói đặt cạnh nhau để so sánh, gói muốn bán nhiều nhất được làm nổi (to hơn, tối màu, có nhãn "Khuyên dùng"). Công tắc tháng/năm cho thấy khoản tiết kiệm. Bấm công tắc.</p>
+    <div class="demo">
+      <div class="mini">
+        <div class="tg"><span class="lbl on" data-p="m">Theo tháng</span><button class="sw" role="switch" aria-checked="false" aria-label="Thanh toán theo năm"></button><span class="lbl" data-p="y">Theo năm</span><span class="save">tiết kiệm 20%</span></div>
+        <div class="plans">
+          <div class="pl"><h4>Cơ bản</h4><div class="amt"><span class="v" data-m="0" data-y="0">0</span>k<small> /tháng</small></div><div class="bill">miễn phí mãi mãi</div><ul><li>3 dự án</li><li>1 thành viên</li><li>Lưu 7 ngày</li></ul><button class="go">Bắt đầu</button></div>
+          <div class="pl rec"><span class="badge">★ Khuyên dùng</span><h4>Pro</h4><div class="amt"><span class="v" data-m="199" data-y="159">199</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Không giới hạn dự án</li><li>10 thành viên</li><li>Lưu lịch sử 1 năm</li><li>Hỗ trợ ưu tiên</li></ul><button class="go">Dùng thử 14 ngày</button></div>
+          <div class="pl"><h4>Doanh nghiệp</h4><div class="amt"><span class="v" data-m="499" data-y="399">499</span>k<small> /tháng</small></div><div class="bill"></div><ul><li>Mọi thứ trong Pro</li><li>SSO, phân quyền</li><li>Hợp đồng riêng</li></ul><button class="go">Liên hệ</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>sản phẩm có 2–4 gói rõ ràng và bạn muốn dẫn người dùng tới một gói cụ thể (thường là gói giữa, theo hiệu ứng "chim mồi").</p>
+      <p class="avoid"><b>Tránh khi</b>giá phụ thuộc nhiều tuỳ chọn (dùng máy tính giá), hoặc chỉ có một gói: bảng ba cột trống trải trông như ép.</p>
+    </div>
+    <div class="kw"><button>3-tier pricing table</button><button>highlighted recommended plan</button><button>"Most popular" badge</button><button>monthly / annual billing toggle</button><button>animated price change</button><button>decoy pricing</button></div>
+  </article>
+
+  <!-- 5 -->
+  <article class="pattern" id="feature-tabs">
+    <h2>Feature tabs</h2>
+    <p class="vi"><b>Tab tính năng.</b> Thay vì xếp ba tính năng thành ba khối dài, gom chúng vào một khung: bên trái là danh sách, bên phải là ảnh minh hoạ đổi theo mục đang chọn. Bấm từng tab, hoặc dùng phím ↑ ↓ khi tab đang focus.</p>
+    <div class="demo">
+      <div class="mini">
+        <div role="tablist" aria-orientation="vertical" aria-label="Tính năng">
+          <span class="ind"></span>
+          <button role="tab" id="ft-t1" aria-selected="true" aria-controls="ft-p1" tabindex="0"><b>Lịch thông minh</b><span>Tự tìm khung giờ trống chung cho cả nhóm, không cần nhắn qua lại.</span></button>
+          <button role="tab" id="ft-t2" aria-selected="false" aria-controls="ft-p2" tabindex="-1"><b>Hộp thư chung</b><span>Mọi email khách hàng về một chỗ, giao cho đúng người xử lý.</span></button>
+          <button role="tab" id="ft-t3" aria-selected="false" aria-controls="ft-p3" tabindex="-1"><b>Báo cáo tuần</b><span>Biểu đồ tự cập nhật, gửi email sáng thứ Hai cho cả nhóm.</span></button>
+        </div>
+        <div class="stage">
+          <div role="tabpanel" id="ft-p1" aria-labelledby="ft-t1" class="on"><h5>Tuần 41 · Nhóm Sản phẩm</h5><div class="cal"><i></i><i class="ev" style="--c:#ff7a45">Họp sprint<br>9:00</i><i></i><i></i><i class="ev" style="--c:#6c8cff">Demo<br>14:00</i><i class="ev" style="--c:#2f9e5b">1:1<br>10:30</i><i></i><i></i><i class="ev" style="--c:#ff7a45">Tập trung<br>8–11</i><i></i><i></i><i></i><i class="ev" style="--c:#c06cff">Phỏng vấn<br>15:00</i><i></i><i></i></div></div>
+          <div role="tabpanel" id="ft-p2" aria-labelledby="ft-t2"><h5>Hộp thư chung · 4 chưa xử lý</h5><div class="mail"><div><i style="--c:#ffb27a"></i><b>Cửa hàng Mây</b>Đơn #2048 chưa giao<span>2 phút</span></div><div><i style="--c:#9fb6ff"></i><b>Anh Quân</b>Xin hoá đơn VAT<span>18 phút</span></div><div><i style="--c:#8fe0b0"></i><b>Chị Hà</b>Đổi size áo<span>1 giờ</span></div><div><i style="--c:#ffd86b"></i><b>Studio Gạo</b>Hợp tác tháng 11<span>3 giờ</span></div></div></div>
+          <div role="tabpanel" id="ft-p3" aria-labelledby="ft-t3"><h5>Doanh thu 8 tuần gần nhất</h5><div class="chart"><i style="--h:40%"></i><i style="--h:55%"></i><i style="--h:48%"></i><i style="--h:62%"></i><i style="--h:70%"></i><i style="--h:66%"></i><i style="--h:84%"></i><i style="--h:96%"></i></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>có 3–5 tính năng cùng cấp, mỗi cái cần một ảnh minh hoạ; muốn giữ trang ngắn mà người dùng vẫn tự khám phá được.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung trong tab là thứ ai cũng phải đọc: thứ ẩn sau tab thường bị bỏ qua.</p>
+    </div>
+    <div class="kw"><button>feature tabs</button><button>vertical tab list with preview panel</button><button>sliding active indicator</button><button>crossfade panels</button><button>accessible tabs (role=tablist, arrow keys)</button></div>
+  </article>
+
+  <!-- 6 -->
+  <article class="pattern" id="command-palette">
+    <h2>Command palette</h2>
+    <p class="vi"><b>Bảng lệnh.</b> Một ô tìm kiếm nổi giữa màn hình, mở bằng phím tắt, gõ vài chữ là lọc ra lệnh hoặc trang cần tới. Bấm vào khung rồi nhấn <b>⌘K / Ctrl+K</b> (hoặc bấm nút), gõ "doi" hoặc "moi", dùng ↑ ↓ và Enter. Thử lệnh "Đổi giao diện tối".</p>
+    <div class="demo" tabindex="0" aria-label="Demo command palette, nhấn Ctrl+K để mở">
+      <div class="app">
+        <div class="side"><b>Sổ tay</b><span class="cur">Trang chủ</span><span>Dự án</span><span>Ghi chú họp</span><span>Cài đặt</span></div>
+        <div class="doc"><h3>Kế hoạch quý 4</h3><div class="ln" style="width:90%"></div><div class="ln" style="width:76%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:52%"></div>
+          <div class="kbd-hint"><span>Mở bảng lệnh:</span><kbd>⌘</kbd><kbd>K</kbd><span>hoặc</span><kbd>Ctrl</kbd><kbd>K</kbd><button class="open-btn" type="button">Mở bảng lệnh</button></div></div>
+      </div>
+      <div class="scrim"></div>
+      <div class="pal" role="dialog" aria-label="Bảng lệnh">
+        <input type="text" placeholder="Gõ lệnh hoặc tìm trang…" aria-label="Tìm lệnh" role="combobox" aria-expanded="true" aria-controls="cp-list" autocomplete="off">
+        <div class="list" id="cp-list" role="listbox"></div>
+        <div class="foot"><span><kbd>↑</kbd> <kbd>↓</kbd> chọn</span><span><kbd>Enter</kbd> chạy</span><span><kbd>Esc</kbd> đóng</span></div>
+      </div>
+      <div class="toast"></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>app có nhiều trang và hành động (công cụ làm việc, dashboard, trình soạn thảo) và người dùng quay lại hằng ngày; người dùng thạo phím sẽ đi nhanh hơn nhiều so với menu.</p>
+      <p class="avoid"><b>Tránh khi</b>trang marketing hoặc người dùng mới hoàn toàn: không ai biết để nhấn ⌘K, nên nó không thay được menu nhìn thấy được.</p>
+    </div>
+    <div class="kw"><button>command palette</button><button>⌘K / Ctrl+K shortcut</button><button>fuzzy search, diacritic-insensitive</button><button>grouped results with keyboard navigation</button><button>cmdk-style modal</button></div>
+  </article>
+
+  <!-- 7 -->
+  <article class="pattern" id="empty-state">
+    <h2>Empty state</h2>
+    <p class="vi"><b>Trạng thái trống.</b> Khi chưa có dữ liệu, thay vì một màn hình trắng, ta cho minh hoạ nhỏ, một câu giải thích và một nút làm bước đầu tiên. Bấm "Tạo việc đầu tiên" hoặc "Dùng mẫu", rồi xoá hết để quay lại trạng thái trống.</p>
+    <div class="demo">
+      <div class="mini">
+        <div class="panel">
+          <div class="ph"><b>Việc cần làm</b><span class="cnt">0 việc</span><button class="sbtn add-one">+ Thêm</button></div>
+          <div class="body">
+            <ul class="tasks"></ul>
+            <div class="empty">
+              <div class="ill"><i>+</i></div>
+              <h4>Chưa có việc nào</h4>
+              <p>Ghi lại việc đầu tiên để bắt đầu. Hoặc dùng mẫu "Tuần làm việc" có sẵn 3 việc.</p>
+              <div class="acts"><button class="pbtn add-one">Tạo việc đầu tiên</button><button class="sbtn add-tpl">Dùng mẫu</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-tools"><button class="clear-all">Xoá hết</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>lần đầu dùng app, kết quả tìm kiếm rỗng, giỏ hàng trống, hộp thư đã dọn sạch. Đây là chỗ dạy người dùng bước tiếp theo.</p>
+      <p class="avoid"><b>Tránh khi</b>trống chỉ vì đang tải: lúc đó dùng Skeleton, nếu không người dùng tưởng dữ liệu đã mất.</p>
+    </div>
+    <div class="kw"><button>empty state</button><button>friendly illustration + one-line explanation</button><button>primary action to create first item</button><button>starter template option</button><button>zero-data onboarding</button></div>
+  </article>
+
+  <!-- 8 -->
+  <article class="pattern" id="skeleton-loading">
+    <h2>Skeleton loading</h2>
+    <p class="vi"><b>Khung xương khi tải.</b> Trong lúc chờ dữ liệu, vẽ trước hình dạng xám của nội dung sắp tới với một vệt sáng lướt qua (shimmer). Người dùng thấy bố cục ngay, cảm giác chờ ngắn hơn spinner. Bấm "Tải lại".</p>
+    <div class="demo">
+      <div class="mini">
+        <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:55%"></span><span class="sk ln" style="width:30%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:95%"></span><span class="sk ln" style="width:80%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#ffb27a"></span><div><div class="name">Linh Đặng</div><div class="time">12 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#ffd6a5,#ff7a45)"></span><div class="txt">Hoàng hôn ở Hội An hôm nay đẹp lạ. Ai đi phố cổ cuối tuần không?</div><div class="meta"><span>♥ 128</span><span>💬 14</span></div></div></div>
+        <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:50%"></span><span class="sk ln" style="width:28%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:90%"></span><span class="sk ln" style="width:70%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#9fb6ff"></span><div><div class="name">Quang Võ</div><div class="time">40 phút trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#c9d6ff,#4c6ef5)"></span><div class="txt">Xong bản thiết kế app đặt lịch spa. Góp ý giúp mình phần màu nhé.</div><div class="meta"><span>♥ 64</span><span>💬 9</span></div></div></div>
+        <div class="post"><div class="layer skel"><div class="row"><span class="av sk"></span><div style="flex:1;display:grid;gap:6px"><span class="sk ln" style="width:60%"></span><span class="sk ln" style="width:32%;height:8px"></span></div></div><span class="sk img"></span><span class="sk ln" style="width:92%"></span><span class="sk ln" style="width:64%"></span><span class="sk ln" style="width:40%;margin-top:auto"></span></div>
+          <div class="layer real"><div class="row"><span class="av" style="background:#8fe0b0"></span><div><div class="name">Mai Hồ</div><div class="time">2 giờ trước</div></div></div><span class="img" style="background:linear-gradient(135deg,#d3f9d8,#2f9e5b)"></span><div class="txt">Công thức bánh chuối nướng không đường, mềm và thơm hơn mình nghĩ.</div><div class="meta"><span>♥ 302</span><span>💬 41</span></div></div></div>
+      </div>
+      <span class="status">đang tải…</span>
+      <div class="demo-tools"><button class="reload">↻ Tải lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>tải danh sách, feed, thẻ sản phẩm, bảng: những nội dung có hình dạng biết trước và thời gian chờ từ 0,3 đến vài giây.</p>
+      <p class="avoid"><b>Tránh khi</b>thao tác chạy nền lâu hoặc không biết trước hình dạng kết quả: dùng thanh tiến trình có thông báo rõ ràng.</p>
+    </div>
+    <div class="kw"><button>skeleton loading</button><button>shimmer placeholder</button><button>content-shaped placeholders</button><button>crossfade skeleton → content</button><button>perceived performance</button></div>
+  </article>
+</main>
+
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+  const reduce = Dict.RM;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const onView = (el, fn) => Dict.onView(el, fn, .4);
+
+  // 1. Floating / shrinking nav
+  {
+    const root = $('#floating-shrinking-nav'), sc = $('.scroller', root), hdr = $('.hdr', root), st = $('.state', root), hint = $('.hint', root);
+    const upd = () => {
+      const on = sc.scrollTop > 24;
+      hdr.classList.toggle('shrunk', on);
+      st.textContent = 'trạng thái: ' + (on ? 'floating pill' : 'full-width');
+      hint.style.opacity = sc.scrollTop > 10 ? 0 : 1;
+    };
+    sc.addEventListener('scroll', upd, { passive: true });
+    Dict.replay(root.id, () => {
+      sc.scrollTo({ top: 0, behavior: 'instant' });
+      setTimeout(() => sc.scrollTo({ top: 260, behavior: reduce ? 'instant' : 'smooth' }), 500);
+    });
+  }
+
+  // 2. Sticky CTA
+  {
+    const root = $('#sticky-cta'), sc = $('.scroller', root), bar = $('.bar', root), main = $('.main-add', root), badge = $('.cart i', root), hint = $('.hint', root);
+    let n = 0;
+    new IntersectionObserver(([e]) => {
+      bar.classList.toggle('show', !e.isIntersecting);
+      bar.setAttribute('aria-hidden', e.isIntersecting);
+      $('.bar-add', root).tabIndex = e.isIntersecting ? -1 : 0;
+    }, { root: sc, threshold: 0 }).observe(main);
+    sc.addEventListener('scroll', () => { hint.style.opacity = sc.scrollTop > 10 ? 0 : 1; }, { passive: true });
+    $$('.add', root).forEach(b => b.addEventListener('click', () => {
+      n++; badge.textContent = n; badge.classList.add('on');
+      $$('.add', root).forEach(x => { x.textContent = 'Đã thêm ✓ (' + n + ')'; x.classList.add('done'); });
+      clearTimeout(root._t);
+      root._t = setTimeout(() => $$('.add', root).forEach(x => { x.textContent = 'Thêm vào giỏ'; x.classList.remove('done'); }), 1400);
+    }));
+  }
+
+  // 3. Social proof
+  {
+    const root = $('#social-proof'), cnt = $('.count', root), slides = $$('.slide', root), dots = $$('.dots button', root);
+    let i = 0, timer;
+    const fmt = v => Math.round(v).toLocaleString('vi-VN');
+    const count = () => {
+      const to = +cnt.dataset.to;
+      if (reduce) { cnt.textContent = fmt(to); return; }
+      const t0 = performance.now(), d = 1400;
+      const step = t => { const p = Math.min(1, (t - t0) / d); cnt.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    };
+    const go = k => { i = (k + slides.length) % slides.length; slides.forEach((s, j) => s.classList.toggle('on', j === i)); dots.forEach((d, j) => d.setAttribute('aria-current', j === i)); };
+    const auto = () => { clearInterval(timer); if (!reduce) timer = setInterval(() => go(i + 1), 4500); };
+    dots.forEach((d, j) => d.addEventListener('click', () => { go(j); auto(); }));
+    root.querySelector('.tcard').addEventListener('mouseenter', () => clearInterval(timer));
+    root.querySelector('.tcard').addEventListener('mouseleave', auto);
+    onView($('.demo', root), () => { count(); auto(); });
+    Dict.replay(root.id, () => { cnt.textContent = '0'; go(0); count(); auto(); });
+  }
+
+  // 4. Pricing table
+  {
+    const root = $('#pricing-table'), sw = $('.sw', root), lbls = $$('.lbl', root);
+    const set = yearly => {
+      sw.setAttribute('aria-checked', yearly);
+      lbls.forEach(l => l.classList.toggle('on', (l.dataset.p === 'y') === yearly));
+      $$('.pl', root).forEach(pl => {
+        const v = $('.v', pl), bill = $('.bill', pl);
+        const from = +v.textContent, to = +v.dataset[yearly ? 'y' : 'm'];
+        if (+v.dataset.m > 0) bill.textContent = yearly ? 'trả ' + (to * 12 * 1000).toLocaleString('vi-VN') + 'đ mỗi năm' : 'trả theo tháng, huỷ lúc nào cũng được';
+        if (reduce || from === to) { v.textContent = to; return; }
+        const t0 = performance.now(), d = 450;
+        const step = t => { const p = Math.min(1, (t - t0) / d); v.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      });
+    };
+    sw.addEventListener('click', () => set(sw.getAttribute('aria-checked') !== 'true'));
+    lbls.forEach(l => l.addEventListener('click', () => set(l.dataset.p === 'y')));
+    set(false);
+  }
+
+  // 5. Feature tabs
+  {
+    const root = $('#feature-tabs'), tabs = $$('[role=tab]', root), ind = $('.ind', root);
+    const place = t => { ind.style.top = t.offsetTop + 'px'; ind.style.height = t.offsetHeight + 'px'; };
+    const sel = (t, focus) => {
+      tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).classList.toggle('on', on); });
+      if (focus) t.focus();
+      // vị trí đo sau khi mô tả tab mở ra
+      requestAnimationFrame(() => place(t)); setTimeout(() => place(t), 420);
+    };
+    tabs.forEach((t, k) => {
+      t.addEventListener('click', () => sel(t));
+      t.addEventListener('keydown', e => {
+        const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (e.key === 'Home') { e.preventDefault(); sel(tabs[0], true); }
+        else if (e.key === 'End') { e.preventDefault(); sel(tabs[tabs.length - 1], true); }
+        else if (d) { e.preventDefault(); sel(tabs[(k + d + tabs.length) % tabs.length], true); }
+      });
+    });
+    document.fonts.ready.then(() => sel(tabs[0]));
+  }
+
+  // 6. Command palette
+  {
+    const root = $('#command-palette'), demo = $('.demo', root), app = $('.app', root), input = $('input', root), list = $('.list', root), toast = $('.toast', root);
+    const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+    const cmds = [
+      { g: 'Điều hướng', t: 'Trang chủ', ic: '⌂', k: 'G H' },
+      { g: 'Điều hướng', t: 'Dự án', ic: '▤', k: 'G P' },
+      { g: 'Điều hướng', t: 'Ghi chú họp', ic: '✎' },
+      { g: 'Điều hướng', t: 'Cài đặt', ic: '⚙', k: '⌘ ,' },
+      { g: 'Hành động', t: 'Tạo tài liệu mới', ic: '+', k: '⌘ N' },
+      { g: 'Hành động', t: 'Mời thành viên', ic: '☺' },
+      { g: 'Hành động', t: 'Đổi giao diện tối', ic: '◐', k: '⌘ ⇧ L' },
+      { g: 'Hành động', t: 'Xuất PDF', ic: '⇩' },
+    ];
+    let shown = [], act = 0, lastFocus = null;
+    const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    const hl = (t, q) => {
+      if (!q) return esc(t);
+      const i = norm(t).indexOf(q);
+      return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length));
+    };
+    const render = () => {
+      const q = norm(input.value.trim());
+      shown = cmds.filter(c => norm(c.t).includes(q) || norm(c.g).includes(q));
+      act = Math.min(act, Math.max(0, shown.length - 1));
+      if (!shown.length) { list.innerHTML = '<div class="none">Không có lệnh nào khớp "' + esc(input.value) + '"</div>'; return; }
+      let html = '', g = '';
+      shown.forEach((c, i) => {
+        if (c.g !== g) { g = c.g; html += '<div class="grp">' + g + '</div>'; }
+        html += '<div class="it' + (i === act ? ' act' : '') + '" role="option" id="cp-o' + i + '" aria-selected="' + (i === act) + '" data-i="' + i + '"><span class="ic">' + c.ic + '</span><span>' + hl(c.t, q) + '</span>' + (c.k ? '<kbd>' + c.k + '</kbd>' : '') + '</div>';
+      });
+      list.innerHTML = html;
+      input.setAttribute('aria-activedescendant', 'cp-o' + act);
+      const a = $('.it.act', list); if (a) a.scrollIntoView({ block: 'nearest' });
+    };
+    const open = () => { lastFocus = document.activeElement; demo.classList.add('open'); input.value = ''; act = 0; render(); setTimeout(() => input.focus(), 30); };
+    const close = () => { demo.classList.remove('open'); demo.focus(); };
+    const run = i => {
+      const c = shown[i]; if (!c) return;
+      close();
+      if (c.t === 'Đổi giao diện tối') { app.classList.toggle('dark'); c.t = 'Đổi giao diện sáng'; c.ic = '◑'; }
+      else if (c.t === 'Đổi giao diện sáng') { app.classList.toggle('dark'); c.t = 'Đổi giao diện tối'; c.ic = '◐'; }
+      if (c.g === 'Điều hướng') $$('.side span', root).forEach(s => s.classList.toggle('cur', s.textContent === c.t));
+      toast.textContent = 'Đã chạy: ' + (c.g === 'Điều hướng' ? 'Mở ' + c.t : c.t === 'Đổi giao diện sáng' ? 'Giao diện tối' : c.t === 'Đổi giao diện tối' ? 'Giao diện sáng' : c.t);
+      toast.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('on'), 1600);
+    };
+    demo.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); demo.classList.contains('open') ? close() : open(); return; }
+      if (!demo.classList.contains('open')) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); if (shown.length) { act = (act + 1) % shown.length; render(); } }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); if (shown.length) { act = (act - 1 + shown.length) % shown.length; render(); } }
+      else if (e.key === 'Enter') { e.preventDefault(); run(act); }
+    });
+    input.addEventListener('input', () => { act = 0; render(); });
+    list.addEventListener('mousemove', e => { const it = e.target.closest('.it'); if (it && +it.dataset.i !== act) { act = +it.dataset.i; render(); } });
+    list.addEventListener('click', e => { const it = e.target.closest('.it'); if (it) run(+it.dataset.i); });
+    $('.scrim', root).addEventListener('click', close);
+    $('.open-btn', root).addEventListener('click', open);
+  }
+
+  // 7. Empty state
+  {
+    const root = $('#empty-state'), ul = $('.tasks', root), empty = $('.empty', root), cnt = $('.cnt', root);
+    const ideas = ['Gửi báo giá cho Studio Gạo', 'Chuẩn bị slide họp thứ Hai', 'Gọi lại cho chị Hà', 'Duyệt thiết kế trang chủ', 'Đặt phòng họp tầng 3'];
+    let k = 0;
+    const sync = () => { const n = ul.children.length; empty.classList.toggle('gone', n > 0); cnt.textContent = n + ' việc'; };
+    const add = t => {
+      const li = document.createElement('li');
+      li.innerHTML = '<input type="checkbox" aria-label="Xong"><span></span><button class="del" aria-label="Xoá">×</button>';
+      li.querySelector('span').textContent = t;
+      li.querySelector('input').addEventListener('change', e => li.classList.toggle('done', e.target.checked));
+      li.querySelector('.del').addEventListener('click', () => { li.remove(); sync(); });
+      ul.appendChild(li); sync();
+    };
+    $$('.add-one', root).forEach(b => b.addEventListener('click', () => add(ideas[k++ % ideas.length])));
+    $('.add-tpl', root).addEventListener('click', () => ['Lên kế hoạch tuần', 'Trả lời email tồn', 'Tổng kết thứ Sáu'].forEach(add));
+    $('.clear-all', root).addEventListener('click', () => { ul.innerHTML = ''; sync(); });
+  }
+
+  // 8. Skeleton loading
+  {
+    const root = $('#skeleton-loading'), mini = $('.mini', root), st = $('.status', root);
+    const load = () => {
+      mini.classList.remove('loaded'); st.textContent = 'đang tải…';
+      clearTimeout(root._t);
+      root._t = setTimeout(() => { mini.classList.add('loaded'); st.textContent = 'đã tải xong'; }, 1800);
+    };
+    $('.reload', root).addEventListener('click', load);
+    onView($('.demo', root), load);
+  }
+})();
+</script>
+</body>
+</html>

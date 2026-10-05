@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bố cục — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset cũ của trang, giờ chỉ áp trong demo (specificity 0 như trước) */
+:where(.demo *){margin:0;padding:0}
+:where(.demo button){font:inherit;color:inherit}
+
+/* ===== Hạ tầng demo bố cục: trang mini + overlay lưới 12 cột ===== */
+.demo{--pad:40px;--gap:16px}
+.mini{position:absolute;inset:0;overflow:hidden}
+.g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);padding:0 var(--pad)}
+.ov{position:absolute;inset:0;z-index:20;pointer-events:none;padding:0 var(--pad);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);opacity:0;transition:opacity .3s}
+.ov i{background:rgba(255,90,31,.12);border-left:1px solid rgba(255,90,31,.45);border-right:1px solid rgba(255,90,31,.45);position:relative}
+.ov i::before{content:attr(data-n);position:absolute;top:6px;left:50%;transform:translateX(-50%);font:500 10px/1 var(--mono);color:var(--acc)}
+.demo.show-grid .ov{opacity:1}
+.ov-tag{position:absolute;z-index:21;font:500 11px/1 var(--mono);background:var(--acc);color:#fff;padding:4px 7px;border-radius:4px;opacity:0;transition:opacity .3s;pointer-events:none}
+.demo.show-grid .ov-tag{opacity:1}
+.mnav{height:46px;display:flex;align-items:center;gap:22px;font-size:12px}
+.mnav .logo{font-weight:800;font-size:15px;margin-right:auto;letter-spacing:-.02em}
+.mbtn{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:999px;font-size:12.5px;font-weight:600;border:0;cursor:default}
+/* vào khung: các khối xuất hiện so le */
+.demo [data-a]{opacity:0;transform:translateY(16px)}
+.demo.play [data-a]{animation:inUp .7s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0) * 90ms)}
+@keyframes inUp{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .demo [data-a]{opacity:1;transform:none}
+  .demo.play [data-a]{animation:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ===== 1. Hero centered ===== */
+#hero-centered .mini{background:#fbf7f1;color:#2a1f17}
+#hero-centered .mnav{color:#6f6156}
+#hero-centered .mnav .logo{color:#2a1f17}
+#hero-centered .body{grid-column:3/11;text-align:center;padding-top:20px;display:flex;flex-direction:column;align-items:center}
+#hero-centered .pill{font-size:11px;font-weight:600;background:#fff;border:1px solid #eadfd2;border-radius:999px;padding:5px 12px;color:#8a5a2b}
+#hero-centered h3{font-size:38px;line-height:1.15;font-weight:800;letter-spacing:-.03em;margin:14px 0 10px}
+#hero-centered .sub{font-size:13.5px;color:#7a6c60;max-width:520px;line-height:1.55}
+#hero-centered .ctas{display:flex;gap:10px;margin-top:18px}
+#hero-centered .b1{background:#2a1f17;color:#fbf7f1}
+#hero-centered .b2{background:transparent;color:#2a1f17;border:1px solid #d8cabb}
+#hero-centered .shot{grid-column:2/12;margin-top:22px;height:140px;border-radius:14px 14px 0 0;background:linear-gradient(135deg,#f3c58f,#e07b3c 55%,#9c3d1c);position:relative;overflow:hidden}
+#hero-centered .shot::before{content:"";position:absolute;left:50%;top:30px;width:56px;height:120px;transform:translateX(-50%);border-radius:10px 10px 4px 4px;background:#fff6ea;box-shadow:0 0 60px 20px rgba(255,220,160,.6)}
+#hero-centered .shot::after{content:"";position:absolute;left:50%;top:14px;width:8px;height:16px;transform:translateX(-50%);border-radius:50% 50% 40% 40%;background:#ffd36b;box-shadow:0 0 18px 6px #ffb347}
+#hero-centered .axis{position:absolute;left:50%;top:0;bottom:0;width:0;border-left:2px dashed #161616;z-index:21;opacity:0;transition:opacity .3s}
+#hero-centered .show-grid .axis{opacity:1}
+
+/* ===== 2. Split hero ===== */
+#split-hero .mini{background:#0f1720;color:#e9eef3}
+#split-hero .mnav{color:#8b9aab}
+#split-hero .mnav .logo{color:#fff}
+#split-hero .row{height:calc(100% - 46px);align-items:center}
+#split-hero .txt{grid-column:1/7;padding-right:24px}
+#split-hero .tag{font:500 11px/1 var(--mono);color:#7ee0b5;letter-spacing:.08em;text-transform:uppercase}
+#split-hero h3{font-size:36px;line-height:1.15;font-weight:800;letter-spacing:-.03em;margin:12px 0 12px}
+#split-hero h3 em{font-style:normal;color:#7ee0b5}
+#split-hero .sub{font-size:13.5px;color:#9fb0c2;line-height:1.55;max-width:400px}
+#split-hero .ctas{display:flex;gap:10px;margin-top:20px;align-items:center}
+#split-hero .b1{background:#7ee0b5;color:#0f1720}
+#split-hero .lnk{font-size:12.5px;color:#cfd9e3;font-weight:600}
+#split-hero .stats{display:flex;gap:28px;margin-top:26px;font-size:11px;color:#8b9aab}
+#split-hero .stats b{display:block;font-size:20px;color:#fff;font-weight:800}
+#split-hero .vis{grid-column:7/13;height:290px;border-radius:18px;background:radial-gradient(circle at 70% 25%,#2e6b5a,transparent 55%),radial-gradient(circle at 20% 90%,#3a3f8f,transparent 50%),#16222e;position:relative;overflow:hidden}
+#split-hero .card{position:absolute;width:230px;height:142px;border-radius:14px;padding:16px;color:#0f1720;font-size:11px;font-weight:600;display:flex;flex-direction:column;justify-content:space-between}
+#split-hero .c1{left:50%;top:50%;transform:translate(-62%,-62%) rotate(-8deg);background:linear-gradient(135deg,#7ee0b5,#c9f7e2)}
+#split-hero .c2{left:50%;top:50%;transform:translate(-30%,-28%) rotate(6deg);background:linear-gradient(135deg,#f4f1ea,#d9d4ff);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+#split-hero .card .chipc{width:30px;height:22px;border-radius:5px;background:rgba(15,23,32,.25)}
+#split-hero .card .num{font:500 13px/1 var(--mono);letter-spacing:.12em}
+#split-hero .ov-tag.t1{left:40px;top:50px}
+#split-hero .ov-tag.t2{right:40px;top:50px}
+
+/* ===== 3. Bento grid ===== */
+#bento-grid .mini{background:#f2f1ee;color:#1b1b1b}
+#bento-grid .top{display:flex;align-items:end;justify-content:space-between;padding:16px var(--pad) 12px}
+#bento-grid .top h3{font-size:21px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+#bento-grid .top p{font-size:12px;color:#777;max-width:280px;text-align:right}
+#bento-grid .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:12px;padding:0 var(--pad);height:262px;position:relative}
+#bento-grid .t{border-radius:16px;background:#fff;padding:16px;position:relative;overflow:hidden;font-size:12px;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+#bento-grid .t:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+#bento-grid .t h4{font-size:15px;line-height:1.25;font-weight:800;letter-spacing:-.01em}
+#bento-grid .t p{color:#777;margin-top:4px;line-height:1.45}
+#bento-grid .rank{position:absolute;top:12px;right:12px;font:500 10.5px/1 var(--mono);padding:4px 7px;border-radius:999px;background:#f2f1ee;color:#555}
+#bento-grid .big{grid-column:span 2;grid-row:span 2;background:#1b1b1b;color:#fff;padding:22px}
+#bento-grid .big h4{font-size:22px}
+#bento-grid .big p{color:#aaa;max-width:300px}
+#bento-grid .big .rank{background:var(--acc);color:#fff}
+#bento-grid .bars{position:absolute;left:22px;right:22px;bottom:22px;height:110px;display:flex;align-items:end;gap:8px}
+#bento-grid .bars i{flex:1;border-radius:6px 6px 2px 2px;background:linear-gradient(#ff8a5c,#ff5a1f);height:var(--h);transform-origin:bottom}
+#bento-grid .play .bars i{animation:grow 1s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.3s + var(--j)*60ms)}
+@keyframes grow{from{transform:scaleY(0)}}
+#bento-grid .wide{grid-column:span 2;background:#dfe9ff}
+#bento-grid .wide .avs{display:flex;margin-top:14px}
+#bento-grid .wide .avs i{width:30px;height:30px;border-radius:50%;border:2px solid #dfe9ff;margin-left:-8px;background:var(--c)}
+#bento-grid .wide .avs i:first-child{margin-left:0}
+#bento-grid .s1{background:#fff3c4}
+#bento-grid .s1 .big-n{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-top:6px}
+#bento-grid .s2{background:#e6f4ea}
+#bento-grid .s2 .toggle{width:44px;height:24px;border-radius:999px;background:#2f9e5b;position:relative;margin-top:12px}
+#bento-grid .s2 .toggle::after{content:"";position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff}
+#bento-grid .ov-b{position:absolute;inset:0;padding:0 var(--pad);display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:12px;z-index:20;pointer-events:none;opacity:0;transition:opacity .3s}
+#bento-grid .ov-b i{border:1.5px dashed var(--acc);border-radius:16px;background:rgba(255,90,31,.06)}
+#bento-grid .show-grid .ov-b{opacity:1}
+#bento-grid .show-grid .ov{opacity:0}
+
+/* ===== 4. Asymmetric grid ===== */
+#asymmetric-grid .mini{background:#efece4;color:#1d1a16}
+#asymmetric-grid .mnav{color:#6b645a}
+#asymmetric-grid .mnav .logo{font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:18px}
+#asymmetric-grid .a{position:relative;height:calc(100% - 46px);grid-template-rows:repeat(6,1fr)}
+#asymmetric-grid .kicker{grid-column:1/4;grid-row:1;font:500 11px/1.4 var(--mono);color:#a14a2a;align-self:end;letter-spacing:.06em}
+#asymmetric-grid h3{grid-column:1/11;grid-row:2/5;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:70px;line-height:1.15;letter-spacing:-.02em;align-self:start;position:relative;z-index:2}
+#asymmetric-grid h3 i{color:#7a2a10}
+#asymmetric-grid .img{grid-column:7/13;grid-row:1/6;border-radius:2px;background:linear-gradient(170deg,#e4d8c3,#cdb89a 55%,#6d5a45);position:relative;overflow:hidden;margin-top:8px}
+#asymmetric-grid .img::before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:#d98a4e;right:40px;top:44px;opacity:.9}
+#asymmetric-grid .img::after{content:"";position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(transparent,#3a2e24)}
+#asymmetric-grid .lede{grid-column:3/7;grid-row:5/7;font-size:13px;line-height:1.6;color:#4b443b;align-self:start;margin-top:10px}
+#asymmetric-grid .lede b{font-weight:600;color:#1d1a16}
+#asymmetric-grid .cap{grid-column:7/10;grid-row:6;font-size:10.5px;color:#7a7266;align-self:center;font-style:italic}
+#asymmetric-grid .num{grid-column:1/3;grid-row:5;font-family:Georgia,serif;font-size:40px;color:#a14a2a;line-height:1.15;margin-top:4px}
+
+/* ===== 5. Full-bleed ===== */
+#full-bleed .mini{background:#fff;color:#1a1a1a;overflow-y:auto;scrollbar-width:none}
+#full-bleed .mini::-webkit-scrollbar{display:none}
+#full-bleed .mnav{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);z-index:3}
+#full-bleed .col{grid-column:4/10}
+#full-bleed .col h3{font-size:30px;line-height:1.2;font-weight:800;letter-spacing:-.02em;margin-top:22px}
+#full-bleed .col p{font-size:13px;line-height:1.7;color:#555;margin-top:10px}
+#full-bleed .bleed{margin:26px 0;height:220px;position:relative;overflow:hidden;background:linear-gradient(180deg,#9ed0f0 0%,#cfe7f5 45%,#f4d7b5 70%,#e7a57a 100%)}
+#full-bleed .bleed .sun{position:absolute;left:58%;top:70px;width:90px;height:90px;border-radius:50%;background:#fff3d6;box-shadow:0 0 60px 20px rgba(255,236,190,.8)}
+#full-bleed .bleed .hill{position:absolute;bottom:-60px;border-radius:50%}
+#full-bleed .bleed .h1{left:-10%;width:70%;height:170px;background:#3d6b5c}
+#full-bleed .bleed .h2{right:-15%;width:75%;height:150px;background:#2a5246}
+#full-bleed .bleed .h3{left:25%;width:60%;height:110px;bottom:-50px;background:#1f3d35}
+#full-bleed .bleed figcaption{position:absolute;left:var(--pad);bottom:14px;color:#fff;font:500 11px/1 var(--mono);letter-spacing:.06em}
+#full-bleed .quote{grid-column:3/11;font-size:22px;line-height:1.4;font-weight:600;letter-spacing:-.01em;border-left:3px solid var(--acc);padding-left:18px;margin:4px 0 20px}
+#full-bleed .bleed2{margin:10px 0 0;height:120px;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;letter-spacing:-.02em}
+#full-bleed .hint{position:absolute;left:12px;bottom:12px;z-index:30;font:500 11px/1 var(--mono);background:var(--ink);color:#fff;padding:7px 10px;border-radius:999px;pointer-events:none;transition:opacity .4s}
+#full-bleed .ov-tag.tb{right:var(--pad);top:56px}
+
+/* ===== 6. Card grid ===== */
+#card-grid .mini{background:#fafafa;color:#191919;overflow-y:auto;scrollbar-width:none}
+#card-grid .mini::-webkit-scrollbar{display:none}
+#card-grid .head{display:flex;align-items:center;gap:8px;padding:6px var(--pad) 14px}
+#card-grid .head h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-right:auto;line-height:1.2}
+#card-grid .f{font-size:11.5px;padding:6px 12px;border-radius:999px;border:1px solid #e3e3e3;background:#fff;color:#555;cursor:pointer}
+#card-grid .f[aria-pressed="true"]{background:#191919;color:#fff;border-color:#191919}
+#card-grid .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:0 var(--pad) 24px}
+#card-grid .c{background:#fff;border:1px solid #ececec;border-radius:12px;overflow:hidden;transition:transform .3s,box-shadow .3s,opacity .3s}
+#card-grid .c:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07)}
+#card-grid .c .th{aspect-ratio:16/8;background:var(--g)}
+#card-grid .c .bd{padding:10px 12px 12px}
+#card-grid .c .cat{font:500 10px/1 var(--mono);color:#888;text-transform:uppercase;letter-spacing:.08em}
+#card-grid .c h4{font-size:13px;line-height:1.35;font-weight:600;margin-top:5px}
+#card-grid .c.hide{display:none}
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+  <header class="head">
+    <h1>Bố cục</h1>
+    <p>Cách chia khung trang: thứ gì nằm ở đâu, chiếm bao nhiêu cột, to hay nhỏ. Bật <b>▦ Lưới</b> trong mỗi khung để thấy bộ xương 12 cột phía sau.</p>
+  </header>
+
+  <!-- 1 -->
+  <article class="pattern" id="hero-centered">
+    <h2>Hero centered</h2>
+    <p class="vi"><b>Màn đầu căn giữa.</b> Mọi thứ xếp dọc theo một trục giữa: nhãn nhỏ → tiêu đề lớn → một câu phụ → hai nút → ảnh sản phẩm ló lên ở đáy. Mắt chỉ có một đường để đi.</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="mnav g12" style="display:flex"><span class="logo">mộc.</span><span>Bộ sưu tập</span><span>Câu chuyện</span><span>Cửa hàng</span></div>
+        <div class="g12">
+          <div class="body">
+            <span class="pill" data-a style="--i:0">Mới · Bộ sưu tập mùa thu</span>
+            <h3 data-a style="--i:1">Ánh sáng ấm cho<br>những tối chậm lại</h3>
+            <p class="sub" data-a style="--i:2">Nến sáp đậu nành đổ tay ở Đà Lạt, cháy 60 giờ, mùi gỗ thông và trà khô.</p>
+            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Mua ngay</span><span class="mbtn b2">Xem mùi hương</span></div>
+          </div>
+          <div class="shot" data-a style="--i:4"></div>
+        </div>
+      </div>
+      <div class="axis"></div>
+      <div class="ov"></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>trang có một thông điệp và một hành động chính (landing sản phẩm, ra mắt, đăng ký sớm). Tiêu đề ngắn, đủ mạnh để đứng một mình.</p>
+      <p class="avoid"><b>Tránh khi</b>cần so sánh nhiều thứ ngang hàng ngay màn đầu, hoặc tiêu đề dài quá 2 dòng: chữ căn giữa nhiều dòng rất khó đọc.</p>
+    </div>
+    <div class="kw"><button>centered hero</button><button>single focal point</button><button>eyebrow + headline + subhead + dual CTA</button><button>symmetrical layout</button><button>product shot peeking from bottom</button><button>generous whitespace</button></div>
+  </article>
+
+  <!-- 2 -->
+  <article class="pattern" id="split-hero">
+    <h2>Split hero</h2>
+    <p class="vi"><b>Màn đầu chia đôi.</b> Trái là chữ (lý do + nút), phải là hình (sản phẩm, minh hoạ). Hai nửa cân nhau, mắt đọc chữ trước rồi nhìn sang hình để "tin".</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="mnav g12" style="display:flex"><span class="logo">Lumen</span><span>Thẻ</span><span>Tiết kiệm</span><span>Doanh nghiệp</span><span class="mbtn" style="height:28px;background:#1f2b38;color:#fff">Đăng nhập</span></div>
+        <div class="g12 row">
+          <div class="txt">
+            <div class="tag" data-a style="--i:0">Thẻ tín dụng · 0đ phí năm</div>
+            <h3 data-a style="--i:1">Chi tiêu thông minh,<br><em>hoàn tiền 5%</em> mỗi ngày</h3>
+            <p class="sub" data-a style="--i:2">Mở thẻ trong 4 phút trên điện thoại. Không giấy tờ, không phí ẩn, theo dõi từng đồng theo thời gian thực.</p>
+            <div class="ctas" data-a style="--i:3"><span class="mbtn b1">Mở thẻ miễn phí</span><span class="lnk">So sánh các thẻ →</span></div>
+            <div class="stats" data-a style="--i:4"><div><b>1,2 triệu</b>khách hàng</div><div><b>4,8★</b>App Store</div></div>
+          </div>
+          <div class="vis" data-a style="--i:2">
+            <div class="card c1"><span class="chipc"></span><span class="num">•••• 2048</span></div>
+            <div class="card c2"><span>LUMEN</span><span class="num">•••• 7781</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ov"></div>
+      <span class="ov-tag t1">cột 1–6 · chữ</span><span class="ov-tag t2">cột 7–12 · hình</span>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>sản phẩm cần được <i>nhìn thấy</i> ngay (app, thiết bị, thẻ, dashboard) và thông điệp cần vài câu giải thích. Phổ biến nhất cho SaaS và fintech.</p>
+      <p class="avoid"><b>Tránh khi</b>không có hình đủ mạnh: một nửa trang để ảnh stock sẽ làm cả màn đầu yếu đi.</p>
+    </div>
+    <div class="kw"><button>split hero</button><button>two-column hero, text left / visual right</button><button>50/50 split layout</button><button>vertically centered content</button><button>social proof stats under CTA</button></div>
+  </article>
+
+  <!-- 3 -->
+  <article class="pattern" id="bento-grid">
+    <h2>Bento grid</h2>
+    <p class="vi"><b>Lưới hộp cơm Nhật.</b> Các ô có kích thước khác nhau ghép khít vào một khung chữ nhật. Ở góc nhìn bố cục, điều quan trọng là <b>kích thước ô = độ quan trọng</b>: tính năng số 1 chiếm ô 2×2, số 2 chiếm ô ngang, phần phụ là ô nhỏ. (Bento như một <i>phong cách thị giác</i> nằm ở trang Phong cách.)</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="top"><h3 data-a style="--i:0">Mọi thứ đội nhỏ cần,<br>trong một màn hình</h3><p data-a style="--i:1">Ô càng to, tính năng càng quan trọng. Rê chuột lên từng ô.</p></div>
+        <div class="bento">
+          <div class="t big" data-a style="--i:1"><span class="rank">ưu tiên 1 · 2×2</span><h4>Báo cáo doanh thu tự động</h4><p>Gom dữ liệu từ mọi kênh bán, cập nhật mỗi 5 phút.</p>
+            <div class="bars"><i style="--h:35%;--j:0"></i><i style="--h:52%;--j:1"></i><i style="--h:44%;--j:2"></i><i style="--h:68%;--j:3"></i><i style="--h:60%;--j:4"></i><i style="--h:82%;--j:5"></i><i style="--h:95%;--j:6"></i></div></div>
+          <div class="t wide" data-a style="--i:2"><span class="rank">ưu tiên 2 · 2×1</span><h4>Làm việc cùng nhau</h4><p>Bình luận, giao việc ngay trên số liệu.</p><div class="avs"><i style="--c:#ff8a5c"></i><i style="--c:#6c8cff"></i><i style="--c:#2f9e5b"></i><i style="--c:#f2c94c"></i></div></div>
+          <div class="t s1" data-a style="--i:3"><span class="rank">3 · 1×1</span><h4>Tốc độ</h4><div class="big-n">0,4s</div></div>
+          <div class="t s2" data-a style="--i:4"><span class="rank">3 · 1×1</span><h4>Cảnh báo</h4><p>Báo khi tồn kho thấp.</p><div class="toggle"></div></div>
+          <div class="ov-b"><i style="grid-column:span 2;grid-row:span 2"></i><i style="grid-column:span 2"></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div class="ov"></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>giới thiệu 4–7 tính năng có thứ bậc rõ ràng trên một màn hình; muốn người xem quét một lần là biết cái gì chính, cái gì phụ.</p>
+      <p class="avoid"><b>Tránh khi</b>các mục ngang hàng nhau (dùng Card grid), hoặc mỗi ô không có nội dung trực quan riêng: ô to mà chỉ có chữ trông rất trống.</p>
+    </div>
+    <div class="kw"><button>bento grid layout</button><button>tile size reflects feature importance</button><button>one 2×2 hero tile, mixed 2×1 and 1×1 tiles</button><button>CSS grid with grid-row/column span</button><button>rounded tiles, 12px gap</button></div>
+  </article>
+
+  <!-- 4 -->
+  <article class="pattern" id="asymmetric-grid">
+    <h2>Asymmetric grid</h2>
+    <p class="vi"><b>Lưới lệch có chủ ý.</b> Vẫn dùng 12 cột, nhưng các khối không chia đều và không căn giữa: tiêu đề tràn sang ảnh, đoạn văn bắt đầu từ cột 3, chú thích nép ở góc. Khoảng trống được dùng như một phần thiết kế.</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="mnav g12" style="display:flex;color:#6b645a"><span class="logo">Tạp chí Gió</span><span>Số 14</span><span>Du hành</span><span>Ăn uống</span></div>
+        <div class="g12 a">
+          <div class="kicker" data-a style="--i:0">DU HÀNH — TÂY BẮC</div>
+          <h3 data-a style="--i:1">Mùa lúa chín<br>trên <i>những bậc thang</i></h3>
+          <div class="img" data-a style="--i:2"></div>
+          <div class="num" data-a style="--i:3">01</div>
+          <p class="lede" data-a style="--i:3"><b>Mù Cang Chải, tháng chín.</b> Sương tan lúc bảy giờ, cả thung lũng chuyển từ xanh sang vàng trong chưa đầy hai tuần. Chúng tôi đi bộ ba ngày theo những con đường đất đỏ.</p>
+          <div class="cap" data-a style="--i:4">Ảnh: La Pán Tẩn, 6:40 sáng</div>
+        </div>
+      </div>
+      <div class="ov"></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>trang kể chuyện, tạp chí, portfolio, thương hiệu muốn trông "có biên tập" thay vì template. Bật lưới để thấy: lệch nhưng mọi mép vẫn bám cột.</p>
+      <p class="avoid"><b>Tránh khi</b>trang nhiều dữ liệu hoặc form, nơi người dùng cần quét nhanh và dự đoán được vị trí.</p>
+    </div>
+    <div class="kw"><button>asymmetric grid</button><button>12-column grid, off-center composition</button><button>headline overlapping image</button><button>editorial layout</button><button>broken grid</button><button>intentional negative space</button></div>
+  </article>
+
+  <!-- 5 -->
+  <article class="pattern" id="full-bleed">
+    <h2>Full-bleed</h2>
+    <p class="vi"><b>Tràn mép.</b> Chữ nằm trong cột hẹp dễ đọc, nhưng thỉnh thoảng một ảnh hoặc dải màu <b>phá ra</b> chạm hai mép màn hình. Nhịp hẹp–rộng–hẹp tạo cảm giác "mở ra". Cuộn bên trong khung.</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="mnav g12" style="display:flex"><span class="logo">Trạm</span><span>Bài viết</span><span>Giới thiệu</span></div>
+        <div class="g12"><div class="col" data-a style="--i:0"><h3>Một tuần không màn hình</h3><p>Ngày đầu tiên là khó nhất. Tay vẫn tự tìm điện thoại trong túi áo mỗi khi thang máy dừng. Đến ngày thứ ba, tôi bắt đầu để ý những thứ trước giờ chỉ là phông nền.</p></div></div>
+        <figure class="bleed" data-a style="--i:1"><div class="sun"></div><div class="hill h1"></div><div class="hill h2"></div><div class="hill h3"></div><figcaption>ẢNH TRÀN MÉP · 100% CHIỀU NGANG</figcaption></figure>
+        <div class="g12"><blockquote class="quote">"Buồn chán hoá ra là cánh cửa, không phải bức tường."</blockquote><div class="col"><p>Ngày thứ năm, tôi đọc xong một cuốn sách dày bốn trăm trang. Ngày thứ bảy, tôi không còn nhớ mình đã từng lo lắng điều gì. Bài học không nằm ở việc bỏ công nghệ, mà ở việc chọn lại lúc nào mình muốn nó.</p><p>Khi cầm lại điện thoại, việc đầu tiên tôi làm là tắt hết thông báo.</p></div></div>
+        <div class="bleed2">Dải màu tràn mép kết bài</div>
+        <div style="height:30px"></div>
+      </div>
+      <span class="hint">↓ Cuộn trong khung</span>
+      <span class="ov-tag tb">cột đọc: 4–9 · ảnh: tràn mép</span>
+      <div class="ov"></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>bài viết dài, case study, trang thương hiệu có ảnh đẹp; cần những "khoảng thở" lớn giữa các đoạn chữ.</p>
+      <p class="avoid"><b>Tránh khi</b>ảnh độ phân giải thấp hoặc không có điểm nhấn: tràn mép phóng đại cả cái xấu.</p>
+    </div>
+    <div class="kw"><button>full-bleed image</button><button>edge-to-edge section</button><button>breakout layout</button><button>narrow reading column (~65ch)</button><button>CSS grid named lines: full / content</button></div>
+  </article>
+
+  <!-- 6 -->
+  <article class="pattern" id="card-grid">
+    <h2>Card grid</h2>
+    <p class="vi"><b>Lưới thẻ đều nhau.</b> Các thẻ cùng kích thước, cùng cấu trúc (ảnh → nhãn → tiêu đề), tự xuống hàng theo độ rộng. Đây là bố cục <b>"template" nhất</b> trên web; chính vì vậy nó dễ đoán và dễ dùng. Thử bấm bộ lọc.</p>
+    <div class="demo" data-grid>
+      <div class="mini">
+        <div class="mnav g12" style="display:flex"><span class="logo">Bếp Nhà</span><span>Công thức</span><span>Mẹo</span><span>Dụng cụ</span></div>
+        <div class="head" data-a style="--i:0"><h3>Công thức mới</h3>
+          <button class="f" aria-pressed="true" data-f="all">Tất cả</button><button class="f" aria-pressed="false" data-f="man">Món mặn</button><button class="f" aria-pressed="false" data-f="ngot">Đồ ngọt</button></div>
+        <div class="cards">
+          <div class="c" data-a data-k="man" style="--i:1;--g:linear-gradient(135deg,#f6b26b,#c0582c)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 30 phút</div><h4>Cá kho tộ nồi đất</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:2;--g:linear-gradient(135deg,#f9d9e6,#d46a92)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 45 phút</div><h4>Chè khúc bạch hạnh nhân</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:3;--g:linear-gradient(135deg,#d9ead3,#5b8c4a)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 20 phút</div><h4>Rau muống xào tỏi</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:4;--g:linear-gradient(135deg,#ffe599,#e69138)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 1 giờ</div><h4>Gà nướng mật ong</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:5;--g:linear-gradient(135deg,#cfe2f3,#3d85c6)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 15 phút</div><h4>Sữa chua nếp cẩm</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:6;--g:linear-gradient(135deg,#fce5cd,#b45f06)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 2 giờ</div><h4>Bánh flan caramen</h4></div></div>
+          <div class="c" data-a data-k="man" style="--i:7;--g:linear-gradient(135deg,#ead1dc,#741b47)"><div class="th"></div><div class="bd"><div class="cat">Món mặn · 40 phút</div><h4>Bò lúc lắc</h4></div></div>
+          <div class="c" data-a data-k="ngot" style="--i:8;--g:linear-gradient(135deg,#d0e0e3,#45818e)"><div class="th"></div><div class="bd"><div class="cat">Đồ ngọt · 30 phút</div><h4>Rau câu dừa</h4></div></div>
+        </div>
+      </div>
+      <div class="ov"></div>
+      <div class="demo-tools"><button data-toggle-grid aria-pressed="false">▦ Lưới</button><button class="replay">↻ Xem lại</button></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>các mục thật sự <i>ngang hàng</i> và người dùng cần duyệt, so sánh, lọc: danh mục sản phẩm, blog, công thức, kết quả tìm kiếm. Ở đây "template" là ưu điểm, không phải lỗi.</p>
+      <p class="avoid"><b>Tránh khi</b>có một thứ quan trọng hơn hẳn (dùng Bento hoặc Hero), hoặc chỉ có 3 tính năng để giới thiệu: 3 thẻ đều nhau là dấu hiệu "trang AI làm".</p>
+      <p class="tip">Mẹo prompt: nếu muốn tránh cảm giác template, đừng chỉ nói "card grid". Hãy nói rõ mục nào được ưu tiên, hoặc yêu cầu một thẻ nổi bật (featured card) chiếm 2 cột.</p>
+    </div>
+    <div class="kw"><button>responsive card grid</button><button>grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))</button><button>uniform cards, consistent aspect ratio</button><button>filter chips above grid</button><button>featured card spanning 2 columns</button></div>
+  </article>
+</main>
+
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+  const reduce = Dict.RM;
+
+  // Overlay 12 cột
+  document.querySelectorAll('.demo .ov').forEach(ov => {
+    for (let n = 1; n <= 12; n++) { const i = document.createElement('i'); i.dataset.n = n; ov.appendChild(i); }
+  });
+  document.querySelectorAll('[data-toggle-grid]').forEach(b => b.addEventListener('click', () => {
+    const d = b.closest('.demo');
+    const on = d.classList.toggle('show-grid');
+    b.setAttribute('aria-pressed', on);
+  }));
+
+  // Phát animation vào khung khi cuộn tới + nút Xem lại
+  const play = d => { d.classList.remove('play'); void d.offsetWidth; d.classList.add('play'); };
+  document.querySelectorAll('article.pattern').forEach(a => {
+    const d = a.querySelector('.demo'), m = d.querySelector('.mini');
+    Dict.onView(d, () => play(d));
+    Dict.replay(a.id, () => { if (m) m.scrollTop = 0; play(d); });
+  });
+
+  // Full-bleed: ẩn gợi ý khi đã cuộn
+  const fb = document.querySelector('#full-bleed .mini'), hint = document.querySelector('#full-bleed .hint');
+  fb.addEventListener('scroll', () => { hint.style.opacity = fb.scrollTop > 20 ? 0 : 1; }, { passive: true });
+
+  // Card grid: bộ lọc
+  const cg = document.getElementById('card-grid');
+  cg.querySelectorAll('.f').forEach(f => f.addEventListener('click', () => {
+    cg.querySelectorAll('.f').forEach(x => x.setAttribute('aria-pressed', x === f));
+    cg.querySelectorAll('.c').forEach(c => c.classList.toggle('hide', f.dataset.f !== 'all' && c.dataset.k !== f.dataset.f));
+  }));
+})();
+</script>
+</body>
+</html>

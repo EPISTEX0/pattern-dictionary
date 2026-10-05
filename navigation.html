@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Điều hướng — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset chỉ trong demo, specificity 0 */
+:where(.demo) :where(h3,h4,h5,p,ul,ol,dl,dd,figure){margin:0;padding:0}
+:where(.demo) :where(ul,ol){list-style:none}
+:where(.demo) :where(button,input,select){font:inherit;color:inherit}
+:where(.demo) :where(a){color:inherit;text-decoration:none}
+:where(.demo) svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){
+  .demo *,.demo *::before,.demo *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* khung điện thoại dùng chung cho 2 demo mobile */
+:is(#hamburger-menu,#bottom-tab-bar) .demo .phone{position:relative;flex:none;width:248px;height:352px;border-radius:36px;background:#141414;padding:8px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5)}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .scr{position:relative;height:100%;border-radius:28px;overflow:hidden;background:#fff;color:#161616;font-size:13px;line-height:1.45}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .split{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:56px;padding:0 24px}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note{width:300px;font-size:14px;line-height:1.5;color:#3d3d3d}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note h4{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:baseline}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dt{font-size:13px;color:var(--mute)}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dd{font:500 13px/1.3 var(--mono);color:#161616}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note dd mark{background:#e7ecff;color:#2a45c4;border-radius:4px;padding:1px 5px}
+:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note p{margin-top:16px;font-size:13px;color:var(--mute)}
+@media (max-width:760px){:is(#hamburger-menu,#bottom-tab-bar) .demo .side-note{display:none}}
+
+/* ===== 1. Hamburger / off-canvas ===== */
+#hamburger-menu .demo{background:#eef0f4}
+#hamburger-menu .demo .bar{height:50px;display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid #eee}
+#hamburger-menu .demo .bar b{font-size:15px;margin-right:auto}
+#hamburger-menu .demo .ham,#hamburger-menu .demo .x,#hamburger-menu .demo .ico{width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;cursor:pointer}
+#hamburger-menu .demo .ham:hover,#hamburger-menu .demo .x:hover,#hamburger-menu .demo .ico:hover{background:#f1f1f1}
+#hamburger-menu .demo .ham span,#hamburger-menu .demo .ham span::before,#hamburger-menu .demo .ham span::after{display:block;width:18px;height:2px;border-radius:2px;background:#161616;position:relative}
+#hamburger-menu .demo .ham span::before,#hamburger-menu .demo .ham span::after{content:"";position:absolute;left:0}
+#hamburger-menu .demo .ham span::before{top:-6px}
+#hamburger-menu .demo .ham span::after{top:6px}
+#hamburger-menu .demo .pg{padding:14px 14px 0}
+#hamburger-menu .demo .pg h3{font-size:19px;line-height:1.2;font-weight:800;letter-spacing:-.01em}
+#hamburger-menu .demo .pg p{color:#777;font-size:12px;margin-top:2px}
+#hamburger-menu .demo .card{margin-top:10px;border:1px solid #eee;border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center}
+#hamburger-menu .demo .card i{width:34px;height:34px;border-radius:10px;background:var(--c);flex:none}
+#hamburger-menu .demo .card b{display:block;font-size:13px}
+#hamburger-menu .demo .card span{font-size:11.5px;color:#888}
+#hamburger-menu .demo .scrim{position:absolute;inset:0;background:rgba(10,12,20,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+#hamburger-menu .demo .scr.open .scrim{opacity:1;pointer-events:auto}
+#hamburger-menu .demo dialog{position:absolute;inset:0 auto 0 0;margin:0;width:82%;height:100%;max-height:none;max-width:none;border:0;padding:0;background:#fff;color:#161616;display:flex;flex-direction:column;box-shadow:12px 0 30px rgba(0,0,0,.18);
+  transform:translateX(-102%);transition:transform .32s cubic-bezier(.2,.8,.2,1),display .32s allow-discrete}
+#hamburger-menu .demo dialog:not([open]){display:none}
+#hamburger-menu .demo dialog[open]{transform:none}
+@starting-style{#hamburger-menu .demo dialog[open]{transform:translateX(-102%)}}
+#hamburger-menu .demo .who{display:flex;align-items:center;gap:9px;padding:14px 6px 12px 12px;border-bottom:1px solid #f0f0f0}
+#hamburger-menu .demo .who .av{width:36px;height:36px;border-radius:50%;background:#ffd8c2;display:grid;place-items:center;font-weight:800;font-size:12px;color:#8a3a12;flex:none}
+#hamburger-menu .demo .who>div{min-width:0}
+#hamburger-menu .demo .who b{display:block;font-size:13px;line-height:1.25}
+#hamburger-menu .demo .who small{display:block;font-size:11px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hamburger-menu .demo .who .x{margin-left:auto;flex:none;width:32px;height:32px}
+#hamburger-menu .demo nav ul{padding:8px}
+#hamburger-menu .demo nav a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;font-weight:600;font-size:13px;color:#444}
+#hamburger-menu .demo nav a:hover{background:#f4f4f4}
+#hamburger-menu .demo nav a[aria-current=page]{background:#e7ecff;color:#2a45c4}
+#hamburger-menu .demo nav a em{margin-left:auto;font:600 10.5px/1 var(--sans);font-style:normal;background:#ff5a1f;color:#fff;border-radius:999px;padding:3px 7px}
+#hamburger-menu .demo .foot{margin-top:auto;padding:8px;border-top:1px solid #f0f0f0}
+
+/* ===== 2. Mega menu ===== */
+#mega-menu .demo{background:#fff;color:#161616}
+#mega-menu .demo .site{position:absolute;inset:0}
+#mega-menu .demo .hdr{position:relative;z-index:3;height:64px;display:flex;align-items:center;gap:18px;padding:0 28px;border-bottom:1px solid #eee;background:#fff}
+#mega-menu .demo .logo{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+#mega-menu .demo .logo::before{content:"";width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,#3b5bdb,#7c4dff)}
+#mega-menu .demo .top{display:flex;gap:2px}
+#mega-menu .demo .top>li>:is(button,a){display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:0;border-radius:9px;background:transparent;font-size:14px;font-weight:600;color:#3a3a3a;cursor:pointer}
+#mega-menu .demo .top>li>:is(button,a):hover,#mega-menu .demo .top>li>button[aria-expanded=true]{background:#f2f3f7;color:#161616}
+#mega-menu .demo .top button::after{content:"";width:6px;height:6px;border:solid currentColor;border-width:0 1.6px 1.6px 0;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+#mega-menu .demo .top button[aria-expanded=true]::after{transform:translateY(1px) rotate(225deg)}
+#mega-menu .demo .cta{margin-left:auto;background:#161616;color:#fff;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600}
+#mega-menu .demo .panel{position:absolute;z-index:4;top:64px;left:16px;right:16px;padding:20px;border:1px solid #e8e8ee;border-top:0;border-radius:0 0 18px 18px;background:#fff;box-shadow:0 30px 60px -20px rgba(20,24,60,.28);display:grid;grid-template-columns:1fr 1fr 260px;gap:8px 20px}
+#mega-menu .demo .panel[hidden]{display:none}
+#mega-menu .demo .panel:not([hidden]){animation:mm-in .2s ease-out}
+@keyframes mm-in{from{opacity:0;transform:translateY(-8px)}}
+#mega-menu .demo .panel h4{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;margin:2px 10px 8px}
+#mega-menu .demo .panel a{display:grid;grid-template-columns:34px 1fr;gap:2px 12px;padding:9px 10px;border-radius:12px}
+#mega-menu .demo .panel a:hover{background:#f5f6fa}
+#mega-menu .demo .panel a .ic{grid-row:span 2;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:#eef1ff;color:#3b5bdb}
+#mega-menu .demo .panel a b{font-size:13.5px;line-height:1.3}
+#mega-menu .demo .panel a small{font-size:12px;color:#777;line-height:1.35}
+#mega-menu .demo .feat{grid-row:span 1;border-radius:14px;padding:16px;background:linear-gradient(150deg,#1d2350,#3b5bdb);color:#fff;display:flex;flex-direction:column;gap:6px}
+#mega-menu .demo .feat em{font:500 10px/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+#mega-menu .demo .feat b{font-size:16px;line-height:1.3}
+#mega-menu .demo .feat span{font-size:12.5px;opacity:.8;line-height:1.45}
+#mega-menu .demo .feat a{display:inline-block;margin-top:auto;background:#fff;color:#1d2350;padding:7px 12px;font-size:12.5px;font-weight:600;border-radius:999px;justify-self:start;align-self:flex-start}
+#mega-menu .demo .feat a:hover{background:#eef1ff}
+#mega-menu .demo .hero{padding:44px 28px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+#mega-menu .demo .hero h3{font-size:32px;line-height:1.18;font-weight:800;letter-spacing:-.02em}
+#mega-menu .demo .hero p{color:#666;font-size:14px;margin-top:10px}
+#mega-menu .demo .hero .went{margin-top:16px;font:500 12px/1 var(--mono);color:#2a45c4;min-height:12px}
+#mega-menu .demo .shot{height:190px;border-radius:16px;background:linear-gradient(#f4f5f9,#f4f5f9) 16px 16px/40% 12px no-repeat,linear-gradient(#e6e9f5,#e6e9f5) 16px 40px/70% 60px no-repeat,linear-gradient(#e6e9f5,#e6e9f5) 16px 112px/45% 60px no-repeat,#fbfbfd;border:1px solid #eceef5}
+#mega-menu .demo .dim{position:absolute;inset:64px 0 0;z-index:2;background:rgba(20,22,40,.28);opacity:0;pointer-events:none;transition:opacity .2s}
+#mega-menu .demo .site.open .dim{opacity:1;pointer-events:auto}
+@media (max-width:760px){
+  #mega-menu .demo .hdr{padding:0 12px;gap:6px}
+  #mega-menu .demo .logo{font-size:0}#mega-menu .demo .cta{display:none}
+  #mega-menu .demo .top>li>:is(button,a){padding:0 8px;font-size:13px}
+  #mega-menu .demo .top>li:nth-child(n+4){display:none}
+  #mega-menu .demo .panel{left:8px;right:8px;grid-template-columns:1fr;max-height:300px;overflow:auto}
+  #mega-menu .demo .feat{display:none}
+  #mega-menu .demo .hero{grid-template-columns:1fr;padding:28px 16px}
+}
+
+/* ===== 3. Breadcrumbs ===== */
+#breadcrumbs .demo{background:#f7f7f9;color:#161616}
+#breadcrumbs .demo .win{position:absolute;inset:22px 28px;border-radius:14px;background:#fff;border:1px solid #e6e6ec;box-shadow:0 10px 30px -14px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden}
+#breadcrumbs .demo .bc{padding:14px 20px;border-bottom:1px solid #eee}
+#breadcrumbs .demo .bc ol{display:flex;align-items:center;flex-wrap:wrap;gap:2px;font-size:14px}
+#breadcrumbs .demo .bc li{display:flex;align-items:center;min-width:0}
+#breadcrumbs .demo .bc li+li::before{content:"/";content:"/" / "";color:#c4c4cc;margin:0 6px}
+#breadcrumbs .demo .bc a,#breadcrumbs .demo .bc .more{color:#2a45c4;border-radius:6px;padding:3px 6px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#breadcrumbs .demo .bc a:hover{background:#eef1ff;text-decoration:underline}
+#breadcrumbs .demo .bc .more{border:1px solid #dfe3f5;background:#f6f7fd;cursor:pointer;line-height:1;padding:4px 8px}
+#breadcrumbs .demo .bc .more:hover{background:#eef1ff}
+#breadcrumbs .demo .bc [aria-current]{font-weight:600;color:#161616;padding:3px 6px}
+#breadcrumbs .demo .body{padding:18px 20px;overflow:auto;flex:1}
+#breadcrumbs .demo .body h3{font-size:20px;line-height:1.25;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+#breadcrumbs .demo .body h3:focus{outline:none}
+#breadcrumbs .demo .body h3 small{font:500 11px/1 var(--mono);color:#999;font-weight:400}
+#breadcrumbs .demo .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:14px}
+#breadcrumbs .demo .grid button{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;border:1px solid #ececf2;border-radius:12px;background:#fff;cursor:pointer}
+#breadcrumbs .demo .grid button:hover{border-color:#b8c3f0;background:#fafbff}
+#breadcrumbs .demo .grid .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:#fff4d6;color:#b07800;flex:none}
+#breadcrumbs .demo .grid .f .ic{background:#eef1ff;color:#3b5bdb}
+#breadcrumbs .demo .grid b{display:block;font-size:13px;font-weight:600;line-height:1.3}
+#breadcrumbs .demo .grid small{font-size:11.5px;color:#888}
+#breadcrumbs .demo .file{margin-top:14px;display:flex;gap:16px;align-items:flex-start;border:1px dashed #d8dbe8;border-radius:14px;padding:18px}
+#breadcrumbs .demo .file .pv{width:120px;height:150px;border-radius:8px;background:repeating-linear-gradient(#fff 0 14px,#eceef6 14px 16px) 12px 18px/90px 110px no-repeat,#fff;border:1px solid #e3e5ef;flex:none}
+#breadcrumbs .demo .file p{font-size:13px;color:#666}
+@media (max-width:760px){#breadcrumbs .demo .win{inset:10px}#breadcrumbs .demo .bc a{max-width:110px}}
+
+/* ===== 4. Sidebar navigation ===== */
+#sidebar-navigation .demo{background:#fff;color:#161616}
+#sidebar-navigation .demo .shell{position:absolute;inset:0;display:flex}
+#sidebar-navigation .demo .side{width:232px;flex:none;display:flex;flex-direction:column;gap:1px;padding:10px;background:#f6f6f8;border-right:1px solid #ebebef;transition:width .26s cubic-bezier(.2,.8,.2,1)}
+#sidebar-navigation .demo .shell.mini .side{width:64px}
+#sidebar-navigation .demo .shell:not(.mini) .side{overflow-y:auto;scrollbar-width:thin}
+#sidebar-navigation .demo .sh{display:flex;align-items:center;gap:10px;padding:0 2px 8px 6px;min-height:40px}
+#sidebar-navigation .demo .logo{width:28px;height:28px;border-radius:8px;flex:none;background:linear-gradient(135deg,#3b5bdb,#7c4dff);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+#sidebar-navigation .demo .sh b{font-size:14px;white-space:nowrap}
+#sidebar-navigation .demo .tg{margin-left:auto;width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer;color:#666}
+#sidebar-navigation .demo .tg:hover{background:#fff;border-color:#e2e2e8;color:#161616}
+#sidebar-navigation .demo .tg svg{transition:transform .26s}
+#sidebar-navigation .demo .shell.mini .tg svg{transform:scaleX(-1)}
+#sidebar-navigation .demo .shell.mini .sh{flex-direction:column;gap:8px;padding:2px 0 8px}
+#sidebar-navigation .demo .shell.mini .tg{margin:0}
+#sidebar-navigation .demo .grp{font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#9a9aa6;padding:10px 10px 5px;white-space:nowrap}
+#sidebar-navigation .demo .side a,#sidebar-navigation .demo .side summary{position:relative;display:flex;align-items:center;gap:12px;height:32px;flex:none;padding:0 10px;border-radius:9px;font-size:13.5px;font-weight:600;color:#4a4a55;cursor:pointer;white-space:nowrap}
+#sidebar-navigation .demo .side summary{list-style:none}
+#sidebar-navigation .demo .side summary::-webkit-details-marker{display:none}
+#sidebar-navigation .demo .side summary::after{content:"";margin-left:auto;width:6px;height:6px;border:solid #999;border-width:0 1.6px 1.6px 0;transform:rotate(-45deg);transition:transform .2s}
+#sidebar-navigation .demo .side details[open]>summary::after{transform:rotate(45deg)}
+#sidebar-navigation .demo .side a:hover,#sidebar-navigation .demo .side summary:hover{background:#ececf1;color:#161616}
+#sidebar-navigation .demo .side a[aria-current=page]{background:#fff;color:#2a45c4;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+#sidebar-navigation .demo .side a[aria-current=page]::before{content:"";position:absolute;left:-10px;top:7px;bottom:7px;width:3px;border-radius:0 3px 3px 0;background:#3b5bdb}
+#sidebar-navigation .demo .side details ul a{padding-left:40px;font-weight:400;font-size:13px;height:28px}
+#sidebar-navigation .demo .side .dot{width:8px;height:8px;border-radius:3px;background:var(--c);flex:none}
+#sidebar-navigation .demo .side details ul a .dot{position:absolute;left:15px}
+#sidebar-navigation .demo .lbl{transition:opacity .18s}
+#sidebar-navigation .demo .shell.mini .lbl{opacity:0;width:0;overflow:hidden}
+#sidebar-navigation .demo .shell.mini .grp{height:1px;padding:0;margin:10px 8px;background:#e2e2e8;font-size:0}
+#sidebar-navigation .demo .shell.mini .side summary::after{display:none}
+#sidebar-navigation .demo .shell.mini details ul{display:none}
+#sidebar-navigation .demo .shell.mini .side :is(a,summary){justify-content:center;padding:0;gap:0}
+#sidebar-navigation .demo .shell.mini .side :is(a,summary)[data-tip]:is(:hover,:focus-visible)::after{content:attr(data-tip);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:#161616;color:#fff;font:600 12px/1 var(--sans);padding:7px 9px;border-radius:6px;white-space:nowrap;z-index:5;pointer-events:none;width:auto;height:auto;border:0;margin:0}
+#sidebar-navigation .demo .bot{margin-top:auto}
+#sidebar-navigation .demo .av{width:22px;height:22px;border-radius:50%;background:#ffd8c2;color:#8a3a12;font-size:9.5px;font-weight:800;display:grid;place-items:center;flex:none}
+#sidebar-navigation .demo main{flex:1;min-width:0;padding:22px 28px;overflow:hidden}
+#sidebar-navigation .demo main h3{font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.01em}
+#sidebar-navigation .demo main p{color:#777;font-size:13px;margin-top:4px}
+#sidebar-navigation .demo .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
+#sidebar-navigation .demo .cards div{height:96px;border-radius:12px;background:#f6f7fb;border:1px solid #eef0f6;padding:12px;font-size:12px;color:#888}
+#sidebar-navigation .demo .cards div b{display:block;font-size:20px;color:#161616;font-weight:800}
+#sidebar-navigation .demo .wide{margin-top:12px;height:110px;border-radius:12px;border:1px solid #eef0f6;background:linear-gradient(to top,#e7ecff 0 40%,transparent 40%) 6% 100%/8% 70% no-repeat,linear-gradient(to top,#cfd8ff 0 70%,transparent 70%) 28% 100%/8% 70% no-repeat,linear-gradient(to top,#e7ecff 0 55%,transparent 55%) 50% 100%/8% 70% no-repeat,linear-gradient(to top,#3b5bdb 0 90%,transparent 90%) 72% 100%/8% 70% no-repeat,linear-gradient(to top,#cfd8ff 0 60%,transparent 60%) 94% 100%/8% 70% no-repeat,#fbfbfd}
+@media (max-width:760px){#sidebar-navigation .demo .side{width:190px}#sidebar-navigation .demo main{padding:18px 14px}}
+
+/* ===== 5. Bottom tab bar ===== */
+#bottom-tab-bar .demo{background:#f1efe9}
+#bottom-tab-bar .demo .scr{display:flex;flex-direction:column}
+#bottom-tab-bar .demo .sb{height:26px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 18px;font:600 10.5px/1 var(--sans)}
+#bottom-tab-bar .demo .sb i{width:30px;height:9px;border-radius:3px;border:1.5px solid #161616;position:relative}
+#bottom-tab-bar .demo .sb i::after{content:"";position:absolute;inset:1px 6px 1px 1px;background:#161616;border-radius:1px}
+#bottom-tab-bar .demo .apph{flex:none;padding:4px 14px 8px;font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+#bottom-tab-bar .demo .panes{position:relative;flex:1;min-height:0}
+#bottom-tab-bar .demo .pane{position:absolute;inset:0;overflow-y:auto;padding:0 12px 12px;scrollbar-width:none}
+#bottom-tab-bar .demo .pane::-webkit-scrollbar{display:none}
+#bottom-tab-bar .demo .post{border:1px solid #eee;border-radius:14px;padding:10px;margin-bottom:10px}
+#bottom-tab-bar .demo .post .im{height:74px;border-radius:9px;background:var(--c);margin-bottom:8px}
+#bottom-tab-bar .demo .post b{font-size:12.5px;display:block;line-height:1.3}
+#bottom-tab-bar .demo .post small{font-size:11px;color:#888}
+#bottom-tab-bar .demo .srch{display:flex;align-items:center;gap:8px;height:36px;border-radius:10px;background:#f2f2f4;padding:0 10px;color:#888;font-size:12.5px}
+#bottom-tab-bar .demo .chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+#bottom-tab-bar .demo .chips span{border:1px solid #e3e3e8;border-radius:999px;padding:4px 10px;font-size:11.5px}
+#bottom-tab-bar .demo .row{display:flex;gap:10px;align-items:center;padding:9px 2px;border-bottom:1px solid #f2f2f2}
+#bottom-tab-bar .demo .row i{width:32px;height:32px;border-radius:50%;background:var(--c);flex:none;display:grid;place-items:center;font:800 10.5px/1 var(--sans);font-style:normal;color:rgba(0,0,0,.55)}
+#bottom-tab-bar .demo .row div{min-width:0;flex:1}
+#bottom-tab-bar .demo .row b{display:block;font-size:12.5px;font-weight:600}
+#bottom-tab-bar .demo .row span{display:block;font-size:11.5px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bottom-tab-bar .demo .row.new b{font-weight:800}
+#bottom-tab-bar .demo .row.new::after{content:"";width:8px;height:8px;border-radius:50%;background:#3b5bdb;flex:none}
+#bottom-tab-bar .demo .me{text-align:center;padding:10px 0 14px}
+#bottom-tab-bar .demo .me i{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 8px;border-radius:50%;background:#ffd8c2;color:#8a3a12;font:800 20px/1 var(--sans);font-style:normal}
+#bottom-tab-bar .demo .tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);padding:6px 2px 12px;border-top:1px solid #eee;background:rgba(255,255,255,.96)}
+#bottom-tab-bar .demo .tabs a{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;font-size:10px;letter-spacing:-.01em;white-space:nowrap;font-weight:600;color:#777;border-radius:10px;cursor:pointer}
+#bottom-tab-bar .demo .tabs a .pill{width:46px;height:28px;border-radius:999px;display:grid;place-items:center;transition:background .25s}
+#bottom-tab-bar .demo .tabs a[aria-current=page]{color:#161616}
+#bottom-tab-bar .demo .tabs a[aria-current=page] .pill{background:#e7ecff;color:#2a45c4}
+#bottom-tab-bar .demo .tabs a[aria-current=page] svg.i{stroke-width:2.3}
+#bottom-tab-bar .demo .tabs em{position:absolute;top:2px;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:8px;padding:0 4px;background:#ff3b30;color:#fff;font:700 9.5px/16px var(--sans);font-style:normal;text-align:center;box-shadow:0 0 0 2px #fff}
+
+/* ===== 6. Pagination ===== */
+#pagination .demo{background:#f7f7f9;color:#161616}
+#pagination .demo .win{position:absolute;inset:18px 28px;border-radius:14px;background:#fff;border:1px solid #e6e6ec;box-shadow:0 10px 30px -14px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden}
+#pagination .demo .url{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#f3f3f6;border-bottom:1px solid #eaeaef;font:500 12px/1 var(--mono);color:#666}
+#pagination .demo .url::before{content:"";width:8px;height:8px;border-radius:50%;background:#d6d6dc;box-shadow:12px 0 #d6d6dc,24px 0 #d6d6dc;margin-right:30px}
+#pagination .demo .url b{color:#2a45c4;font-weight:500}
+#pagination .demo .lh{display:flex;align-items:baseline;justify-content:space-between;padding:10px 20px 4px}
+#pagination .demo .lh h3{font-size:16px;font-weight:800}
+#pagination .demo .sum{font-size:12.5px;color:#777}
+#pagination .demo .rows{flex:1;padding:0 20px;overflow:hidden}
+#pagination .demo .rows li{display:grid;grid-template-columns:28px 1fr 130px 90px;align-items:center;gap:10px;height:33px;border-bottom:1px solid #f1f1f4;font-size:13px}
+#pagination .demo .rows li .n{font:500 11px/1 var(--mono);color:#aaa}
+#pagination .demo .rows li span{color:#777;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pagination .demo .rows li b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pagination .demo .rows.in li{animation:pg-in .3s both}
+#pagination .demo .rows.in li:nth-child(2){animation-delay:.03s}#pagination .demo .rows.in li:nth-child(3){animation-delay:.06s}#pagination .demo .rows.in li:nth-child(4){animation-delay:.09s}#pagination .demo .rows.in li:nth-child(5){animation-delay:.12s}#pagination .demo .rows.in li:nth-child(6){animation-delay:.15s}
+@keyframes pg-in{from{opacity:0;transform:translateY(4px)}}
+#pagination .demo .pager{padding:12px 20px 14px;border-top:1px solid #eee}
+#pagination .demo .pager ul{display:flex;justify-content:center;align-items:center;gap:4px}
+#pagination .demo .pager button{min-width:36px;height:36px;padding:0 10px;border:1px solid transparent;border-radius:9px;background:transparent;cursor:pointer;font-size:13.5px;font-weight:600;color:#444;font-variant-numeric:tabular-nums}
+#pagination .demo .pager button:hover:not(:disabled){background:#f2f3f7}
+#pagination .demo .pager button[aria-current=page]{background:#161616;color:#fff}
+#pagination .demo .pager button:disabled{color:#c4c4cc;cursor:default}
+#pagination .demo .pager .pn{border-color:#e3e3ea}
+#pagination .demo .pager .gap{width:28px;text-align:center;color:#aaa}
+@media (max-width:760px){
+  #pagination .demo .win{inset:10px}
+  #pagination .demo .rows li{grid-template-columns:24px 1fr 70px}
+  #pagination .demo .rows li span:last-child{display:none}
+  #pagination .demo .pager button{min-width:30px;padding:0 6px}
+  #pagination .demo .pager .pn .t{display:none}
+}
+
+/* ===== 7. Infinite scroll / Load more ===== */
+#infinite-scroll-load-more .demo{background:#f1f2f6;color:#161616}
+#infinite-scroll-load-more .demo .top{position:absolute;left:0;right:0;top:0;height:48px;display:flex;align-items:center;padding:0 20px;font-size:13px;color:#666}
+#infinite-scroll-load-more .demo>.replay{top:8px}
+#infinite-scroll-load-more .demo .cols{position:absolute;inset:48px 20px 16px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#infinite-scroll-load-more .demo .col{display:flex;flex-direction:column;min-height:0;border-radius:14px;background:#fff;border:1px solid #e4e5ec;overflow:hidden}
+#infinite-scroll-load-more .demo .ch{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #eee}
+#infinite-scroll-load-more .demo .ch h4{font-size:14px;font-weight:800}
+#infinite-scroll-load-more .demo .ch output{margin-left:auto;font:500 11.5px/1 var(--mono);color:#777;background:#f3f3f6;padding:5px 8px;border-radius:999px}
+#infinite-scroll-load-more .demo .sc{flex:1;min-height:0;overflow-y:auto;padding:10px 12px;overscroll-behavior:contain}
+#infinite-scroll-load-more .demo article{display:flex;gap:10px;align-items:center;padding:9px;border-radius:10px;border:1px solid #f0f0f3;margin-bottom:8px}
+#infinite-scroll-load-more .demo article:focus{outline:2px solid #3b5bdb;outline-offset:1px}
+#infinite-scroll-load-more .demo article.new{animation:is-in .35s both}
+@keyframes is-in{from{opacity:0;transform:translateY(6px)}}
+#infinite-scroll-load-more .demo article i{width:38px;height:38px;border-radius:9px;background:var(--c);flex:none;font:500 10px/38px var(--mono);font-style:normal;text-align:center;color:rgba(0,0,0,.45)}
+#infinite-scroll-load-more .demo article b{display:block;font-size:12.5px;line-height:1.3}
+#infinite-scroll-load-more .demo article small{font-size:11px;color:#888}
+#infinite-scroll-load-more .demo .ld{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;font-size:12px;color:#777}
+#infinite-scroll-load-more .demo .ld[hidden]{display:none}
+#infinite-scroll-load-more .demo .ld::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid #dcdfea;border-top-color:#3b5bdb;animation:is-spin .7s linear infinite}
+@keyframes is-spin{to{transform:rotate(1turn)}}
+#infinite-scroll-load-more .demo .sent{height:1px}
+#infinite-scroll-load-more .demo .more{display:block;width:100%;height:40px;border:1px solid #d8dbe8;border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;margin:4px 0 10px}
+#infinite-scroll-load-more .demo .more:hover:not(:disabled){border-color:#3b5bdb;color:#2a45c4}
+#infinite-scroll-load-more .demo .more:disabled{color:#888;cursor:progress}
+#infinite-scroll-load-more .demo .endnote{text-align:center;font-size:12px;color:#888;padding:8px 0 12px}
+#infinite-scroll-load-more .demo .ft{border-radius:10px;background:#161616;color:#bbb;font-size:11.5px;padding:12px;line-height:1.6}
+#infinite-scroll-load-more .demo .ft b{color:#fff;display:block;font-size:12px}
+@media (max-width:760px){
+  #infinite-scroll-load-more .demo .top{font-size:0}
+  #infinite-scroll-load-more .demo .cols{inset:48px 8px 8px;gap:8px}
+  #infinite-scroll-load-more .demo article i{display:none}
+  #infinite-scroll-load-more .demo .ch output{display:none}
+}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-7M3 20h18"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.6-5 7-5s6.2 1.5 7 5M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.4 2.2 4 5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11"/></symbol>
+  <symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 10l-2 2 2 2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 2h13v-4"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+</svg>
+
+<nav class="dnav"></nav>
+
+<main class="wrap">
+<header class="head">
+  <h1>Điều hướng</h1>
+  <p>Những cách giúp người dùng biết <b>mình đang ở đâu</b>, <b>còn gì để xem</b> và <b>đi tiếp tới đâu</b>. Mỗi demo dùng được bằng chuột và bàn phím (Tab, Enter, Esc, phím mũi tên) đúng như bản thật.</p>
+</header>
+
+<!-- 1 -->
+<article class="pattern" id="hamburger-menu">
+  <h2>Hamburger / Off-canvas menu</h2>
+  <p class="vi"><b>Menu giấu ngoài mép màn hình.</b> Nút ba gạch (☰) mở một ngăn kéo trượt ra từ cạnh trái, phủ lên trang. Phần phía sau bị làm tối và khoá lại (<code>inert</code>) để Tab không lọt ra sau. Bấm ☰, hoặc Tab tới nó rồi nhấn Enter. Đóng bằng Esc, nút ✕ hoặc bấm vào vùng tối; focus sẽ quay về nút ☰.</p>
+  <div class="demo">
+    <div class="split">
+      <div class="phone"><div class="scr">
+        <div class="app">
+          <div class="bar">
+            <button class="ham" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="hm-drawer"><span></span></button>
+            <b>Workspace</b>
+            <button class="ico" type="button" aria-label="Tìm kiếm"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></button>
+          </div>
+          <div class="pg">
+            <h3 class="ttl">Trang chủ</h3>
+            <p>Thứ Hai, 5 tháng 10</p>
+            <div class="card"><i style="--c:#dfe6ff"></i><div><b>Duyệt bản thiết kế</b><span>Hạn hôm nay</span></div></div>
+            <div class="card"><i style="--c:#ffe3d3"></i><div><b>Họp kế hoạch quý</b><span>14:00 · Phòng 3</span></div></div>
+            <div class="card"><i style="--c:#d9f3e4"></i><div><b>Gửi báo cáo tuần</b><span>Ngày mai</span></div></div>
+          </div>
+        </div>
+        <div class="scrim"></div>
+        <dialog id="hm-drawer" aria-label="Menu chính">
+          <div class="who"><span class="av" aria-hidden="true">TH</span><div><b>Lê Thu Hà</b><small>thuha@example.com</small></div>
+            <button class="x" type="button" aria-label="Đóng menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <nav aria-label="Chính"><ul>
+            <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Trang chủ</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg>Dự án</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Lịch</a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Tin nhắn<em aria-label="3 chưa đọc">3</em></a></li>
+            <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Cài đặt</a></li>
+          </ul></nav>
+          <nav class="foot" aria-label="Tài khoản"><ul><li><a href="#" data-noop><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg>Đăng xuất</a></li></ul></nav>
+        </dialog>
+      </div></div>
+      <div class="side-note" aria-hidden="true">
+        <h4>Trạng thái trực tiếp</h4>
+        <dl>
+          <dt>Nút ☰</dt><dd>aria-expanded=<mark data-st="exp">false</mark></dd>
+          <dt>Trang phía sau</dt><dd><mark data-st="inert">tương tác được</mark></dd>
+          <dt>Focus đang ở</dt><dd data-st="focus">—</dd>
+        </dl>
+        <p>Thử Tab liên tục khi menu đang mở: focus chỉ đi vòng trong ngăn kéo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>màn hình hẹp (mobile) mà menu có nhiều hơn 4–5 mục, hoặc các mục ít dùng như Cài đặt, Trợ giúp, Đăng xuất. Ngăn kéo còn chứa được thông tin tài khoản và nhóm mục.</p>
+    <p class="avoid"><b>Tránh khi</b>chỉ có 3–5 điểm đến chính mà người dùng chuyển qua lại liên tục: giấu chúng sau ☰ làm giảm số lần dùng. Lúc đó dùng Bottom tab bar, hoặc trên desktop để menu hiện sẵn.</p>
+    <p class="tip">Mẹo prompt: nói rõ hướng trượt, có lớp tối phía sau hay không, và yêu cầu “trap focus, close on Esc, return focus to trigger”. AI hay quên ba điều này.</p>
+  </div>
+  <div class="kw"><button>hamburger menu</button><button>off-canvas navigation drawer</button><button>slide-in from left with scrim overlay</button><button>aria-expanded toggle button</button><button>focus trap + Esc to close</button><button>inert background content</button></div>
+</article>
+
+<!-- 2 -->
+<article class="pattern" id="mega-menu">
+  <h2>Mega menu</h2>
+  <p class="vi"><b>Menu thả xuống cỡ lớn.</b> Một mục trên thanh điều hướng mở ra một tấm rộng, chia nhiều cột có tiêu đề, mô tả ngắn cho từng link và một ô nổi bật. Rê chuột (có độ trễ nhỏ để không bật nhầm) hoặc bấm “Sản phẩm”. Bàn phím: ← → chuyển giữa các mục trên cùng, ↓ để vào tấm menu, ↑ ↓ di chuyển giữa các link, Esc để đóng.</p>
+  <div class="demo">
+    <div class="site">
+      <header class="hdr">
+        <a class="logo" href="#" data-noop>Nền tảng</a>
+        <nav aria-label="Chính"><ul class="top">
+          <li><button type="button" aria-expanded="false" aria-controls="mm-p1">Sản phẩm</button>
+            <div class="panel" id="mm-p1" hidden>
+              <div><h4>Làm việc</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Bảng công việc</b><small>Kéo thả việc qua từng cột trạng thái</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg></span><b>Tài liệu</b><small>Soạn thảo chung, bình luận tại chỗ</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg></span><b>Lịch nhóm</b><small>Hạn chót và cuộc họp trên một trục</small></a></li>
+              </ul></div>
+              <div><h4>Kết nối</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-plug"/></svg></span><b>Tích hợp</b><small>Hơn 80 công cụ quen thuộc</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-bolt"/></svg></span><b>Tự động hoá</b><small>Quy tắc “khi… thì…” không cần code</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Báo cáo</b><small>Biểu đồ tiến độ cập nhật tự động</small></a></li>
+              </ul></div>
+              <div class="feat"><em>Mới</em><b>Chế độ ngoại tuyến</b><span>Làm việc khi mất mạng, tự đồng bộ khi có lại.</span><a href="#">Xem có gì mới</a></div>
+            </div></li>
+          <li><button type="button" aria-expanded="false" aria-controls="mm-p2">Giải pháp</button>
+            <div class="panel" id="mm-p2" hidden>
+              <div><h4>Theo nhóm</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span><b>Nhóm sản phẩm</b><small>Lộ trình, sprint, phản hồi người dùng</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><b>Chăm sóc khách hàng</b><small>Gom yêu cầu về một hộp thư</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Vận hành</b><small>Quy trình lặp lại, theo dõi SLA</small></a></li>
+              </ul></div>
+              <div><h4>Theo quy mô</h4><ul>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span><b>Cá nhân</b><small>Miễn phí, tối đa 3 dự án</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span><b>Doanh nghiệp nhỏ</b><small>Dưới 50 người, cài đặt trong 10 phút</small></a></li>
+                <li><a href="#"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span><b>Tập đoàn</b><small>Phân quyền, kiểm toán, SSO</small></a></li>
+              </ul></div>
+              <div class="feat"><em>Câu chuyện</em><b>Một nhóm 12 người bỏ 4 công cụ để dùng một</b><span>Đọc cách họ chuyển đổi trong một tuần.</span><a href="#">Đọc bài</a></div>
+            </div></li>
+          <li><a href="#">Bảng giá</a></li>
+          <li><a href="#">Tài liệu</a></li>
+        </ul></nav>
+        <a class="cta" href="#" data-noop>Dùng thử</a>
+      </header>
+      <div class="dim"></div>
+      <div class="hero">
+        <div><h3>Mọi việc của nhóm, gọn trong một chỗ</h3><p>Lập kế hoạch, viết tài liệu và theo dõi tiến độ mà không phải nhảy qua lại giữa nhiều ứng dụng.</p><p class="went" aria-live="polite"></p></div>
+        <div class="shot" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>site có nhiều trang chia thành nhóm rõ ràng (sản phẩm, giải pháp, tài nguyên), hơn khoảng 8–10 link mỗi mục. Mô tả một dòng dưới mỗi link giúp người lạ chọn đúng ngay lần đầu.</p>
+    <p class="avoid"><b>Tránh khi</b>mỗi mục chỉ có 3–4 link (dùng dropdown thường), hoặc trên mobile (chuyển thành accordion trong menu ☰). Mở chỉ bằng hover mà không có độ trễ sẽ làm menu bật nhầm khi rê chuột ngang qua.</p>
+    <p class="tip">Mẹo prompt: đây là “disclosure navigation”, không phải <code>role="menu"</code>. Yêu cầu nút có <code>aria-expanded</code>, hover intent delay, và Esc trả focus về nút.</p>
+  </div>
+  <div class="kw"><button>mega menu</button><button>multi-column dropdown panel</button><button>link with one-line description</button><button>featured promo card in menu</button><button>hover intent delay</button><button>disclosure navigation pattern (aria-expanded)</button></div>
+</article>
+
+<!-- 3 -->
+<article class="pattern" id="breadcrumbs">
+  <h2>Breadcrumbs</h2>
+  <p class="vi"><b>Đường dẫn vụn bánh mì.</b> Dòng chữ nhỏ cho biết bạn đang ở đâu trong cây thư mục và cho nhảy ngược lên bất kỳ cấp nào chỉ bằng một cú bấm. Khi đường dẫn quá dài, các cấp giữa được gộp vào nút “…”. Mở thư mục để đi sâu, bấm một mắt xích để quay lên, bấm “…” để bung các cấp đang ẩn.</p>
+  <div class="demo">
+    <div class="win">
+      <nav class="bc" aria-label="Breadcrumb"><ol></ol></nav>
+      <div class="body"></div>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>nội dung xếp theo cây nhiều cấp: thư mục, danh mục sản phẩm, tài liệu hướng dẫn. Đặc biệt hữu ích khi người dùng vào thẳng một trang sâu từ Google hay từ link được chia sẻ.</p>
+    <p class="avoid"><b>Tránh khi</b>site phẳng chỉ một hai cấp, hoặc luồng tuần tự (thanh toán, đăng ký): đó là thanh tiến trình các bước, không phải breadcrumb. Đừng dùng nó thay cho nút Quay lại theo lịch sử.</p>
+  </div>
+  <div class="kw"><button>breadcrumb navigation</button><button>nav aria-label="Breadcrumb" with ordered list</button><button>aria-current="page" on last item</button><button>collapsed middle items with ellipsis button</button><button>slash / chevron separators</button></div>
+</article>
+
+<!-- 4 -->
+<article class="pattern" id="sidebar-navigation" data-toc="Sidebar navigation">
+  <h2>Sidebar navigation</h2>
+  <p class="vi"><b>Thanh điều hướng bên, thu gọn được.</b> Danh sách điểm đến dọc theo cạnh trái của app, có nhóm và mục con. Nút ở góc thu nó thành một dải chỉ còn biểu tượng để nhường chỗ cho nội dung; rê chuột hoặc Tab vào biểu tượng để thấy nhãn. Bấm nút thu gọn, chọn các mục, mở nhóm “Dự án”.</p>
+  <div class="demo">
+    <div class="shell">
+      <nav class="side" id="sb-side" aria-label="Điều hướng ứng dụng">
+        <div class="sh"><span class="logo" aria-hidden="true">W</span><b class="lbl">Workspace</b>
+          <button class="tg" type="button" aria-expanded="true" aria-controls="sb-side" aria-label="Thu gọn thanh bên"><svg class="i" aria-hidden="true"><use href="#i-sidebar"/></svg></button></div>
+        <ul>
+          <li><a href="#" data-tip="Tổng quan" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="lbl">Tổng quan</span></a></li>
+          <li><a href="#" data-tip="Hộp thư"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg><span class="lbl">Hộp thư</span></a></li>
+          <li><a href="#" data-tip="Lịch"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span class="lbl">Lịch</span></a></li>
+        </ul>
+        <div class="grp">Không gian</div>
+        <details open>
+          <summary data-tip="Dự án"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg><span class="lbl">Dự án</span></summary>
+          <ul>
+            <li><a href="#"><span class="dot" style="--c:#3b5bdb"></span><span class="lbl">Ra mắt ứng dụng</span></a></li>
+            <li><a href="#"><span class="dot" style="--c:#e8590c"></span><span class="lbl">Nghiên cứu người dùng</span></a></li>
+            <li><a href="#"><span class="dot" style="--c:#2b8a3e"></span><span class="lbl">Website mới</span></a></li>
+          </ul>
+        </details>
+        <ul class="bot">
+          <li><a href="#" data-tip="Cài đặt"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg><span class="lbl">Cài đặt</span></a></li>
+          <li><a href="#" data-tip="Trần Minh Khoa"><span class="av" aria-hidden="true">MK</span><span class="lbl">Trần Minh Khoa</span></a></li>
+        </ul>
+      </nav>
+      <main>
+        <h3 class="ttl">Tổng quan</h3>
+        <p>Tuần 41 · cập nhật 5 phút trước</p>
+        <div class="cards"><div><b>24</b>việc đang mở</div><div><b>7</b>đến hạn tuần này</div><div><b>92%</b>đúng hạn</div></div>
+        <div class="wide" aria-hidden="true"></div>
+      </main>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>ứng dụng làm việc (dashboard, công cụ quản lý, email) có từ 5 điểm đến trở lên và người dùng ở lại lâu. Bản thu gọn dành cho người đã quen biểu tượng và cần thêm chỗ cho bảng, tài liệu.</p>
+    <p class="avoid"><b>Tránh khi</b>trang marketing, blog hay site ít trang: thanh trên cùng gọn hơn. Biểu tượng không rõ nghĩa thì bản thu gọn thành câu đố; luôn có tooltip và cho mở rộng lại ngay.</p>
+  </div>
+  <div class="kw"><button>collapsible sidebar navigation</button><button>icon-only rail when collapsed</button><button>tooltip labels on hover / focus</button><button>nested section with disclosure</button><button>active item indicator bar</button><button>aria-current="page"</button></div>
+</article>
+
+<!-- 5 -->
+<article class="pattern" id="bottom-tab-bar">
+  <h2>Bottom tab bar</h2>
+  <p class="vi"><b>Thanh tab dưới đáy (mobile).</b> 3–5 điểm đến chính nằm ngay dưới ngón cái, luôn hiện, có biểu tượng kèm nhãn. Mỗi tab nhớ vị trí cuộn của riêng nó; chạm lại tab đang mở thì cuộn về đầu. Cuộn tab Trang chủ, sang Hộp thư rồi quay lại, sau đó chạm “Trang chủ” thêm lần nữa.</p>
+  <div class="demo">
+    <div class="split">
+      <div class="phone"><div class="scr">
+        <div class="sb" aria-hidden="true"><span>9:41</span><i></i></div>
+        <div class="apph" aria-live="polite">Trang chủ</div>
+        <div class="panes">
+          <section class="pane" data-tab="home" aria-label="Trang chủ" tabindex="-1">
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c9d4ff,#8fa3ff)"></div><b>Bản cập nhật tháng 10 có gì mới</b><small>Nhóm Sản phẩm · 2 giờ</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffd9c2,#ff9d6c)"></div><b>5 mẹo sắp xếp việc trong tuần</b><small>Phạm Gia Huy · 5 giờ</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#c8f0d8,#6fcf97)"></div><b>Lịch nghỉ lễ của văn phòng</b><small>Hành chính · hôm qua</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#f1d6ff,#c084fc)"></div><b>Chào thành viên mới: Đỗ Mai Linh</b><small>Nhân sự · 2 ngày</small></div>
+            <div class="post"><div class="im" style="--c:linear-gradient(135deg,#ffe9a8,#f5b400)"></div><b>Kết quả khảo sát nội bộ</b><small>Vũ Hoàng Nam · 3 ngày</small></div>
+          </section>
+          <section class="pane" data-tab="search" aria-label="Tìm kiếm" tabindex="-1" hidden>
+            <div class="srch"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Tìm việc, tệp, người…</div>
+            <div class="chips"><span>Báo cáo</span><span>Hạn tuần này</span><span>Ảnh</span><span>Của tôi</span></div>
+            <div class="row"><i style="--c:#eef1ff">TL</i><div><b>Kế hoạch quý 4</b><span>Tài liệu · mở hôm qua</span></div></div>
+            <div class="row"><i style="--c:#fff1e6">BG</i><div><b>Bảng giá 2026</b><span>Bảng tính · mở 3 ngày trước</span></div></div>
+            <div class="row"><i style="--c:#e9f8ef">PL</i><div><b>Phạm Lan</b><span>Thành viên · Thiết kế</span></div></div>
+          </section>
+          <section class="pane" data-tab="inbox" aria-label="Hộp thư" tabindex="-1" hidden>
+            <div class="row new"><i style="--c:#ffd8c2">MA</i><div><b>Nguyễn Minh Anh</b><span>Mình gửi bản sửa cuối rồi nhé, xem giúp…</span></div></div>
+            <div class="row new"><i style="--c:#d6e0ff">GH</i><div><b>Phạm Gia Huy</b><span>Chiều nay họp lúc 3 giờ được không?</span></div></div>
+            <div class="row new"><i style="--c:#d1f2e0">ML</i><div><b>Đỗ Mai Linh</b><span>Cảm ơn mọi người đã chào đón!</span></div></div>
+            <div class="row"><i style="--c:#f3e1ff">HN</i><div><b>Vũ Hoàng Nam</b><span>Đã cập nhật số liệu khảo sát.</span></div></div>
+            <div class="row"><i style="--c:#ffefc2">TH</i><div><b>Lê Thu Hà</b><span>Ok, để mình xử lý phần này.</span></div></div>
+            <div class="row"><i style="--c:#e3e3e8">HC</i><div><b>Hành chính</b><span>Nhắc lịch nghỉ lễ tháng sau.</span></div></div>
+          </section>
+          <section class="pane" data-tab="me" aria-label="Hồ sơ" tabindex="-1" hidden>
+            <div class="me"><i>TH</i><b>Lê Thu Hà</b><br><small>Thiết kế sản phẩm</small></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg></i><div><b>Cài đặt</b></div></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></i><div><b>Mời đồng đội</b></div></div>
+            <div class="row"><i style="--c:#f2f2f4"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg></i><div><b>Đăng xuất</b></div></div>
+          </section>
+        </div>
+        <nav class="tabs" aria-label="Chính">
+          <a href="#" data-tab="home" aria-current="page"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span>Trang chủ</a>
+          <a href="#" data-tab="search"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></span>Tìm kiếm</a>
+          <a href="#" data-tab="inbox"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg></span>Hộp thư<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">, 3 tin chưa đọc</span><em aria-hidden="true">3</em></a>
+          <a href="#" data-tab="me"><span class="pill"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span>Hồ sơ</a>
+        </nav>
+      </div></div>
+      <div class="side-note" aria-hidden="true">
+        <h4>Vị trí cuộn mỗi tab nhớ</h4>
+        <dl>
+          <dt>Trang chủ</dt><dd data-mem="home">0 px</dd>
+          <dt>Tìm kiếm</dt><dd data-mem="search">0 px</dd>
+          <dt>Hộp thư</dt><dd data-mem="inbox">0 px</dd>
+          <dt>Hồ sơ</dt><dd data-mem="me">0 px</dd>
+        </dl>
+        <p>Chuyển tab không làm mất chỗ đang đọc. Chạm lại tab đang mở = cuộn về đầu.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>app mobile có 3–5 khu vực ngang hàng mà người dùng chuyển qua lại thường xuyên (trang chủ, tìm kiếm, tin nhắn, hồ sơ). Luôn hiện nhãn chữ dưới biểu tượng.</p>
+    <p class="avoid"><b>Tránh khi</b>có hơn 5 mục (dồn phần còn lại vào tab “Thêm” hoặc menu ☰), dùng cho hành động như “Đăng bài” (đó là nút, không phải điểm đến), hoặc trên màn hình desktop rộng.</p>
+  </div>
+  <div class="kw"><button>bottom tab bar</button><button>mobile bottom navigation, 4 tabs with labels</button><button>active tab pill indicator</button><button>notification badge on tab</button><button>preserve scroll position per tab</button><button>tap active tab to scroll to top</button></div>
+</article>
+
+<!-- 6 -->
+<article class="pattern" id="pagination">
+  <h2>Pagination</h2>
+  <p class="vi"><b>Phân trang.</b> Chia danh sách dài thành từng trang đánh số, có nút Trước/Sau, trang hiện tại tô đậm và dấu “…” thay cho các trang ở xa. Mỗi trang có địa chỉ riêng (xem thanh URL) nên chia sẻ hay quay lại đúng chỗ được. Bấm số trang, Trước/Sau, hoặc Tab qua các nút rồi Enter.</p>
+  <div class="demo">
+    <div class="win">
+      <div class="url" aria-hidden="true">app.example/tai-lieu<b class="q">?trang=1</b></div>
+      <div class="lh"><h3>Tài liệu của nhóm</h3><p class="sum" aria-live="polite"></p></div>
+      <ol class="rows"></ol>
+      <nav class="pager" aria-label="Phân trang"><ul></ul></nav>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>người dùng tìm một mục cụ thể, cần quay lại đúng chỗ, so sánh hay tham chiếu (“nằm ở trang 3”): kết quả tìm kiếm, bảng quản trị, danh sách đơn hàng. Chân trang luôn với tới được.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung để lướt cho vui, xem liên tục (feed ảnh, mạng xã hội) hoặc trên mobile với trang ngắn: bấm số nhỏ rất khó. Đừng hiện 20 số trang cùng lúc; giữ trang đầu, trang cuối, quanh trang hiện tại và dấu “…”.</p>
+  </div>
+  <div class="kw"><button>numbered pagination</button><button>previous / next buttons</button><button>ellipsis truncation for long ranges</button><button>aria-current="page" on active page</button><button>page number in URL query (?page=3)</button><button>"Showing 7–12 of 57" summary</button></div>
+</article>
+
+<!-- 7 -->
+<article class="pattern" id="infinite-scroll-load-more" data-toc="Infinite scroll / Load more">
+  <h2>Infinite scroll / Load more</h2>
+  <p class="vi"><b>Cuộn vô tận hoặc nút Tải thêm.</b> Hai cách tải tiếp một danh sách dài mà không chia trang. Bên trái: cứ cuộn gần đáy là tự tải thêm, nhưng chân trang cứ bị đẩy đi mãi. Bên phải: người dùng tự bấm “Tải thêm”, focus nhảy tới mục mới đầu tiên, và chân trang luôn ở đó. Cuộn cột trái tới đáy, rồi bấm nút ở cột phải.</p>
+  <div class="demo">
+    <div class="top">Cùng 30 bài viết, hai cách tải tiếp</div>
+    <button class="replay">↻ Xem lại</button>
+    <div class="cols">
+      <section class="col" data-mode="infinite" aria-label="Infinite scroll">
+        <div class="ch"><h4>Infinite scroll</h4><output>6 / 30</output></div>
+        <div class="sc"><div role="feed" aria-busy="false" aria-label="Bài viết, tự tải khi cuộn"></div><div class="sent"></div><p class="ld" hidden>Đang tải thêm…</p>
+          <p class="endnote" hidden>Đã hết bài viết.</p>
+          <div class="ft"><b>Chân trang</b>Liên hệ · Điều khoản · Tuyển dụng</div></div>
+      </section>
+      <section class="col" data-mode="more" aria-label="Load more">
+        <div class="ch"><h4>Load more</h4><output>6 / 30</output></div>
+        <div class="sc"><div class="list" aria-label="Bài viết" role="list"></div>
+          <button class="more" type="button">Tải thêm 6 bài</button>
+          <div class="ft"><b>Chân trang</b>Liên hệ · Điều khoản · Tuyển dụng</div></div>
+      </section>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b><i>Infinite scroll</i>: nội dung để lướt, không có đích cụ thể (feed, ảnh, video ngắn). <i>Load more</i>: danh sách sản phẩm, kết quả tìm kiếm, bình luận, khi vẫn cần chân trang và người dùng muốn tự kiểm soát lượng tải.</p>
+    <p class="avoid"><b>Tránh khi</b>người dùng cần quay lại đúng vị trí, so sánh hay đếm mục (dùng Pagination). Infinite scroll mà có chân trang chứa link quan trọng là lỗi kinh điển: không ai với tới được.</p>
+    <p class="tip">Mẹo prompt: nói rõ “IntersectionObserver sentinel”, “aria-busy while loading” cho infinite scroll; với load more, yêu cầu “move focus to first new item” và hiện “6 / 30” để người dùng biết còn bao nhiêu.</p>
+  </div>
+  <div class="kw"><button>infinite scroll</button><button>IntersectionObserver sentinel</button><button>load more button</button><button>role="feed" with aria-busy</button><button>focus first newly loaded item</button><button>reachable footer</button><button>"6 of 30 loaded" counter</button></div>
+</article>
+
+</main>
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+  const $ = (s, r) => r.querySelector(s), $$ = (s, r) => [...r.querySelectorAll(s)];
+  const ic = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const focus = el => el && el.focus({ preventScroll: true });
+  // focus trap trong một vùng (dùng cho lớp phủ nằm trong khung demo)
+  const trap = (box, e) => {
+    if (e.key !== 'Tab') return;
+    const f = $$('a[href],button:not([disabled]),input,select,[tabindex="0"]', box).filter(x => x.checkVisibility());
+    if (!f.length) return;
+    const first = f[0], last = f.at(-1);
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); focus(last); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); focus(first); }
+  };
+  // link giả trong demo không được đổi hash của trang
+  document.addEventListener('click', e => { const a = e.target.closest('.demo a[href="#"]'); if (a) e.preventDefault(); });
+
+  /* 1. Hamburger / off-canvas */
+  Dict.demo('hamburger-menu', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const scr = $('.scr', d), app = $('.app', scr), dr = $('dialog', scr), ham = $('.ham', scr);
+    const st = k => $(`[data-st=${k}]`, d);
+    const sync = () => {
+      st('exp').textContent = ham.getAttribute('aria-expanded');
+      st('inert').textContent = app.inert ? 'inert (khoá)' : 'tương tác được';
+    };
+    const open = () => {
+      dr.show(); scr.classList.add('open'); app.inert = true;
+      ham.setAttribute('aria-expanded', 'true'); focus($('[aria-current]', dr)); sync();
+    };
+    const close = () => {
+      if (!dr.open) return;
+      scr.classList.remove('open'); dr.close(); app.inert = false;
+      ham.setAttribute('aria-expanded', 'false'); focus(ham); sync();
+    };
+    ham.addEventListener('click', open, o);
+    $('.scrim', scr).addEventListener('click', close, o);
+    dr.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); close(); } else trap(dr, e); }, o);
+    dr.addEventListener('click', e => {
+      if (e.target.closest('.x')) return close();
+      const a = e.target.closest('a'); if (!a || 'noop' in a.dataset) return;
+      $$('nav:not(.foot) a', dr).forEach(x => x.toggleAttribute('aria-current', x === a));
+      a.setAttribute('aria-current', 'page');
+      $('.ttl', scr).textContent = a.textContent.replace(/\d+$/, '').trim();
+      close();
+    }, o);
+    d.addEventListener('focusin', e => {
+      const t = e.target;
+      st('focus').textContent = (t.getAttribute('aria-label') || t.textContent.replace(/\d+$/, '').trim() || t.tagName.toLowerCase()).slice(0, 22);
+    }, o);
+    return () => ac.abort();
+  });
+
+  /* 2. Mega menu (disclosure navigation) */
+  Dict.demo('mega-menu', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const site = $('.site', d), btns = $$('.top>li>button', d), tops = $$('.top>li>:is(button,a)', d);
+    const panel = b => d.querySelector('#' + b.getAttribute('aria-controls'));
+    let timer, by = null; // 'hover' | 'pin': mở bằng rê chuột hay bằng bấm/bàn phím
+    const current = () => btns.find(b => b.getAttribute('aria-expanded') === 'true');
+    const show = (b, how = 'pin') => {
+      clearTimeout(timer); by = b ? how : null;
+      btns.forEach(x => { const on = x === b; x.setAttribute('aria-expanded', on); panel(x).hidden = !on; });
+      site.classList.toggle('open', !!b);
+    };
+    btns.forEach(b => {
+      const li = b.parentElement;
+      b.addEventListener('click', () => {
+        const isOpen = b.getAttribute('aria-expanded') === 'true';
+        if (isOpen && by === 'hover') { by = 'pin'; return; } // đang mở nhờ hover: bấm = ghim lại, không đóng
+        show(isOpen ? null : b);
+      }, o);
+      li.addEventListener('pointerenter', e => {
+        if (e.pointerType !== 'mouse') return;
+        clearTimeout(timer);
+        const mode = current() ? by : 'hover'; // đã có tấm đang mở: rê sang mục khác thì chuyển luôn, giữ kiểu mở
+        timer = setTimeout(() => { if (current() !== b) show(b, mode); }, current() ? 60 : 160);
+      }, o);
+      li.addEventListener('pointerleave', e => {
+        if (e.pointerType !== 'mouse') return;
+        if (by !== 'hover') return;
+        clearTimeout(timer); timer = setTimeout(() => show(null), 280);
+      }, o);
+      li.addEventListener('focusout', e => { if (!li.contains(e.relatedTarget) && current() === b && e.relatedTarget) show(null); }, o);
+      panel(b).addEventListener('keydown', e => {
+        const links = $$('a', panel(b)), i = links.indexOf(document.activeElement);
+        if (e.key === 'Escape') { e.preventDefault(); show(null); focus(b); }
+        else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); focus(links[(i + (e.key === 'ArrowDown' ? 1 : -1) + links.length) % links.length]); }
+        else if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); focus(e.key === 'Home' ? links[0] : links.at(-1)); }
+      }, o);
+    });
+    tops.forEach((t, i) => t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault(); const n = tops[(i + (e.key === 'ArrowRight' ? 1 : -1) + tops.length) % tops.length];
+        if (current()) show(n.tagName === 'BUTTON' ? n : null);
+        focus(n);
+      } else if (e.key === 'ArrowDown' && t.tagName === 'BUTTON') { e.preventDefault(); show(t); focus($('a', panel(t))); }
+      else if (e.key === 'Escape' && current()) { e.preventDefault(); const b = current(); show(null); focus(b); }
+    }, o));
+    $('.dim', d).addEventListener('click', () => show(null), o);
+    document.addEventListener('pointerdown', e => { if (current() && !$('.hdr', d).contains(e.target)) show(null); }, o);
+    d.addEventListener('click', e => {
+      const a = e.target.closest('.panel a,.top>li>a'); if (!a) return;
+      const b = current();
+      $('.went', d).textContent = '→ Đã chọn: ' + ($('b', a) || a).textContent;
+      show(null); if (b) focus(b);
+    }, o);
+    return () => { clearTimeout(timer); ac.abort(); };
+  });
+
+  /* 3. Breadcrumbs */
+  Dict.demo('breadcrumbs', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const F = n => ({ n, f: 1 });
+    const T = { n: 'Tài liệu', c: [
+      { n: 'Dự án 2026', c: [
+        { n: 'Ra mắt sản phẩm', c: [
+          { n: 'Thiết kế', c: [
+            { n: 'Bản phác thảo', c: [F('Màn hình đăng nhập'), F('Trang chủ'), F('Thanh toán')] },
+            { n: 'Bộ biểu tượng', c: [F('Biểu tượng v2'), F('Biểu tượng v1 (cũ)')] },
+            F('Bảng màu')] },
+          { n: 'Nội dung', c: [F('Thông cáo báo chí'), F('Câu hỏi thường gặp')] },
+          F('Lịch ra mắt')] },
+        { n: 'Nghiên cứu người dùng', c: [F('Phỏng vấn tháng 9'), F('Tổng hợp khảo sát')] }] },
+      { n: 'Hợp đồng', c: [F('Mẫu hợp đồng 2026')] },
+      { n: 'Ảnh nhóm', c: [F('Họp mặt cuối năm')] }] };
+    let path = [T, T.c[0], T.c[0].c[0], T.c[0].c[0].c[0], T.c[0].c[0].c[0].c[0]], expanded = false;
+    const ol = $('.bc ol', d), body = $('.body', d);
+    const render = moveFocus => {
+      const last = path.length - 1;
+      const collapse = !expanded && path.length > 4;
+      const shown = collapse ? [0, 'more', last - 1, last] : path.map((_, i) => i);
+      ol.innerHTML = shown.map(i => {
+        if (i === 'more') {
+          const hid = path.slice(1, last - 1).map(x => x.n);
+          return `<li><button class="more" type="button" aria-label="Hiện ${hid.length} cấp đang ẩn: ${esc(hid.join(', '))}">…</button></li>`;
+        }
+        return i === last ? `<li><span aria-current="page">${esc(path[i].n)}</span></li>`
+          : `<li><a href="#" data-i="${i}">${esc(path[i].n)}</a></li>`;
+      }).join('');
+      const cur = path[last];
+      body.innerHTML = cur.f
+        ? `<h3 tabindex="-1">${ic('file')}${esc(cur.n)}</h3><div class="file"><div class="pv" aria-hidden="true"></div><p>Sửa lần cuối 2 giờ trước bởi Phạm Lan.<br>Bấm một mắt xích ở trên để quay lại thư mục.</p></div>`
+        : `<h3 tabindex="-1">${ic('folder')}${esc(cur.n)} <small>${cur.c.length} mục</small></h3><div class="grid">` +
+          cur.c.map((c, k) => `<button type="button" data-k="${k}" class="${c.f ? 'f' : ''}"><span class="ic">${ic(c.f ? 'file' : 'folder')}</span><span><b>${esc(c.n)}</b><small>${c.f ? 'Tệp' : c.c.length + ' mục'}</small></span></button>`).join('') + '</div>';
+      if (moveFocus) focus($('h3', body));
+    };
+    ol.addEventListener('click', e => {
+      const a = e.target.closest('a[data-i]');
+      if (a) { e.preventDefault(); path = path.slice(0, +a.dataset.i + 1); expanded = false; render(true); return; }
+      if (e.target.closest('.more')) { expanded = true; render(false); focus($('a[data-i="1"]', ol)); }
+    }, o);
+    body.addEventListener('click', e => {
+      const b = e.target.closest('button[data-k]'); if (!b) return;
+      path = [...path, path.at(-1).c[+b.dataset.k]]; expanded = false; render(true);
+    }, o);
+    render(false);
+    return () => ac.abort();
+  });
+
+  /* 4. Sidebar navigation */
+  Dict.demo('sidebar-navigation', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const shell = $('.shell', d), tg = $('.tg', d), det = $('details', d);
+    const setMini = mini => {
+      shell.classList.toggle('mini', mini);
+      tg.setAttribute('aria-expanded', !mini);
+      tg.setAttribute('aria-label', mini ? 'Mở rộng thanh bên' : 'Thu gọn thanh bên');
+    };
+    tg.addEventListener('click', () => setMini(!shell.classList.contains('mini')), o);
+    $('summary', d).addEventListener('click', e => {
+      if (!shell.classList.contains('mini')) return;
+      e.preventDefault(); setMini(false); det.open = true;
+    }, o);
+    $('.side', d).addEventListener('click', e => {
+      const a = e.target.closest('a'); if (!a) return;
+      $$('.side a', d).forEach(x => x.removeAttribute('aria-current'));
+      a.setAttribute('aria-current', 'page');
+      $('.ttl', d).textContent = $('.lbl', a).textContent;
+    }, o);
+    return () => ac.abort();
+  });
+
+  /* 5. Bottom tab bar */
+  Dict.demo('bottom-tab-bar', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const tabs = $$('.tabs a', d), panes = $$('.pane', d), title = $('.apph', d);
+    panes.forEach(p => p.addEventListener('scroll', () => { $(`[data-mem=${p.dataset.tab}]`, d).textContent = Math.round(p.scrollTop) + ' px'; }, { passive: true, signal: ac.signal }));
+    $('.tabs', d).addEventListener('click', e => {
+      const a = e.target.closest('a'); if (!a) return;
+      const id = a.dataset.tab, pane = panes.find(p => p.dataset.tab === id);
+      if (a.hasAttribute('aria-current')) { pane.scrollTo({ top: 0, behavior: Dict.RM ? 'instant' : 'smooth' }); return; }
+      tabs.forEach(t => t.toggleAttribute('aria-current', t === a)); a.setAttribute('aria-current', 'page');
+      panes.forEach(p => { p.hidden = p !== pane; });
+      title.textContent = pane.getAttribute('aria-label');
+      if (id === 'inbox') { $('em', a)?.remove(); $('span[style]', a)?.remove(); }
+    }, o);
+    return () => ac.abort();
+  });
+
+  /* 6. Pagination */
+  Dict.demo('pagination', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const kinds = ['Biên bản họp', 'Kế hoạch', 'Báo cáo', 'Đề xuất', 'Hướng dẫn', 'Danh sách'];
+    const topics = ['tuyển dụng', 'quý 4', 'ra mắt ứng dụng', 'ngân sách', 'đào tạo nội bộ', 'khảo sát khách hàng', 'website mới', 'bảo mật', 'chăm sóc khách hàng', 'sự kiện cuối năm'];
+    const people = ['Lê Thu Hà', 'Phạm Gia Huy', 'Đỗ Mai Linh', 'Vũ Hoàng Nam', 'Trần Minh Khoa', 'Phạm Lan'];
+    const N = 57, PER = 6, PAGES = Math.ceil(N / PER);
+    const item = i => [`${kinds[i % 6]} ${topics[(i * 7) % 10]}`, people[(i * 5) % 6], new Date(2026, 8, 30 - i).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })];
+    let page = 1;
+    const list = () => {
+      const s = new Set([1, PAGES, page - 1, page, page + 1].filter(p => p >= 1 && p <= PAGES));
+      if (page <= 4) [2, 3, 4, 5].forEach(p => s.add(p)); // luôn đủ 7 ô để nút không xê dịch dưới con trỏ
+      if (page >= PAGES - 3) [PAGES - 1, PAGES - 2, PAGES - 3, PAGES - 4].forEach(p => s.add(p));
+      const a = [...s].sort((x, y) => x - y), out = [];
+      a.forEach((p, i) => { if (i && p - a[i - 1] > 1) out.push(p - a[i - 1] === 2 ? p - 1 : '…'); out.push(p); });
+      return out;
+    };
+    const rows = $('.rows', d), pager = $('.pager ul', d);
+    const render = (keep, anim) => {
+      const from = (page - 1) * PER;
+      rows.innerHTML = Array.from({ length: Math.min(PER, N - from) }, (_, k) => {
+        const [t, p, dt] = item(from + k);
+        return `<li><span class="n">${from + k + 1}</span><b>${esc(t)}</b><span>${p}</span><span>${dt}</span></li>`;
+      }).join('');
+      rows.classList.remove('in'); if (anim) { void rows.offsetWidth; rows.classList.add('in'); }
+      $('.sum', d).textContent = `Hiển thị ${from + 1}–${Math.min(from + PER, N)} trên ${N} tài liệu`;
+      $('.q', d).textContent = '?trang=' + page;
+      pager.innerHTML =
+        `<li><button type="button" class="pn" data-k="prev" aria-label="Trang trước" ${page === 1 ? 'disabled' : ''}>‹ <span class="t">Trước</span></button></li>` +
+        list().map(p => p === '…' ? '<li class="gap" aria-hidden="true">…</li>'
+          : `<li><button type="button" data-k="${p}" aria-label="Trang ${p}"${p === page ? ' aria-current="page"' : ''}>${p}</button></li>`).join('') +
+        `<li><button type="button" class="pn" data-k="next" aria-label="Trang sau" ${page === PAGES ? 'disabled' : ''}><span class="t">Sau</span> ›</button></li>`;
+      if (keep) { const b = $(`[data-k="${keep}"]`, pager); focus(b && !b.disabled ? b : $('[aria-current]', pager)); }
+    };
+    pager.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const k = b.dataset.k, to = k === 'prev' ? page - 1 : k === 'next' ? page + 1 : +k;
+      if (to === page) return;
+      page = to; render(k, true);
+    }, o);
+    render(null, false);
+    return () => ac.abort();
+  });
+
+  /* 7. Infinite scroll / Load more */
+  Dict.demo('infinite-scroll-load-more', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const TOTAL = 30, BATCH = 6;
+    const titles = ['Viết tài liệu sao cho người mới hiểu', 'Họp ngắn mà vẫn đủ ý', 'Đặt tên tệp cho cả nhóm', 'Ước lượng thời gian thực tế hơn', 'Nhận phản hồi không bị tổn thương', 'Ghi chú cuộc gọi khách hàng', 'Chia việc lớn thành việc nhỏ', 'Làm việc khác múi giờ', 'Tắt thông báo mà không lỡ việc', 'Viết email ngắn gọn'];
+    const people = ['Lê Thu Hà', 'Phạm Gia Huy', 'Đỗ Mai Linh', 'Vũ Hoàng Nam', 'Trần Minh Khoa'];
+    const colors = ['#dfe6ff', '#ffe3d3', '#d9f3e4', '#f1e1ff', '#fff0bf', '#e3eef5'];
+    const art = (i, attrs) => `<article ${attrs}><i style="--c:${colors[i % 6]}">#${i + 1}</i><div><b>${titles[i % 10]}</b><small>${people[i % 5]} · ${3 + (i * 7) % 9} phút đọc</small></div></article>`;
+    const timers = [];
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+    // infinite
+    const L = $('[data-mode=infinite]', d), feed = $('[role=feed]', L), ld = $('.ld', L), outL = $('output', L);
+    let nL = 0, busy = false;
+    const addL = () => {
+      feed.insertAdjacentHTML('beforeend', Array.from({ length: BATCH }, (_, k) => art(nL + k, `class="${nL ? 'new' : ''}" tabindex="0" aria-posinset="${nL + k + 1}" aria-setsize="-1"`)).join(''));
+      nL += BATCH; outL.textContent = `${nL} / ${TOTAL}`;
+    };
+    addL();
+    const io = new IntersectionObserver(es => {
+      if (!es.some(x => x.isIntersecting) || busy || nL >= TOTAL) return;
+      busy = true; feed.setAttribute('aria-busy', 'true'); ld.hidden = false;
+      later(() => {
+        addL(); busy = false; feed.setAttribute('aria-busy', 'false'); ld.hidden = true;
+        if (nL >= TOTAL) { io.disconnect(); $('.endnote', L).hidden = false; }
+      }, 750);
+    }, { root: $('.sc', L), rootMargin: '0px 0px 60px 0px' });
+    io.observe($('.sent', L));
+
+    // load more
+    const R = $('[data-mode=more]', d), list = $('.list', R), btn = $('.more', R), outR = $('output', R);
+    let nR = 0;
+    const addR = () => {
+      list.insertAdjacentHTML('beforeend', Array.from({ length: BATCH }, (_, k) => art(nR + k, `role="listitem" tabindex="-1" class="${nR ? 'new' : ''}"`)).join(''));
+      const first = list.children[nR]; nR += BATCH; outR.textContent = `${nR} / ${TOTAL}`;
+      return first;
+    };
+    addR();
+    btn.addEventListener('click', () => {
+      btn.disabled = true; btn.textContent = 'Đang tải…';
+      later(() => {
+        const first = addR(), sc = $('.sc', R); focus(first);
+        sc.scrollTo({ top: sc.scrollTop + first.getBoundingClientRect().top - sc.getBoundingClientRect().top - 10, behavior: Dict.RM ? 'instant' : 'smooth' });
+        if (nR >= TOTAL) btn.outerHTML = `<p class="endnote">Đã hiển thị hết ${TOTAL} bài.</p>`;
+        else { btn.disabled = false; btn.textContent = `Tải thêm ${BATCH} bài (còn ${TOTAL - nR})`; }
+      }, 600);
+    }, o);
+    btn.textContent = `Tải thêm ${BATCH} bài (còn ${TOTAL - nR})`;
+    return () => { io.disconnect(); timers.forEach(clearTimeout); ac.abort(); };
+  });
+})();
+</script>
+</body>
+</html>

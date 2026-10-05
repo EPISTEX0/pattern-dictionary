@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bề mặt — Từ điển pattern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;700&family=Patrick+Hand&family=Fraunces:ital,wght@0,600;0,900;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+
+/* reduced motion cho demo trang này */
+@media (prefers-reduced-motion:reduce){.demo *,.demo *::before,.demo *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* ============ 1. GRAIN ============ */
+#grain .stage{background:radial-gradient(120% 90% at 20% 10%,#ffb36b 0%,#f0703a 35%,#9c2f1d 70%,#3a1410 100%)}
+#grain .stage .noise{position:absolute;top:0;bottom:0;left:50%;right:0;opacity:.55;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#grain .stage .split{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,.75);z-index:3}
+#grain .stage .lab{position:absolute;top:14px;z-index:4;font:500 12px 'IBM Plex Mono',monospace;background:rgba(0,0,0,.55);color:#fff;padding:4px 10px;border-radius:999px}
+#grain .stage .lab.l{left:16px}#grain .stage .lab.r{left:calc(50% + 16px)}
+#grain .stage .gt{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:#fff8ef;z-index:2}
+#grain .stage .gt h3{margin:0;font:900 96px/1.15 'Fraunces',serif;letter-spacing:-.02em}
+#grain .stage .gt p{margin:4px 0 0;font:600 18px 'Be Vietnam Pro',sans-serif;opacity:.9}
+#grain .stage .zoom{position:absolute;z-index:4;bottom:16px;width:120px;height:120px;border-radius:50%;border:2px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.35);overflow:hidden;background:#d25a30}
+#grain .stage .zoom.l{left:16px}#grain .stage .zoom.r{right:16px}
+#grain .stage .zoom.r{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-color:#d25a30;background-blend-mode:overlay;background-size:110px}
+#grain .stage .zoom span{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:600 12px/1.3 'IBM Plex Mono',monospace;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+
+/* ============ 2. AURORA ============ */
+#aurora .stage{background:#0a0a1a;overflow:hidden}
+#aurora .stage .blobs{position:absolute;inset:-20%;filter:blur(60px) saturate(140%);transition:filter .6s}
+#aurora.raw .blobs{filter:none}
+#aurora .stage .bb{position:absolute;border-radius:50%;mix-blend-mode:screen}
+#aurora .stage .x1{width:46%;height:60%;left:10%;top:15%;background:#ff5a1f;animation:au1 16s ease-in-out infinite alternate}
+#aurora .stage .x2{width:40%;height:55%;left:42%;top:5%;background:#7c3aed;animation:au2 19s ease-in-out infinite alternate}
+#aurora .stage .x3{width:38%;height:50%;left:30%;top:45%;background:#06b6d4;animation:au3 22s ease-in-out infinite alternate}
+#aurora .stage .x4{width:30%;height:40%;left:65%;top:50%;background:#f59e0b;animation:au1 25s ease-in-out infinite alternate-reverse}
+@keyframes au1{to{transform:translate(18%,12%) scale(1.15)}}
+@keyframes au2{to{transform:translate(-22%,18%) scale(.9)}}
+@keyframes au3{to{transform:translate(15%,-20%) scale(1.2)}}
+#aurora .stage .at{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#fff;z-index:2;text-shadow:0 2px 18px rgba(10,10,26,.45);font-family:'Be Vietnam Pro',sans-serif}
+#aurora .stage .at h3{margin:0;font-size:64px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+#aurora .stage .at p{margin:6px 0 0;font-size:18px;opacity:.85}
+#aurora .stage .tog{position:absolute;left:14px;bottom:14px;z-index:5;font:600 13px 'Be Vietnam Pro',sans-serif;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+
+/* ============ 3. HALFTONE ============ */
+#halftone .stage{background:#fdf1dc}
+#halftone .stage canvas{position:absolute;top:0;height:100%;width:50%}
+#halftone .stage .src{left:0}#halftone .stage .ht{left:50%}
+#halftone .stage .split{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#1d1d1d;z-index:3}
+#halftone .stage .lab{position:absolute;top:14px;z-index:4;font:500 12px 'IBM Plex Mono',monospace;background:#1d1d1d;color:#fff;padding:4px 10px;border-radius:999px}
+#halftone .stage .lab.l{left:16px}#halftone .stage .lab.r{left:calc(50% + 16px)}
+#halftone .stage .ctl{position:absolute;right:14px;bottom:14px;z-index:5;display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #1d1d1d;border-radius:999px;padding:5px 12px;font:500 12px 'IBM Plex Mono',monospace}
+#halftone .stage .ctl input{accent-color:#e4572e;width:110px}
+
+/* ============ 4. HAND-DRAWN ============ */
+#hand .stage{background:#fffdf7;background-image:linear-gradient(#eef0f6 1px,transparent 1px),linear-gradient(90deg,#eef0f6 1px,transparent 1px);background-size:24px 24px;display:grid;place-items:center}
+#hand .stage .comp{position:relative;width:820px;height:340px}
+#hand .stage .card{position:absolute;left:250px;top:70px;width:320px;background:#fff;border:1px solid #e3e1dc;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:20px 22px;font-family:'Be Vietnam Pro',sans-serif;color:#161616}
+#hand .stage .card small{font-size:12px;color:#7a746b}
+#hand .stage .card h4{margin:4px 0 4px;font-size:24px;line-height:1.25;font-weight:800}
+#hand .stage .card p{margin:0 0 16px;font-size:13px;color:#6b6b6b;line-height:1.5}
+#hand .stage .card .row{display:flex;justify-content:space-between;align-items:center}
+#hand .stage .card .pr{font-size:22px;font-weight:800}
+#hand .stage .card button{background:#161616;color:#fff;border:0;border-radius:10px;padding:10px 18px;font:600 14px 'Be Vietnam Pro',sans-serif}
+#hand .stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+#hand .stage svg path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+#hand .stage .red{stroke:#e0452b;stroke-width:3}
+#hand .stage .blue{stroke:#2453d6;stroke-width:2.6}
+#hand.on svg path{stroke-dasharray:1;stroke-dashoffset:1;animation:hdDraw .7s ease-out forwards}
+#hand .stage .note{position:absolute;font:24px/1.15 'Patrick Hand',cursive;opacity:0}
+#hand.on .note{animation:hdIn .4s ease-out forwards}
+#hand .stage .n1{left:0;top:6px;width:230px;color:#2453d6;transform:rotate(-4deg)}
+#hand .stage .n2{left:600px;top:40px;width:220px;color:#e0452b;transform:rotate(3deg)}
+#hand .stage .n3{left:610px;top:250px;width:210px;color:#2453d6;transform:rotate(-2deg)}
+#hand .stage .n4{left:20px;top:250px;width:210px;color:#e0452b;transform:rotate(2deg)}
+@keyframes hdDraw{to{stroke-dashoffset:0}}
+@keyframes hdIn{from{opacity:0;translate:0 6px}to{opacity:1;translate:0 0}}
+
+/* ============ 5. DEVICE MOCKUP ============ */
+#device .stage{background:linear-gradient(160deg,#f3efe8,#e3ddd2);display:grid;place-items:center;font-family:'Be Vietnam Pro',sans-serif}
+#device .stage .scene{position:relative;width:690px;height:330px;margin-left:30px}
+#device .stage .laptop{position:absolute;left:0;top:10px;width:500px}
+#device .stage .lid{background:#1c1c1e;border-radius:16px 16px 4px 4px;padding:12px 12px 16px;box-shadow:0 0 0 1px #3a3a3c inset}
+#device .stage .lid::before{content:"";display:block;width:6px;height:6px;border-radius:50%;background:#3a3a3c;margin:-6px auto 4px}
+#device .stage .scr{height:262px;border-radius:4px;overflow:hidden;background:#faf6ef;position:relative}
+#device .stage .base{height:14px;margin:0 -34px;background:linear-gradient(#d9d9dc,#a9a9ae);border-radius:2px 2px 14px 14px;position:relative;box-shadow:0 12px 24px rgba(0,0,0,.18)}
+#device .stage .base::before{content:"";position:absolute;left:50%;top:0;width:80px;height:5px;margin-left:-40px;background:#9a9aa0;border-radius:0 0 8px 8px}
+#device .stage .web-nav{display:flex;gap:14px;align-items:center;padding:10px 16px;font-size:10px;color:#6b5a4a;border-bottom:1px solid #eadfcd}
+#device .stage .web-nav b{font-size:12px;color:#2a1910;margin-right:auto}
+#device .stage .web-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;padding:20px 18px}
+#device .stage .web-hero h4{margin:0 0 6px;font-size:26px;line-height:1.15;color:#2a1910;font-weight:800}
+#device .stage .web-hero p{margin:0 0 12px;font-size:10.5px;color:#6b5a4a;line-height:1.5}
+#device .stage .web-hero .btn{display:inline-block;background:#ff5a1f;color:#fff;font-size:10px;font-weight:600;padding:6px 12px;border-radius:999px}
+#device .stage .web-img{border-radius:12px;background:radial-gradient(circle at 50% 45%,#8a5532 0 28%,#f6e7d4 29% 36%,#c99a6b 37%),#c99a6b;height:150px}
+#device .stage .phone{position:absolute;right:0;top:0;width:168px;height:330px;border-radius:34px;background:#111;padding:8px;box-shadow:0 0 0 2px #2c2c2e,0 24px 40px rgba(0,0,0,.28)}
+#device .stage .phone::before{content:"";position:absolute;right:-4px;top:90px;width:3px;height:48px;border-radius:2px;background:#2c2c2e}
+#device .stage .pscr{height:100%;border-radius:27px;overflow:hidden;background:#2a1910;color:#f6e7d4;position:relative;padding:38px 14px 14px}
+#device .stage .island{position:absolute;left:50%;top:9px;width:62px;height:18px;margin-left:-31px;border-radius:999px;background:#000}
+#device .stage .pscr small{font-size:9px;color:#c9a98a;display:block}
+#device .stage .pscr h5{margin:2px 0 10px;font-size:17px;line-height:1.2;font-weight:800}
+#device .stage .p-img{height:110px;border-radius:16px;background:radial-gradient(circle at 50% 50%,#c98a5a 0 30%,#5a3420 31% 55%,#3a2216 56%)}
+#device .stage .p-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px;font-weight:800}
+#device .stage .p-btn{margin-top:12px;background:#ff5a1f;color:#fff;text-align:center;font-size:12px;font-weight:600;padding:9px;border-radius:12px}
+#device .stage .p-bar{position:absolute;left:50%;bottom:6px;width:56px;height:4px;margin-left:-28px;border-radius:2px;background:rgba(255,255,255,.5)}
+
+/* ============ 6. SPOTLIGHT ============ */
+#spot .stage{background:#09090b;font-family:'Be Vietnam Pro',sans-serif;color:#e9e7e3;--x:50%;--y:50%;display:grid;place-content:center;cursor:crosshair}
+#spot .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(460px circle at var(--x) var(--y),rgba(255,120,50,.32),rgba(255,120,50,.08) 30%,transparent 55%);pointer-events:none}
+#spot .stage .grid{display:grid;grid-template-columns:repeat(3,250px);gap:16px;position:relative}
+#spot .stage .c{--cx:-999px;--cy:-999px;padding:1px;border-radius:18px;background:radial-gradient(220px circle at var(--cx) var(--cy),#ffb27a,rgba(255,120,50,.5) 30%,rgba(255,255,255,.08) 70%)}
+#spot .stage .ci{height:220px;border-radius:17px;padding:22px;background:radial-gradient(260px circle at var(--cx) var(--cy),rgba(255,120,50,.22),transparent 65%),rgba(18,18,21,.92);display:flex;flex-direction:column}
+#spot .stage .ci small{font:500 11px 'IBM Plex Mono',monospace;color:#8b8780;letter-spacing:.04em}
+#spot .stage .ci h4{margin:10px 0 6px;font-size:22px;line-height:1.25;font-weight:800}
+#spot .stage .ci p{margin:0;font-size:13px;color:#a5a19a;line-height:1.5}
+#spot .stage .ci b{margin-top:auto;font-size:20px}
+#spot .stage .hint{position:absolute;left:16px;bottom:12px;font-size:12px;color:#77736c}
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+<header class="head">
+  <h1>Bề mặt &amp; chất liệu</h1>
+  <p>Những lớp phủ, kết cấu và ánh sáng biến một màn hình phẳng thành thứ có “chất”: hạt nhiễu, dải màu, chấm in, nét tay, khung thiết bị và vùng sáng.</p>
+</header>
+
+<!-- 1 -->
+<article class="pattern" id="grain">
+  <h2>Grain / Noise texture</h2>
+  <p class="vi">Lớp hạt nhiễu — phủ một lớp nhiễu li ti lên nền màu/gradient để bớt “nhựa”, có cảm giác giấy in, phim ảnh, ấm và thật hơn.</p>
+  <div class="demo"><div class="stage">
+    <div class="noise"></div><div class="split"></div>
+    <span class="lab l">Không có grain</span><span class="lab r">Có grain</span>
+    <div class="gt"><h3>Bộ sưu tập Thu</h3><p>Ấm, mộc, có chất của giấy in</p></div>
+    <div class="zoom l"><span>phóng to<br>phẳng lì</span></div><div class="zoom r"><span>phóng to<br>có hạt</span></div>
+  </div></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Nền gradient lớn trông phẳng, “số” quá; muốn cảm giác thủ công, analog, cao cấp (thời trang, F&amp;B, nghệ thuật).</p>
+    <p class="avoid"><b>Tránh khi</b>Giao diện cần sắc nét tuyệt đối như bảng số liệu, hoặc lớp nhiễu đặt đè lên chữ nhỏ làm giảm độ đọc.</p>
+  </div>
+  <div class="kw"><button>grain texture overlay</button><button>subtle noise</button><button>film grain</button><button>grainy gradient</button><button>SVG feTurbulence noise</button><button>mix-blend-mode overlay</button></div>
+</article>
+
+<!-- 2 -->
+<article class="pattern" id="aurora">
+  <h2>Gradient mesh / Aurora</h2>
+  <p class="vi">Lưới chuyển màu / cực quang — nhiều khối màu được làm nhòe hòa vào nhau, trôi rất chậm như ánh cực quang. Bấm nút để xem các khối màu gốc trước khi làm mờ.</p>
+  <div class="demo"><div class="stage">
+    <div class="blobs"><div class="bb x1"></div><div class="bb x2"></div><div class="bb x3"></div><div class="bb x4"></div></div>
+    <div class="at"><h3>Chào buổi sáng</h3><p>Hôm nay có 3 việc cần làm — bắt đầu thôi.</p></div>
+    <button class="tog">Xem khối màu gốc (tắt blur)</button>
+  </div></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Hero của landing page, màn chào, thẻ nổi bật — cần không khí mơ màng, hiện đại mà không cần ảnh.</p>
+    <p class="avoid"><b>Tránh khi</b>Đặt sau khối chữ dài hoặc chạy trên máy yếu — blur lớn + chuyển động liên tục tốn GPU, pin.</p>
+  </div>
+  <div class="kw"><button>gradient mesh</button><button>aurora background</button><button>blurred color blobs</button><button>slowly animated gradient</button><button>soft glow</button><button>mix-blend-mode screen</button></div>
+</article>
+
+<!-- 3 -->
+<article class="pattern" id="halftone">
+  <h2>Halftone</h2>
+  <p class="vi">Lưới chấm in — tông màu được diễn tả bằng các chấm to nhỏ (vùng tối chấm to, vùng sáng chấm nhỏ), như báo in, truyện tranh, pop art.</p>
+  <div class="demo"><div class="stage">
+    <canvas class="src"></canvas><canvas class="ht"></canvas><div class="split"></div>
+    <span class="lab l">Ảnh gốc</span><span class="lab r">Halftone</span>
+    <label class="ctl">cỡ chấm <input type="range" min="6" max="20" value="10"></label>
+  </div></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Muốn chất in ấn, retro, pop art, zine; biến ảnh thường thành đồ họa có cá tính, đồng bộ màu thương hiệu.</p>
+    <p class="avoid"><b>Tránh khi</b>Ảnh cần thể hiện chi tiết thật (ảnh sản phẩm để mua, ảnh chân dung nhận diện) — chấm in làm mất chi tiết.</p>
+  </div>
+  <div class="kw"><button>halftone</button><button>halftone dot pattern</button><button>pop art</button><button>Ben-Day dots</button><button>risograph print</button><button>comic print texture</button></div>
+</article>
+
+<!-- 4 -->
+<article class="pattern" id="hand">
+  <h2>Hand-drawn annotation</h2>
+  <p class="vi">Chú thích vẽ tay — chữ viết tay, mũi tên nguệch ngoạc, vòng khoanh bằng bút dạ đặt lên giao diện “sạch”, như ai đó đang giải thích cho bạn.</p>
+  <div class="demo"><div class="stage">
+    <div class="comp">
+      <div class="card"><small>Khoá học · Mới ra mắt</small><h4>Nhiếp ảnh căn bản</h4><p>12 bài ngắn, học theo nhịp của bạn.</p><div class="row"><span class="pr">99.000đ</span><button>Đăng ký</button></div></div>
+      <svg viewBox="0 0 820 340">
+        <!-- underline title -->
+        <path class="red" pathLength="1" style="animation-delay:.1s" d="M268 153 C 330 150, 400 155, 460 152 S 530 151, 552 153"/>
+        <!-- circle price -->
+        <path class="red" pathLength="1" style="animation-delay:.6s" d="M318 238 C 266 238, 254 210, 284 195 C 314 181, 380 185, 388 207 C 394 229, 356 241, 312 239 C 296 238, 288 231, 296 225"/>
+        <!-- arrow from n4 to price -->
+        <path class="red" pathLength="1" style="animation-delay:1.2s" d="M128 284 C 190 292, 245 272, 264 246"/>
+        <path class="red" pathLength="1" style="animation-delay:1.6s" d="M250 250 L 265 245 L 268 260"/>
+        <!-- arrow from n1 to card title -->
+        <path class="blue" pathLength="1" style="animation-delay:1.9s" d="M120 66 C 150 110, 200 130, 262 128"/>
+        <path class="blue" pathLength="1" style="animation-delay:2.3s" d="M246 118 L 264 128 L 248 140"/>
+        <!-- arrow from n2 to button -->
+        <path class="red" pathLength="1" style="animation-delay:2.6s" d="M650 106 C 640 160, 600 200, 556 222"/>
+        <path class="red" pathLength="1" style="animation-delay:3s" d="M562 206 L 553 224 L 573 228"/>
+        <!-- arrow from n3 to card edge -->
+        <path class="blue" pathLength="1" style="animation-delay:3.3s" d="M640 262 C 620 250, 600 260, 580 270"/>
+        <path class="blue" pathLength="1" style="animation-delay:3.6s" d="M590 262 L 578 272 L 592 280"/>
+        <!-- star doodle -->
+        <path class="red" pathLength="1" style="animation-delay:3.9s" d="M200 150 L 206 168 L 224 168 L 210 179 L 216 197 L 200 186 L 185 197 L 191 179 L 177 168 L 195 168 Z"/>
+      </svg>
+      <div class="note n1" style="animation-delay:1.9s">tên khoá to, rõ —<br>đọc là biết ngay!</div>
+      <div class="note n2" style="animation-delay:2.6s">nút chính: màu<br>đậm nhất trang</div>
+      <div class="note n3" style="animation-delay:3.3s">bóng đổ mềm,<br>bo góc 16px</div>
+      <div class="note n4" style="animation-delay:1.2s">giá đặt sát<br>nút mua :)</div>
+    </div>
+  </div><button class="replay">↻ Xem lại</button></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Muốn trang thân thiện, có “giọng người”: chỉ ra tính năng trên ảnh chụp sản phẩm, onboarding, landing của startup.</p>
+    <p class="avoid"><b>Tránh khi</b>Bối cảnh trang trọng (pháp lý, tài chính) hoặc đã có quá nhiều yếu tố — nét tay thành rối mắt.</p>
+  </div>
+  <div class="kw"><button>hand-drawn annotations</button><button>handwritten notes</button><button>sketchy arrows</button><button>marker circle highlight</button><button>doodle accents</button><button>animated SVG stroke drawing</button></div>
+</article>
+
+<!-- 5 -->
+<article class="pattern" id="device">
+  <h2>Device mockup</h2>
+  <p class="vi">Khung thiết bị — đặt ảnh giao diện vào khung laptop, điện thoại để người xem hình dung sản phẩm chạy thật trên máy của họ.</p>
+  <div class="demo"><div class="stage">
+    <div class="scene">
+      <div class="laptop">
+        <div class="lid"><div class="scr">
+          <div class="web-nav"><b>Ghi chú</b><span>Tính năng</span><span>Bảng giá</span><span>Tải về</span></div>
+          <div class="web-hero"><div><h4>Ghi chú gọn gàng</h4><p>Ghi lại mọi ý tưởng, xếp theo dự án, đồng bộ giữa laptop và điện thoại.</p><span class="btn">Tải miễn phí</span></div><div class="web-img"></div></div>
+        </div></div>
+        <div class="base"></div>
+      </div>
+      <div class="phone"><div class="pscr">
+        <div class="island"></div>
+        <small>Ghi chú · Hôm nay</small>
+        <h5>Họp nhóm thứ Hai</h5>
+        <div class="p-img"></div>
+        <div class="p-row"><span>3 việc</span><span>★ 4,9</span></div>
+        <div class="p-btn">Mở ghi chú</div>
+        <div class="p-bar"></div>
+      </div></div>
+    </div>
+  </div></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Giới thiệu app/website trên landing page, portfolio, App Store — cần bối cảnh “đây là sản phẩm thật”.</p>
+    <p class="avoid"><b>Tránh khi</b>Chính trang đó là sản phẩm — đặt giao diện trong khung trong giao diện chỉ thêm rối và thu nhỏ nội dung.</p>
+  </div>
+  <div class="kw"><button>device mockup</button><button>iPhone mockup with dynamic island</button><button>laptop mockup</button><button>app screenshot in device frame</button><button>multi-device hero</button><button>CSS device frame</button></div>
+</article>
+
+<!-- 6 -->
+<article class="pattern" id="spot">
+  <h2>Spotlight / Glow</h2>
+  <p class="vi">Vùng sáng theo con trỏ — một quầng sáng đi theo chuột trên nền tối, viền các thẻ gần con trỏ cũng sáng lên.</p>
+  <div class="demo"><div class="stage">
+    <div class="grid">
+      <div class="c"><div class="ci"><small>01 · CÁ NHÂN</small><h4>Gói Free</h4><p>Ba dự án, một thiết bị.</p><b>0đ</b></div></div>
+      <div class="c"><div class="ci"><small>02 · NHÓM</small><h4>Gói Pro</h4><p>Không giới hạn dự án và thiết bị.</p><b>199.000đ</b></div></div>
+      <div class="c"><div class="ci"><small>03 · CÔNG TY</small><h4>Gói Business</h4><p>Phân quyền, nhật ký, đăng nhập SSO.</p><b>499.000đ</b></div></div>
+    </div>
+    <div class="hint">Di chuột trong khung — khi chuột rời đi, vùng sáng tự trôi.</div>
+  </div></div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>Trang nền tối muốn tạo cảm giác tương tác cao cấp: lưới tính năng, bảng giá, thẻ sản phẩm công nghệ.</p>
+    <p class="avoid"><b>Tránh khi</b>Thiết bị cảm ứng là chính (không có con trỏ) hoặc nền sáng — quầng sáng gần như không thấy.</p>
+  </div>
+  <div class="kw"><button>spotlight effect</button><button>cursor-following glow</button><button>mouse-tracking radial gradient</button><button>glowing card border on hover</button><button>dark UI</button></div>
+</article>
+</main>
+
+<script src="assets/dict.js"></script>
+<script>
+const RM = Dict.RM;
+const inits = {};
+
+inits.aurora = s => {
+  const a = s.closest('.pattern'), b = s.querySelector('.tog');
+  a.classList.remove('raw');
+  b.onclick = () => { const r = a.classList.toggle('raw'); b.textContent = r ? 'Bật lại blur' : 'Xem khối màu gốc (tắt blur)'; };
+};
+
+inits.halftone = s => {
+  const src = s.querySelector('.src'), ht = s.querySelector('.ht'), rng = s.querySelector('input');
+  const dpr = devicePixelRatio || 1, w = src.clientWidth, h = src.clientHeight;
+  [src, ht].forEach(c => { c.width = w * dpr; c.height = h * dpr; });
+  const g = src.getContext('2d'); g.scale(dpr, dpr);
+  // ảnh nguồn: một quả cầu được chiếu sáng trên mặt bàn
+  let gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#fbe3c4'); gr.addColorStop(1, '#a8582f');
+  g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  const cx = w * .5, cy = h * .55;
+  g.fillStyle = 'rgba(60,25,10,.35)'; g.beginPath(); g.ellipse(cx + 40, cy + 120, 150, 34, 0, 0, 7); g.fill();
+  gr = g.createRadialGradient(cx - 50, cy - 60, 8, cx, cy - 10, 140); gr.addColorStop(0, '#ffffff'); gr.addColorStop(.35, '#e9a07a'); gr.addColorStop(.8, '#7a3517'); gr.addColorStop(1, '#2a1208');
+  g.fillStyle = gr; g.beginPath(); g.arc(cx, cy - 10, 130, 0, 7); g.fill();
+  const data = g.getImageData(0, 0, src.width, src.height).data;
+  const lum = (x, y) => { const i = ((Math.min(h - 1, y) * dpr | 0) * src.width + (Math.min(w - 1, x) * dpr | 0)) * 4; return (data[i] * .299 + data[i+1] * .587 + data[i+2] * .114) / 255; };
+  const o = ht.getContext('2d'); o.scale(dpr, dpr);
+  const draw = () => {
+    const step = +rng.value, ang = Math.PI / 4, c = Math.cos(ang), sn = Math.sin(ang), R = Math.hypot(w, h);
+    o.fillStyle = '#fdf1dc'; o.fillRect(0, 0, w, h); o.fillStyle = '#d2401f';
+    for (let i = -R; i < R; i += step) for (let j = -R; j < R; j += step) {
+      const x = w / 2 + i * c - j * sn, y = h / 2 + i * sn + j * c;
+      if (x < -step || y < -step || x > w + step || y > h + step) continue;
+      const r = (1 - lum(Math.max(0, x), Math.max(0, y))) * step * .72;
+      if (r > .3) { o.beginPath(); o.arc(x, y, r, 0, 7); o.fill(); }
+    }
+  };
+  rng.oninput = draw; draw();
+};
+
+inits.spot = s => {
+  const a = s.closest('.pattern'), cards = [...s.querySelectorAll('.c')];
+  let inside = false, raf, t0 = performance.now(), vis = true;
+  const place = (x, y) => {
+    s.style.setProperty('--x', x + 'px'); s.style.setProperty('--y', y + 'px');
+    const sr = s.getBoundingClientRect();
+    cards.forEach(c => { const r = c.getBoundingClientRect(); c.style.setProperty('--cx', (x + sr.left - r.left) + 'px'); c.style.setProperty('--cy', (y + sr.top - r.top) + 'px'); });
+  };
+  s.addEventListener('pointermove', e => { inside = true; const r = s.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); });
+  s.addEventListener('pointerleave', () => { inside = false; });
+  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; }); io.observe(s);
+  const idle = now => {
+    if (!inside && vis) { const t = (now - t0) / 1000, w = s.clientWidth, h = s.clientHeight;
+      place(w / 2 + Math.sin(t * .7) * w * .36, h / 2 + Math.sin(t * 1.1) * h * .28); }
+    raf = requestAnimationFrame(idle);
+  };
+  if (RM) place(s.clientWidth * .3, s.clientHeight * .4); else raf = requestAnimationFrame(idle);
+  return () => { cancelAnimationFrame(raf); io.disconnect(); };
+};
+
+document.querySelectorAll('article.pattern').forEach(a => { const f = inits[a.id]; Dict.demo(a.id, f && (d => f(d.querySelector('.stage')))); });
+</script>
+</body>
+</html>

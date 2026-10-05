@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onboarding — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset chỉ trong demo, specificity 0 */
+:where(.demo) :where(h3,h4,h5,p,ul,ol,dl,dd,figure){margin:0;padding:0}
+:where(.demo) :where(ul,ol){list-style:none}
+:where(.demo) :where(button,input,select){font:inherit;color:inherit}
+:where(.demo) svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){
+  .demo *,.demo *::before,.demo *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ===== 1. Coachmarks / Hotspots ===== */
+#coachmarks-hotspots .demo{background:#eceef3;color:#161616}
+#coachmarks-hotspots .demo .app{position:absolute;inset:18px 24px 18px;border-radius:14px;background:#fff;border:1px solid #e1e3ea;box-shadow:0 10px 30px -14px rgba(0,0,0,.2);display:grid;grid-template-columns:200px 1fr;grid-template-rows:54px 1fr;overflow:hidden}
+#coachmarks-hotspots .demo .tb{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid #eee}
+#coachmarks-hotspots .demo .tb b{font-size:15px}
+#coachmarks-hotspots .demo .tb small{font-size:12px;color:#999;margin-right:auto;margin-left:6px}
+#coachmarks-hotspots .demo .ib{width:36px;height:36px;display:grid;place-items:center;border:1px solid transparent;border-radius:9px;background:transparent;cursor:pointer;color:#555}
+#coachmarks-hotspots .demo .ib:hover{background:#f3f3f6;color:#161616}
+#coachmarks-hotspots .demo .share{height:36px;padding:0 16px;border:0;border-radius:9px;background:#3b5bdb;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
+#coachmarks-hotspots .demo .anc{position:relative;display:inline-flex}
+#coachmarks-hotspots .demo .outline{padding:14px 12px;border-right:1px solid #eee;background:#fafafb;font-size:13px}
+#coachmarks-hotspots .demo .outline h4{display:inline-flex;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:4px 6px}
+#coachmarks-hotspots .demo .outline li{padding:6px 8px;border-radius:7px;color:#555}
+#coachmarks-hotspots .demo .outline li:first-child{background:#eef1ff;color:#2a45c4;font-weight:600}
+#coachmarks-hotspots .demo .outline li.sub{padding-left:20px;font-size:12.5px}
+#coachmarks-hotspots .demo .doc{padding:26px 40px;overflow:hidden}
+#coachmarks-hotspots .demo .doc h3{font-size:24px;line-height:1.25;font-weight:800;letter-spacing:-.01em}
+#coachmarks-hotspots .demo .doc p{font-size:13.5px;color:#555;margin-top:10px;max-width:560px;line-height:1.6}
+#coachmarks-hotspots .demo .doc .ln{height:10px;border-radius:5px;background:#f0f1f4;margin-top:12px}
+#coachmarks-hotspots .demo .hs{position:absolute;z-index:2;top:-7px;right:-7px;width:18px;height:18px;padding:0;border-radius:50%;border:3px solid #fff;background:#ff5a1f;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+#coachmarks-hotspots .demo .hs::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid #ff5a1f;animation:cm-pulse 1.8s ease-out infinite;pointer-events:none}
+@keyframes cm-pulse{from{transform:scale(1);opacity:.9}to{transform:scale(2.6);opacity:0}}
+#coachmarks-hotspots .demo .hs.seen{background:#b9bccb;width:14px;height:14px;top:-5px;right:-5px;border-width:2px}
+#coachmarks-hotspots .demo .hs.seen::after{display:none}
+#coachmarks-hotspots .demo .outline .hs{top:-4px;right:-12px}
+#coachmarks-hotspots .demo .cm{position:fixed;inset:auto;margin:0;width:268px;padding:16px 16px 14px;border:0;border-radius:14px;background:#161616;color:#eee;font-size:13px;line-height:1.5;box-shadow:0 20px 50px -10px rgba(0,0,0,.45);overflow:visible}
+#coachmarks-hotspots .demo .cm::before{content:"";position:absolute;left:var(--ax,40px);width:12px;height:12px;background:#161616;transform:translateX(-50%) rotate(45deg)}
+#coachmarks-hotspots .demo .cm[data-side=below]::before{top:-6px}
+#coachmarks-hotspots .demo .cm[data-side=above]::before{bottom:-6px}
+#coachmarks-hotspots .demo .cm:popover-open{animation:cm-in .2s ease-out}
+@keyframes cm-in{from{opacity:0;transform:translateY(4px)}}
+#coachmarks-hotspots .demo .cm em{display:block;font:500 10px/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#ff9a6b;margin-bottom:8px}
+#coachmarks-hotspots .demo .cm h4{font-size:15px;color:#fff;line-height:1.3;margin-bottom:4px}
+#coachmarks-hotspots .demo .cm p{color:#bdbdc4}
+#coachmarks-hotspots .demo .cm .ft{display:flex;justify-content:flex-end;margin-top:12px}
+#coachmarks-hotspots .demo .cm button{height:32px;padding:0 14px;border:0;border-radius:8px;background:#fff;color:#161616;font-weight:600;font-size:12.5px;cursor:pointer}
+#coachmarks-hotspots .demo .cm button:hover{background:#ffe9df}
+#coachmarks-hotspots .demo .stat{position:absolute;left:264px;bottom:30px;z-index:3;font:500 11.5px/1 var(--mono);background:#161616;color:#fff;border-radius:999px;padding:7px 11px}
+#coachmarks-hotspots .demo>.replay{top:auto;bottom:28px;right:36px}
+@media (max-width:760px){
+  #coachmarks-hotspots .demo .app{inset:8px;grid-template-columns:1fr}
+  #coachmarks-hotspots .demo .outline{display:none}
+  #coachmarks-hotspots .demo .tb small{display:none}
+  #coachmarks-hotspots .demo .tb{padding:0 10px 0 14px;gap:4px}
+  #coachmarks-hotspots .demo .tb b{margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  #coachmarks-hotspots .demo .tb>.ib{display:none}
+  #coachmarks-hotspots .demo .share{padding:0 12px}
+  #coachmarks-hotspots .demo .doc{padding:18px}
+  #coachmarks-hotspots .demo .stat{left:18px;bottom:18px}
+  #coachmarks-hotspots .demo>.replay{bottom:16px;right:16px}
+}
+
+/* ===== 2. Progressive disclosure ===== */
+#progressive-disclosure .demo{background:#eef0f5;color:#161616;interpolate-size:allow-keywords}
+#progressive-disclosure .demo .lay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:40px;padding:16px}
+#progressive-disclosure .demo .card{width:430px;max-height:100%;overflow-y:auto;scrollbar-width:thin;background:#fff;border-radius:16px;border:1px solid #e1e3ea;box-shadow:0 18px 40px -18px rgba(0,0,0,.25);padding:18px 20px;font-size:13px}
+#progressive-disclosure .demo .card h3{font-size:16px;font-weight:800;line-height:1.3;margin-bottom:12px}
+#progressive-disclosure .demo .row{display:flex;gap:8px;align-items:center}
+#progressive-disclosure .demo input[type=email],#progressive-disclosure .demo input[type=date],#progressive-disclosure .demo input[type=password],#progressive-disclosure .demo select{height:36px;border:1px solid #d9dbe3;border-radius:9px;padding:0 10px;background:#fff;font-size:13px;min-width:0}
+#progressive-disclosure .demo input[type=email]{flex:1}
+#progressive-disclosure .demo .btn{height:36px;padding:0 14px;border-radius:9px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
+#progressive-disclosure .demo .btn:hover{border-color:#3b5bdb;color:#2a45c4}
+#progressive-disclosure .demo .btn.pri{background:#3b5bdb;border-color:#3b5bdb;color:#fff}
+#progressive-disclosure .demo .btn.pri:hover{background:#2f4bc4;color:#fff}
+#progressive-disclosure .demo .who{display:flex;align-items:center;gap:10px;margin:12px 0 14px}
+#progressive-disclosure .demo .who i{width:30px;height:30px;border-radius:50%;background:#ffd8c2;color:#8a3a12;display:grid;place-items:center;font:800 11px/1 var(--sans);font-style:normal}
+#progressive-disclosure .demo .who span{margin-left:auto;color:#888;font-size:12px}
+#progressive-disclosure .demo .lbl{display:block;font-weight:600;font-size:12.5px;margin-bottom:6px}
+#progressive-disclosure .demo .reveal{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f5f7ff;border:1px solid #e3e8fb;display:flex;align-items:center;gap:10px;justify-content:space-between}
+#progressive-disclosure .demo .reveal[hidden]{display:none}
+#progressive-disclosure .demo .reveal:not([hidden]){animation:pd-in .25s ease-out}
+@keyframes pd-in{from{opacity:0;transform:translateY(-4px)}}
+#progressive-disclosure .demo details{margin-top:14px;border-top:1px solid #eee;padding-top:10px}
+#progressive-disclosure .demo summary{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:#444;list-style:none;padding:4px 0;border-radius:6px}
+#progressive-disclosure .demo summary::-webkit-details-marker{display:none}
+#progressive-disclosure .demo summary::before{content:"";width:7px;height:7px;border:solid currentColor;border-width:0 1.8px 1.8px 0;transform:rotate(-45deg);transition:transform .2s;margin:0 4px}
+#progressive-disclosure .demo details[open]>summary::before{transform:rotate(45deg)}
+#progressive-disclosure .demo summary small{color:#999;font-weight:400}
+#progressive-disclosure .demo details::details-content{block-size:0;overflow:hidden;transition:block-size .3s ease,content-visibility .3s allow-discrete}
+#progressive-disclosure .demo details[open]::details-content{block-size:auto}
+#progressive-disclosure .demo .opt{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 0 2px}
+#progressive-disclosure .demo .opt label{display:flex;align-items:center;gap:8px;cursor:pointer}
+#progressive-disclosure .demo .opt input[type=checkbox]{width:16px;height:16px;accent-color:#3b5bdb}
+#progressive-disclosure .demo .opt>:is(input,select)[hidden]{display:none}
+#progressive-disclosure .demo .opt>:is(input,select){margin-left:24px;height:32px}
+#progressive-disclosure .demo .foot{display:flex;justify-content:space-between;gap:8px;margin-top:16px}
+#progressive-disclosure .demo .meter{width:250px;font-size:13px}
+#progressive-disclosure .demo .meter h4{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+#progressive-disclosure .demo .meter .big{font-size:30px;font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:14px;font-variant-numeric:tabular-nums}
+#progressive-disclosure .demo .meter .big small{font-size:14px;color:var(--mute);font-weight:600}
+#progressive-disclosure .demo .meter li{display:grid;grid-template-columns:26px 1fr;gap:2px 10px;padding:9px 0;border-top:1px solid #dfe2ea;color:#999;transition:color .25s}
+#progressive-disclosure .demo .meter li b{grid-row:span 2;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#dfe2ea;color:#fff;font-size:12px;transition:background .25s}
+#progressive-disclosure .demo .meter li span{font-weight:600}
+#progressive-disclosure .demo .meter li small{font-size:12px}
+#progressive-disclosure .demo .meter li.on{color:#161616}
+#progressive-disclosure .demo .meter li.on b{background:#3b5bdb}
+@media (max-width:760px){#progressive-disclosure .demo .meter,#progressive-disclosure .demo summary small{display:none}#progressive-disclosure .demo .card{width:100%;padding:14px}}
+
+/* ===== 3. Onboarding checklist ===== */
+#onboarding-checklist .demo{background:#f3f4f7;color:#161616}
+#onboarding-checklist .demo .lay{position:absolute;inset:0;display:flex;gap:20px;padding:18px 20px}
+#onboarding-checklist .demo .dash{flex:1;min-width:0;padding:6px 6px 0}
+#onboarding-checklist .demo .dash h3{font-size:22px;font-weight:800;line-height:1.25;letter-spacing:-.01em}
+#onboarding-checklist .demo .dash>p{font-size:13px;color:#777;margin-top:4px}
+#onboarding-checklist .demo .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+#onboarding-checklist .demo .tile{min-height:92px;border-radius:14px;border:1.5px dashed #d3d6df;padding:12px 14px;font-size:12.5px;color:#999;display:flex;flex-direction:column;gap:6px;transition:background .3s,border-color .3s}
+#onboarding-checklist .demo .tile h4{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#9a9aa6}
+#onboarding-checklist .demo .tile.ok{border-style:solid;border-color:#e3e5ec;background:#fff;color:#161616}
+#onboarding-checklist .demo .tile.ok{animation:ck-pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes ck-pop{from{transform:scale(.96);background:#eef6ff}}
+#onboarding-checklist .demo .tile b{font-size:14px}
+#onboarding-checklist .demo .avs{display:flex}
+#onboarding-checklist .demo .avs i{width:28px;height:28px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:grid;place-items:center;font:800 10px/1 var(--sans);font-style:normal;background:var(--c)}
+#onboarding-checklist .demo .avs i:first-child{margin-left:0}
+#onboarding-checklist .demo .ck{width:340px;flex:none;align-self:flex-start;max-height:100%;display:flex;flex-direction:column;background:#fff;border-radius:16px;border:1px solid #e1e3ea;box-shadow:0 18px 40px -18px rgba(0,0,0,.25);overflow:hidden}
+#onboarding-checklist .demo [hidden]{display:none!important}
+#onboarding-checklist .demo .ckh{padding:14px 16px 10px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px}
+#onboarding-checklist .demo .ckh h4{font-size:15px;font-weight:800}
+#onboarding-checklist .demo .ckh p{grid-column:1;font-size:12px;color:#777}
+#onboarding-checklist .demo .min{grid-row:1/3;grid-column:2;width:32px;height:32px;display:grid;place-items:center;border:1px solid #e3e5ec;border-radius:8px;background:#fff;cursor:pointer;color:#666}
+#onboarding-checklist .demo .min svg{transition:transform .2s}
+#onboarding-checklist .demo .min[aria-expanded=false] svg{transform:rotate(180deg)}
+#onboarding-checklist .demo progress{grid-column:1/-1;width:100%;height:6px;margin-top:8px;appearance:none;border:0;border-radius:3px;background:#eceef3;overflow:hidden}
+#onboarding-checklist .demo progress::-webkit-progress-bar{background:#eceef3}
+#onboarding-checklist .demo progress::-webkit-progress-value{background:#2b9a5a;border-radius:3px;transition:inline-size .4s}
+#onboarding-checklist .demo progress::-moz-progress-bar{background:#2b9a5a;border-radius:3px}
+#onboarding-checklist .demo .ckb{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;padding:0 8px 8px;border-top:1px solid #f0f0f3}
+#onboarding-checklist .demo details{border-radius:10px}
+#onboarding-checklist .demo details[open]{background:#f7f8fb}
+#onboarding-checklist .demo summary{display:flex;align-items:center;gap:10px;padding:9px 8px;cursor:pointer;list-style:none;border-radius:10px;font-weight:600;font-size:13px}
+#onboarding-checklist .demo summary::-webkit-details-marker{display:none}
+#onboarding-checklist .demo summary:hover{background:#f3f4f8}
+#onboarding-checklist .demo summary .dot{width:20px;height:20px;border-radius:50%;border:2px solid #c9ccd6;flex:none;display:grid;place-items:center;color:#fff;transition:background .25s,border-color .25s}
+#onboarding-checklist .demo summary .dot svg{width:12px;height:12px;stroke-width:3;opacity:0}
+#onboarding-checklist .demo summary .t::after{content:"" / ", "}
+#onboarding-checklist .demo summary small{margin-left:auto;font-weight:400;font-size:11.5px;color:#999}
+#onboarding-checklist .demo details.done summary .dot{background:#2b9a5a;border-color:#2b9a5a}
+#onboarding-checklist .demo details.done summary .dot svg{opacity:1}
+#onboarding-checklist .demo details.done summary .t{color:#999;text-decoration:line-through;text-decoration-color:#bbb}
+#onboarding-checklist .demo details.skip summary .t{color:#999}
+#onboarding-checklist .demo details.skip summary .dot{border-style:dashed}
+#onboarding-checklist .demo .bd{padding:0 10px 12px 38px;font-size:12.5px;color:#666;line-height:1.5}
+#onboarding-checklist .demo .bd .acts{display:flex;gap:8px;margin-top:10px}
+#onboarding-checklist .demo .bd button{height:32px;padding:0 12px;border-radius:8px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:12.5px;cursor:pointer}
+#onboarding-checklist .demo .bd button.pri{background:#3b5bdb;border-color:#3b5bdb;color:#fff}
+#onboarding-checklist .demo .bd button:disabled{opacity:.6;cursor:progress}
+#onboarding-checklist .demo .yay{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 22px;gap:8px;font-size:13px;color:#666}
+#onboarding-checklist .demo .yay .big{width:54px;height:54px;border-radius:50%;background:#e3f5ea;color:#2b9a5a;display:grid;place-items:center;animation:ck-pop .5s cubic-bezier(.3,1.5,.5,1)}
+#onboarding-checklist .demo .yay .big svg{width:26px;height:26px;stroke-width:2.6}
+#onboarding-checklist .demo .yay b{font-size:16px;color:#161616}
+#onboarding-checklist .demo .yay button{margin-top:6px;height:34px;padding:0 14px;border-radius:9px;border:1px solid #d9dbe3;background:#fff;font-weight:600;cursor:pointer}
+#onboarding-checklist .demo .reopen{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:12.5px;cursor:pointer}
+#onboarding-checklist .demo>.replay{top:auto;bottom:14px;right:auto;left:20px}
+@media (max-width:760px){
+  #onboarding-checklist .demo .dash{display:none}
+  #onboarding-checklist .demo .lay{padding:52px 10px 10px}
+  #onboarding-checklist .demo .ck{width:100%}
+  #onboarding-checklist .demo>.replay{left:auto;right:12px;top:10px;bottom:auto}
+}
+
+/* ===== 4. Product tour ===== */
+#product-tour .demo{background:#e9ebf1;color:#161616}
+#product-tour .demo .app{position:absolute;inset:16px 22px;border-radius:14px;background:#fff;border:1px solid #e1e3ea;display:grid;grid-template-columns:180px 1fr;grid-template-rows:52px 1fr;overflow:hidden}
+#product-tour .demo .tb{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid #eee}
+#product-tour .demo .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#3b5bdb,#7c4dff);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+#product-tour .demo .search{display:flex;white-space:nowrap;overflow:hidden;align-items:center;gap:8px;width:300px;height:34px;padding:0 10px;border-radius:9px;background:#f3f4f7;color:#888;font-size:13px;margin-left:96px}
+#product-tour .demo .search kbd{margin-left:auto;font:500 11px/1 var(--mono);border:1px solid #d9dbe3;border-radius:5px;padding:3px 6px;background:#fff}
+#product-tour .demo .tb .sp{flex:1}
+#product-tour .demo .ib{position:relative;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:9px;background:transparent;cursor:pointer;color:#555}
+#product-tour .demo .ib:hover{background:#f3f4f7;color:#161616}
+#product-tour .demo .bell::after{content:"";position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:#ff3b30;box-shadow:0 0 0 2px #fff}
+#product-tour .demo .help.ping{animation:pt-ping 1s ease-out 3}
+@keyframes pt-ping{0%{box-shadow:0 0 0 0 rgba(59,91,219,.55)}100%{box-shadow:0 0 0 12px rgba(59,91,219,0)}}
+#product-tour .demo .me{width:30px;height:30px;border-radius:50%;background:#ffd8c2;color:#8a3a12;display:grid;place-items:center;font:800 11px/1 var(--sans)}
+#product-tour .demo .side{padding:12px 10px;border-right:1px solid #eee;background:#fafafb;font-size:13px}
+#product-tour .demo .side li{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;color:#555;font-weight:600}
+#product-tour .demo .side li.on{background:#eef1ff;color:#2a45c4}
+#product-tour .demo .projects{margin-top:12px;padding:6px 0;border-radius:10px}
+#product-tour .demo .projects h4{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8a8a99;padding:6px 8px}
+#product-tour .demo .projects li{font-weight:400}
+#product-tour .demo .projects i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+#product-tour .demo main{padding:18px 24px;overflow:hidden}
+#product-tour .demo .mh{display:flex;align-items:center;justify-content:space-between}
+#product-tour .demo .mh h3{font-size:20px;font-weight:800;line-height:1.25}
+#product-tour .demo .new{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:9px;background:#161616;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
+#product-tour .demo .new svg{width:16px;height:16px}
+#product-tour .demo .tasks{margin-top:12px}
+#product-tour .demo .tasks li{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid #f1f1f4;font-size:13px}
+#product-tour .demo .tasks li::before{content:"";width:16px;height:16px;border-radius:5px;border:1.5px solid #c9ccd6}
+#product-tour .demo .tasks li span{margin-left:auto;font-size:11.5px;color:#999}
+#product-tour .demo .tour{position:absolute;inset:16px 22px;z-index:20;border-radius:14px;overflow:hidden}
+#product-tour .demo .tour[hidden]{display:none}
+#product-tour .demo .spot{position:absolute;border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 0 3000px rgba(14,16,30,.58);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1),width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+#product-tour .demo .spot.none{box-shadow:0 0 0 3000px rgba(14,16,30,.58)}
+#product-tour .demo .card{position:absolute;width:300px;padding:16px 18px 14px;background:#fff;border-radius:14px;box-shadow:0 24px 50px -12px rgba(0,0,0,.45);font-size:13px;line-height:1.5;color:#555;transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1)}
+#product-tour .demo .card:focus{outline:none}
+#product-tour .demo .card .ar{position:absolute;width:12px;height:12px;background:#fff;transform:translateX(-50%) rotate(45deg)}
+#product-tour .demo .card[data-side=below] .ar{top:-6px}
+#product-tour .demo .card[data-side=above] .ar{bottom:-6px}
+#product-tour .demo .card[data-side=center] .ar{display:none}
+#product-tour .demo .card .stp{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#3b5bdb}
+#product-tour .demo .card h4{font-size:16px;line-height:1.3;color:#161616;margin:6px 0 4px}
+#product-tour .demo .card .ft{display:flex;align-items:center;gap:8px;margin-top:14px}
+#product-tour .demo .card .dots{display:flex;gap:5px;margin-right:auto}
+#product-tour .demo .card .dots i{width:6px;height:6px;border-radius:3px;background:#d9dbe3;transition:width .25s,background .25s}
+#product-tour .demo .card .dots i.on{width:16px;background:#3b5bdb}
+#product-tour .demo .card button{height:32px;padding:0 12px;border-radius:8px;border:1px solid #d9dbe3;background:#fff;font-weight:600;font-size:12.5px;cursor:pointer;color:#161616}
+#product-tour .demo .card button:hover{border-color:#3b5bdb}
+#product-tour .demo .card button.pri{background:#3b5bdb;border-color:#3b5bdb;color:#fff}
+#product-tour .demo .card button.skip{border-color:transparent;color:#888;padding:0 6px}
+#product-tour .demo .card button[hidden]{display:none}
+#product-tour .demo .card[data-side=center]{width:340px;text-align:center}
+#product-tour .demo .card[data-side=center] .ft{justify-content:center}
+#product-tour .demo .card[data-side=center] .dots{display:none}
+#product-tour .demo .toast{position:absolute;right:34px;bottom:30px;z-index:25;max-width:300px;background:#161616;color:#fff;font-size:12.5px;line-height:1.45;padding:10px 14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:opacity .3s,transform .3s}
+#product-tour .demo .toast:not(.show){opacity:0;transform:translateY(8px);visibility:hidden;transition:opacity .3s,transform .3s,visibility 0s .3s}
+@media (max-width:760px){
+  #product-tour .demo .app,#product-tour .demo .tour{inset:8px}
+  #product-tour .demo .app{grid-template-columns:0 1fr}
+  #product-tour .demo .side{padding:0;border:0;overflow:hidden}
+  #product-tour .demo .search{width:auto;flex:1;margin-left:0}
+  #product-tour .demo .search kbd,#product-tour .demo .me{display:none}
+  #product-tour .demo .tb .sp{display:none}
+  #product-tour .demo main{padding:14px}
+  #product-tour .demo .card,#product-tour .demo .card[data-side=center]{width:calc(100% - 24px)}
+}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+</svg>
+
+<nav class="dnav"></nav>
+
+<main class="wrap">
+<header class="head">
+  <h1>Onboarding</h1>
+  <p>Những cách dẫn người mới từ lần mở đầu tiên tới lúc <b>thấy được giá trị</b>, mà không bắt họ đọc hướng dẫn. Bốn mức can thiệp từ nhẹ tới mạnh: chấm gợi ý, giấu bớt phần nâng cao, danh sách việc cần làm, và tour dẫn từng bước.</p>
+</header>
+
+<!-- 1 -->
+<article class="pattern" id="coachmarks-hotspots">
+  <h2>Coachmarks / Hotspots</h2>
+  <p class="vi"><b>Chấm gợi ý nhấp nháy.</b> Những chấm nhỏ đặt cạnh tính năng mới hoặc dễ bị bỏ qua. Người dùng tự chọn bấm vào lúc nào thì một bong bóng mẹo hiện ra; xem xong, chấm thôi nhấp nháy nhưng vẫn ở đó để xem lại. Bấm từng chấm cam (hoặc Tab tới rồi Space), đóng bằng “Đã hiểu”, Esc hoặc bấm ra ngoài.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="tb">
+        <b>Kế hoạch quý 4</b><small>Đã lưu · 2 phút trước</small>
+        <span class="anc"><button class="ib" type="button" aria-label="Lịch sử phiên bản"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></button>
+          <button class="hs" type="button" popovertarget="cm-hist" aria-label="Mẹo: Lịch sử phiên bản"></button></span>
+        <button class="ib" type="button" aria-label="Bình luận"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></button>
+        <span class="anc"><button class="share" type="button">Chia sẻ</button>
+          <button class="hs" type="button" popovertarget="cm-share" aria-label="Mẹo: Chia sẻ"></button></span>
+      </div>
+      <aside class="outline">
+        <span class="anc"><h4>Mục lục</h4><button class="hs" type="button" popovertarget="cm-toc" aria-label="Mẹo: Mục lục tự động"></button></span>
+        <ul><li>Mục tiêu</li><li class="sub">Chỉ số chính</li><li>Lộ trình</li><li class="sub">Tháng 10</li><li class="sub">Tháng 11</li><li>Ngân sách</li><li>Rủi ro</li></ul>
+      </aside>
+      <div class="doc">
+        <h3>Mục tiêu quý 4</h3>
+        <p>Tăng số nhóm dùng thường xuyên lên 30% và rút ngắn thời gian từ lúc đăng ký tới khi tạo dự án đầu tiên xuống dưới 5 phút.</p>
+        <div class="ln" style="width:92%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:60%"></div>
+      </div>
+    </div>
+    <div class="cm" id="cm-share" popover role="dialog" aria-labelledby="cm-share-t">
+      <em>Mới</em><h4 id="cm-share-t">Chia sẻ có thời hạn</h4>
+      <p>Giờ bạn có thể đặt ngày hết hạn cho link chia sẻ. Hợp với tài liệu gửi đối tác bên ngoài.</p>
+      <div class="ft"><button type="button" popovertarget="cm-share" popovertargetaction="hide">Đã hiểu</button></div>
+    </div>
+    <div class="cm" id="cm-hist" popover role="dialog" aria-labelledby="cm-hist-t">
+      <em>Mẹo</em><h4 id="cm-hist-t">Quay về bản cũ bất cứ lúc nào</h4>
+      <p>Mọi thay đổi được lưu thành phiên bản. Mở Lịch sử để so sánh hoặc khôi phục.</p>
+      <div class="ft"><button type="button" popovertarget="cm-hist" popovertargetaction="hide">Đã hiểu</button></div>
+    </div>
+    <div class="cm" id="cm-toc" popover role="dialog" aria-labelledby="cm-toc-t">
+      <em>Mẹo</em><h4 id="cm-toc-t">Mục lục tự cập nhật</h4>
+      <p>Mỗi tiêu đề bạn viết sẽ tự xuất hiện ở đây. Bấm để nhảy tới đúng đoạn.</p>
+      <div class="ft"><button type="button" popovertarget="cm-toc" popovertargetaction="hide">Đã hiểu</button></div>
+    </div>
+    <p class="stat" aria-live="polite">Đã xem 0/3 mẹo</p>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>giới thiệu tính năng mới cho người dùng cũ, hoặc chỉ ra 2–4 chỗ dễ bỏ sót trong một màn hình phức tạp. Người dùng tự chọn lúc xem nên không cắt ngang việc họ đang làm.</p>
+    <p class="avoid"><b>Tránh khi</b>rải chấm khắp màn hình (mỗi màn tối đa vài cái), hoặc nội dung là bước bắt buộc phải làm theo thứ tự: lúc đó dùng Product tour hay Onboarding checklist. Đừng để chấm nhấp nháy mãi sau khi người dùng đã xem.</p>
+    <p class="tip">Mẹo prompt: phân biệt “hotspot” (chấm, người dùng tự bấm) với “tooltip tour” (tự bật lần lượt). Yêu cầu “dismiss on Esc and outside click, remember seen state”.</p>
+  </div>
+  <div class="kw"><button>hotspot beacon</button><button>pulsing dot on new feature</button><button>coachmark tooltip with arrow</button><button>popover API (light dismiss, Esc)</button><button>"Got it" dismiss, remember seen state</button><button>non-blocking feature discovery</button></div>
+</article>
+
+<!-- 2 -->
+<article class="pattern" id="progressive-disclosure">
+  <h2>Progressive disclosure</h2>
+  <p class="vi"><b>Hé lộ dần.</b> Chỉ cho thấy những lựa chọn mà đa số người cần; phần còn lại chỉ hiện khi người dùng chọn một tuỳ chọn liên quan, hoặc tự mở mục “nâng cao”. Màn hình bớt đáng sợ với người mới mà người thạo vẫn đủ công cụ. Đổi “Quyền truy cập chung”, mở “Tuỳ chọn nâng cao”, bật hạn chót hay mật khẩu, rồi xem bộ đếm bên phải.</p>
+  <div class="demo">
+    <div class="lay">
+      <form class="card" onsubmit="return false" aria-labelledby="pd-t">
+        <h3 id="pd-t">Chia sẻ “Kế hoạch quý 4”</h3>
+        <div class="row"><input class="ctl" data-l="1" type="email" placeholder="Thêm người bằng email" aria-label="Email người được mời" autocomplete="off"><button class="btn ctl" data-l="1" type="button">Mời</button></div>
+        <div class="who"><i aria-hidden="true">TH</i><div><b>Lê Thu Hà</b> (bạn)</div><span>Chủ sở hữu</span></div>
+        <label class="lbl" for="pd-access">Quyền truy cập chung</label>
+        <select class="ctl" data-l="1" id="pd-access">
+          <option value="private">Chỉ người được mời</option>
+          <option value="link">Ai có liên kết</option>
+        </select>
+        <div class="reveal" data-for="link" hidden>
+          <label for="pd-role">Người có liên kết có thể</label>
+          <select class="ctl" data-l="2" id="pd-role"><option>Xem</option><option>Bình luận</option><option>Chỉnh sửa</option></select>
+        </div>
+        <details>
+          <summary>Tuỳ chọn nâng cao <small>(hết hạn, mật khẩu, tải xuống)</small></summary>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-exp">Đặt ngày hết hạn cho liên kết</label>
+            <input class="ctl" data-l="3" type="date" id="pd-exp" aria-label="Ngày hết hạn" value="2026-12-31" hidden></div>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" data-show="pd-pw">Yêu cầu mật khẩu</label>
+            <input class="ctl" data-l="3" type="password" id="pd-pw" aria-label="Mật khẩu cho liên kết" placeholder="Mật khẩu" autocomplete="new-password" hidden></div>
+          <div class="opt"><label><input class="ctl" data-l="3" type="checkbox" checked>Cho phép tải xuống, in và sao chép</label></div>
+        </details>
+        <div class="foot"><button class="btn ctl" data-l="1" type="button" data-copy>Sao chép liên kết</button><button class="btn pri ctl" data-l="1" type="button">Xong</button></div>
+      </form>
+      <div class="meter" aria-hidden="true">
+        <h4>Đang hiện</h4>
+        <p class="big"><span class="n">5</span> <small>/ <span class="m">11</span> điều khiển</small></p>
+        <ul>
+          <li data-l="1" class="on"><b>1</b><span>Luôn hiện</span><small>việc ai cũng làm: mời, chọn quyền</small></li>
+          <li data-l="2"><b>2</b><span>Hiện theo lựa chọn</span><small>chỉ khi chọn “Ai có liên kết”</small></li>
+          <li data-l="3"><b>3</b><span>Nâng cao</span><small>giấu sau một mục mở/đóng</small></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>một màn hình phục vụ cả người mới lẫn người thạo: form cài đặt, hộp thoại chia sẻ, bộ lọc tìm kiếm, trình chỉnh sửa. 80% người dùng chỉ cần 20% tuỳ chọn.</p>
+    <p class="avoid"><b>Tránh khi</b>tuỳ chọn bị giấu là thứ đa số cần, hoặc có tác động lớn (quyền riêng tư, chi phí): giấu đi là lừa người dùng. Đừng lồng quá hai lớp “nâng cao”.</p>
+    <p class="tip">Mẹo prompt: chỉ rõ lớp nào luôn hiện, lớp nào hiện theo điều kiện. Với phần nâng cao, xin dùng <code>&lt;details&gt;</code> native để có sẵn bàn phím và trạng thái mở/đóng cho trình đọc màn hình.</p>
+  </div>
+  <div class="kw"><button>progressive disclosure</button><button>"Advanced options" collapsible section</button><button>conditional fields revealed on selection</button><button>native details / summary</button><button>sensible defaults, hide rarely used settings</button><button>animate height with interpolate-size</button></div>
+</article>
+
+<!-- 3 -->
+<article class="pattern" id="onboarding-checklist">
+  <h2>Onboarding checklist</h2>
+  <p class="vi"><b>Danh sách việc để bắt đầu.</b> Một khung nhỏ liệt kê 3–6 việc đưa người mới tới “khoảnh khắc thấy giá trị”, kèm thanh tiến độ. Việc đầu tiên đã được đánh dấu xong sẵn để tạo đà. Mỗi việc làm xong thì app bên trái đổi theo và việc kế tiếp tự mở ra. Bấm nút xanh trong từng việc, thử “Bỏ qua” ở việc tuỳ chọn, thu nhỏ khung bằng nút mũi tên.</p>
+  <div class="demo">
+    <div class="lay">
+      <div class="dash">
+        <h3>Chào Minh Anh</h3>
+        <p>Đây là không gian làm việc của bạn.</p>
+        <div class="tiles">
+          <div class="tile" data-t="project"><h4>Dự án</h4><span>Chưa có dự án nào</span></div>
+          <div class="tile" data-t="team"><h4>Thành viên</h4><div class="avs"><i style="--c:#ffd8c2">MA</i></div><span>Chỉ có bạn</span></div>
+          <div class="tile" data-t="cal"><h4>Lịch</h4><span>Chưa kết nối</span></div>
+          <div class="tile" data-t="mobile"><h4>Di động</h4><span>Chưa cài ứng dụng</span></div>
+        </div>
+        <button class="reopen" type="button" hidden>Mở lại danh sách “Bắt đầu”</button>
+      </div>
+      <section class="ck" aria-labelledby="ob-t">
+        <div class="ckh">
+          <h4 id="ob-t">Bắt đầu với Workspace</h4>
+          <p class="cnt" aria-live="polite">1/5 xong · còn khoảng 4 phút</p>
+          <button class="min" type="button" aria-expanded="true" aria-controls="ob-body" aria-label="Thu nhỏ danh sách"><svg class="i" aria-hidden="true"><use href="#i-chev"/></svg></button>
+          <progress max="5" value="1" aria-label="Tiến độ bắt đầu">1/5</progress>
+        </div>
+        <div class="ckb" id="ob-body">
+          <details name="ob" class="done" data-k="account"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo tài khoản</span><small>Xong</small></summary>
+            <div class="bd">Đã xong khi bạn đăng ký. Một việc đã xong rồi đấy!</div></details>
+          <details name="ob" open data-k="project"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Tạo dự án đầu tiên</span><small>1 phút</small></summary>
+            <div class="bd">Dự án gom việc, tệp và người liên quan vào một chỗ.<div class="acts"><button class="pri" type="button" data-do>Tạo dự án</button></div></div></details>
+          <details name="ob" data-k="team"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Mời một đồng đội</span><small>1 phút</small></summary>
+            <div class="bd">Làm cùng ai đó là lúc ứng dụng có ích nhất. Một người là đủ để bắt đầu.<div class="acts"><button class="pri" type="button" data-do>Gửi lời mời</button></div></div></details>
+          <details name="ob" data-k="cal"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Kết nối lịch</span><small>30 giây</small></summary>
+            <div class="bd">Hạn chót sẽ hiện ngay trong lịch bạn đang dùng.<div class="acts"><button class="pri" type="button" data-do>Kết nối</button></div></div></details>
+          <details name="ob" data-k="mobile"><summary><span class="dot"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><span class="t">Cài ứng dụng di động</span><small>tuỳ chọn</small></summary>
+            <div class="bd">Nhận thông báo và duyệt việc khi không ngồi máy tính.<div class="acts"><button class="pri" type="button" data-do>Gửi link tải</button><button type="button" data-skip>Bỏ qua</button></div></div></details>
+        </div>
+        <div class="yay" hidden>
+          <span class="big"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <b>Mọi thứ đã sẵn sàng</b>
+          <p>Bạn đã xong phần bắt đầu. Danh sách này có thể mở lại trong mục Trợ giúp.</p>
+          <button type="button" class="hide">Ẩn danh sách</button>
+        </div>
+      </section>
+    </div>
+    <button class="replay">↻ Xem lại</button>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>sản phẩm cần người dùng tự làm vài việc cài đặt mới thấy giá trị (tạo dự án, mời người, kết nối dữ liệu). Hiệu ứng “đã xong một phần” (Zeigarnik, endowed progress) kéo họ làm nốt.</p>
+    <p class="avoid"><b>Tránh khi</b>sản phẩm dùng được ngay không cần cài đặt, hoặc danh sách dài quá 6–7 việc. Đừng bắt buộc theo thứ tự cứng, đừng để khung chiếm chỗ mãi: cho thu nhỏ, bỏ qua và ẩn hẳn khi xong.</p>
+  </div>
+  <div class="kw"><button>onboarding checklist</button><button>getting started widget with progress bar</button><button>endowed progress (first step pre-completed)</button><button>accordion steps with inline CTA</button><button>skip optional step</button><button>completion celebration + dismiss</button></div>
+</article>
+
+<!-- 4 -->
+<article class="pattern" id="product-tour">
+  <h2>Product tour</h2>
+  <p class="vi"><b>Tour dẫn từng bước.</b> Lần đầu vào app, một chuỗi thẻ ngắn lần lượt chiếu sáng từng khu vực chính (phần còn lại tối đi) và giải thích một câu. Luôn có “Bỏ qua”, cho quay lại bước trước, biết mình đang ở bước mấy. Bấm “Bắt đầu”, đi bằng nút hoặc phím ← →, Esc để thoát. Nút <b>?</b> trên thanh trên cùng mở lại tour.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="tb">
+        <span class="logo" aria-hidden="true">W</span>
+        <div class="search" data-step="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Tìm việc, tệp, người…<kbd>/</kbd></div>
+        <span class="sp"></span>
+        <button class="ib help" type="button" aria-label="Xem lại hướng dẫn"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg></button>
+        <button class="ib bell" type="button" aria-label="Thông báo, có mục mới"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg></button>
+        <span class="me" aria-hidden="true">MA</span>
+      </div>
+      <nav class="side" aria-label="Ứng dụng">
+        <ul>
+          <li><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Tổng quan</li>
+          <li class="on"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>Việc của tôi</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Lịch</li>
+        </ul>
+        <div class="projects"><h4>Dự án</h4><ul>
+          <li><i style="--c:#3b5bdb"></i>Ra mắt ứng dụng</li>
+          <li><i style="--c:#e8590c"></i>Nghiên cứu</li>
+          <li><i style="--c:#2b8a3e"></i>Website mới</li>
+        </ul></div>
+      </nav>
+      <main>
+        <div class="mh"><h3>Việc của tôi</h3><button class="new" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Tạo mới</button></div>
+        <ul class="tasks">
+          <li>Duyệt bản thiết kế màn hình đăng nhập<span>Hôm nay</span></li>
+          <li>Viết ghi chú phát hành v2.4<span>Thứ Tư</span></li>
+          <li>Gọi lại cho nhóm khảo sát<span>Thứ Năm</span></li>
+          <li>Chuẩn bị số liệu họp quý<span>Thứ Sáu</span></li>
+        </ul>
+      </main>
+    </div>
+    <div class="tour" hidden>
+      <div class="spot none"></div>
+      <div class="card" role="dialog" aria-labelledby="pt-title" aria-describedby="pt-text" tabindex="-1" data-side="center">
+        <span class="ar" aria-hidden="true"></span>
+        <p class="stp" aria-hidden="true"></p>
+        <div aria-live="polite"><h4 id="pt-title"></h4><p id="pt-text"></p></div>
+        <div class="ft">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <button type="button" class="skip">Bỏ qua</button>
+          <button type="button" class="back">Quay lại</button>
+          <button type="button" class="pri next">Tiếp</button>
+        </div>
+      </div>
+    </div>
+    <p class="toast" role="status"></p>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>giao diện có vài khu vực không tự giải thích được, và người dùng mới cần biết chúng ở đâu trước khi bắt đầu. Ngắn (3–5 bước), mỗi bước một ý, chạy một lần và mở lại được.</p>
+    <p class="avoid"><b>Tránh khi</b>dùng tour để chữa một giao diện khó hiểu, hoặc tour dài 10 bước mà người dùng chỉ bấm “Tiếp” cho xong. Không bao giờ bỏ nút “Bỏ qua”. Thường thì làm thật (checklist) dạy tốt hơn xem giới thiệu.</p>
+    <p class="tip">Mẹo prompt: yêu cầu “spotlight cutout overlay”, “step counter 2/4”, “Skip / Back / Next”, “arrow keys and Esc”, “focus moves into tour card”, và “relaunch from help menu”.</p>
+  </div>
+  <div class="kw"><button>product tour</button><button>step-by-step walkthrough</button><button>spotlight overlay with cutout</button><button>tooltip card anchored to element</button><button>Skip / Back / Next + step counter</button><button>welcome modal → guided steps</button><button>relaunch tour from help button</button></div>
+</article>
+
+</main>
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+  const $ = (s, r) => r.querySelector(s), $$ = (s, r) => [...r.querySelectorAll(s)];
+  const focus = el => el && el.focus({ preventScroll: true });
+  const trap = (box, e) => {
+    if (e.key !== 'Tab') return;
+    const f = $$('button:not([hidden]):not([disabled]),[href],input,select', box).filter(x => x.checkVisibility());
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); focus(f.at(-1)); }
+    else if (!e.shiftKey && document.activeElement === f.at(-1)) { e.preventDefault(); focus(f[0]); }
+  };
+
+  /* 1. Coachmarks / Hotspots — popover="auto": Esc và bấm ra ngoài đóng sẵn */
+  Dict.demo('coachmarks-hotspots', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const pops = $$('.cm', d), seen = new Set();
+    const hsOf = p => $(`[popovertarget="${p.id}"].hs`, d);
+    const place = p => {
+      const r = hsOf(p).getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight, vw = document.documentElement.clientWidth;
+      if (r.bottom < 64 || r.top > innerHeight) /* 64 = thanh điều hướng dính */ { p.hidePopover(); return; }
+      const below = r.bottom + 12 + h < innerHeight;
+      const dr = d.getBoundingClientRect(); // giữ bong bóng trong khung demo
+      const lo = Math.max(8, dr.left + 12), hi = Math.min(vw, dr.right - 12) - w;
+      const left = Math.max(lo, Math.min(r.left + r.width / 2 - w / 2, hi));
+      p.dataset.side = below ? 'below' : 'above';
+      p.style.left = left + 'px';
+      p.style.top = (below ? r.bottom + 12 : r.top - h - 12) + 'px';
+      p.style.setProperty('--ax', Math.max(16, Math.min(r.left + r.width / 2 - left, w - 16)) + 'px');
+    };
+    pops.forEach(p => p.addEventListener('toggle', e => {
+      if (e.newState !== 'open') return;
+      place(p);
+      const hs = hsOf(p);
+      if (!seen.has(p.id)) {
+        seen.add(p.id); hs.classList.add('seen');
+        hs.setAttribute('aria-label', hs.getAttribute('aria-label') + ' (đã xem)');
+        stat();
+      }
+    }, o));
+    // đếm theo số chấm đang hiện (màn hẹp giấu mục lục nên chỉ còn 2)
+    function stat() {
+      const vis = $$('.hs', d).filter(h => h.checkVisibility()), n = vis.filter(h => h.classList.contains('seen')).length;
+      $('.stat', d).textContent = n === vis.length ? `Đã xem hết ${n} mẹo` : `Đã xem ${n}/${vis.length} mẹo`;
+    }
+    stat();
+    const re = () => pops.filter(p => p.matches(':popover-open')).forEach(place);
+    addEventListener('scroll', re, { passive: true, signal: ac.signal });
+    addEventListener('resize', re, o);
+    return () => { pops.forEach(p => p.matches(':popover-open') && p.hidePopover()); ac.abort(); };
+  });
+
+  /* 2. Progressive disclosure */
+  Dict.demo('progressive-disclosure', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const ctls = $$('.ctl', d), access = $('#pd-access', d);
+    const count = () => {
+      const vis = ctls.filter(c => c.checkVisibility());
+      $('.n', d).textContent = vis.length; $('.m', d).textContent = ctls.length;
+      $$('.meter li', d).forEach(li => li.classList.toggle('on', vis.some(c => c.dataset.l === li.dataset.l)));
+    };
+    // cuộn trong thẻ (không cuộn trang) để phần vừa hiện nằm trong tầm nhìn
+    const card = $('.card', d), sm = Dict.RM ? 'auto' : 'smooth';
+    const show = el => {
+      const cr = card.getBoundingClientRect(), r = el.getBoundingClientRect();
+      if (r.bottom > cr.bottom - 12) card.scrollTo({ top: card.scrollTop + r.bottom - cr.bottom + 16, behavior: sm });
+    };
+    access.addEventListener('change', () => { const rv = $('.reveal', d); rv.hidden = access.value !== 'link'; if (!rv.hidden) show(rv); count(); }, o);
+    $$('[data-show]', d).forEach(cb => cb.addEventListener('change', () => {
+      const t = d.querySelector('#' + cb.dataset.show); t.hidden = !cb.checked; if (cb.checked) show(t); count();
+    }, o));
+    $('details', d).addEventListener('toggle', e => {
+      count();
+      if (e.newState === 'open') { const cr = card.getBoundingClientRect(), r = e.target.getBoundingClientRect(); card.scrollTo({ top: card.scrollTop + r.top - cr.top - 8, behavior: sm }); }
+    }, o);
+    $('[data-copy]', d).addEventListener('click', async e => {
+      const b = e.currentTarget, ok = await Dict.copy('https://app.example/d/ke-hoach-q4');
+      b.textContent = ok ? 'Đã sao chép ✓' : 'Không sao chép được';
+      setTimeout(() => { b.textContent = 'Sao chép liên kết'; }, 1400);
+    }, o);
+    count();
+    return () => ac.abort();
+  });
+
+  /* 3. Onboarding checklist */
+  Dict.demo('onboarding-checklist', d => {
+    const ac = new AbortController(), o = { signal: ac.signal }, timers = [];
+    const items = $$('details', d), total = items.length, prog = $('progress', d);
+    const mins = { account: 0, project: 1, team: 1, cal: .5, mobile: 1 };
+    const effect = {
+      project: t => { t.innerHTML = '<h4>Dự án</h4><b>Ra mắt website</b><span>0/12 việc · tạo vừa xong</span>'; },
+      team: t => { t.innerHTML = '<h4>Thành viên</h4><div class="avs"><i style="--c:#ffd8c2">MA</i><i style="--c:#d6e0ff">PL</i></div><span>Đã mời Phạm Lan</span>'; },
+      cal: t => { t.innerHTML = '<h4>Lịch</h4><b>3 sự kiện tuần này</b><span>Đồng bộ 2 phút trước</span>'; },
+      mobile: t => { t.innerHTML = '<h4>Di động</h4><b>Đã gửi link tải</b><span>Kiểm tra email của bạn</span>'; },
+    };
+    const sync = () => {
+      const done = items.filter(i => i.matches('.done,.skip'));
+      const left = items.filter(i => !i.matches('.done,.skip')).reduce((s, i) => s + mins[i.dataset.k], 0);
+      prog.value = done.length; prog.textContent = `${done.length}/${total}`;
+      const sk = items.filter(i => i.matches('.skip')).length;
+      $('.cnt', d).textContent = done.length === total ? (sk ? `Đã xong · bỏ qua ${sk} việc tuỳ chọn` : 'Đã xong tất cả') : `${done.length}/${total} xong · còn khoảng ${left < 1 ? '30 giây' : Math.ceil(left) + ' phút'}`;
+      if (done.length === total) {
+        timers.push(setTimeout(() => { $('.ckb', d).hidden = true; $('.min', d).hidden = true; $('.yay', d).hidden = false; focus($('.yay .hide', d)); }, 500));
+      }
+    };
+    const finish = (det, how) => {
+      det.classList.add(how); $('small', det).textContent = how === 'done' ? 'Xong' : 'Đã bỏ qua';
+      det.open = false;
+      const next = items.find(i => !i.matches('.done,.skip'));
+      if (next) {
+        next.open = true; focus($('summary', next));
+        const box = $('.ckb', d), br = box.getBoundingClientRect(), r = next.getBoundingClientRect();
+        if (r.bottom > br.bottom || r.top < br.top) box.scrollTo({ top: box.scrollTop + r.top - br.top - 4, behavior: Dict.RM ? 'auto' : 'smooth' });
+      }
+      sync();
+    };
+    $('.ckb', d).addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      const det = b.closest('details');
+      if ('skip' in b.dataset) return finish(det, 'skip');
+      b.disabled = true; b.textContent = 'Đang làm…';
+      timers.push(setTimeout(() => { const t = $(`.tile[data-t=${det.dataset.k}]`, d); effect[det.dataset.k](t); t.classList.add('ok'); finish(det, 'done'); }, 650));
+    }, o);
+    const min = $('.min', d);
+    min.addEventListener('click', () => {
+      const open = min.getAttribute('aria-expanded') !== 'true';
+      min.setAttribute('aria-expanded', open); min.setAttribute('aria-label', open ? 'Thu nhỏ danh sách' : 'Mở rộng danh sách');
+      $('.ckb', d).hidden = !open;
+    }, o);
+    $('.yay .hide', d).addEventListener('click', () => { $('.ck', d).hidden = true; const r = $('.reopen', d); r.hidden = false; focus(r); }, o);
+    $('.reopen', d).addEventListener('click', e => { $('.ck', d).hidden = false; e.currentTarget.hidden = true; focus($('.yay .hide', d)); }, o);
+    return () => { timers.forEach(clearTimeout); ac.abort(); };
+  });
+
+  /* 4. Product tour */
+  Dict.demo('product-tour', d => {
+    const ac = new AbortController(), o = { signal: ac.signal };
+    const app = $('.app', d), tour = $('.tour', d), spot = $('.spot', d), card = $('.card', d), toast = $('.toast', d);
+    const [skip, back, next] = ['.skip', '.back', '.next'].map(s => $(s, card));
+    const ALL = [
+      { t: 'Chào mừng tới Workspace', p: 'Xem nhanh các điểm chính, mất chưa tới 30 giây. Bạn có thể bỏ qua bất cứ lúc nào.' },
+      { el: '.search', t: 'Tìm mọi thứ', p: 'Gõ tên việc, tệp hay người. Nhấn phím / ở bất kỳ đâu để mở nhanh.' },
+      { el: '.new', t: 'Tạo nhanh', p: 'Tạo việc, tài liệu hoặc dự án mới từ một nút duy nhất.' },
+      { el: '.projects', t: 'Dự án của bạn', p: 'Mọi dự án bạn tham gia nằm ở đây. Kéo để sắp xếp, ghim cái hay dùng lên đầu.' },
+      { el: '.bell', t: 'Thông báo', p: 'Khi ai đó nhắc tới bạn hoặc giao việc, chấm đỏ sẽ hiện ở đây.' },
+    ];
+    // bỏ bước có đích bị ẩn (vd. sidebar trên màn hẹp) để không chiếu sáng một vùng rỗng
+    const pick = () => ALL.filter(s => !s.el || $(s.el, app).getBoundingClientRect().width > 24);
+    let i = 0, toastT, steps = ALL;
+    const rel = el => { const a = el.getBoundingClientRect(), b = tour.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height }; };
+    const render = moveFocus => {
+      const s = steps[i], W = tour.clientWidth, H = tour.clientHeight;
+      $('#pt-title', card).textContent = s.t; $('#pt-text', card).textContent = s.p;
+      $('.stp', card).textContent = i ? `Bước ${i} / ${steps.length - 1}` : 'Hướng dẫn nhanh';
+      $$('.dots i', card).forEach((x, k) => { x.classList.toggle('on', k === i - 1); x.hidden = k >= steps.length - 1; });
+      skip.textContent = i ? 'Bỏ qua' : 'Để sau';
+      back.hidden = i < 2;
+      next.textContent = i === 0 ? 'Bắt đầu' : i === steps.length - 1 ? 'Xong' : 'Tiếp';
+      if (!s.el) {
+        spot.classList.add('none'); Object.assign(spot.style, { left: W / 2 + 'px', top: H / 2 + 'px', width: 0, height: 0 });
+        card.dataset.side = 'center';
+        card.style.left = (W - card.offsetWidth) / 2 + 'px'; card.style.top = (H - card.offsetHeight) / 2 + 'px';
+      } else {
+        const r = rel($(s.el, app)), P = 6;
+        spot.classList.remove('none');
+        Object.assign(spot.style, { left: r.x - P + 'px', top: r.y - P + 'px', width: r.w + 2 * P + 'px', height: r.h + 2 * P + 'px' });
+        const cw = card.offsetWidth, ch = card.offsetHeight;
+        const below = r.y + r.h + P + 14 + ch <= H - 8;
+        const left = Math.max(10, Math.min(r.x + r.w / 2 - cw / 2, W - cw - 10));
+        card.dataset.side = below ? 'below' : 'above';
+        card.style.left = left + 'px';
+        card.style.top = (below ? r.y + r.h + P + 14 : Math.max(8, r.y - P - 14 - ch)) + 'px';
+        $('.ar', card).style.left = Math.max(18, Math.min(r.x + r.w / 2 - left, cw - 18)) + 'px';
+      }
+      if (moveFocus) focus(next);
+    };
+    const start = (from, moveFocus) => {
+      steps = pick(); i = from; tour.hidden = false; app.inert = true; toast.classList.remove('show'); render(moveFocus);
+    };
+    const end = () => {
+      tour.hidden = true; app.inert = false;
+      const help = $('.help', app);
+      help.classList.remove('ping'); void help.offsetWidth; help.classList.add('ping');
+      toast.innerHTML = 'Xem lại hướng dẫn bất cứ lúc nào bằng nút <b>?</b> trên thanh trên cùng.'; toast.classList.add('show');
+      clearTimeout(toastT); toastT = setTimeout(() => { toast.classList.remove('show'); }, 4000);
+      focus(help);
+    };
+    const go = k => { if (k < 0) return; if (k >= steps.length) return end(); i = k; render(true); };
+    next.addEventListener('click', () => go(i + 1), o);
+    back.addEventListener('click', () => go(i - 1), o);
+    skip.addEventListener('click', end, o);
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); end(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1); }
+      else if (e.key === 'ArrowLeft' && i > 1) { e.preventDefault(); go(i - 1); }
+      else trap(card, e);
+    }, o);
+    $('.help', app).addEventListener('click', () => start(1, true), o);
+    const ro = new ResizeObserver(() => { if (!tour.hidden) { const cur = steps[i]; steps = pick(); i = Math.max(0, steps.indexOf(cur)); render(false); } });
+    ro.observe(d);
+    start(0, false); // tự mở lời chào khi vào khung nhìn, không cướp focus của người đang cuộn trang
+    return () => { ro.disconnect(); clearTimeout(toastT); ac.abort(); app.inert = false; };
+  });
+})();
+</script>
+</body>
+</html>

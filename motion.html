@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chuyển động — Từ điển pattern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+  /* reset cũ của trang, giờ chỉ áp trong demo */
+  :where(.demo h1,.demo h2,.demo h3){line-height:1.2;margin:0}
+  :where(.demo button){font:inherit;color:inherit}
+  .demo:has(.scroller) .replay{right:26px}
+  .hint{position:absolute;top:12px;left:14px;z-index:20;font-size:12.5px;font-weight:600;color:var(--mute);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:4px 11px;pointer-events:none}
+  .rm-note{display:none;position:absolute;left:14px;bottom:12px;z-index:20;font-size:12px;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+  .nosda{display:none;position:absolute;left:14px;bottom:12px;z-index:21;font-size:12px;color:#8a2a00;background:#fff3ec;border:1px solid #ffd2bd;border-radius:6px;padding:3px 8px}
+  @supports not (animation-timeline: scroll()){ .needs-sda .nosda{display:block} }
+  @media (prefers-reduced-motion: reduce){
+    .rm-note{display:block}
+    .nosda{display:none !important}
+  }
+  .scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain}
+
+  /* ---------- 1. Scrollytelling ---------- */
+  #scrollytelling .demo{background:#101418;color:#e9edf2}
+  #scrollytelling .hint{background:#101418;color:#aab4c0;border-color:#2a323b}
+  #scrollytelling .grid{display:grid;grid-template-columns:1fr 1fr}
+  #scrollytelling .steps{padding:0 24px 0 48px}
+  #scrollytelling .step{height:380px;display:flex;flex-direction:column;justify-content:center;opacity:.3;transition:opacity .4s}
+  #scrollytelling .step.on{opacity:1}
+  #scrollytelling .step small{font-family:var(--mono);color:var(--acc);font-size:12px}
+  #scrollytelling .step h3{font-size:24px;margin:6px 0 8px}
+  #scrollytelling .step p{margin:0;color:#aab4c0;font-size:15px;max-width:340px}
+  #scrollytelling .visual{position:sticky;top:0;height:380px;display:grid;place-items:center}
+  #scrollytelling .chart{position:relative;width:260px;height:240px}
+  #scrollytelling .bar{position:absolute;bottom:60px;left:100px;width:60px;height:60px;border-radius:50%;background:#3b4652;
+    transition:left .7s cubic-bezier(.6,.0,.2,1),height .7s cubic-bezier(.6,.0,.2,1),border-radius .7s,background .7s,bottom .7s}
+  #scrollytelling .cap{position:absolute;left:0;right:0;bottom:0;text-align:center;font-family:var(--mono);font-size:12px;color:#7d8996}
+  #scrollytelling [data-scene="1"] .bar{background:var(--acc)}
+  #scrollytelling [data-scene="2"] .bar{border-radius:8px;height:110px;bottom:40px}
+  #scrollytelling [data-scene="2"] .b1{left:20px}#scrollytelling [data-scene="2"] .b3{left:180px}
+  #scrollytelling [data-scene="3"] .bar{border-radius:8px;bottom:40px}
+  #scrollytelling [data-scene="3"] .b1{left:20px;height:70px}
+  #scrollytelling [data-scene="3"] .b2{height:120px}
+  #scrollytelling [data-scene="3"] .b3{left:180px;height:190px;background:var(--acc)}
+  @media (prefers-reduced-motion: reduce){ #scrollytelling .bar,#scrollytelling .step{transition:none} }
+
+  /* ---------- 2. Pin / Sticky ---------- */
+  #pin .demo{background:#faf8f4}
+  #pin .wrap{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:56px 48px 0}
+  #pin .pinned{position:sticky;top:56px;align-self:start;background:#161616;color:#fff;border-radius:14px;padding:20px;height:230px;display:flex;flex-direction:column;justify-content:space-between}
+  #pin .pinned .img{height:110px;border-radius:10px;background:radial-gradient(circle at 35% 40%,#ffb08e,var(--acc) 45%,#7a2400)}
+  #pin .pinned code{font-family:var(--mono);font-size:12px;color:#ffb08e}
+  #pin .pinned h3{font-size:20px}
+  #pin .spec{padding:18px 0;border-bottom:1px solid var(--line)}
+  #pin .spec h4{margin:0 0 4px;font-size:16px}
+  #pin .spec p{margin:0;color:var(--mute);font-size:14.5px}
+  #pin .after{margin-top:40px;padding:40px 48px 60px;background:#ece8e0;color:var(--mute);font-size:15px}
+  #pin .after b{color:var(--ink)}
+
+  /* ---------- 3. Scrub ---------- */
+  @property --scrub-p{syntax:'<integer>';inherits:true;initial-value:0}
+  #scrub .demo{background:#f2f4ff}
+  #scrub .scroller{scroll-timeline:--scrub y}
+  #scrub .track{height:1400px}
+  #scrub .stage{position:sticky;top:0;height:378px;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 56px;gap:40px}
+  #scrub .ring{width:200px;height:200px;border-radius:50%;justify-self:center;display:grid;place-items:center;
+    background:conic-gradient(#3346ff calc(var(--scrub-p)*1%),#dfe3ff 0)}
+  #scrub .ring::before{content:"";grid-area:1/1;width:150px;height:150px;border-radius:50%;background:#f2f4ff}
+  #scrub .num{grid-area:1/1;font-weight:800;font-size:40px;color:#1d2799;font-family:var(--mono)}
+  #scrub .num::after{counter-reset:p var(--scrub-p);content:counter(p) "%"}
+  #scrub .right h3{font-size:24px;margin-bottom:10px}
+  #scrub .right p{margin:0 0 16px;color:#4a4f73;font-size:15px}
+  #scrub .bar{height:10px;border-radius:5px;background:#dfe3ff;overflow:hidden}
+  #scrub .bar i{display:block;height:100%;width:calc(var(--scrub-p)*1%);background:#3346ff}
+  #scrub .car{margin-top:18px;height:40px;position:relative}
+  #scrub .car span{position:absolute;left:calc(var(--scrub-p)*1% - var(--scrub-p)*.4px);top:0;width:40px;height:40px;border-radius:8px;background:var(--acc);rotate:calc(var(--scrub-p)*3.6deg)}
+  @keyframes scrub-p{from{--scrub-p:0}to{--scrub-p:100}}
+  @media (prefers-reduced-motion: no-preference){
+    #scrub .stage{animation:scrub-p linear both;animation-timeline:--scrub}
+  }
+  @media (prefers-reduced-motion: reduce){ #scrub .stage{--scrub-p:100} }
+
+  /* ---------- 4. Scroll-triggered reveal ---------- */
+  #reveal .demo{background:#f7f3ee}
+  #reveal .list{padding:70px 56px 120px;display:grid;gap:22px}
+  #reveal .intro{font-size:15px;color:var(--mute);max-width:520px;margin:0 0 220px}
+  #reveal .intro b{color:var(--ink)}
+  #reveal .card{display:flex;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;max-width:560px}
+  #reveal .card:nth-child(odd){margin-left:auto}
+  #reveal .card i{flex:none;width:52px;height:52px;border-radius:12px;background:var(--c)}
+  #reveal .card h4{margin:0;font-size:16px}
+  #reveal .card p{margin:0;color:var(--mute);font-size:14px}
+  @media (prefers-reduced-motion: no-preference){
+    #reveal .card{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+    #reveal .card.in{opacity:1;transform:none}
+  }
+
+  /* ---------- 5. Stagger ---------- */
+  #stagger .demo{background:#fbfaf7;display:flex;flex-direction:column;justify-content:center;gap:34px;padding:0 56px}
+  #stagger .row-label{font-family:var(--mono);font-size:12px;color:var(--mute);margin-bottom:10px}
+  #stagger .row{display:grid;grid-template-columns:repeat(8,1fr);gap:12px}
+  #stagger .tile{height:92px;border-radius:12px;background:#161616}
+  #stagger .row.s .tile{background:var(--acc)}
+  @keyframes stagger-in{from{opacity:0;transform:translateY(28px) scale(.9)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: no-preference){
+    #stagger .tile{opacity:0}
+    #stagger .play .tile{animation:stagger-in .55s cubic-bezier(.2,.8,.2,1) both}
+    #stagger .play .row.s .tile{animation-delay:calc(var(--i) * 80ms)}
+  }
+
+  /* ---------- 6. Parallax ---------- */
+  #parallax .demo{background:#ffe9d6}
+  #parallax .scroller{scroll-timeline:--plx y}
+  #parallax .track{height:1300px}
+  #parallax .stage{position:sticky;top:0;height:378px;overflow:hidden;background:linear-gradient(#ffd7b5,#fff1e4 60%)}
+  #parallax .layer{position:absolute;left:-10%;right:-10%}
+  #parallax .sun{left:auto;right:18%;top:40px;width:90px;height:90px;border-radius:50%;background:#ffb547}
+  #parallax .far{top:120px;height:600px;background:#e9a37c;border-radius:50% 50% 0 0 / 120px 120px 0 0}
+  #parallax .mid{top:200px;height:700px;background:#c4603a;border-radius:40% 60% 0 0 / 110px 140px 0 0}
+  #parallax .near{top:295px;height:900px;background:#3a1d14;border-radius:60% 40% 0 0 / 80px 60px 0 0;color:#ffd7b5}
+  #parallax .near p{max-width:520px;margin:80px auto 0;text-align:center;font-size:16px}
+  #parallax .tag{position:absolute;font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.85);color:#161616;padding:2px 7px;border-radius:4px}
+  #parallax .far .tag{left:22%;top:30px}#parallax .mid .tag{left:58%;top:40px}#parallax .near .tag{left:24%;top:30px}
+  #parallax .sun .tag{left:100px;top:34px;white-space:nowrap}
+  #parallax .title{position:absolute;left:48px;top:52px;font-weight:800;font-size:30px;line-height:1.15;color:#3a1d14}
+  @keyframes plx-sun{to{transform:translateY(70px)}}
+  @keyframes plx-far{to{transform:translateY(-50px)}}
+  @keyframes plx-mid{to{transform:translateY(-120px)}}
+  @keyframes plx-near{to{transform:translateY(-200px)}}
+  @keyframes plx-title{to{transform:translateY(-40px);opacity:0}}
+  @media (prefers-reduced-motion: no-preference){
+    #parallax .sun,#parallax .far,#parallax .mid,#parallax .near,#parallax .title{animation:linear both;animation-timeline:--plx}
+    #parallax .sun{animation-name:plx-sun}#parallax .far{animation-name:plx-far}
+    #parallax .mid{animation-name:plx-mid}#parallax .near{animation-name:plx-near}#parallax .title{animation-name:plx-title}
+  }
+
+  /* ---------- 7. Morph ---------- */
+  #morph .demo{background:#f4f1fb;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;justify-items:center}
+  #morph .cell{display:grid;grid-template-rows:170px auto;place-items:center;gap:18px}
+  #morph .cap{font-family:var(--mono);font-size:12px;color:var(--mute);text-align:center}
+  #morph .send{position:relative;width:180px;height:56px;border:0;border-radius:14px;background:#5b3df5;color:#fff;font-weight:800;font-size:16px;cursor:pointer;
+    transition:width .45s cubic-bezier(.6,0,.2,1),border-radius .45s,background .4s}
+  #morph .send .t{transition:opacity .2s}
+  #morph .send::before{content:"";position:absolute;inset:14px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;opacity:0}
+  #morph .send::after{content:"";position:absolute;left:21px;top:16px;width:9px;height:17px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+  #morph .send.loading,#morph .send.done{width:56px;border-radius:28px}
+  #morph .send.loading .t,#morph .send.done .t{opacity:0}
+  #morph .send.loading::before{opacity:1;animation:morph-spin .7s linear infinite}
+  #morph .send.done{background:#14a06a}
+  #morph .send.done::after{transform:rotate(45deg) scale(1)}
+  @keyframes morph-spin{to{transform:rotate(360deg)}}
+  #morph .burger{width:72px;height:72px;border-radius:16px;border:0;background:#161616;cursor:pointer;position:relative}
+  #morph .burger i{position:absolute;left:20px;width:32px;height:3px;border-radius:2px;background:#fff;transition:transform .4s cubic-bezier(.6,0,.2,1),opacity .2s}
+  #morph .burger i:nth-child(1){top:26px}#morph .burger i:nth-child(2){top:35px}#morph .burger i:nth-child(3){top:44px}
+  #morph .burger.x i:nth-child(1){transform:translateY(9px) rotate(45deg)}
+  #morph .burger.x i:nth-child(2){opacity:0;transform:scaleX(0)}
+  #morph .burger.x i:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+  #morph .blob{width:150px;height:150px;background:linear-gradient(135deg,var(--acc),#5b3df5);border-radius:50%}
+  @keyframes morph-blob{
+    0%,100%{border-radius:50%;rotate:0deg}
+    33%{border-radius:18px;rotate:45deg}
+    66%{border-radius:70% 30% 60% 40% / 40% 60% 40% 60%;rotate:120deg}}
+  @media (prefers-reduced-motion: no-preference){ #morph .blob{animation:morph-blob 6s ease-in-out infinite} }
+  @media (prefers-reduced-motion: reduce){ #morph .send,#morph .burger i,#morph .send::after{transition:none} #morph .send.loading::before{animation:none} }
+
+  /* ---------- 8. Marquee ---------- */
+  #marquee .demo{background:#161616;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:26px}
+  #marquee .row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+  #marquee .move{display:flex;width:max-content}
+  #marquee .set{display:flex;gap:40px;padding-right:40px;align-items:center;flex:none}
+  #marquee .big span{font-size:64px;font-weight:800;line-height:1.2;white-space:nowrap}
+  #marquee .big span.o{color:transparent;-webkit-text-stroke:1.5px #fff}
+  #marquee .big .dot{color:var(--acc)}
+  #marquee .logos .set{gap:16px;padding-right:16px}
+  #marquee .logos span{border:1px solid #3a3a3a;border-radius:999px;padding:10px 22px;font-family:var(--mono);font-size:15px;white-space:nowrap;color:#cfcfcf}
+  #marquee .note{text-align:center;font-size:12.5px;color:#8a8a8a}
+  @keyframes mq-left{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion: no-preference){
+    #marquee .big .move{animation:mq-left 22s linear infinite}
+    #marquee .logos .move{animation:mq-left 30s linear infinite reverse}
+    #marquee .row:hover .move{animation-play-state:paused}
+  }
+  @media (prefers-reduced-motion: reduce){ #marquee .row{overflow-x:auto} }
+
+  /* ---------- 9. Text reveal ---------- */
+  #textreveal .demo{background:#0f0f0f;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 64px}
+  #textreveal .h{font-size:60px;font-weight:800;line-height:1.2;letter-spacing:-.01em;margin:0}
+  #textreveal .h .w{display:inline-block;white-space:nowrap;overflow:hidden;padding:.12em 0 .06em;vertical-align:top}
+  #textreveal .h .c{display:inline-block}
+  #textreveal .h .acc{color:var(--acc)}
+  #textreveal .sub{font-size:19px;color:#bdbdbd;margin:18px 0 0;max-width:640px}
+  #textreveal .sub .w{display:inline-block}
+  #textreveal .cap{position:absolute;left:64px;top:40px;font-family:var(--mono);font-size:12px;color:#7a7a7a}
+  @keyframes tr-up{from{transform:translateY(110%)}to{transform:none}}
+  @keyframes tr-blur{from{opacity:0;filter:blur(8px);transform:translateY(8px)}to{opacity:1;filter:none;transform:none}}
+  @media (prefers-reduced-motion: no-preference){
+    #textreveal .h .c{transform:translateY(110%)}
+    #textreveal .sub .w{opacity:0}
+    #textreveal .play .h .c{animation:tr-up .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 28ms)}
+    #textreveal .play .sub .w{animation:tr-blur .6s ease both;animation-delay:calc(700ms + var(--i) * 60ms)}
+  }
+
+  /* ---------- 10. View transitions ---------- */
+  #viewtransitions .demo{background:#f3f2ee}
+  #viewtransitions .grid{position:absolute;inset:0;padding:56px 40px 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  #viewtransitions .vcard{border:0;padding:0;text-align:left;background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  #viewtransitions .vcard:hover{box-shadow:0 6px 20px rgba(0,0,0,.1)}
+  #viewtransitions .vcard .img{flex:1;background:var(--c)}
+  #viewtransitions .vcard .tt{padding:12px 14px;font-weight:800;font-size:16px}
+  #viewtransitions .vcard .tt small{display:block;font-weight:400;color:var(--mute);font-size:13px}
+  #viewtransitions .detail{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr 1fr;background:#fff}
+  #viewtransitions .detail[hidden]{display:none}
+  #viewtransitions .detail .img{background:var(--c)}
+  #viewtransitions .detail .body{padding:56px 40px 32px}
+  #viewtransitions .detail h3{font-size:34px;line-height:1.15}
+  #viewtransitions .detail p{color:var(--mute);font-size:15px}
+  #viewtransitions .back{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px;cursor:pointer}
+  #viewtransitions .support{position:absolute;left:40px;top:16px;font-family:var(--mono);font-size:12px;color:var(--mute)}
+  ::view-transition-group(vt-hero),::view-transition-group(vt-title){animation-duration:.5s;animation-timing-function:cubic-bezier(.6,0,.2,1)}
+
+  /* ---------- 11. Micro-interactions ---------- */
+  #micro .demo{background:#fbfaf7;display:grid;grid-template-columns:repeat(4,1fr)}
+  #micro .cell{display:grid;grid-template-rows:64px 40px;place-items:center;align-content:center;gap:18px;border-right:1px solid var(--line)}
+  #micro .cell:last-child{border-right:0}
+  #micro .cap{font-family:var(--mono);font-size:12px;color:var(--mute);text-align:center;max-width:180px;align-self:start}
+  #micro .like{position:relative;display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 18px 10px 14px;cursor:pointer;font-weight:600}
+  #micro .like svg{width:26px;height:26px;fill:none;stroke:#161616;stroke-width:2;transition:fill .2s,stroke .2s}
+  #micro .like.on svg{fill:#ff2e5b;stroke:#ff2e5b}
+  #micro .like.pop svg{animation:mi-pop .45s cubic-bezier(.3,1.6,.5,1)}
+  #micro .like .burst{position:absolute;left:27px;top:23px;pointer-events:none}
+  #micro .like .burst i{position:absolute;width:5px;height:5px;border-radius:50%;background:#ff2e5b;opacity:0}
+  #micro .like.pop .burst i{animation:mi-burst .55s ease-out}
+  @keyframes mi-pop{0%{transform:scale(1)}30%{transform:scale(.7)}100%{transform:scale(1)}}
+  @keyframes mi-burst{0%{opacity:1;transform:rotate(var(--a)) translateY(0)}100%{opacity:0;transform:rotate(var(--a)) translateY(-26px)}}
+  #micro .count{display:inline-block;min-width:2ch;font-variant-numeric:tabular-nums}
+  #micro .switch{width:64px;height:36px;border-radius:18px;border:0;background:#d6d3cc;position:relative;cursor:pointer;transition:background .25s}
+  #micro .switch::after{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.3,1.5,.5,1),width .2s}
+  #micro .switch:active::after{width:34px}
+  #micro .switch[aria-checked="true"]{background:#14a06a}
+  #micro .switch[aria-checked="true"]::after{transform:translateX(28px)}
+  #micro .switch[aria-checked="true"]:active::after{transform:translateX(22px)}
+  #micro .check{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:600;user-select:none}
+  #micro .check input{position:absolute;opacity:0;pointer-events:none}
+  #micro .box{width:30px;height:30px;border:2px solid #161616;border-radius:8px;display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
+  #micro .check:active .box{transform:scale(.88)}
+  #micro .box svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .35s ease .05s}
+  #micro .check input:checked + .box{background:var(--acc);border-color:var(--acc)}
+  #micro .check input:checked + .box svg{stroke-dashoffset:0}
+  #micro .check input:focus-visible + .box{outline:2px solid var(--ink);outline-offset:3px}
+  #micro .check .lbl{transition:color .2s}
+  #micro .check input:checked ~ .lbl{color:var(--mute);text-decoration:line-through}
+  #micro .copy{display:flex;align-items:center;gap:10px;border:0;background:#161616;color:#fff;border-radius:10px;padding:11px 16px;cursor:pointer;font-weight:600;min-width:150px;justify-content:center;transition:background .2s,transform .12s}
+  #micro .copy:active{transform:scale(.95)}
+  #micro .copy.ok{background:#14a06a}
+  #micro .copy .ic{position:relative;width:18px;height:18px}
+  #micro .copy svg{position:absolute;inset:0;width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+  #micro .copy .i2{opacity:0;transform:scale(.4)}
+  #micro .copy.ok .i1{opacity:0;transform:scale(.4)}
+  #micro .copy.ok .i2{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    #micro *{transition:none !important;animation:none !important}
+  }
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+  <header class="head">
+    <h1>Chuyển động</h1>
+    <p>Những cách trang web “động đậy” khi bạn cuộn, bấm hay chỉ nhìn vào nó. Cuộn, bấm thử từng khung để cảm nhận, rồi lấy keyword đem đi prompt.</p>
+  </header>
+
+  <!-- 1 -->
+  <article class="pattern" id="scrollytelling">
+    <h2>Scrollytelling</h2>
+    <p class="vi"><b>Kể chuyện bằng cuộn.</b> Một hình minh hoạ đứng yên (pin) bên cạnh, các đoạn chữ trôi qua; mỗi đoạn tới giữa khung thì hình đổi sang “cảnh” tiếp theo.</p>
+    <div class="demo">
+      <span class="hint">cuộn trong khung này ↓</span>
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: cảnh đổi tức thì, không chuyển tiếp.</span>
+      <div class="scroller">
+        <div class="grid">
+          <div class="steps">
+            <section class="step" data-step="1"><small>CẢNH 1</small><h3>Một khách hàng</h3><p>Mọi câu chuyện bắt đầu từ một điểm. Hình bên phải là một chấm duy nhất.</p></section>
+            <section class="step" data-step="2"><small>CẢNH 2</small><h3>Ba nhóm ngang nhau</h3><p>Cuộn tiếp: chấm tách thành ba cột bằng nhau — dữ liệu được chia nhóm.</p></section>
+            <section class="step" data-step="3"><small>CẢNH 3</small><h3>Một nhóm vượt lên</h3><p>Cảnh cuối: các cột lệch nhau, cột cam được nhấn mạnh. Người đọc hiểu kết luận mà không cần đọc bảng.</p></section>
+          </div>
+          <div><div class="visual" data-scene="1"><div class="chart"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="cap">cảnh 1 / 3</div></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>cần giải thích một ý theo từng bước (báo cáo dữ liệu, giới thiệu sản phẩm, bài báo dài) và muốn người đọc tự điều khiển nhịp.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung ngắn hoặc người dùng cần tra nhanh — bắt họ cuộn qua cả câu chuyện sẽ gây khó chịu.</p>
+    </div>
+    <div class="kw"><button>scrollytelling</button><button>sticky graphic with scrolling text steps</button><button>step-based scroll narrative</button><button>scene changes on scroll</button></div>
+  </article>
+
+  <!-- 2 -->
+  <article class="pattern" id="pin">
+    <h2>Pin / Sticky</h2>
+    <p class="vi"><b>Ghim phần tử.</b> Một khối dính lại khi cuộn trong khi nội dung bên cạnh trôi qua, rồi được “thả” ra khi hết vùng chứa nó.</p>
+    <div class="demo">
+      <span class="hint">cuộn trong khung này ↓</span>
+      <button class="replay">↻ Xem lại</button>
+      <div class="scroller">
+        <div class="wrap">
+          <div class="pinned"><div class="img"></div><div><code>position: sticky; top: 56px</code><h3>Tai nghe Aero</h3></div></div>
+          <div class="specs">
+            <div class="spec"><h4>Chống ồn chủ động</h4><p>Khối bên trái đứng yên trong khi bạn đọc từng thông số.</p></div>
+            <div class="spec"><h4>Pin 40 giờ</h4><p>Người xem luôn thấy sản phẩm đang nói tới.</p></div>
+            <div class="spec"><h4>Sạc nhanh 10 phút</h4><p>Cột phải cuộn bình thường.</p></div>
+            <div class="spec"><h4>Kết nối 2 thiết bị</h4><p>Khối ghim chỉ dính trong phạm vi phần tử cha.</p></div>
+            <div class="spec"><h4>Chống nước IPX4</h4><p>Vẫn đang ghim.</p></div>
+            <div class="spec"><h4>Âm thanh không gian</h4><p>Vẫn đang ghim.</p></div>
+            <div class="spec"><h4>Nặng 240 g</h4><p>Gần hết danh sách…</p></div>
+            <div class="spec"><h4>Bảo hành 2 năm</h4><p>Hết cột → khối ghim bắt đầu trôi lên.</p></div>
+          </div>
+        </div>
+        <div class="after"><b>Hết vùng pin.</b> Khối bên trái đã được thả ra và trôi đi cùng trang.</div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>cần giữ một thứ trong tầm mắt khi đọc phần liên quan: ảnh sản phẩm cạnh thông số, mục lục, thanh tiêu đề, nút mua.</p>
+      <p class="avoid"><b>Tránh khi</b>màn hình thấp (điện thoại ngang) — khối ghim chiếm hết chỗ đọc.</p>
+    </div>
+    <div class="kw"><button>sticky section</button><button>pinned element on scroll</button><button>position: sticky sidebar</button><button>sticky product image</button></div>
+  </article>
+
+  <!-- 3 -->
+  <article class="pattern needs-sda" id="scrub">
+    <h2>Scrub (scroll-linked)</h2>
+    <p class="vi"><b>Hoạt ảnh gắn chặt vào thanh cuộn.</b> Cuộn được bao nhiêu, hoạt ảnh chạy bấy nhiêu; dừng cuộn là dừng, <b>cuộn ngược là chạy ngược</b> — như kéo thanh tua video.</p>
+    <div class="demo">
+      <span class="hint">cuộn trong khung này ↓ rồi cuộn ngược ↑</span>
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối (100%).</span>
+      <span class="nosda">Trình duyệt chưa hỗ trợ scroll-driven animation.</span>
+      <div class="scroller"><div class="track"><div class="stage">
+        <div class="ring"><span class="num"></span></div>
+        <div class="right">
+          <h3>Tiến độ = vị trí cuộn</h3>
+          <p>Vòng tròn, thanh và khối cam đều đọc cùng một con số. Cuộn ngược ↑ và mọi thứ tua lại.</p>
+          <div class="bar"><i></i></div>
+          <div class="car"><span></span></div>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>muốn người dùng “điều khiển” hoạt ảnh bằng tay: xoay sản phẩm 3D, vẽ đường, thanh tiến độ đọc, video tua theo cuộn.</p>
+      <p class="avoid"><b>Tránh khi</b>hoạt ảnh cần chạy trọn vẹn mới có nghĩa — người dùng dừng giữa chừng sẽ thấy trạng thái dở dang.</p>
+    </div>
+    <div class="kw"><button>scroll-linked animation</button><button>scrub on scroll</button><button>animation-timeline: scroll()</button><button>scroll progress indicator</button></div>
+  </article>
+
+  <!-- 4 -->
+  <article class="pattern" id="reveal">
+    <h2>Scroll-triggered reveal</h2>
+    <p class="vi"><b>Hiện ra khi chạm ngưỡng.</b> Phần tử chạy hoạt ảnh <i>theo thời gian</i> (0,7 giây) khi lọt vào khung nhìn, chạy hết dù bạn cuộn nhanh hay chậm. Khác Scrub: <b>cuộn ngược không làm nó ẩn lại</b>.</p>
+    <div class="demo">
+      <span class="hint">cuộn trong khung này ↓ rồi cuộn ngược ↑</span>
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: thẻ hiển thị sẵn, không hiệu ứng.</span>
+      <div class="scroller"><div class="list">
+        <p class="intro"><b>Cuộn xuống.</b> Mỗi thẻ “bật” lên một lần khi tới ngưỡng 35% — sau đó đứng yên, cuộn ngược cũng không biến mất.</p>
+        <div class="card" style="--c:#ff5a1f"><i></i><div><h4>Thiết kế</h4><p>Chạm ngưỡng → chạy 0,7s.</p></div></div>
+        <div class="card" style="--c:#3346ff"><i></i><div><h4>Phát triển</h4><p>Tốc độ cuộn không ảnh hưởng.</p></div></div>
+        <div class="card" style="--c:#14a06a"><i></i><div><h4>Kiểm thử</h4><p>Chạy một lần duy nhất.</p></div></div>
+        <div class="card" style="--c:#161616"><i></i><div><h4>Ra mắt</h4><p>Cuộn ngược ↑ để kiểm chứng.</p></div></div>
+        <div class="card" style="--c:#c48a00"><i></i><div><h4>Đo lường</h4><p>Bấm ↻ để chạy lại từ đầu.</p></div></div>
+      </div></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>landing page, danh sách tính năng, portfolio — tạo cảm giác nội dung “xuất hiện” đúng lúc mà không bắt người dùng điều khiển.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung quan trọng cần đọc ngay (bảng giá, form) — chờ hiệu ứng làm chậm việc đọc.</p>
+    </div>
+    <div class="kw"><button>reveal on scroll</button><button>scroll-triggered animation</button><button>fade-up on enter viewport</button><button>IntersectionObserver animate once</button></div>
+  </article>
+
+  <!-- 5 -->
+  <article class="pattern" id="stagger">
+    <h2>Stagger</h2>
+    <p class="vi"><b>Lệch nhịp.</b> Một nhóm phần tử xuất hiện lần lượt, mỗi cái trễ hơn cái trước vài chục mili-giây, tạo thành một “làn sóng” thay vì bật lên cùng lúc.</p>
+    <div class="demo">
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: hiển thị trạng thái cuối.</span>
+      <div><div class="row-label">không stagger — tất cả cùng lúc</div><div class="row"></div></div>
+      <div><div class="row-label">stagger — mỗi ô trễ 80ms</div><div class="row s"></div></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>hiện lưới thẻ, danh sách, menu, các chữ cái — mắt được dẫn theo thứ tự và giao diện có vẻ “sống”.</p>
+      <p class="avoid"><b>Tránh khi</b>danh sách dài hàng chục mục — tổng thời gian chờ quá lâu; giới hạn khoảng 6–10 mục đầu.</p>
+    </div>
+    <div class="kw"><button>staggered animation</button><button>stagger delay 80ms</button><button>cascading entrance</button><button>sequential fade-in grid</button></div>
+  </article>
+
+  <!-- 6 -->
+  <article class="pattern needs-sda" id="parallax">
+    <h2>Parallax</h2>
+    <p class="vi"><b>Thị sai — nhiều lớp, nhiều tốc độ.</b> Lớp xa trôi chậm, lớp gần trôi nhanh khi cuộn, tạo cảm giác chiều sâu như nhìn qua cửa sổ xe.</p>
+    <div class="demo">
+      <span class="hint">cuộn trong khung này ↓</span>
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: các lớp đứng yên.</span>
+      <span class="nosda">Trình duyệt chưa hỗ trợ scroll-driven animation.</span>
+      <div class="scroller"><div class="track"><div class="stage">
+        <div class="layer sun"><span class="tag">mặt trời: xuống chậm</span></div>
+        <div class="title">Lớp xa chậm,<br>lớp gần nhanh.</div>
+        <div class="layer far"><span class="tag">đồi xa · 0.25×</span></div>
+        <div class="layer mid"><span class="tag">đồi giữa · 0.6×</span></div>
+        <div class="layer near"><span class="tag">lớp gần · 1×</span><p>Cùng một lần cuộn, ba lớp đi ba quãng đường khác nhau — đó là parallax.</p></div>
+      </div></div></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>hero của landing page, trang kể chuyện thương hiệu, minh hoạ có nhiều lớp — cần thêm chiều sâu.</p>
+      <p class="avoid"><b>Tránh khi</b>trang nhiều chữ cần đọc — chuyển động lệch gây chóng mặt và rối mắt.</p>
+    </div>
+    <div class="kw"><button>parallax scrolling</button><button>multi-layer parallax hero</button><button>layered depth on scroll</button><button>background moves slower than foreground</button></div>
+  </article>
+
+  <!-- 7 -->
+  <article class="pattern" id="morph">
+    <h2>Morph</h2>
+    <p class="vi"><b>Biến hình.</b> Một phần tử đổi hình dạng mượt sang hình khác thay vì biến mất rồi hiện cái mới — người dùng thấy rõ “nó vẫn là nó, chỉ đổi trạng thái”.</p>
+    <div class="demo">
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: đổi trạng thái tức thì.</span>
+      <div class="cell"><button class="send"><span class="t">Gửi đơn</span></button><div class="cap">bấm: nút → vòng tải → dấu tích</div></div>
+      <div class="cell"><button class="burger" aria-label="Mở menu"><i></i><i></i><i></i></button><div class="cap">bấm: ☰ biến thành ✕</div></div>
+      <div class="cell"><div class="blob"></div><div class="cap">hình khối tự biến dạng</div></div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>nút chuyển trạng thái (gửi → đang xử lý → xong), icon menu/đóng, play/pause — giữ mạch liên tục giữa hai trạng thái.</p>
+      <p class="avoid"><b>Tránh khi</b>hai trạng thái không liên quan — biến hình giữa chúng chỉ gây khó hiểu.</p>
+    </div>
+    <div class="kw"><button>shape morph</button><button>morphing button loading to success</button><button>hamburger to close icon morph</button><button>blob morph animation</button></div>
+  </article>
+
+  <!-- 8 -->
+  <article class="pattern" id="marquee">
+    <h2>Marquee / Ticker</h2>
+    <p class="vi"><b>Dải chạy vô tận.</b> Chữ hoặc logo trôi ngang liên tục, lặp không có điểm nối. Rê chuột vào một dải để dừng.</p>
+    <div class="demo">
+      <span class="rm-note">Giảm chuyển động: dải đứng yên, kéo ngang để xem.</span>
+      <div class="row big"><div class="move">
+        <div class="set"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
+        <div class="set" aria-hidden="true"><span>Thiết kế</span><span class="dot">✦</span><span class="o">Chuyển động</span><span class="dot">✦</span><span>Bố cục</span><span class="dot">✦</span><span class="o">Màu sắc</span><span class="dot">✦</span></div>
+      </div></div>
+      <div class="row logos"><div class="move">
+        <div class="set"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
+        <div class="set" aria-hidden="true"><span>ACME</span><span>Northwind</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span><span>Soylent</span><span>Vandelay</span></div>
+      </div></div>
+      <div class="note">rê chuột vào dải để dừng · hai dải chạy ngược chiều</div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>dải logo khách hàng, tin nhanh, khẩu hiệu thương hiệu lớn — thứ người dùng không cần đọc hết.</p>
+      <p class="avoid"><b>Tránh khi</b>nội dung bắt buộc phải đọc hoặc bấm — chữ đang chạy rất khó đọc và khó nhắm.</p>
+    </div>
+    <div class="kw"><button>infinite marquee</button><button>scrolling ticker</button><button>logo marquee loop</button><button>pause on hover</button></div>
+  </article>
+
+  <!-- 9 -->
+  <article class="pattern" id="textreveal">
+    <h2>Text reveal / Split text</h2>
+    <p class="vi"><b>Chữ hiện từng mảnh.</b> Tiêu đề được tách thành từng ký tự hoặc từng từ, mỗi mảnh trồi lên từ sau một “mặt nạ” theo nhịp lệch.</p>
+    <div class="demo">
+      <button class="replay">↻ Xem lại</button>
+      <span class="rm-note">Giảm chuyển động: chữ hiển thị sẵn.</span>
+      <span class="cap">dòng 1: tách ký tự + mặt nạ · dòng 2: tách từ + mờ dần</span>
+      <h3 class="h" data-split="chars">Thiết kế biết <span class="acc">chuyển động</span>.</h3>
+      <p class="sub" data-split="words">Mỗi ký tự trồi lên từ sau một đường cắt vô hình, nối nhau như một làn sóng chữ.</p>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>tiêu đề hero, câu khẩu hiệu, màn mở đầu — một câu ngắn cần được “trình diễn”.</p>
+      <p class="avoid"><b>Tránh khi</b>đoạn văn dài hoặc chữ nội dung — tách chữ làm chậm việc đọc và làm rối trình đọc màn hình nếu không giữ aria-label.</p>
+    </div>
+    <div class="kw"><button>split text animation</button><button>text reveal</button><button>per-character stagger with mask</button><button>word-by-word blur in</button></div>
+  </article>
+
+  <!-- 10 -->
+  <article class="pattern" id="viewtransitions">
+    <h2>View transitions</h2>
+    <p class="vi"><b>Chuyển cảnh có phần tử chung.</b> Khi đổi màn hình, phần tử xuất hiện ở cả hai màn (ảnh, tiêu đề) bay mượt từ vị trí cũ sang vị trí mới thay vì nhảy cụt. Bấm một thẻ.</p>
+    <div class="demo">
+      <span class="support"></span>
+      <span class="rm-note">Giảm chuyển động: đổi màn tức thì.</span>
+      <div class="grid">
+        <button class="vcard" data-i="0" style="--c:linear-gradient(160deg,#ff8a5c,#ff5a1f)"><div class="img"></div><div class="tt">Hoàng hôn<small>Bộ sưu tập 01</small></div></button>
+        <button class="vcard" data-i="1" style="--c:linear-gradient(160deg,#7b8bff,#3346ff)"><div class="img"></div><div class="tt">Biển đêm<small>Bộ sưu tập 02</small></div></button>
+        <button class="vcard" data-i="2" style="--c:linear-gradient(160deg,#5fd3a2,#14a06a)"><div class="img"></div><div class="tt">Rừng thông<small>Bộ sưu tập 03</small></div></button>
+        <button class="vcard" data-i="3" style="--c:linear-gradient(160deg,#f2d06b,#c48a00)"><div class="img"></div><div class="tt">Đồi cát<small>Bộ sưu tập 04</small></div></button>
+      </div>
+      <div class="detail" hidden>
+        <div class="img"></div>
+        <div class="body"><h3></h3><p>Ảnh và tiêu đề vừa “bay” từ thẻ nhỏ sang đây. Trình duyệt chụp hai trạng thái rồi tự nội suy vị trí, kích thước.</p><button class="back">← Quay lại</button></div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>danh sách → chi tiết, ảnh thu nhỏ → ảnh lớn, đổi tab/trang trong app — giữ cho người dùng biết mình vừa đi từ đâu tới.</p>
+      <p class="avoid"><b>Tránh khi</b>hai màn không có phần tử chung — chỉ còn hiệu ứng mờ chéo, không thêm ý nghĩa.</p>
+    </div>
+    <div class="kw"><button>View Transitions API</button><button>shared element transition</button><button>card expands to detail view</button><button>document.startViewTransition</button></div>
+  </article>
+
+  <!-- 11 -->
+  <article class="pattern" id="micro">
+    <h2>Micro-interactions</h2>
+    <p class="vi"><b>Phản hồi nhỏ cho từng thao tác.</b> Những chuyển động rất ngắn (dưới nửa giây) xác nhận “bạn vừa bấm, và nó đã có tác dụng”. Bấm thử cả bốn.</p>
+    <div class="demo">
+      <span class="rm-note">Giảm chuyển động: trạng thái đổi tức thì.</span>
+      <div class="cell">
+        <button class="like" aria-pressed="false"><span class="burst"></span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3.2 5 6.6 5c2.1 0 3.5 1.2 4.4 2.6h2c.9-1.4 2.3-2.6 4.4-2.6 3.4 0 5.4 3.6 4.1 6.8C19.5 16.4 12 21 12 21z"/></svg><span class="count">24</span></button>
+        <div class="cap">like: tim nảy + bắn hạt</div>
+      </div>
+      <div class="cell">
+        <button class="switch" role="switch" aria-checked="false" aria-label="Thông báo"></button>
+        <div class="cap">toggle: núm trượt có độ nảy, giãn khi nhấn giữ</div>
+      </div>
+      <div class="cell">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">Gửi báo cáo</span></label>
+        <div class="cap">checkbox: dấu tích được “vẽ” ra</div>
+      </div>
+      <div class="cell">
+        <button class="copy"><span class="ic"><svg class="i1" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg class="i2" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="t">Copy mã</span></button>
+        <div class="cap">copy: icon đổi thành tích, chữ báo kết quả</div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Dùng khi</b>mọi thao tác thường xuyên: thích, bật/tắt, đánh dấu, sao chép, gửi — người dùng cần biết ngay hành động đã thành công.</p>
+      <p class="avoid"><b>Tránh khi</b>hiệu ứng dài hoặc phô trương chặn thao tác tiếp theo — micro phải nhanh và không cản đường.</p>
+    </div>
+    <div class="kw"><button>micro-interactions</button><button>animated like button with particle burst</button><button>springy toggle switch</button><button>animated checkmark draw</button><button>copy button success state</button></div>
+  </article>
+</main>
+
+<script src="assets/dict.js"></script>
+<script>
+const reduce = Dict.RM;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const replay = {}; // id → hàm Xem lại; giao cho Dict.replay ở cuối
+const restart = (el, cls = 'play') => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+const toTop = id => $(`#${id} .scroller`).scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+
+// play time-based demos the first time they come into view
+const onView = (el, fn) => Dict.onView(el, fn, .5);
+
+// 1 Scrollytelling
+{
+  const root = $('#scrollytelling'), sc = $('.scroller', root), vis = $('.visual', root), cap = $('.cap', root);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const s = e.target.dataset.step;
+    $$('.step', root).forEach(x => x.classList.toggle('on', x === e.target));
+    vis.dataset.scene = s; cap.textContent = `cảnh ${s} / 3`;
+  }), { root: sc, rootMargin: '-45% 0px -45% 0px' });
+  $$('.step', root).forEach(s => io.observe(s));
+  $('.step', root).classList.add('on');
+  replay.scrollytelling = () => toTop('scrollytelling');
+}
+replay.pin = () => toTop('pin');
+replay.scrub = () => toTop('scrub');
+replay.parallax = () => toTop('parallax');
+
+// 4 Reveal (time-based, fires once per card)
+{
+  const root = $('#reveal'), sc = $('.scroller', root);
+  let io;
+  const arm = () => {
+    io?.disconnect();
+    io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { root: sc, threshold: .35 });
+    $$('.card', root).forEach(c => io.observe(c));
+  };
+  arm();
+  replay.reveal = () => {
+    sc.scrollTo({ top: 0 });
+    $$('.card', root).forEach(c => c.classList.remove('in'));
+    requestAnimationFrame(arm);
+  };
+}
+
+// 5 Stagger
+{
+  const demo = $('#stagger .demo');
+  $$('.row', demo).forEach(r => { for (let i = 0; i < 8; i++) { const t = document.createElement('div'); t.className = 'tile'; t.style.setProperty('--i', i); r.append(t); } });
+  replay.stagger = () => restart(demo);
+  onView(demo, replay.stagger);
+}
+
+// 7 Morph
+{
+  const send = $('#morph .send'), burger = $('#morph .burger');
+  let timers = [];
+  const run = () => {
+    timers.forEach(clearTimeout); send.className = 'send';
+    void send.offsetWidth;
+    send.classList.add('loading');
+    timers = [setTimeout(() => { send.classList.replace('loading', 'done'); }, 1600)];
+  };
+  send.addEventListener('click', () => { if (send.classList.contains('done')) { send.className = 'send'; return; } if (!send.classList.contains('loading')) run(); });
+  burger.addEventListener('click', () => { burger.classList.toggle('x'); burger.setAttribute('aria-label', burger.classList.contains('x') ? 'Đóng menu' : 'Mở menu'); });
+  replay.morph = () => { run(); burger.classList.remove('x'); setTimeout(() => burger.classList.add('x'), 600); setTimeout(() => burger.classList.remove('x'), 1800); };
+  onView($('#morph .demo'), replay.morph);
+}
+
+// 9 Text reveal
+{
+  const demo = $('#textreveal .demo');
+  let i = 0;
+  const splitChars = node => {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 1) { splitChars(n); return; }
+      const frag = document.createDocumentFragment();
+      n.textContent.normalize('NFC').split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(' '); return; }
+        const w = document.createElement('span'); w.className = 'w';
+        Array.from(part).forEach(ch => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; c.style.setProperty('--i', i++); w.append(c); });
+        frag.append(w);
+      });
+      n.replaceWith(frag);
+    });
+  };
+  const h = $('.h', demo); h.setAttribute('aria-label', h.textContent); splitChars(h);
+  const sub = $('.sub', demo); sub.setAttribute('aria-label', sub.textContent);
+  sub.innerHTML = sub.textContent.split(' ').map((w, k) => `<span class="w" style="--i:${k}">${w}</span>`).join(' ');
+  replay.textreveal = () => restart(demo);
+  onView(demo, replay.textreveal);
+}
+
+// 10 View transitions
+{
+  const root = $('#viewtransitions'), grid = $('.grid', root), detail = $('.detail', root);
+  const dImg = $('.img', detail), dTitle = $('h3', detail);
+  const can = !!document.startViewTransition && !reduce;
+  $('.support', root).textContent = document.startViewTransition
+    ? 'document.startViewTransition: có hỗ trợ' : 'trình duyệt chưa hỗ trợ View Transitions → đổi màn tức thì (fallback)';
+  let current = null;
+  const go = update => can ? document.startViewTransition(update) : update();
+  const name = (el, n) => { el.style.viewTransitionName = n; };
+  $$('.vcard', root).forEach(card => card.addEventListener('click', () => {
+    current = card;
+    name($('.img', card), 'vt-hero'); name($('.tt', card), 'vt-title');
+    go(() => {
+      name($('.img', card), ''); name($('.tt', card), '');
+      dImg.style.setProperty('--c', card.style.getPropertyValue('--c'));
+      dTitle.textContent = $('.tt', card).firstChild.textContent;
+      name(dImg, 'vt-hero'); name(dTitle, 'vt-title');
+      grid.hidden = true; detail.hidden = false;
+    });
+  }));
+  $('.back', root).addEventListener('click', () => {
+    const card = current;
+    go(() => {
+      name(dImg, ''); name(dTitle, '');
+      name($('.img', card), 'vt-hero'); name($('.tt', card), 'vt-title');
+      detail.hidden = true; grid.hidden = false;
+    }).finished?.then(() => { name($('.img', card), ''); name($('.tt', card), ''); });
+    if (!can) { name($('.img', card), ''); name($('.tt', card), ''); }
+  });
+}
+
+// 11 Micro-interactions
+{
+  const root = $('#micro');
+  const like = $('.like', root), count = $('.count', like), burst = $('.burst', like);
+  for (let k = 0; k < 8; k++) { const p = document.createElement('i'); p.style.setProperty('--a', `${k * 45}deg`); burst.append(p); }
+  like.addEventListener('click', () => {
+    const on = like.classList.toggle('on');
+    like.setAttribute('aria-pressed', on);
+    count.textContent = +count.textContent + (on ? 1 : -1);
+    like.classList.remove('pop');
+    if (on) { void like.offsetWidth; like.classList.add('pop'); }
+  });
+  const sw = $('.switch', root);
+  sw.addEventListener('click', () => sw.setAttribute('aria-checked', sw.getAttribute('aria-checked') !== 'true'));
+  const copy = $('.copy', root), ct = $('.t', copy);
+  copy.addEventListener('click', async () => {
+    let ok = true;
+    try { await navigator.clipboard.writeText('MOTION-2026'); } catch (e) { ok = false; }
+    copy.classList.toggle('ok', ok); ct.textContent = ok ? 'Đã copy!' : 'Không copy được';
+    clearTimeout(copy._t); copy._t = setTimeout(() => { copy.classList.remove('ok'); ct.textContent = 'Copy mã'; }, 1400);
+  });
+}
+Object.entries(replay).forEach(([id, fn]) => Dict.replay(id, fn));
+</script>
+</body>
+</html>

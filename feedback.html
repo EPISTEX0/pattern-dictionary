@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phản hồi &amp; lớp phủ — Từ điển pattern thiết kế web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dict.css">
+<style>
+/* reset chỉ trong demo, specificity 0 */
+:where(.demo *){margin:0;padding:0}
+:where(.demo) :where(button,input,select,textarea){font:inherit;color:inherit}
+@media (prefers-reduced-motion:reduce){
+  :where(.demo *),:where(.demo *)::before,:where(.demo *)::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ===== thành phần dùng chung cho 7 demo của trang này ===== */
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo{
+  --p:#2f5bea;--p-soft:rgba(47,91,234,.16);--t:#1d1d1f;--t2:#66666b;--bd:#d5d4cf;--err:#c0341d;--ok:#1a7f4b;--surf:#f4f3ef;
+  background:var(--surf);color:var(--t);font-size:14px;line-height:1.45}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo :focus-visible{outline:2px solid var(--p);outline-offset:2px}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .app{position:absolute;inset:0;display:flex;flex-direction:column}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar{display:flex;align-items:center;gap:10px;height:58px;flex:none;padding:0 22px;background:#fff;border-bottom:1px solid #e6e5e0}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar h3{font-size:15px;font-weight:800;margin-right:auto;display:flex;align-items:center;gap:10px}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .bar h3 small{font:500 11px/1 var(--mono);color:var(--t2);letter-spacing:.06em;text-transform:uppercase}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 15px;border-radius:9px;border:1px solid var(--p);background:var(--p);color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap;transition:filter .15s,background .15s,border-color .15s}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn:hover{filter:brightness(1.08)}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn.ghost{background:#fff;border-color:var(--bd);color:var(--t)}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn.ghost:hover{filter:none;border-color:#9d9c97}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn.red{background:#c0341d;border-color:#c0341d}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .btn:is(:disabled,[aria-disabled=true]){background:#e9e8e4;border-color:#e9e8e4;color:#a2a1a6;cursor:not-allowed;filter:none}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .x{width:32px;height:32px;flex:none;border:0;border-radius:8px;background:none;font-size:20px;line-height:1;color:var(--t2);cursor:pointer}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .x:hover{background:var(--surf);color:var(--t)}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo :is(.fld){display:grid;gap:5px}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo :is(.fld>label,.lab){font-size:13px;font-weight:600}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .inp{display:block;width:100%;height:38px;border:1px solid var(--bd);border-radius:9px;background:#fff;padding:0 11px;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo textarea.inp{height:76px;padding:9px 11px;resize:none;line-height:1.45}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .inp:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p-soft)}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .inp:focus-visible{outline:none}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .inp[aria-invalid=true]{border-color:var(--err);background:#fff7f5}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .err{min-height:17px;font-size:12.5px;color:var(--err)}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .av{flex:none;width:30px;height:30px;border-radius:50%;background:var(--c,#cfd8ff);display:grid;place-items:center;font:700 11px/1 var(--sans);color:#1d1d1f}
+:where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo kbd{font:500 11px/1 var(--mono);border:1px solid rgba(128,128,128,.4);border-bottom-width:2px;border-radius:5px;padding:2px 5px}
+/* lớp phủ nằm gọn trong khung .demo (không dùng top layer): scrim + dialog mở bằng show() */
+:where(#modal-dialog,#drawer,#confirmation-dialog) .demo .scrim{position:absolute;inset:0;z-index:55;background:rgba(18,20,28,.42);opacity:0;pointer-events:none;transition:opacity .2s}
+:where(#modal-dialog,#drawer,#confirmation-dialog) .demo .scrim.on{opacity:1;pointer-events:auto}
+:where(#modal-dialog,#drawer,#confirmation-dialog) .demo dialog{z-index:60;border:0;color:var(--t);background:#fff;box-shadow:0 30px 70px -20px rgba(0,0,0,.45);overflow:visible}
+
+/* ===== 1. Modal dialog ===== */
+#modal-dialog .demo .body{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px 22px}
+#modal-dialog .demo .col{background:#ecebe6;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+#modal-dialog .demo .col>b{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin:2px 2px 4px}
+#modal-dialog .demo .col p{background:#fff;border-radius:9px;padding:10px 12px;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+#modal-dialog .demo .col p span{display:block;font-size:11.5px;color:var(--t2);margin-top:2px}
+#modal-dialog .demo .avs{display:flex;margin-right:6px}
+#modal-dialog .demo .avs .av{margin-left:-8px;border:2px solid #fff}
+#modal-dialog .demo .avs .av.new{animation:mdPop .35s cubic-bezier(.3,1.6,.5,1)}
+#modal-dialog .demo .stat{font-size:12.5px;color:var(--ok);margin-right:6px}
+#modal-dialog .demo dialog{position:absolute;inset:0;margin:auto;width:min(440px,calc(100% - 32px));height:fit-content;border-radius:16px;padding:22px 24px 20px;transition:opacity .16s,transform .2s cubic-bezier(.2,.9,.3,1.1)}
+@starting-style{#modal-dialog .demo dialog[open]{opacity:0;transform:translateY(10px) scale(.97)}}
+#modal-dialog .demo dialog.out{opacity:0;transform:translateY(6px) scale(.98)}
+#modal-dialog .demo .dh{display:flex;align-items:flex-start;gap:12px;margin-bottom:4px}
+#modal-dialog .demo .dh h4{font-size:18px;font-weight:800;line-height:1.25;flex:1}
+#modal-dialog .demo .dh+p{font-size:13px;color:var(--t2);margin-bottom:14px}
+#modal-dialog .demo form{display:grid;grid-template-columns:1fr 150px;gap:10px 12px}
+#modal-dialog .demo form .err{grid-column:1/-1;margin-top:-6px}
+#modal-dialog .demo .acts{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+@keyframes mdPop{from{transform:scale(.2)}}
+
+/* ===== 2. Drawer ===== */
+#drawer .demo .tbl{margin:16px 22px;background:#fff;border:1px solid #e6e5e0;border-radius:12px;overflow:hidden}
+#drawer .demo .tr{display:grid;grid-template-columns:minmax(0,1fr) 150px 130px 90px;align-items:center;gap:12px;padding:0 16px;height:44px;border-top:1px solid #efeee9;font-size:13.5px}
+#drawer .demo .tr.th{height:38px;border-top:0;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t2);background:#fafaf8}
+#drawer .demo .tr button{justify-self:start;border:0;background:none;font-weight:600;cursor:pointer;text-align:left;padding:4px 0;border-radius:4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#drawer .demo .tr button:hover{color:var(--p);text-decoration:underline;text-underline-offset:3px}
+#drawer .demo .tr.cur{background:#f3f6ff}
+#drawer .demo .who{display:flex;align-items:center;gap:8px;color:var(--t2)}
+#drawer .demo .who .av{width:24px;height:24px;font-size:9.5px}
+#drawer .demo .st{justify-self:start;font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:#eceae5;color:#4b4b50}
+#drawer .demo .st[data-s="Đang làm"]{background:#e8eeff;color:#2445b8}
+#drawer .demo .st[data-s="Xong"]{background:#e3f4ea;color:#17683f}
+#drawer .demo .st[data-s="Bị chặn"]{background:#fde9e5;color:#a32c17}
+#drawer .demo .due{color:var(--t2);font-variant-numeric:tabular-nums}
+#drawer .demo .tr.flash{animation:drFlash 1.2s}
+#drawer .demo .demo-tools{top:13px;bottom:auto}
+#drawer .demo dialog{position:absolute;inset:0 0 0 auto;margin:0;width:min(380px,100%);height:100%;max-height:none;border-radius:16px 0 0 16px;padding:0;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+#drawer .demo dialog:not([open]){display:none}
+@starting-style{#drawer .demo dialog[open]{transform:translateX(100%)}}
+#drawer .demo dialog.out{transform:translateX(100%);transition-duration:.18s}
+#drawer .demo .dh{display:flex;align-items:center;gap:10px;padding:14px 14px 12px 22px;border-bottom:1px solid #efeee9}
+#drawer .demo .dh h4{flex:1;font-size:16px;font-weight:800}
+#drawer .demo .dh small{display:block;font:500 11px/1.4 var(--mono);color:var(--t2);letter-spacing:.04em}
+#drawer .demo form{flex:1;display:flex;flex-direction:column;min-height:0}
+#drawer .demo .dbody{flex:1;overflow-y:auto;padding:12px 22px;display:grid;gap:10px;align-content:start}
+#drawer .demo textarea.inp{height:50px}
+#drawer .demo .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#drawer .demo .dfoot{display:flex;justify-content:flex-end;gap:8px;padding:12px 22px;border-top:1px solid #efeee9;background:#fafaf8;border-radius:0 0 0 16px}
+@keyframes drFlash{0%,40%{background:#fff7d6}}
+
+/* ===== 3. Toast ===== */
+#toast-notification .demo .list{list-style:none;margin:16px 22px;background:#fff;border:1px solid #e6e5e0;border-radius:12px;overflow:hidden}
+#toast-notification .demo .list li{display:flex;align-items:center;gap:12px;padding:0 12px 0 16px;height:56px;border-top:1px solid #efeee9;overflow:hidden}
+#toast-notification .demo .list li:first-child{border-top:0}
+#toast-notification .demo .list li.back{animation:tsBack .9s}
+#toast-notification .demo .m{flex:1;min-width:0;font-size:13.5px;line-height:1.35}
+#toast-notification .demo .m b{display:block}
+#toast-notification .demo .m span{color:var(--t2);font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#toast-notification .demo .arch{height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--bd);background:#fff;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+#toast-notification .demo .arch:hover{border-color:var(--p);color:var(--p)}
+#toast-notification .demo .empty{padding:40px 16px;text-align:center;color:var(--t2);font-size:13.5px}
+#toast-notification .demo .hintk{font-size:12px;color:var(--t2);margin:0 22px}
+#toast-notification .demo .demo-tools{top:13px;bottom:auto}
+#toast-notification .demo .toasts{position:absolute;left:20px;bottom:18px;z-index:40;display:flex;flex-direction:column-reverse;gap:8px;width:min(400px,calc(100% - 40px))}
+#toast-notification .demo .toast{position:relative;display:flex;align-items:center;gap:6px;min-height:50px;padding:6px 6px 6px 16px;background:#1f2129;color:#f2f2f4;border-radius:12px;box-shadow:0 16px 36px -10px rgba(0,0,0,.45);font-size:13.5px;overflow:hidden;animation:tsIn .28s cubic-bezier(.2,.9,.3,1.15)}
+#toast-notification .demo .toast.out{animation:tsOut .2s forwards}
+#toast-notification .demo .toast>span{flex:1;min-width:0;padding:4px 0}
+#toast-notification .demo .toast .undo{border:0;background:none;color:#9fb6ff;font-weight:700;font-size:13.5px;padding:8px 10px;border-radius:8px;cursor:pointer}
+#toast-notification .demo .toast .undo:hover{background:rgba(255,255,255,.08)}
+#toast-notification .demo .toast .x{color:#a6a8b3;width:30px;height:30px}
+#toast-notification .demo .toast .x:hover{background:rgba(255,255,255,.08);color:#fff}
+#toast-notification .demo .toast :focus-visible{outline-color:#9fb6ff}
+#toast-notification .demo .toast i{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#9fb6ff;transform-origin:left;opacity:.7}
+@keyframes tsIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes tsOut{to{opacity:0;transform:translateX(-12px)}}
+@keyframes tsBack{0%,30%{background:#eef2ff}}
+
+/* ===== 4. Tooltip ===== */
+#tooltip .demo .doc{flex:1;display:flex;flex-direction:column;align-items:center;padding:30px 22px}
+#tooltip .demo .paper{width:min(640px,100%);background:#fff;border:1px solid #e6e5e0;border-radius:14px;box-shadow:0 10px 30px -16px rgba(0,0,0,.2)}
+#tooltip .demo .tb{display:flex;align-items:center;gap:4px;padding:8px 10px;border-bottom:1px solid #efeee9}
+#tooltip .demo .tw{position:relative;display:inline-flex}
+#tooltip .demo .tb button{width:36px;height:34px;border:0;border-radius:8px;background:none;cursor:pointer;display:grid;place-items:center;font-size:15px;color:#3a3a3f}
+#tooltip .demo .tb button:hover{background:#f1f1ee}
+#tooltip .demo .tb button[aria-pressed=true]{background:#e8eeff;color:var(--p)}
+#tooltip .demo .tb .sep{width:1px;height:20px;background:#e6e5e0;margin:0 6px}
+#tooltip .demo .tip{--dx:0px;position:absolute;z-index:20;left:calc(50% + var(--dx));top:calc(100% + 8px);width:max-content;max-width:240px;padding:7px 10px;border-radius:8px;background:#1f2129;color:#f2f2f4;font-size:12.5px;line-height:1.4;display:flex;align-items:center;gap:8px;opacity:0;visibility:hidden;transform:translate(-50%,-4px);transition:opacity .12s,transform .12s,visibility 0s .12s;pointer-events:none}
+#tooltip .demo .tip::before{content:"";position:absolute;left:calc(50% - var(--dx));top:-4px;width:9px;height:9px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px 0 0 0}
+#tooltip .demo .tip.on{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .12s,transform .12s;pointer-events:auto}
+#tooltip .demo .tip kbd{border-color:rgba(255,255,255,.3);color:#c9cbd3;font-size:10.5px}
+#tooltip .demo .tip.up{top:auto;bottom:calc(100% + 8px);transform:translate(-50%,4px)}
+#tooltip .demo .tip.up.on{transform:translate(-50%,0)}
+#tooltip .demo .tip.up::before{top:auto;bottom:-4px}
+#tooltip .demo .tip.wide{white-space:normal;width:240px;display:block}
+#tooltip .demo .txt{padding:20px 24px 22px;font-size:15px;line-height:1.65}
+#tooltip .demo .txt .s{transition:font-weight .1s}
+#tooltip .demo .paper[data-b] .txt .s{font-weight:700}
+#tooltip .demo .paper[data-i] .txt .s{font-style:italic}
+#tooltip .demo .paper[data-u] .txt .s{text-decoration:underline;text-underline-offset:3px}
+#tooltip .demo .quota{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2);padding:10px 24px 14px;border-top:1px solid #efeee9}
+#tooltip .demo .quota .tw button{width:22px;height:22px;border-radius:50%;border:1.5px solid #a9a8ad;background:#fff;font:700 12px/1 Georgia,serif;color:#55555a;cursor:help;display:grid;place-items:center}
+#tooltip .demo .quota .tw button:hover{border-color:var(--p);color:var(--p)}
+#tooltip .demo .meter{width:120px;height:6px;border-radius:3px;background:#eceae5;overflow:hidden}
+#tooltip .demo .meter i{display:block;height:100%;width:84%;background:#e58a1f}
+
+/* ===== 5. Popover ===== */
+#popover .demo .bar .btn.ghost .n{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--p);color:#fff;font-size:11px;line-height:18px;text-align:center}
+#popover .demo .bar .btn.ghost .n:empty{display:none}
+#popover .demo .bar .btn[aria-expanded=true]{border-color:var(--p);box-shadow:0 0 0 3px var(--p-soft)}
+#popover .demo .bf{anchor-name:--pv-filter}
+#popover .demo .bs{anchor-name:--pv-share}
+#popover .demo .tasks{list-style:none;margin:16px 22px;background:#fff;border:1px solid #e6e5e0;border-radius:12px;overflow:hidden}
+#popover .demo .tasks li{display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;border-top:1px solid #efeee9;font-size:13.5px}
+#popover .demo .tasks li:first-child{border-top:0}
+#popover .demo .tasks li .av{width:24px;height:24px;font-size:9.5px}
+#popover .demo .tasks li span:not(.av,.st){flex:1}
+#popover .demo .tasks .st{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#e8eeff;color:#2445b8}
+#popover .demo .tasks .st.done{background:#e3f4ea;color:#17683f}
+#popover .demo .tasks .nil{justify-content:center;color:var(--t2)}
+#popover .demo [popover]{inset:auto;margin:0;width:300px;max-width:calc(100vw - 16px);padding:16px;border:1px solid #e1e0db;border-radius:14px;background:#fff;color:var(--t);font:400 14px/1.45 var(--sans);box-shadow:0 22px 50px -14px rgba(0,0,0,.3);
+  opacity:0;transform:translateY(-6px) scale(.98);transition:opacity .15s,transform .18s cubic-bezier(.2,.9,.3,1.1),overlay .18s allow-discrete,display .18s allow-discrete}
+#popover .demo [popover]:popover-open{opacity:1;transform:none}
+@starting-style{#popover .demo [popover]:popover-open{opacity:0;transform:translateY(-6px) scale(.98)}}
+@supports (anchor-name:--a){
+  #popover .demo #pv-filter{position-anchor:--pv-filter}
+  #popover .demo #pv-share{position-anchor:--pv-share}
+  #popover .demo [popover]{top:calc(anchor(bottom) + 8px);right:max(8px,min(anchor(right),calc(100% - 308px)));position-try-fallbacks:flip-block}
+}
+#popover .demo [popover] h4{font-size:14.5px;font-weight:800;margin-bottom:10px}
+#popover .demo [popover] fieldset{border:0;margin-bottom:10px}
+#popover .demo [popover] legend{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
+#popover .demo [popover] .ck{display:flex;align-items:center;gap:9px;padding:5px 2px;font-size:13.5px;cursor:pointer}
+#popover .demo [popover] .ck input{width:16px;height:16px;accent-color:var(--p)}
+#popover .demo [popover] .pf{display:flex;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid #efeee9}
+#popover .demo [popover] .pf .btn{height:34px;font-size:13px}
+#popover .demo .link{display:flex;gap:6px;margin-bottom:12px}
+#popover .demo .link .inp{font:400 12.5px/1 var(--mono);color:var(--t2);height:34px}
+#popover .demo .link .btn{height:34px;font-size:12.5px;padding:0 12px;min-width:94px}
+#popover .demo .acc{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:12px}
+#popover .demo .acc select{flex:1;height:32px;border:1px solid var(--bd);border-radius:8px;padding:0 8px;background:#fff;font-size:13px}
+#popover .demo .mem{list-style:none;display:grid;gap:8px;font-size:13px}
+#popover .demo .mem li{display:flex;align-items:center;gap:10px}
+#popover .demo .mem small{margin-left:auto;color:var(--t2)}
+
+/* ===== 6. Confirmation vs Undo ===== */
+#confirmation-dialog .demo .cf{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
+#confirmation-dialog .demo .pane{position:relative;padding:22px 26px;display:flex;flex-direction:column;gap:14px}
+#confirmation-dialog .demo .pane+.pane{border-left:1px solid #e3e2dd;background:#faf9f6}
+#confirmation-dialog .demo .tag{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px}
+#confirmation-dialog .demo .tag i{font:500 11px/1 var(--mono);font-style:normal;background:#fff;border:1px solid #e3e2dd;border-radius:5px;padding:4px 6px}
+#confirmation-dialog .demo .why{font-size:12.5px;color:var(--t2);margin-top:auto}
+#confirmation-dialog .demo .pane:last-of-type .why{padding-right:96px}
+#confirmation-dialog .demo .proj{background:#fff;border:1px solid #e6e5e0;border-radius:12px;padding:16px 18px;display:grid;gap:4px}
+#confirmation-dialog .demo .proj h4{font-size:15px}
+#confirmation-dialog .demo .proj p{font-size:12.5px;color:var(--t2)}
+#confirmation-dialog .demo .dz{margin-top:8px;border:1px solid #f0c9c0;background:#fff8f6;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:12.5px;color:#7a2a1b}
+#confirmation-dialog .demo .dz span{flex:1}
+#confirmation-dialog .demo .gone{background:#fff;border:1px dashed #d3d2cd;border-radius:12px;padding:22px;text-align:center;color:var(--t2);font-size:13px}
+#confirmation-dialog .demo .gone b{display:block;color:var(--t);font-size:14px;margin-bottom:2px}
+#confirmation-dialog .demo .nl{list-style:none;background:#fff;border:1px solid #e6e5e0;border-radius:12px;overflow:hidden}
+#confirmation-dialog .demo .nl li{display:flex;align-items:center;gap:10px;height:46px;padding:0 8px 0 14px;border-top:1px solid #efeee9;font-size:13.5px}
+#confirmation-dialog .demo .nl li:first-child{border-top:0}
+#confirmation-dialog .demo .nl li span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#confirmation-dialog .demo .nl li.back{animation:tsBack .9s}
+#confirmation-dialog .demo .nl .del{width:32px;height:32px;border:0;border-radius:8px;background:none;color:#8a8a8f;cursor:pointer;display:grid;place-items:center}
+#confirmation-dialog .demo .nl .del:hover{background:#fde9e5;color:var(--err)}
+#confirmation-dialog .demo .nl .nil{justify-content:center;color:var(--t2)}
+#confirmation-dialog .demo .ub{display:flex;align-items:center;gap:6px;min-height:44px;padding:4px 4px 4px 14px;border-radius:10px;background:#1f2129;color:#f2f2f4;font-size:13px;animation:tsIn .25s cubic-bezier(.2,.9,.3,1.15)}
+#confirmation-dialog .demo .ub[hidden]{display:none}
+#confirmation-dialog .demo .ub span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#confirmation-dialog .demo .ub button{border:0;background:none;color:#9fb6ff;font-weight:700;padding:8px 10px;border-radius:8px;cursor:pointer}
+#confirmation-dialog .demo .ub button:hover{background:rgba(255,255,255,.08)}
+#confirmation-dialog .demo dialog{position:absolute;inset:0;margin:auto;width:min(430px,calc(100% - 32px));height:fit-content;border-radius:16px;padding:22px 24px 20px;transition:opacity .16s,transform .2s cubic-bezier(.2,.9,.3,1.1)}
+@starting-style{#confirmation-dialog .demo dialog[open]{opacity:0;transform:scale(.96)}}
+#confirmation-dialog .demo dialog.out{opacity:0;transform:scale(.98)}
+#confirmation-dialog .demo .ic{width:40px;height:40px;border-radius:50%;background:#fde9e5;color:var(--err);display:grid;place-items:center;font:800 20px/1 var(--sans);margin-bottom:12px}
+#confirmation-dialog .demo dialog h4{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:6px}
+#confirmation-dialog .demo dialog h4+p{font-size:13.5px;color:var(--t2);margin-bottom:14px}
+#confirmation-dialog .demo dialog .lab b{font-weight:800;background:#f4f3ef;padding:1px 5px;border-radius:4px}
+#confirmation-dialog .demo dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+
+/* ===== 7. Progress indicator ===== */
+#progress-indicator .demo .grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;padding:18px 22px}
+#progress-indicator .demo .cell{background:#fff;border:1px solid #e6e5e0;border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+#progress-indicator .demo .tag{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t2);display:flex;gap:8px;align-items:center}
+#progress-indicator .demo .tag b{color:var(--p);font-weight:500}
+#progress-indicator .demo .row{display:flex;align-items:center;gap:12px;min-width:0}
+#progress-indicator .demo .file{width:34px;height:40px;flex:none;border-radius:6px;background:#fde9e5;color:#a32c17;display:grid;place-items:end center;font:700 9px/1 var(--mono);padding-bottom:6px;position:relative}
+#progress-indicator .demo .file::before{content:"";position:absolute;right:0;top:0;width:10px;height:10px;background:#f6c8bf;border-radius:0 6px 0 4px}
+#progress-indicator .demo .meta{flex:1;min-width:0;font-size:13.5px}
+#progress-indicator .demo .meta b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#progress-indicator .demo .meta span{font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums}
+#progress-indicator .demo progress{-webkit-appearance:none;appearance:none;display:block;width:100%;height:8px;border:0;border-radius:4px;background:#ecebe6;overflow:hidden;color:var(--p)}
+#progress-indicator .demo progress::-webkit-progress-bar{background:#ecebe6;border-radius:4px}
+#progress-indicator .demo progress::-webkit-progress-value{background:var(--p);border-radius:4px;transition:inline-size .25s linear}
+#progress-indicator .demo progress::-moz-progress-bar{background:var(--p);border-radius:4px}
+#progress-indicator .demo progress.done::-webkit-progress-value{background:var(--ok)}
+#progress-indicator .demo progress.done::-moz-progress-bar{background:var(--ok)}
+/* indeterminate: trình duyệt Chromium vẽ thanh trống, nên tự vẽ vệt chạy */
+#progress-indicator .demo progress:indeterminate{position:relative;background:#ecebe6}
+#progress-indicator .demo progress:indeterminate::-webkit-progress-bar{background:transparent}
+#progress-indicator .demo progress:indeterminate::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;border-radius:4px;background:var(--p);animation:pgSlide 1.3s cubic-bezier(.4,0,.2,1) infinite}
+#progress-indicator .demo progress:indeterminate::-moz-progress-bar{background:transparent}
+#progress-indicator .demo .acts{display:flex;gap:8px;margin-top:auto;align-items:center}
+#progress-indicator .demo .acts .btn{height:32px;font-size:12.5px;padding:0 12px}
+#progress-indicator .demo .acts small{font-size:12px;color:var(--t2)}
+#progress-indicator .demo .ok{color:var(--ok);font-weight:600}
+#progress-indicator .demo .spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:pgSpin .7s linear infinite}
+#progress-indicator .demo .save{min-width:150px}
+#progress-indicator .demo .save[aria-disabled=true]{cursor:progress;filter:none;background:#5a7bf0;border-color:#5a7bf0}
+#progress-indicator .demo .save.saved{background:var(--ok);border-color:var(--ok)}
+#progress-indicator .demo .ring{position:relative;width:76px;height:76px;flex:none}
+#progress-indicator .demo .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+#progress-indicator .demo .ring circle{fill:none;stroke-width:7}
+#progress-indicator .demo .ring .tr{stroke:#ecebe6}
+#progress-indicator .demo .ring .vl{stroke:var(--p);stroke-linecap:round;transition:stroke-dashoffset .3s}
+#progress-indicator .demo .ring.done .vl{stroke:var(--ok)}
+#progress-indicator .demo .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+#progress-indicator .demo .lsp{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--t2)}
+#progress-indicator .demo .lsp .spin{border-color:#dfe5fb;border-top-color:var(--p)}
+@keyframes pgSlide{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+@keyframes pgSpin{to{transform:rotate(1turn)}}
+@media (prefers-reduced-motion:reduce){
+  /* chỉ báo đang chạy là thông tin, nên giữ chuyển động nhưng chậm lại */
+  #progress-indicator .demo .spin{animation-duration:1.6s!important;animation-iteration-count:infinite!important}
+  #progress-indicator .demo progress:indeterminate::after{animation-duration:2.6s!important;animation-iteration-count:infinite!important}
+}
+
+/* ===== màn hình hẹp ===== */
+@media (max-width:760px){
+  :where(#toast-notification,#popover,#confirmation-dialog,#progress-indicator,#drawer,#modal-dialog,#tooltip) .demo{height:auto;min-height:420px}
+  :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover,#confirmation-dialog,#progress-indicator) .demo .app{position:relative;min-height:420px}
+  :where(#modal-dialog,#drawer,#toast-notification,#tooltip,#popover) .demo .bar{padding:0 14px}
+  #modal-dialog .demo .body{grid-template-columns:1fr;padding:14px}
+  #modal-dialog .demo .col:nth-child(n+2){display:none}
+  #modal-dialog .demo .bar .stat{display:none}
+  #modal-dialog .demo form{grid-template-columns:1fr}
+  #drawer .demo .tbl{margin:14px}
+  #drawer .demo .tr{grid-template-columns:minmax(0,1fr) 92px}
+  #drawer .demo .tr:not(.th){height:auto;min-height:44px;padding-block:6px}
+  #drawer .demo .tr button{white-space:normal;line-height:1.35}
+  #drawer .demo .tr>:nth-child(2),#drawer .demo .tr>:nth-child(4){display:none}
+  #toast-notification .demo .list{margin:14px}
+  #toast-notification .demo .arch span{display:none}
+  #popover .demo .tasks{margin:14px}
+  #confirmation-dialog .demo .cf{position:relative;grid-template-columns:1fr}
+  #confirmation-dialog .demo .pane+.pane{border-left:0;border-top:1px solid #e3e2dd}
+  #confirmation-dialog .demo .pane{padding:18px 16px}
+  #progress-indicator .demo .grid{position:relative;grid-template-columns:1fr;grid-template-rows:none;padding:14px}
+}
+</style>
+</head>
+<body>
+<nav class="dnav"></nav>
+
+<main class="wrap">
+<header class="head">
+  <h1>Phản hồi &amp; lớp phủ</h1>
+  <p>Mỗi lần người dùng bấm, hệ thống phải <b>trả lời</b>: đã nhận, đang làm, xong rồi, hay cần hỏi lại. Bảy pattern dưới đây là những cách trả lời đó, từ hộp thoại chặn mọi thứ tới một dòng chữ nhỏ tự biến mất. Chọn sai loại thì hoặc làm phiền, hoặc người dùng không hề thấy.</p>
+</header>
+
+<!-- 1 -->
+<article class="pattern" id="modal-dialog">
+  <h2>Modal dialog</h2>
+  <p class="vi"><b>Hộp thoại chặn.</b> Một khung nổi giữa màn hình, phần phía sau tối lại và không bấm được cho tới khi xong hoặc đóng. Focus nhảy vào trong, phím Tab chỉ đi vòng trong hộp, <kbd>Esc</kbd> hoặc bấm ra nền tối để đóng, và focus quay về đúng nút đã mở. Bấm “Mời thành viên”.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="bar">
+        <h3>Ra mắt bản 2.0 <small>Dự án</small></h3>
+        <p class="stat" role="status"></p>
+        <div class="avs" aria-label="Thành viên"><span class="av" style="--c:#ffd7c2">LP</span><span class="av" style="--c:#c9e7d6">QH</span><span class="av" style="--c:#d8d3ff">TH</span></div>
+        <button type="button" class="btn open">+ Mời thành viên</button>
+      </div>
+      <div class="body">
+        <div class="col"><b>Cần làm</b><p>Viết ghi chú phát hành<span>Thu Hà · 12/10</span></p><p>Kiểm thử trên điện thoại<span>Quốc Huy · 14/10</span></p></div>
+        <div class="col"><b>Đang làm</b><p>Thiết kế trang giới thiệu<span>Lan Phạm · 10/10</span></p><p>Sửa lỗi đăng nhập<span>Quốc Huy · 09/10</span></p></div>
+        <div class="col"><b>Xong</b><p>Chốt danh sách tính năng<span>Lan Phạm · 02/10</span></p></div>
+      </div>
+    </div>
+    <div class="scrim"></div>
+    <dialog aria-labelledby="md-t" aria-describedby="md-d">
+      <div class="dh"><h4 id="md-t">Mời vào dự án</h4><button type="button" class="x close" aria-label="Đóng">×</button></div>
+      <p id="md-d">Người được mời sẽ nhận email và thấy mọi công việc trong “Ra mắt bản 2.0”.</p>
+      <form novalidate>
+        <div class="fld"><label for="md-email">Email</label><input class="inp" id="md-email" type="email" autocomplete="email" spellcheck="false" placeholder="ten@vidu.com" data-autofocus aria-describedby="md-err"></div>
+        <div class="fld"><label for="md-role">Quyền</label><select class="inp" id="md-role"><option>Có thể sửa</option><option>Chỉ xem</option></select></div>
+        <p class="err" id="md-err" aria-live="polite"></p>
+        <div class="acts"><button type="button" class="btn ghost close">Huỷ</button><button class="btn">Gửi lời mời</button></div>
+      </form>
+    </dialog>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>cần người dùng làm xong một việc ngắn, tự đủ, trước khi đi tiếp: điền 1–3 ô, chọn một lựa chọn quan trọng, xác nhận thao tác không hoàn tác được. Việc tách khỏi ngữ cảnh là cố ý.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung dài hay cần đối chiếu với trang phía sau (dùng Drawer), chỉ để thông báo (dùng Toast), hoặc bật lên tự động khi người dùng chưa làm gì. Không chồng modal lên modal.</p>
+    <p class="tip">Trong sản phẩm thật, mở bằng <code>dialog.showModal()</code>: trình duyệt tự làm focus trap, <kbd>Esc</kbd>, <code>::backdrop</code> và vô hiệu phần còn lại của trang. Demo này mở bằng <code>show()</code> + <code>inert</code> + tự giữ Tab, chỉ để hộp thoại nằm gọn trong khung thay vì phủ cả trang từ điển.</p>
+  </div>
+  <div class="kw"><button>modal dialog</button><button>native &lt;dialog&gt; with showModal()</button><button>focus trap + return focus to trigger</button><button>close on Esc and backdrop click</button><button>dimmed backdrop (::backdrop)</button><button>aria-labelledby dialog title</button><button>scale-in entry animation</button></div>
+</article>
+
+<!-- 2 -->
+<article class="pattern" id="drawer" data-toc="Drawer / Side sheet">
+  <h2>Drawer / Side sheet</h2>
+  <p class="vi"><b>Ngăn kéo trượt từ cạnh.</b> Một tấm cao bằng màn hình trượt ra từ mép phải, chứa chi tiết hoặc form chỉnh sửa của mục vừa chọn, trong khi danh sách phía sau vẫn nhìn thấy. Bấm tên một công việc, đổi trạng thái rồi Lưu; <kbd>Esc</kbd> hoặc bấm ra ngoài để đóng.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="bar"><h3>Công việc <small>Sprint 14</small></h3></div>
+      <div class="tbl" role="table" aria-label="Công việc">
+        <div class="tr th" role="row"><span role="columnheader">Tên việc</span><span role="columnheader">Phụ trách</span><span role="columnheader">Trạng thái</span><span role="columnheader">Hạn</span></div>
+      </div>
+    </div>
+    <div class="scrim"></div>
+    <dialog aria-labelledby="dr-t">
+      <form novalidate>
+        <div class="dh"><div style="flex:1"><small class="dr-id"></small><h4 id="dr-t">Chi tiết công việc</h4></div><button type="button" class="x close" aria-label="Đóng">×</button></div>
+        <div class="dbody">
+          <div class="fld"><label for="dr-name">Tên việc</label><input class="inp" id="dr-name" type="text" autocomplete="off" data-autofocus></div>
+          <div class="two">
+            <div class="fld"><label for="dr-st">Trạng thái</label><select class="inp" id="dr-st"><option>Cần làm</option><option>Đang làm</option><option>Bị chặn</option><option>Xong</option></select></div>
+            <div class="fld"><label for="dr-who">Phụ trách</label><select class="inp" id="dr-who"><option>Lan Phạm</option><option>Quốc Huy</option><option>Thu Hà</option><option>Gia Khang</option></select></div>
+          </div>
+          <div class="fld"><label for="dr-note">Ghi chú</label><textarea class="inp" id="dr-note"></textarea></div>
+        </div>
+        <div class="dfoot"><button type="button" class="btn ghost close">Huỷ</button><button class="btn">Lưu thay đổi</button></div>
+      </form>
+    </dialog>
+    <p class="sr" role="status"></p>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>xem hoặc sửa chi tiết một mục trong danh sách mà vẫn cần thấy danh sách (email, công việc, đơn hàng), bộ lọc nhiều tuỳ chọn, giỏ hàng, menu điều hướng trên điện thoại. Nhiều chỗ hơn modal, ít mất ngữ cảnh hơn chuyển trang.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung là một luồng chính đáng có trang riêng (cần link chia sẻ được, nút Back), hoặc chỉ cần hỏi một câu ngắn (dùng modal). Đừng mở drawer từ drawer.</p>
+    <p class="tip">Mẹo prompt: nói rõ “modal side sheet” (có nền tối, giữ focus) hay “non-modal / push drawer” (đẩy nội dung, vẫn thao tác được phía sau): hai hành vi khác nhau.</p>
+  </div>
+  <div class="kw"><button>side drawer</button><button>slide-over panel from right</button><button>side sheet with sticky footer actions</button><button>master–detail editing</button><button>focus trap, Esc to close, return focus</button><button>off-canvas</button></div>
+</article>
+
+<!-- 3 -->
+<article class="pattern" id="toast-notification" data-toc="Toast / Snackbar">
+  <h2>Toast / Snackbar</h2>
+  <p class="vi"><b>Thông báo nhỏ tự biến mất.</b> Một mẩu thông báo trượt lên ở góc sau khi làm xong việc gì đó, không chặn thao tác, vài giây sau tự ẩn. Kèm nút <b>Hoàn tác</b> thì việc xoá hay lưu trữ có thể làm ngay mà không cần hỏi trước. Bấm “Lưu trữ” vài thư, rồi Hoàn tác (hoặc nhấn <kbd>Z</kbd>). Rê chuột lên thông báo để giữ nó lại.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="bar"><h3>Hộp thư <small>4 chưa đọc</small></h3></div>
+      <ul class="list" aria-label="Thư"></ul>
+    </div>
+    <section class="toasts" aria-label="Thông báo"></section>
+    <p class="sr live" role="status"></p>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>báo kết quả của việc người dùng vừa làm và không cần họ phản hồi: “Đã lưu”, “Đã gửi”, “Đã lưu trữ · Hoàn tác”. Một dòng, một hành động tối đa, hiện 4–8 giây, dừng đếm khi rê chuột hoặc focus vào.</p>
+    <p class="avoid"><b>Tránh khi</b>lỗi cần sửa (đặt lỗi ngay cạnh chỗ sai), thông tin quan trọng người dùng phải đọc, hay nút hành động duy nhất để làm việc gì đó: toast biến mất là mất luôn. Đừng xếp chồng quá 3 cái.</p>
+    <p class="tip">Mẹo prompt: ghi “toast with Undo action, pauses on hover/focus, announced via aria-live polite, does not steal focus” để AI không làm toast chiếm focus hoặc trình đọc màn hình không đọc được.</p>
+  </div>
+  <div class="kw"><button>toast notification</button><button>snackbar with Undo action</button><button>auto-dismiss with countdown bar</button><button>pause on hover / focus</button><button>aria-live="polite" status</button><button>stacked toasts bottom-left</button><button>optimistic UI</button></div>
+</article>
+
+<!-- 4 -->
+<article class="pattern" id="tooltip">
+  <h2>Tooltip</h2>
+  <p class="vi"><b>Nhãn nhỏ khi rê chuột hoặc focus.</b> Một ô chữ ngắn hiện cạnh nút, nói nút đó làm gì (và phím tắt), hữu ích nhất cho nút chỉ có biểu tượng. Hiện sau một nhịp chờ ngắn khi rê chuột, hiện ngay khi Tab tới, rê qua nút bên cạnh thì đổi ngay không chờ, <kbd>Esc</kbd> để ẩn. Thử với thanh công cụ và dấu <b>i</b> bên dưới.</p>
+  <div class="demo">
+    <div class="app">
+      <div class="bar"><h3>Ghi chú họp <small>Đã lưu</small></h3></div>
+      <div class="doc">
+        <div class="paper">
+          <div class="tb" role="toolbar" aria-label="Định dạng chữ">
+            <span class="tw"><button type="button" aria-pressed="false" data-f="b" aria-labelledby="tt-b" aria-keyshortcuts="Control+B"><b>B</b></button><span class="tip" role="tooltip"><span id="tt-b">Đậm</span><kbd>Ctrl B</kbd></span></span>
+            <span class="tw"><button type="button" aria-pressed="false" data-f="i" aria-labelledby="tt-i" aria-keyshortcuts="Control+I"><i style="font-family:Georgia,serif">I</i></button><span class="tip" role="tooltip"><span id="tt-i">Nghiêng</span><kbd>Ctrl I</kbd></span></span>
+            <span class="tw"><button type="button" aria-pressed="false" data-f="u" aria-labelledby="tt-u" aria-keyshortcuts="Control+U"><u>U</u></button><span class="tip" role="tooltip"><span id="tt-u">Gạch chân</span><kbd>Ctrl U</kbd></span></span>
+            <span class="sep" aria-hidden="true"></span>
+            <span class="tw"><button type="button" data-f="clear" aria-labelledby="tt-c" aria-keyshortcuts="Control+\"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 5h11M10.5 5L8 16M4 17l12-12"/></svg></button><span class="tip" role="tooltip"><span id="tt-c">Xoá định dạng</span><kbd>Ctrl \</kbd></span></span>
+          </div>
+          <p class="txt">Chốt lại: <span class="s">bản 2.0 ra mắt ngày 20/10</span>, nhóm thiết kế gửi ảnh chụp màn hình trước thứ Sáu.</p>
+          <div class="quota"><span>Dung lượng: 4,2 / 5 GB</span><span class="meter" aria-hidden="true"><i></i></span>
+            <span class="tw"><button type="button" aria-label="Giải thích dung lượng" aria-describedby="tt-q">i</button><span class="tip up wide" role="tooltip" id="tt-q">Gồm mọi tệp đính kèm trong ghi chú. Gói Pro có 100 GB.</span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>giải thích nút chỉ có biểu tượng, cho biết phím tắt, hoặc thêm một câu giải nghĩa thuật ngữ. Nội dung là chữ ngắn, đọc được trong một hơi, và không bắt buộc phải đọc mới dùng được.</p>
+    <p class="avoid"><b>Tránh khi</b>chứa thứ bấm được (link, nút: dùng Popover), chứa thông tin bắt buộc (ghi thẳng ra giao diện), hoặc người dùng chủ yếu trên điện thoại: không có hover, tooltip coi như không tồn tại.</p>
+    <p class="tip">Mẹo prompt: “tooltip on hover and keyboard focus, 400ms delay, no delay when moving between adjacent triggers, dismiss with Esc, hoverable (WCAG 1.4.13)”. Trình duyệt mới có <code>popover="hint"</code> + <code>interestfor</code> làm sẵn phần lớn việc này.</p>
+  </div>
+  <div class="kw"><button>tooltip</button><button>icon button tooltip with keyboard shortcut</button><button>show on hover and focus</button><button>hover delay + warm-up</button><button>dismiss on Esc (WCAG 1.4.13)</button><button>role="tooltip"</button><button>popover="hint" interestfor</button></div>
+</article>
+
+<!-- 5 -->
+<article class="pattern" id="popover">
+  <h2>Popover</h2>
+  <p class="vi"><b>Khung nổi bấm mới mở, có thể tương tác.</b> Khác tooltip, popover mở khi <b>bấm</b> và chứa được nút, ô chọn, link. Bấm ra ngoài hoặc <kbd>Esc</kbd> để đóng, mở cái này thì cái kia tự đóng. Thử “Bộ lọc” (chọn rồi Áp dụng) và “Chia sẻ” (sao chép link).</p>
+  <div class="demo">
+    <div class="app">
+      <div class="bar">
+        <h3>Ra mắt bản 2.0 <small>Công việc</small></h3>
+        <button type="button" class="btn ghost bf" popovertarget="pv-filter">Bộ lọc <span class="n"></span></button>
+        <button type="button" class="btn bs" popovertarget="pv-share">Chia sẻ</button>
+      </div>
+      <ul class="tasks" aria-label="Công việc"></ul>
+      <p class="sr" role="status"></p>
+    </div>
+    <div id="pv-filter" popover role="dialog" aria-labelledby="pv-f-t">
+      <h4 id="pv-f-t">Lọc công việc</h4>
+      <fieldset><legend>Trạng thái</legend>
+        <label class="ck"><input type="checkbox" name="st" value="Đang làm">Đang làm</label>
+        <label class="ck"><input type="checkbox" name="st" value="Xong">Xong</label>
+      </fieldset>
+      <fieldset><legend>Phụ trách</legend>
+        <label class="ck"><input type="checkbox" name="who" value="Lan Phạm">Lan Phạm</label>
+        <label class="ck"><input type="checkbox" name="who" value="Quốc Huy">Quốc Huy</label>
+        <label class="ck"><input type="checkbox" name="who" value="Thu Hà">Thu Hà</label>
+      </fieldset>
+      <div class="pf"><button type="button" class="btn ghost clear">Bỏ lọc</button><button type="button" class="btn apply">Áp dụng</button></div>
+    </div>
+    <div id="pv-share" popover role="dialog" aria-labelledby="pv-s-t">
+      <h4 id="pv-s-t">Chia sẻ dự án</h4>
+      <div class="link"><input class="inp" type="text" readonly value="https://app.vidu.com/p/ra-mat-2-0" aria-label="Link dự án"><button type="button" class="btn copy">Sao chép</button></div>
+      <label class="acc" for="pv-acc">Ai có link <select id="pv-acc"><option>Chỉ xem</option><option>Có thể bình luận</option><option>Không truy cập</option></select></label>
+      <ul class="mem"><li><span class="av" style="--c:#ffd7c2">LP</span>Lan Phạm<small>Chủ dự án</small></li><li><span class="av" style="--c:#c9e7d6">QH</span>Quốc Huy<small>Có thể sửa</small></li></ul>
+    </div>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>cần một nhóm điều khiển nhỏ gắn với một nút: bộ lọc, chia sẻ, chọn màu, thẻ hồ sơ khi bấm avatar, cài đặt nhanh. Người dùng vẫn thấy và quay lại trang ngay khi bấm ra ngoài.</p>
+    <p class="avoid"><b>Tránh khi</b>nội dung chỉ là một dòng giải thích (dùng Tooltip), hoặc là một việc phải làm xong mới đi tiếp được (dùng Modal). Popover dài cần cuộn bên trong là dấu hiệu nên chuyển sang Drawer.</p>
+    <p class="tip">Thuộc tính HTML <code>popover</code> + <code>popovertarget</code> cho sẵn: đóng khi bấm ngoài, <kbd>Esc</kbd>, chỉ một cái mở một lúc, <code>aria-expanded</code> trên nút. Vị trí bám nút dùng CSS anchor positioning.</p>
+  </div>
+  <div class="kw"><button>popover</button><button>HTML popover attribute + popovertarget</button><button>light dismiss</button><button>CSS anchor positioning</button><button>filter popover with apply button</button><button>share popover with copy link</button></div>
+</article>
+
+<!-- 6 -->
+<article class="pattern" id="confirmation-dialog" data-toc="Confirmation vs Undo">
+  <h2>Confirmation dialog</h2>
+  <p class="vi"><b>Hỏi lại trước khi làm, hay làm luôn rồi cho hoàn tác?</b> Hộp xác nhận chặn người dùng để nói rõ hậu quả; đúng chỗ cho việc <b>không quay lại được</b>. Với việc lặp lại hằng ngày và khôi phục được, hỏi “Bạn có chắc?” mỗi lần chỉ khiến người ta bấm OK theo phản xạ; làm ngay kèm Hoàn tác tốt hơn. Thử cả hai bên.</p>
+  <div class="demo">
+    <div class="cf">
+      <section class="pane" aria-labelledby="cf-a">
+        <p class="tag" id="cf-a"><i>A</i>Xác nhận trước</p>
+        <div class="slot">
+          <div class="proj">
+            <h4>Kế hoạch Q4</h4>
+            <p>128 tệp · 34 công việc · 6 thành viên</p>
+            <div class="dz"><span>Xoá dự án và mọi dữ liệu bên trong. Không thể khôi phục.</span><button type="button" class="btn red open">Xoá dự án…</button></div>
+          </div>
+        </div>
+        <p class="why">Không hoàn tác được, ảnh hưởng nhiều người → hỏi lại, nói rõ hậu quả, nút ghi đúng hành động.</p>
+      </section>
+      <section class="pane" aria-labelledby="cf-b">
+        <p class="tag" id="cf-b"><i>B</i>Làm ngay, cho hoàn tác</p>
+        <ul class="nl" aria-label="Ghi chú"></ul>
+        <div class="ub" hidden><span></span><button type="button">Hoàn tác</button></div>
+        <p class="sr live" role="status"></p>
+        <p class="why">Việc nhỏ, làm thường xuyên, khôi phục được → không hỏi, cho làm luôn.</p>
+      </section>
+    </div>
+    <div class="scrim"></div>
+    <dialog role="alertdialog" aria-labelledby="cf-t" aria-describedby="cf-d">
+      <div class="ic" aria-hidden="true">!</div>
+      <h4 id="cf-t">Xoá vĩnh viễn “Kế hoạch Q4”?</h4>
+      <p id="cf-d">128 tệp và 34 công việc sẽ bị xoá với cả 6 thành viên. Thao tác này không hoàn tác được.</p>
+      <form novalidate>
+        <div class="fld"><label class="lab" for="cf-in">Gõ <b>Kế hoạch Q4</b> để xác nhận</label><input class="inp" id="cf-in" type="text" autocomplete="off" spellcheck="false" data-autofocus></div>
+        <div class="acts"><button type="button" class="btn ghost close">Huỷ</button><button class="btn red go" disabled>Xoá dự án</button></div>
+      </form>
+    </dialog>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>(xác nhận) thao tác không hoàn tác được, tốn kém hoặc ảnh hưởng người khác: xoá dự án, huỷ gói trả phí, gửi cho 5.000 người. Tiêu đề là câu hỏi cụ thể, nút ghi đúng động từ (“Xoá dự án”, không phải “OK”); việc rất nặng thì bắt gõ lại tên.</p>
+    <p class="avoid"><b>Tránh khi</b>việc khôi phục được và lặp lại nhiều (xoá thư, lưu trữ, bỏ khỏi danh sách): dùng Undo. Hỏi lại quá nhiều làm người dùng quen tay bấm “Đồng ý” và hộp xác nhận mất tác dụng đúng lúc cần.</p>
+    <p class="tip">Mẹo prompt: “destructive action confirmation with type-to-confirm, specific verb on button, focus on cancel/input, not OK/Cancel” cho trường hợp A; “optimistic delete with undo snackbar” cho trường hợp B.</p>
+  </div>
+  <div class="kw"><button>confirmation dialog</button><button>destructive action alertdialog</button><button>type-to-confirm (GitHub-style)</button><button>specific verb button label</button><button>undo instead of confirm</button><button>optimistic delete with undo</button></div>
+</article>
+
+<!-- 7 -->
+<article class="pattern" id="progress-indicator">
+  <h2>Progress indicator</h2>
+  <p class="vi"><b>Cho biết hệ thống đang làm và còn bao lâu.</b> <b>Determinate</b> (biết tiến độ): thanh hoặc vòng chạy tới 100%, kèm phần trăm / thời gian còn lại. <b>Indeterminate</b> (chưa biết): vệt chạy qua lại hoặc spinner, chỉ nói “đang làm”. Spinner hợp với chờ ngắn trong một nút; thanh hợp với việc dài. Bấm các nút để chạy lại.</p>
+  <div class="demo">
+    <div class="grid">
+      <div class="cell">
+        <p class="tag"><b>Determinate</b> · thanh</p>
+        <div class="row"><span class="file" aria-hidden="true">PDF</span><div class="meta"><b id="pg-up-l">bao-cao-quy-3.pdf</b><span class="up-s">24 MB</span></div></div>
+        <progress class="up" max="100" value="0" aria-labelledby="pg-up-l"></progress>
+        <div class="acts"><button type="button" class="btn ghost up-b">Huỷ</button><small class="up-st" role="status"></small></div>
+      </div>
+      <div class="cell">
+        <p class="tag"><b>Indeterminate → determinate</b> · thanh</p>
+        <div class="row"><div class="meta"><b id="pg-ex-l">Xuất báo cáo PDF</b><span class="ex-s">Đang chuẩn bị dữ liệu…</span></div></div>
+        <progress class="ex" max="100" aria-labelledby="pg-ex-l"></progress>
+        <div class="acts"><button type="button" class="btn ghost ex-b">Xuất lại</button><small class="ex-st" role="status"></small></div>
+      </div>
+      <div class="cell">
+        <p class="tag"><b>Indeterminate</b> · spinner trong nút</p>
+        <p style="font-size:13px;color:var(--t2)">Chờ ngắn (dưới ~3 giây), ngay tại chỗ vừa bấm.</p>
+        <div class="acts"><button type="button" class="btn save">Lưu thay đổi</button><small class="sv-st" role="status"></small></div>
+      </div>
+      <div class="cell">
+        <p class="tag"><b>Determinate</b> · vòng</p>
+        <div class="row">
+          <div class="ring" role="progressbar" aria-labelledby="pg-sy-l" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="tr" cx="40" cy="40" r="33"/><circle class="vl" cx="40" cy="40" r="33" stroke-dasharray="207.35" stroke-dashoffset="207.35"/></svg><b>0%</b></div>
+          <div class="meta"><b id="pg-sy-l">Đồng bộ ảnh</b><span class="sy-s">0 / 40 ảnh</span><div class="lsp" style="margin-top:8px"><button type="button" class="btn ghost sy-b" style="height:30px;font-size:12.5px;padding:0 11px">Đồng bộ lại</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-tools"><button class="replay">↻ Xem lại</button></div>
+  </div>
+  <div class="notes">
+    <p class="use"><b>Dùng khi</b>chờ quá ~1 giây. Dưới 1 giây: không cần gì. 1–3 giây: spinner tại chỗ. Trên 3 giây hoặc đo được (tải lên, xuất file, cài đặt): thanh determinate có phần trăm, cho huỷ. Chưa đo được thì chạy indeterminate rồi chuyển sang determinate khi biết.</p>
+    <p class="avoid"><b>Tránh khi</b>đang tải nội dung có hình dạng biết trước (dùng Skeleton), hoặc thanh “giả” chạy tới 99% rồi đứng im: người dùng mất tin ngay. Spinner toàn màn hình che mất trang là lựa chọn tệ nhất.</p>
+    <p class="tip">Mẹo prompt: phân biệt rõ “determinate progress bar with percentage and time remaining” và “indeterminate spinner”; dùng <code>&lt;progress&gt;</code> native (có sẵn role progressbar), bỏ <code>value</code> để thành indeterminate.</p>
+  </div>
+  <div class="kw"><button>determinate progress bar</button><button>indeterminate progress bar</button><button>loading spinner in button</button><button>circular progress ring</button><button>time remaining estimate</button><button>native &lt;progress&gt; element</button><button>cancelable upload</button></div>
+</article>
+
+</main>
+<script src="assets/dict.js"></script>
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const FOC = 'button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const OUT_MS = Dict.RM ? 0 : 170;
+
+/* Lớp phủ nằm trong khung .demo: <dialog>.show() + inert phần dưới + tự giữ Tab + Esc + trả focus.
+   (Sản phẩm thật: dùng showModal(), trình duyệt làm hết những việc này.) */
+function layer(dlg, { under, scrim, onClose }) {
+  let opener = null, timer;
+  const vis = () => $$(FOC, dlg).filter(el => el.getClientRects().length);
+  const close = why => {
+    if (!dlg.open || dlg.classList.contains('out')) return;
+    dlg.classList.add('out'); scrim.classList.remove('on');
+    timer = setTimeout(() => {
+      dlg.close(); dlg.classList.remove('out');
+      under.forEach(el => el.inert = false);
+      onClose?.(why);
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
+    }, OUT_MS);
+  };
+  dlg.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); close('esc'); }
+    else if (e.key === 'Tab') {
+      const f = vis(); if (!f.length) return;
+      const i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f.at(-1).focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  scrim.addEventListener('click', () => close('scrim'));
+  $$('.close', dlg).forEach(b => b.addEventListener('click', () => close('cancel')));
+  const open = from => {
+    opener = from || document.activeElement;
+    under.forEach(el => el.inert = true);
+    dlg.show(); scrim.classList.add('on');
+    (dlg.querySelector('[data-autofocus]') || vis()[0])?.focus({ preventScroll: true });
+  };
+  return { open, close, stop: () => clearTimeout(timer) };
+}
+const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+
+/* ---------- 1. Modal dialog ---------- */
+Dict.demo('modal-dialog', d => {
+  const dlg = $('dialog', d), form = $('form', dlg), email = $('#md-email', d), err = $('#md-err', d), stat = $('.stat', d);
+  const L = layer(dlg, { under: [$('.app', d)], scrim: $('.scrim', d), onClose: () => { err.textContent = ''; email.setAttribute('aria-invalid', 'false'); } });
+  $('.open', d).addEventListener('click', e => { form.reset(); L.open(e.currentTarget); });
+  email.addEventListener('input', () => { if (err.textContent && okEmail(email.value)) { err.textContent = ''; email.setAttribute('aria-invalid', 'false'); } });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = email.value.trim();
+    if (!okEmail(v)) { err.textContent = v ? 'Email chưa đúng, ví dụ ten@vidu.com.' : 'Nhập email người bạn muốn mời.'; email.setAttribute('aria-invalid', 'true'); email.focus(); return; }
+    const ini = v.split('@')[0].replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || '?';
+    $('.avs', d).insertAdjacentHTML('beforeend', `<span class="av new" style="--c:#ffe7a3" title="${esc(v)}">${esc(ini)}</span>`);
+    stat.textContent = `✓ Đã mời ${v}`;
+    L.close('sent');
+  });
+  return L.stop;
+});
+
+/* ---------- 2. Drawer ---------- */
+const TASKS = [
+  ['T-201', 'Thiết kế trang giới thiệu', 'Lan Phạm', 'Đang làm', '10/10', 'Bản mobile trước, desktop sau.'],
+  ['T-202', 'Sửa lỗi đăng nhập bằng email', 'Quốc Huy', 'Bị chặn', '09/10', 'Chờ phản hồi từ nhóm hạ tầng.'],
+  ['T-203', 'Viết ghi chú phát hành 2.0', 'Thu Hà', 'Cần làm', '12/10', ''],
+  ['T-204', 'Chốt danh sách tính năng', 'Lan Phạm', 'Xong', '02/10', 'Đã duyệt trong buổi họp thứ Hai.'],
+  ['T-205', 'Kiểm thử trên điện thoại', 'Gia Khang', 'Cần làm', '14/10', '']
+];
+const AVC = { 'Lan Phạm': '#ffd7c2', 'Quốc Huy': '#c9e7d6', 'Thu Hà': '#d8d3ff', 'Gia Khang': '#ffe7a3' };
+const ini = n => n.split(' ').map(w => w[0]).join('').slice(-2).toUpperCase();
+Dict.demo('drawer', d => {
+  const tbl = $('.tbl', d), dlg = $('dialog', d), form = $('form', dlg);
+  const data = TASKS.map(t => [...t]);
+  let cur = -1;
+  const row = (t, i) => `<div class="tr" role="row" data-i="${i}"><span role="cell"><button type="button" aria-haspopup="dialog">${esc(t[1])}</button></span>` +
+    `<span role="cell" class="who"><span class="av" style="--c:${AVC[t[2]]}" aria-hidden="true">${ini(t[2])}</span>${esc(t[2])}</span>` +
+    `<span role="cell"><span class="st" data-s="${t[3]}">${t[3]}</span></span><span role="cell" class="due">${t[4]}</span></div>`;
+  tbl.insertAdjacentHTML('beforeend', data.map(row).join(''));
+  const L = layer(dlg, { under: [$('.app', d)], scrim: $('.scrim', d), onClose: () => { $$('.tr.cur', tbl).forEach(r => r.classList.remove('cur')); } });
+  tbl.addEventListener('click', e => {
+    const b = e.target.closest('.tr button'); if (!b) return;
+    const r = b.closest('.tr'); cur = +r.dataset.i; const t = data[cur];
+    r.classList.add('cur');
+    $('.dr-id', dlg).textContent = t[0];
+    $('#dr-name', dlg).value = t[1]; $('#dr-st', dlg).value = t[3]; $('#dr-who', dlg).value = t[2]; $('#dr-note', dlg).value = t[5];
+    L.open(b);
+  });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const t = data[cur];
+    t[1] = $('#dr-name', dlg).value.trim() || t[1]; t[3] = $('#dr-st', dlg).value; t[2] = $('#dr-who', dlg).value; t[5] = $('#dr-note', dlg).value;
+    const old = $(`.tr[data-i="${cur}"]`, tbl);
+    old.outerHTML = row(t, cur);
+    const nr = $(`.tr[data-i="${cur}"]`, tbl); nr.classList.add('flash');
+    $('.sr[role=status]', d).textContent = `Đã lưu ${t[0]}: ${t[1]}, ${t[3]}.`;
+    L.close('save');
+    /* nút cũ đã bị thay: trả focus về nút mới của đúng dòng đó */
+    setTimeout(() => $('button', nr).focus({ preventScroll: true }), OUT_MS + 10);
+  });
+  return L.stop;
+});
+
+/* ---------- 3. Toast ---------- */
+const MAIL = [
+  ['Trần Bảo Ngọc', 'Lịch họp tuần sau', 'Mình dời buổi họp sang chiều thứ Ba nhé…', '#ffd7c2'],
+  ['Nguyễn Quốc Huy', 'Bản thiết kế trang chủ v3', 'Đã cập nhật theo góp ý hôm qua, xem giúp…', '#c9e7d6'],
+  ['Lê Thu Hà', 'Báo cáo tháng 9', 'Gửi bạn bản tổng hợp số liệu tháng 9…', '#d8d3ff'],
+  ['Phạm Gia Khang', 'Hoá đơn gói Pro', 'Hoá đơn kỳ tháng 10 đã sẵn sàng…', '#ffe7a3']
+];
+Dict.demo('toast-notification', d => {
+  const list = $('.list', d), box = $('.toasts', d), live = $('.live', d), app = $('.app', d);
+  const items = MAIL.map((m, i) => ({ m, i, on: true }));
+  const undoStack = [];
+  const live2 = t => { live.textContent = ''; setTimeout(() => live.textContent = t, 30); };
+  const li = it => `<li data-i="${it.i}"><span class="av" style="--c:${it.m[3]}" aria-hidden="true">${ini(it.m[0])}</span><div class="m"><b>${esc(it.m[1])}</b><span>${esc(it.m[0])} · ${esc(it.m[2])}</span></div>` +
+    `<button type="button" class="arch" aria-label="Lưu trữ thư: ${esc(it.m[1])}"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="14" height="4" rx="1"/><path d="M4.5 8v7.5a1 1 0 001 1h9a1 1 0 001-1V8M8 11.5h4" stroke-linecap="round"/></svg><span>Lưu trữ</span></button></li>`;
+  const draw = () => {
+    const vis = items.filter(x => x.on);
+    list.innerHTML = vis.length ? vis.map(li).join('') : '<li class="empty">Hộp thư trống. Hoàn tác để lấy lại thư.</li>';
+    $('.bar small', d).textContent = vis.length ? `${vis.length} thư` : 'Trống';
+  };
+  draw();
+  /* --- toast --- */
+  const DUR = 6000, timers = new Set();
+  let paused = false;
+  const kill = (t, now) => {
+    if (!t.isConnected || t.classList.contains('out')) return;
+    clearTimeout(t._t); timers.delete(t._t);
+    const back = t.contains(document.activeElement);
+    if (now || Dict.RM) t.remove(); else { t.classList.add('out'); t.addEventListener('animationend', () => t.remove(), { once: true }); }
+    if (back) ($('.arch', list) || list).focus?.();
+  };
+  const arm = t => {
+    t._start = performance.now();
+    t._bar.style.transition = 'none'; t._bar.style.transform = `scaleX(${t._left / DUR})`;
+    void t._bar.offsetWidth;
+    t._bar.style.transition = `transform ${t._left}ms linear`; t._bar.style.transform = 'scaleX(0)';
+    t._t = setTimeout(() => kill(t), t._left); timers.add(t._t);
+  };
+  const pause = () => { if (paused) return; paused = true; $$('.toast', box).forEach(t => { clearTimeout(t._t); t._left -= performance.now() - t._start; const s = getComputedStyle(t._bar).transform; t._bar.style.transition = 'none'; t._bar.style.transform = s; }); };
+  const resume = () => { if (!paused) return; paused = false; $$('.toast', box).forEach(t => { t._left = Math.max(t._left, 1200); arm(t); }); };
+  box.addEventListener('pointerenter', pause); box.addEventListener('pointerleave', () => { if (!box.contains(document.activeElement)) resume(); });
+  box.addEventListener('focusin', pause); box.addEventListener('focusout', e => { if (!box.contains(e.relatedTarget) && !box.matches(':hover')) resume(); });
+  const toast = (msg, undo) => {
+    const t = document.createElement('div'); t.className = 'toast';
+    t.innerHTML = `<span>${msg}</span>${undo ? '<button type="button" class="undo">Hoàn tác</button>' : ''}<button type="button" class="x" aria-label="Đóng thông báo">×</button><i aria-hidden="true"></i>`;
+    t._bar = $('i', t); t._left = undo ? DUR : 3500;
+    if (undo) $('.undo', t).addEventListener('click', () => { kill(t, true); undo(); });
+    $('.x', t).addEventListener('click', () => kill(t, true));
+    box.prepend(t);
+    const all = $$('.toast:not(.out)', box); if (all.length > 3) kill(all.at(-1), true);
+    if (paused) { t._start = performance.now(); } else arm(t);
+    live2(msg.replace(/<[^>]+>/g, '') + (undo ? '. Có nút Hoàn tác.' : ''));
+    return t;
+  };
+  const restore = it => {
+    it.on = true; draw();
+    const r = $(`li[data-i="${it.i}"]`, list); r.classList.add('back'); $('.arch', r).focus({ preventScroll: true });
+    const k = undoStack.indexOf(it); if (k > -1) undoStack.splice(k, 1);
+    toast(`Đã khôi phục “${esc(it.m[1])}”`);
+  };
+  list.addEventListener('click', e => {
+    const b = e.target.closest('.arch'); if (!b) return;
+    const r = b.closest('li'), it = items[+r.dataset.i];
+    const sib = r.nextElementSibling || r.previousElementSibling;
+    const nextI = sib?.dataset.i;
+    const finish = () => {
+      it.on = false; draw(); undoStack.push(it);
+      const f = nextI != null ? $(`li[data-i="${nextI}"] .arch`, list) : null;
+      (f || app.querySelector('.list')).focus?.({ preventScroll: true });
+      const t = toast(`Đã lưu trữ “${esc(it.m[1])}”`, () => restore(it));
+      t._it = it;
+    };
+    if (Dict.RM) return finish();
+    r.animate([{ height: r.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 200, easing: 'ease-in' }).onfinish = finish;
+  });
+  list.tabIndex = -1;
+  /* phím Z (hoặc Ctrl+Z) khi focus trong demo: hoàn tác lần lưu trữ gần nhất */
+  const onKey = e => {
+    if (!(e.key === 'z' || e.key === 'Z') || e.altKey || e.shiftKey || e.target.matches('input,textarea')) return;
+    const it = undoStack.at(-1); if (!it) return;
+    e.preventDefault();
+    $$('.toast', box).filter(t => t._it === it).forEach(t => kill(t, true));
+    restore(it);
+  };
+  d.addEventListener('keydown', onKey);
+  return () => { d.removeEventListener('keydown', onKey); timers.forEach(clearTimeout); };
+});
+
+/* ---------- 4. Tooltip ---------- */
+Dict.demo('tooltip', d => {
+  const paper = $('.paper', d);
+  let openTip = null, showT, hideT, warmUntil = 0, suppressed = null;
+  const tipOf = b => b.nextElementSibling;
+  const show = tip => {
+    clearTimeout(hideT);
+    if (openTip && openTip !== tip) openTip.classList.remove('on');
+    tip.style.setProperty('--dx', '0px'); tip.classList.add('on'); openTip = tip;
+    /* giữ bong bóng trong khung demo; mũi tên vẫn chỉ đúng nút */
+    const r = tip.getBoundingClientRect(), box = d.getBoundingClientRect(), m = 8;
+    const dx = Math.min(0, box.right - m - r.right) || Math.max(0, box.left + m - r.left);
+    tip.style.setProperty('--dx', dx + 'px');
+  };
+  const hide = (tip, delay = 0) => {
+    clearTimeout(showT); clearTimeout(hideT);
+    hideT = setTimeout(() => { tip.classList.remove('on'); if (openTip === tip) { openTip = null; warmUntil = performance.now() + 500; } }, delay);
+  };
+  for (const b of $$('.tw>button', d)) {
+    const tip = tipOf(b);
+    b.addEventListener('pointerenter', e => {
+      if (e.pointerType !== 'mouse') return;
+      clearTimeout(showT); clearTimeout(hideT);
+      if (suppressed === tip) return;
+      const wait = (openTip || performance.now() < warmUntil) ? 0 : 450; // nút kế bên: hiện ngay
+      showT = setTimeout(() => show(tip), wait);
+    });
+    b.addEventListener('pointerleave', () => { suppressed = null; hide(tip, 120); });
+    tip.addEventListener('pointerenter', () => clearTimeout(hideT));  // rê lên được tooltip (WCAG 1.4.13)
+    tip.addEventListener('pointerleave', () => hide(tip, 120));
+    b.addEventListener('focus', () => { if (b.matches(':focus-visible')) show(tip); });
+    b.addEventListener('blur', () => hide(tip));
+    b.addEventListener('pointerdown', () => hide(tip));
+  }
+  const fmt = f => {
+    if (f === 'clear') { ['b', 'i', 'u'].forEach(k => { delete paper.dataset[k]; $(`[data-f="${k}"]`, d).setAttribute('aria-pressed', 'false'); }); return; }
+    const on = !(f in paper.dataset);
+    if (on) paper.dataset[f] = ''; else delete paper.dataset[f];
+    $(`[data-f="${f}"]`, d).setAttribute('aria-pressed', on);
+  };
+  $('.tb', d).addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (b) fmt(b.dataset.f); });
+  /* toolbar: ← → giữa các nút (roving tabindex) */
+  const tbs = $$('.tb button', d);
+  tbs.forEach((b, i) => b.tabIndex = i ? -1 : 0);
+  $('.tb', d).addEventListener('keydown', e => {
+    const i = tbs.indexOf(document.activeElement); if (i < 0) return;
+    const j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tbs.length - 1 }[e.key];
+    if (j == null) return;
+    e.preventDefault(); const n = tbs[(j + tbs.length) % tbs.length];
+    tbs.forEach(b => b.tabIndex = -1); n.tabIndex = 0; n.focus();
+  });
+  const onKey = e => {
+    if (e.key === 'Escape' && openTip) { suppressed = openTip; hide(openTip); return; }
+    if ((e.ctrlKey || e.metaKey) && d.contains(document.activeElement)) {
+      const f = { b: 'b', i: 'i', u: 'u', '\\': 'clear' }[e.key.toLowerCase()];
+      if (f) { e.preventDefault(); fmt(f); }
+    }
+  };
+  document.addEventListener('keydown', onKey);
+  return () => { document.removeEventListener('keydown', onKey); clearTimeout(showT); clearTimeout(hideT); };
+});
+
+/* ---------- 5. Popover ---------- */
+const PV_TASKS = [
+  ['Thiết kế trang giới thiệu', 'Lan Phạm', 'Đang làm'], ['Sửa lỗi đăng nhập', 'Quốc Huy', 'Đang làm'],
+  ['Chốt danh sách tính năng', 'Lan Phạm', 'Xong'], ['Viết ghi chú phát hành', 'Thu Hà', 'Đang làm'], ['Ảnh chụp màn hình cửa hàng', 'Thu Hà', 'Xong']
+];
+const ANCHOR = CSS.supports('anchor-name: --a');
+Dict.demo('popover', d => {
+  const list = $('.tasks', d), fp = $('#pv-filter', d), sp = $('#pv-share', d), bf = $('.bf', d), n = $('.bf .n', d);
+  const draw = (st = [], who = [], say = true) => {
+    const rows = PV_TASKS.filter(t => (!st.length || st.includes(t[2])) && (!who.length || who.includes(t[1])));
+    list.innerHTML = rows.length ? rows.map(t => `<li><span class="av" style="--c:${AVC[t[1]]}" aria-hidden="true">${ini(t[1])}</span><span>${esc(t[0])}</span><em class="st${t[2] === 'Xong' ? ' done' : ''}" style="font-style:normal">${t[2]}</em></li>`).join('')
+      : '<li class="nil">Không có công việc khớp bộ lọc.</li>';
+    n.textContent = (st.length + who.length) || '';
+    bf.setAttribute('aria-label', `Bộ lọc${st.length + who.length ? `, đang bật ${st.length + who.length}` : ''}`);
+    if (say) $('.sr[role=status]', d).textContent = `Hiện ${rows.length} trên ${PV_TASKS.length} công việc.`;
+  };
+  draw([], [], false);
+  const picked = name => $$(`input[name=${name}]:checked`, fp).map(i => i.value);
+  $('.apply', fp).addEventListener('click', () => { draw(picked('st'), picked('who')); fp.hidePopover(); bf.focus({ preventScroll: true }); });
+  $('.clear', fp).addEventListener('click', () => { $$('input', fp).forEach(i => i.checked = false); draw(); fp.hidePopover(); bf.focus({ preventScroll: true }); });
+  const copy = $('.copy', sp);
+  let ct;
+  copy.addEventListener('click', async () => {
+    const ok = await Dict.copy($('.link input', sp).value);
+    copy.textContent = ok ? '✓ Đã chép' : 'Không chép được';
+    clearTimeout(ct); ct = setTimeout(() => copy.textContent = 'Sao chép', 1600);
+  });
+  /* trình duyệt chưa có anchor positioning: tự đặt vị trí khi mở, đóng khi cuộn trang */
+  const place = (pop, btn) => {
+    const r = btn.getBoundingClientRect();
+    pop.style.position = 'fixed';
+    pop.style.top = r.bottom + 8 + 'px';
+    pop.style.left = Math.max(8, Math.min(r.right - pop.offsetWidth, innerWidth - pop.offsetWidth - 8)) + 'px';
+  };
+  const onScroll = () => [fp, sp].forEach(p => p.matches(':popover-open') && p.hidePopover());
+  [[fp, bf], [sp, $('.bs', d)]].forEach(([p, b]) => p.addEventListener('toggle', e => {
+    b.setAttribute('aria-expanded', e.newState === 'open');
+    if (!ANCHOR && e.newState === 'open') place(p, b);
+  }));
+  if (!ANCHOR) addEventListener('scroll', onScroll, { passive: true });
+  return () => { clearTimeout(ct); removeEventListener('scroll', onScroll); [fp, sp].forEach(p => p.matches(':popover-open') && p.hidePopover()); };
+});
+
+/* ---------- 6. Confirmation vs Undo ---------- */
+const NOTES = ['Ý tưởng cho buổi workshop', 'Danh sách câu hỏi phỏng vấn', 'Ghi chú họp với nhóm hỗ trợ', 'Việc cần làm trước kỳ nghỉ'];
+Dict.demo('confirmation-dialog', d => {
+  const dlg = $('dialog', d), form = $('form', dlg), inp = $('#cf-in', d), go = $('.go', d), slot = $('.slot', d);
+  const NAME = 'Kế hoạch Q4';
+  const L = layer(dlg, { under: [$('.cf', d)], scrim: $('.scrim', d) });
+  $('.open', d).addEventListener('click', e => { form.reset(); go.disabled = true; L.open(e.currentTarget); });
+  inp.addEventListener('input', () => { go.disabled = inp.value.trim().toLowerCase() !== NAME.toLowerCase(); });
+  form.addEventListener('submit', e => {
+    e.preventDefault(); if (go.disabled) return;
+    L.close('delete');
+    setTimeout(() => {
+      slot.innerHTML = `<div class="gone" tabindex="-1" role="status"><b>Đã xoá “${NAME}”</b>Dự án và dữ liệu không thể khôi phục.</div>`;
+      $('.gone', slot).focus({ preventScroll: true });
+    }, OUT_MS + 10);
+  });
+  /* B: xoá ngay + Hoàn tác */
+  const nl = $('.nl', d), ub = $('.ub', d), live = $('.live', d);
+  const on = NOTES.map(() => true);
+  let last = -1, t;
+  const draw = () => {
+    const rows = NOTES.map((x, i) => on[i] ? `<li data-i="${i}"><span>${esc(x)}</span><button type="button" class="del" aria-label="Xoá ghi chú: ${esc(x)}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6"/></svg></button></li>` : '').join('');
+    nl.innerHTML = rows || '<li class="nil">Không còn ghi chú nào.</li>';
+  };
+  draw();
+  const hideUb = () => { ub.hidden = true; last = -1; };
+  nl.addEventListener('click', e => {
+    const b = e.target.closest('.del'); if (!b) return;
+    const r = b.closest('li'), i = +r.dataset.i, sib = (r.nextElementSibling || r.previousElementSibling)?.dataset.i;
+    on[i] = false; last = i; draw();
+    (sib != null ? $(`li[data-i="${sib}"] .del`, nl) : $('button', ub))?.focus({ preventScroll: true });
+    $('span', ub).textContent = `Đã xoá “${NOTES[i]}”`; ub.hidden = false;
+    ub.style.animation = 'none'; void ub.offsetWidth; ub.style.animation = '';
+    live.textContent = `Đã xoá ghi chú ${NOTES[i]}. Có nút Hoàn tác.`;
+    clearTimeout(t); t = setTimeout(hideUb, 6000);
+  });
+  $('button', ub).addEventListener('click', () => {
+    if (last < 0) return;
+    const i = last; on[i] = true; draw(); hideUb(); clearTimeout(t);
+    const r = $(`li[data-i="${i}"]`, nl); r.classList.add('back'); $('.del', r).focus({ preventScroll: true });
+    live.textContent = `Đã khôi phục ${NOTES[i]}.`;
+  });
+  return () => { clearTimeout(t); L.stop(); };
+});
+
+/* ---------- 7. Progress indicator ---------- */
+Dict.demo('progress-indicator', d => {
+  const T = new Set();
+  const later = (fn, ms) => { const id = setTimeout(() => { T.delete(id); fn(); }, ms); T.add(id); return id; };
+  /* A: tải lên, tốc độ không đều như mạng thật */
+  const up = $('.up', d), upS = $('.up-s', d), upB = $('.up-b', d), upSt = $('.up-st', d);
+  let upT = null, upV = 0;
+  const upTick = () => {
+    upV = Math.min(100, upV + 1.2 + Math.random() * 3.4);
+    up.value = upV;
+    const left = Math.max(1, Math.round((100 - upV) / 3.2 * .16));
+    upS.textContent = `${(24 * upV / 100).toFixed(1).replace('.', ',')} / 24 MB · ${Math.round(upV)}% · còn khoảng ${left} giây`;
+    if (upV >= 100) { up.classList.add('done'); upS.innerHTML = '<span class="ok">✓ Đã tải lên · 24 MB</span>'; upSt.textContent = 'Đã tải lên xong.'; upB.textContent = 'Tải lên lại'; upT = null; return; }
+    upT = later(upTick, 160);
+  };
+  const upStart = () => { clearTimeout(upT); upV = 0; up.value = 0; up.classList.remove('done'); upSt.textContent = ''; upB.textContent = 'Huỷ'; upTick(); };
+  upB.addEventListener('click', () => {
+    if (upT) { clearTimeout(upT); T.delete(upT); upT = null; upS.textContent = `Đã huỷ ở ${Math.round(upV)}%`; upSt.textContent = 'Đã huỷ tải lên.'; upB.textContent = 'Tải lên lại'; }
+    else upStart();
+  });
+  upStart();
+  /* B: chưa biết bao lâu → biết rồi */
+  const ex = $('.ex', d), exS = $('.ex-s', d), exB = $('.ex-b', d), exSt = $('.ex-st', d);
+  let exRun = 0;
+  const exStart = () => {
+    const my = ++exRun;
+    ex.removeAttribute('value'); ex.classList.remove('done'); exS.textContent = 'Đang chuẩn bị dữ liệu…'; exSt.textContent = ''; exB.setAttribute('aria-disabled', 'true');
+    later(() => {
+      if (my !== exRun) return;
+      let p = 0;
+      const step = () => {
+        if (my !== exRun) return;
+        p++; ex.value = p / 12 * 100; exS.textContent = `Đang xuất trang ${p} / 12`;
+        if (p < 12) return later(step, 260);
+        ex.classList.add('done'); exS.innerHTML = '<span class="ok">✓ Xong · bao-cao.pdf (12 trang)</span>'; exSt.textContent = 'Xuất báo cáo xong.'; exB.removeAttribute('aria-disabled');
+      };
+      step();
+    }, 2600);
+  };
+  exB.addEventListener('click', () => { if (exB.getAttribute('aria-disabled') !== 'true') exStart(); });
+  exStart();
+  /* C: spinner trong nút */
+  const sv = $('.save', d), svSt = $('.sv-st', d);
+  sv.addEventListener('click', () => {
+    if (sv.getAttribute('aria-disabled') === 'true') return;
+    sv.setAttribute('aria-disabled', 'true'); sv.classList.remove('saved');
+    sv.innerHTML = '<span class="spin" aria-hidden="true"></span>Đang lưu…'; svSt.textContent = 'Đang lưu';
+    later(() => {
+      sv.removeAttribute('aria-disabled'); sv.classList.add('saved'); sv.textContent = '✓ Đã lưu'; svSt.textContent = 'Đã lưu thay đổi';
+      later(() => { sv.classList.remove('saved'); sv.textContent = 'Lưu thay đổi'; svSt.textContent = ''; }, 1800);
+    }, 1500);
+  });
+  /* D: vòng */
+  const ring = $('.ring', d), vl = $('.vl', ring), rb = $('b', ring), syS = $('.sy-s', d), syB = $('.sy-b', d);
+  const C = 207.35;
+  let syRun = 0;
+  const syStart = () => {
+    const my = ++syRun; let k = 0; ring.classList.remove('done'); syB.setAttribute('aria-disabled', 'true');
+    const step = () => {
+      if (my !== syRun) return;
+      const pc = Math.round(k / 40 * 100);
+      vl.style.strokeDashoffset = C * (1 - k / 40); rb.textContent = pc + '%';
+      ring.setAttribute('aria-valuenow', k); ring.setAttribute('aria-valuetext', `${k} trên 40 ảnh`);
+      syS.textContent = k < 40 ? `${k} / 40 ảnh` : '✓ Đã đồng bộ 40 ảnh';
+      if (k >= 40) { ring.classList.add('done'); syB.removeAttribute('aria-disabled'); return; }
+      k++; later(step, 90 + Math.random() * 140);
+    };
+    step();
+  };
+  syB.addEventListener('click', () => { if (syB.getAttribute('aria-disabled') !== 'true') syStart(); });
+  syStart();
+  return () => { T.forEach(clearTimeout); T.clear(); exRun++; syRun++; };
+});
+})();
+</script>
+</body>
+</html>
