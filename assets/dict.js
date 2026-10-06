@@ -26,24 +26,56 @@ const Dict = (() => {
   const page = DICT_PAGES.find(p => p.file === here);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+  /* ---------- theme: light / dark ----------
+     The inline script in <head> sets html[data-theme] before paint (stored choice, else the OS setting).
+     Any element with [data-theme-toggle] switches it; the landing page uses the same hook. */
+  const THEME_BTN = '<button type="button" class="dnav-theme" data-theme-toggle>' +
+    '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>' +
+    '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>';
+  const root = document.documentElement;
+  const sysDark = matchMedia('(prefers-color-scheme: dark)');
+  const stored = () => { try { return localStorage.getItem('pd-theme'); } catch (_) { return null; } };
+  const syncTheme = () => {
+    const dark = root.dataset.theme === 'dark';
+    $$('[data-theme-toggle]').forEach(b => {
+      b.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      b.setAttribute('aria-pressed', String(dark));
+    });
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#07080a' : '#f6f5f2');
+  };
+  const applyTheme = t => {
+    const go = () => { root.dataset.theme = t; syncTheme(); };
+    if (document.startViewTransition && !RM) document.startViewTransition(go); else go();
+  };
+  document.addEventListener('click', e => {
+    if (!e.target.closest('[data-theme-toggle]')) return;
+    const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('pd-theme', t); } catch (_) {}
+    applyTheme(t);
+  });
+  sysDark.addEventListener('change', e => { if (!stored()) applyTheme(e.matches ? 'dark' : 'light'); });
+
   /* ---------- nav: brand + one popover per group ---------- */
   const nav = document.querySelector('nav.dnav');
   if (nav) {
     nav.setAttribute('aria-label', 'Pattern groups');
+    const links = items => items.map(p => `<a href="${p.file}"${p === page ? ' aria-current="page"' : ''}>` +
+      `<b>${esc(p.name)}</b><span class="dnav-n">${p.count ? p.count : ''}</span><small>${esc(p.desc)}</small></a>`).join('');
+    /* desktop: one menu per group; narrow screens: a single "Browse" menu with both groups */
     nav.innerHTML = '<div class="dnav-in"><a class="brand" href="index.html" aria-label="Pattern Dictionary — home"><span>Pattern Dictionary</span></a>' +
       DICT_GROUPS.map((g, gi) => {
         const items = DICT_PAGES.filter(p => p.group === g);
         const cur = items.find(p => p === page);
-        return `<button type="button" class="dnav-btn${cur ? ' is-cur' : ''}" popovertarget="dnav-p${gi}" aria-label="${esc(g)}${cur ? ', current page: ' + esc(cur.name) : ''}">` +
+        return `<button type="button" class="dnav-btn dnav-grp${cur ? ' is-cur' : ''}" popovertarget="dnav-p${gi}" aria-label="${esc(g)}${cur ? ', current page: ' + esc(cur.name) : ''}">` +
           `${esc(g)}${cur ? `<span class="dnav-here">${esc(cur.name)}</span>` : ''}<span class="dnav-car" aria-hidden="true">▾</span></button>` +
-          `<div class="dnav-pop" id="dnav-p${gi}" popover><div class="dnav-gt">${esc(g)}</div>` +
-          items.map(p => `<a href="${p.file}"${p === page ? ' aria-current="page"' : ''}>` +
-            `<b>${esc(p.name)}</b><span class="dnav-n">${p.count ? p.count : ''}</span><small>${esc(p.desc)}</small></a>`).join('') +
-          '</div>';
-      }).join('') + '</div>';
+          `<div class="dnav-pop" id="dnav-p${gi}" popover><div class="dnav-gt">${esc(g)}</div>${links(items)}</div>`;
+      }).join('') +
+      `<button type="button" class="dnav-btn dnav-all" popovertarget="dnav-pall" aria-label="Browse all pattern groups${page ? ', current page: ' + esc(page.name) : ''}">Browse<span class="dnav-car" aria-hidden="true">▾</span></button>` +
+      `<div class="dnav-pop" id="dnav-pall" popover>${DICT_GROUPS.map(g => `<div class="dnav-gt">${esc(g)}</div>${links(DICT_PAGES.filter(p => p.group === g))}`).join('')}</div>` +
+      THEME_BTN + '</div>';
     $$('.dnav-pop', nav).forEach(pop => {
       const btn = nav.querySelector(`[popovertarget="${pop.id}"]`);
-      const links = () => $$('a', pop);
+      const items = () => $$('a', pop);
       pop.addEventListener('toggle', e => {
         btn.setAttribute('aria-expanded', e.newState === 'open');
         if (e.newState !== 'open') return;
@@ -54,11 +86,11 @@ const Dict = (() => {
       btn.setAttribute('aria-expanded', 'false');
       btn.addEventListener('keydown', e => {
         if (e.key !== 'ArrowDown') return;
-        e.preventDefault(); pop.showPopover(); links()[0].focus();
+        e.preventDefault(); pop.showPopover(); items()[0].focus();
       });
       pop.addEventListener('keydown', e => {
         const d = { ArrowDown: 1, ArrowUp: -1 }[e.key]; if (!d) return;
-        e.preventDefault(); const l = links(), i = l.indexOf(document.activeElement);
+        e.preventDefault(); const l = items(), i = l.indexOf(document.activeElement);
         l[(i + d + l.length) % l.length].focus();
       });
     });
@@ -129,6 +161,8 @@ const Dict = (() => {
   /* ---------- pause CSS animations in demos that are off screen (saves CPU/battery, smoother scrolling) ---------- */
   const offIO = new IntersectionObserver(es => es.forEach(x => x.target.classList.toggle('is-off', !x.isIntersecting)), { rootMargin: '200px 0px' });
   $$('.demo').forEach(d => offIO.observe(d));
+
+  syncTheme();
 
   return { RM, pages: DICT_PAGES, page, copy, onView, replay, demo };
 })();
