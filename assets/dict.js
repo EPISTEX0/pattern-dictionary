@@ -8,7 +8,7 @@ const DICT_GROUPS = ['Visual', 'Functional'];
 const DICT_PAGES = [
   { file: 'aesthetic.html',     name: 'Visual styles',       group: 'Visual',     count: 8,  desc: 'One piece of content presented in eight distinct visual styles.' },
   { file: 'layout.html',        name: 'Layout',              group: 'Visual',     count: 6,  desc: 'How a page is divided: the position, order and column count of each content block.' },
-  { file: 'motion.html',        name: 'Motion',              group: 'Visual',     count: 11, desc: 'Animation that responds to scrolling, tapping and pointer movement.' },
+  { file: 'motion.html',        name: 'Motion',              group: 'Visual',     count: 17, desc: 'Animation that responds to scrolling, tapping and pointer movement.' },
   { file: 'surface.html',       name: 'Surfaces & texture',  group: 'Visual',     count: 6,  desc: 'Surface treatments: grain, gradients, halftone dots and light effects.' },
   { file: 'navigation.html',    name: 'Navigation',          group: 'Functional', count: 7,  desc: 'Structures that show users where they are and where they can go next.' },
   { file: 'forms.html',         name: 'Forms & input',       group: 'Functional', count: 6,  desc: 'Inputs, choices and validation that help users complete forms quickly and accurately.' },

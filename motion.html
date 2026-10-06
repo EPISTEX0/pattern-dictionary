@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="only light">
 <title>Motion — Pattern Dictionary</title>
-<meta name="description" content="11 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Each has a live demo and prompt keywords.">
+<meta name="description" content="17 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions, dynamic island, fly to target, scripted demo, marker highlight, autoplay carousel, line drawing. Each has a live demo and prompt keywords.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Pattern Dictionary">
 <meta property="og:title" content="Motion — Pattern Dictionary">
-<meta property="og:description" content="11 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions. Each has a live demo and prompt keywords.">
+<meta property="og:description" content="17 motion patterns for web design: scrollytelling, sticky, scrub, reveal, stagger, parallax, morph, marquee, text reveal, view transitions, micro-interactions, dynamic island, fly to target, scripted demo, marker highlight, autoplay carousel, line drawing. Each has a live demo and prompt keywords.">
 <meta property="og:url" content="https://epistex0.github.io/pattern-dictionary/motion.html">
 <meta property="og:image" content="https://epistex0.github.io/pattern-dictionary/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,7 +18,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23161616'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%23ff5a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/dict.css">
 <style>
   /* legacy page reset, now scoped to demos */
@@ -26,7 +26,7 @@
   :where(.demo button){font:inherit;color:inherit}
   .demo:has(.scroller) .replay{right:26px}
   .hint{position:absolute;top:12px;left:14px;z-index:20;font-size:12.5px;font-weight:600;color:var(--mute);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:4px 11px;pointer-events:none}
-  .rm-note{display:none;position:absolute;left:14px;bottom:12px;z-index:20;font-size:12px;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+  .rm-note{display:none;position:absolute;left:14px;bottom:12px;z-index:20;font-size:12px;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px;pointer-events:none}
   .nosda{display:none;position:absolute;left:14px;bottom:12px;z-index:21;font-size:12px;color:#8a2a00;background:#fff3ec;border:1px solid #ffd2bd;border-radius:6px;padding:3px 8px}
   @supports not (animation-timeline: scroll()){ .needs-sda .nosda{display:block} }
   @media (prefers-reduced-motion: reduce){
@@ -181,6 +181,188 @@
   @media (prefers-reduced-motion: no-preference){ #morph .blob{animation:morph-blob 6s ease-in-out infinite} }
   @media (prefers-reduced-motion: reduce){ #morph .send,#morph .send .t,#morph .burger i,#morph .send::after{transition:none} #morph .send.loading::before{animation:none} }
 
+  /* ---------- 7b. Dynamic Island ---------- */
+  #dynamic-island .demo{--demo-h-m:340px;--spring:cubic-bezier(.2,1.25,.3,1);padding:0}
+  @supports (transition-timing-function:linear(0,1)){
+    #dynamic-island .demo{--spring:linear(0,.06 2.4%,.23 5.3%,.46 9.1%,.72 14%,.9 19%,1.01 25%,1.04 30%,1.035 36%,1.01 46%,.998 58%,1)}}
+  #dynamic-island .screen{position:absolute;inset:0;container-type:inline-size;overflow:hidden;
+    background:radial-gradient(110% 80% at 15% 115%,#3d7bff 0%,transparent 60%),radial-gradient(80% 75% at 95% -5%,#a58bff 0%,transparent 60%),radial-gradient(60% 60% at 70% 70%,#ffb08e 0%,transparent 70%),linear-gradient(160deg,#dfe8ff,#efe9ff)}
+  #dynamic-island .sbar{position:absolute;left:28px;right:28px;top:22px;display:flex;justify-content:space-between;font:600 15px var(--sans);color:#10131a}
+  #dynamic-island .island{--w:126px;--h:36px;--r:18px;--xw:min(380px,100cqw - 24px);position:absolute;left:50%;top:58px;translate:-50% 0;width:var(--w);height:var(--h);border-radius:var(--r);
+    padding:0;border:0;background:#000;color:#fff;overflow:hidden;cursor:pointer;box-shadow:0 10px 30px -12px rgba(0,0,0,.45);
+    transition:width .62s var(--spring),height .62s var(--spring),border-radius .62s var(--spring)}
+  #dynamic-island .tap{position:absolute;inset:0;border:0;background:none;border-radius:inherit;cursor:pointer;z-index:1}
+  #dynamic-island .island:has(.tap:focus-visible){outline:3px solid var(--acc);outline-offset:3px}
+  #dynamic-island .island[data-s=music]{--w:232px}
+  #dynamic-island .island[data-s=music-x]{--w:var(--xw);--h:156px;--r:42px}
+  #dynamic-island .island[data-s=timer]{--w:200px}
+  #dynamic-island .island[data-s=call]{--w:var(--xw);--h:78px;--r:39px}
+  #dynamic-island .island[data-s=oncall]{--w:210px}
+  /* views: laid out at their final size, centred, so the pill reveals them instead of reflowing them */
+  #dynamic-island .v{position:absolute;left:50%;top:0;translate:-50% 0;display:flex;align-items:center;opacity:0;filter:blur(8px);scale:.88;pointer-events:none;
+    transition:opacity .18s,filter .18s,scale .18s}
+  #dynamic-island .island[data-s=music] .v-music,#dynamic-island .island[data-s=music-x] .v-mx,#dynamic-island .island[data-s=timer] .v-timer,
+  #dynamic-island .island[data-s=call] .v-call,#dynamic-island .island[data-s=oncall] .v-oncall{opacity:1;filter:none;scale:1;pointer-events:auto;
+    transition:opacity .3s .14s,filter .3s .14s,scale .55s .1s var(--spring)}
+  #dynamic-island .v-music,#dynamic-island .v-timer,#dynamic-island .v-oncall{height:36px;justify-content:space-between;padding:0 12px 0 8px}
+  #dynamic-island .v-music{width:232px}
+  #dynamic-island .v-timer{width:200px;padding-left:12px}
+  #dynamic-island .v-oncall{width:210px;padding-left:12px}
+  #dynamic-island .art{flex:none;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#ff8a5c,#ff5a1f 45%,#7c5cff)}
+  #dynamic-island .eq{display:flex;align-items:center;gap:2.5px;height:16px}
+  #dynamic-island .eq b{width:3px;height:100%;border-radius:2px;background:#ff8a5c;transform-origin:50% 50%;animation:di-eq .9s ease-in-out infinite alternate}
+  #dynamic-island .eq b:nth-child(2){animation-delay:-.3s}#dynamic-island .eq b:nth-child(3){animation-delay:-.6s}#dynamic-island .eq b:nth-child(4){animation-delay:-.45s}
+  @keyframes di-eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+  #dynamic-island .v-mx{width:var(--xw);height:156px;flex-direction:column;align-items:stretch;justify-content:center;gap:12px;padding:0 24px;text-align:left}
+  #dynamic-island .mx-top{display:flex;align-items:center;gap:14px}
+  #dynamic-island .mx-top .art{width:54px;height:54px;border-radius:14px}
+  #dynamic-island .mx-top b{display:block;font-size:16px}
+  #dynamic-island .mx-top small{color:#9a9aa3;font-size:13.5px}
+  #dynamic-island .mx-top .eq{margin-left:auto}
+  #dynamic-island .prog{display:flex;align-items:center;gap:10px;font:500 11.5px var(--mono);color:#9a9aa3}
+  #dynamic-island .prog span{flex:1;height:5px;border-radius:3px;background:#333;overflow:hidden}
+  #dynamic-island .prog span::before{content:"";display:block;width:38%;height:100%;background:#fff;border-radius:3px}
+  #dynamic-island .ring{flex:none;width:20px;height:20px;border-radius:50%;background:conic-gradient(var(--acc) var(--p,80%),#3a2a22 0)}
+  #dynamic-island .v-timer b,#dynamic-island .v-oncall b{font:600 15px var(--mono);color:#ff8a5c}
+  #dynamic-island .v-oncall b{color:#3ee6a8}
+  #dynamic-island .v-oncall i{flex:none;width:10px;height:10px;border-radius:50%;background:#3ee6a8}
+  #dynamic-island .v-call{width:var(--xw);height:78px;gap:12px;padding:0 12px 0 14px;text-align:left}
+  #dynamic-island .av{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:20px;background:linear-gradient(135deg,#ffb08e,#ff5a1f)}
+  #dynamic-island .v-call .who{flex:1;min-width:0}
+  #dynamic-island .v-call small{display:block;color:#9a9aa3;font-size:12.5px}
+  #dynamic-island .v-call strong{font-size:17px}
+  #dynamic-island .v-call [data-a]{position:relative;z-index:2;flex:none;width:50px;height:50px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;color:#fff}
+  #dynamic-island .v-call [data-a]:active{scale:.92}
+  #dynamic-island .v-call [data-a=no]{background:#ff453a}
+  #dynamic-island .v-call [data-a=yes]{background:#30d158}
+  #dynamic-island .v-call svg{width:22px;height:22px}
+  #dynamic-island .v-call [data-a=no] svg{rotate:135deg}
+  #dynamic-island .picks{position:absolute;left:50%;bottom:22px;translate:-50% 0;display:flex;gap:4px;padding:5px;border-radius:999px;background:rgba(255,255,255,.72);
+    backdrop-filter:blur(14px);box-shadow:0 0 0 1px rgba(255,255,255,.8),0 12px 30px -14px rgba(16,19,26,.35)}
+  #dynamic-island .picks button{border:0;background:none;border-radius:999px;padding:9px 16px;font-weight:600;font-size:14px;cursor:pointer;color:#3a3f4a;transition:background .2s,color .2s}
+  #dynamic-island .picks button[aria-pressed=true]{background:#10131a;color:#fff}
+  #dynamic-island .taphint{position:absolute;left:50%;top:106px;translate:-50% 0;font:500 12px var(--mono);color:rgba(16,19,26,.55);white-space:nowrap;opacity:0;transition:opacity .3s}
+  @media (prefers-reduced-motion: reduce){ #dynamic-island .island,#dynamic-island .v{transition:none!important} #dynamic-island .eq b{animation:none} }
+
+  /* ---------- 12. Fly to target ---------- */
+  #fly-to-cart .demo{--demo-h-m:360px;background:#faf8f4}
+  #fly-to-cart .shop{position:absolute;inset:0;padding:22px 28px 26px;display:flex;flex-direction:column;gap:18px}
+  #fly-to-cart .top{display:flex;align-items:center;gap:14px;padding-right:110px}
+  #fly-to-cart .top b{font-size:18px}
+  #fly-to-cart .cart{position:relative;margin-left:auto;width:46px;height:46px;border-radius:14px;background:#161616;color:#fff;display:grid;place-items:center}
+  #fly-to-cart .cart svg{width:22px;height:22px}
+  #fly-to-cart .badge{position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--acc);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 3px #faf8f4}
+  #fly-to-cart .items{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  #fly-to-cart .item{display:flex;flex-direction:column;gap:6px;min-width:0;padding:12px;background:#fff;border:1px solid var(--line);border-radius:16px}
+  #fly-to-cart .img{flex:1;min-height:0;border-radius:10px;background:radial-gradient(circle at 35% 35%,var(--c1),var(--c2))}
+  #fly-to-cart .item b{font-size:14.5px}
+  #fly-to-cart .item small{color:var(--mute);font-size:13px}
+  #fly-to-cart .add{height:38px;border:0;border-radius:10px;background:#161616;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:background .2s}
+  #fly-to-cart .add.ok{background:#1a7f4b}
+  #fly-to-cart .fx{position:absolute;left:0;top:0;z-index:30;pointer-events:none}
+  #fly-to-cart .fy{border-radius:10px;box-shadow:0 12px 24px -10px rgba(0,0,0,.4)}
+
+  /* ---------- 13. Scripted product demo ---------- */
+  #scripted-demo .demo{--demo-h-m:400px;background:#eef1f6}
+  #scripted-demo .win{position:absolute;left:50%;top:50px;translate:-50% 0;width:min(520px,calc(100% - 32px));background:#fff;border:1px solid #dde2ea;border-radius:16px;box-shadow:0 24px 50px -28px rgba(16,24,40,.35)}
+  #scripted-demo .wbar{height:34px;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid #edf0f4;font-size:12.5px;font-weight:600;color:var(--mute)}
+  #scripted-demo .wbar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}
+  #scripted-demo .wbar i+i{background:#febc2e}#scripted-demo .wbar i+i+i{background:#28c840;margin-right:8px}
+  #scripted-demo .chat{display:flex;flex-direction:column;gap:10px;padding:18px}
+  #scripted-demo .msg{max-width:84%;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.55}
+  #scripted-demo .in{align-self:flex-start;background:#f0eee9;border-bottom-left-radius:5px}
+  #scripted-demo .out{align-self:flex-end;background:#2f6bff;color:#fff;border-bottom-right-radius:5px}
+  #scripted-demo .sel{position:relative;display:inline-block;font-weight:700}
+  #scripted-demo .hl{position:absolute;inset:-1px -3px;border-radius:4px;background:rgba(47,107,255,.28);transform-origin:0 50%;transform:scaleX(0)}
+  #scripted-demo .tx{position:relative}
+  #scripted-demo.s-sel .hl{transform:scaleX(1);transition:transform .65s linear}
+  #scripted-demo .tools{position:absolute;z-index:20;display:flex;gap:2px;padding:4px;border-radius:10px;background:#161616;translate:-50% -100%;opacity:0;scale:.85;transform-origin:50% 100%;transition:opacity .2s,scale .35s cubic-bezier(.2,1.4,.3,1)}
+  #scripted-demo .tools span{padding:6px 10px;border-radius:7px;color:#fff;font-size:12.5px;font-weight:600}
+  #scripted-demo.s-tools .tools{opacity:1;scale:1}
+  #scripted-demo.s-click .conv{background:var(--acc)}
+  #scripted-demo .result{position:absolute;z-index:20;display:grid;gap:2px;padding:12px 16px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px -18px rgba(16,24,40,.4);translate:-50% 8px;opacity:0;transition:opacity .25s,translate .45s cubic-bezier(.2,1.3,.3,1)}
+  #scripted-demo .result small{color:var(--mute);font-size:12.5px}
+  #scripted-demo .result b{font-size:24px;letter-spacing:-.01em}
+  #scripted-demo .result span{font:500 11.5px var(--mono);color:var(--mute)}
+  #scripted-demo.s-res .result{opacity:1;translate:-50% 0}
+  #scripted-demo .cursor{position:absolute;left:0;top:0;z-index:25;width:22px;height:22px;pointer-events:none;transition:transform .7s cubic-bezier(.6,0,.2,1)}
+  #scripted-demo .cursor svg{width:22px;height:22px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+  #scripted-demo .cursor::after{content:"";position:absolute;left:-9px;top:-9px;width:20px;height:20px;border-radius:50%;border:2px solid var(--acc);opacity:0}
+  #scripted-demo.s-click .cursor::after{animation:sd-ripple .5s ease-out}
+  @keyframes sd-ripple{from{opacity:1;scale:.3}to{opacity:0;scale:1.7}}
+  #scripted-demo .steps{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:8px;margin:0;padding:0 12px;list-style:none;counter-reset:s}
+  #scripted-demo .steps li{counter-increment:s;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #dde2ea;font-size:12.5px;font-weight:600;color:var(--mute);transition:background .25s,color .25s,border-color .25s}
+  #scripted-demo .steps li::before{content:counter(s) ". "}
+  #scripted-demo .steps li.on{background:#161616;border-color:#161616;color:#fff}
+  @media (prefers-reduced-motion: reduce){ #scripted-demo .cursor,#scripted-demo.s-sel .hl{transition:none} }
+
+  /* ---------- 14. Marker highlight ---------- */
+  #marker-highlight .demo{--demo-h-m:340px;background:#f3f2ee;display:grid;place-items:center;padding:24px}
+  #marker-highlight .copy{max-width:640px;text-align:center}
+  #marker-highlight .copy small{font-weight:700;font-size:14px;color:#1a7f4b}
+  #marker-highlight h3{margin:10px 0 16px;font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  #marker-highlight p{margin:0;font-size:18px;line-height:1.75;color:#55534e}
+  #marker-highlight .mk{color:inherit;background-color:transparent;padding:0 .14em;margin:0 -.06em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+    background-repeat:no-repeat;background-size:0% 100%;transition:background-size .75s cubic-bezier(.6,0,.2,1) var(--d,0s)}
+  #marker-highlight .g{--d:.15s;background-image:linear-gradient(transparent 14%,#5ee38c 14%,#5ee38c 94%,transparent 94%)}
+  #marker-highlight .y{--d:.8s;color:#161616;background-image:linear-gradient(transparent 52%,#ffe066 52%,#ffe066 94%,transparent 94%)}
+  #marker-highlight .u{--d:1.35s;color:#161616;background-image:linear-gradient(transparent 84%,var(--acc) 84%,var(--acc) 96%,transparent 96%)}
+  #marker-highlight .on .mk{background-size:100% 100%}
+  #marker-highlight .nt .mk{transition:none}
+  @media (prefers-reduced-motion: reduce){ #marker-highlight .mk{transition:none} }
+
+  /* ---------- 15. Autoplay carousel ---------- */
+  #autoplay-carousel .demo{--demo-h-m:380px;background:#fff}
+  #autoplay-carousel .car{position:absolute;left:0;right:0;top:40px;height:236px;overflow:hidden;container-type:inline-size}
+  #autoplay-carousel .track{--sw:min(560px,100cqw - 72px);display:flex;gap:16px;height:100%;padding:0 calc(50cqw - var(--sw) / 2);transform:translateX(calc(var(--i,0) * (var(--sw) + 16px) * -1));transition:transform .75s cubic-bezier(.6,0,.2,1)}
+  #autoplay-carousel .slide{flex:none;width:var(--sw);height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:26px 28px;border-radius:24px;color:#fff;cursor:pointer;
+    background:radial-gradient(80% 90% at 85% 10%,var(--b),transparent 70%),linear-gradient(150deg,var(--a),#0e1220);opacity:.45;scale:.94;transition:opacity .6s,scale .75s cubic-bezier(.6,0,.2,1)}
+  #autoplay-carousel .slide.on{opacity:1;scale:1}
+  #autoplay-carousel .slide b{font-size:28px;letter-spacing:-.02em}
+  #autoplay-carousel .slide span{font-size:15px;opacity:.85}
+  #autoplay-carousel .ctrl{position:absolute;left:50%;bottom:28px;translate:-50% 0;display:flex;gap:12px;align-items:center}
+  #autoplay-carousel .dots{display:flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:24px;background:#eeece8}
+  #autoplay-carousel .dots button{position:relative;width:10px;height:10px;padding:0;border:0;border-radius:5px;background:#a29e96;cursor:pointer;overflow:hidden;transition:width .45s cubic-bezier(.6,0,.2,1)}
+  #autoplay-carousel .dots button::after{content:"";position:absolute;inset:-12px -6px}
+  #autoplay-carousel .dots button[aria-current]{width:46px;background:#cfcbc3}
+  #autoplay-carousel .dots i{position:absolute;inset:0;background:#161616;transform-origin:0 50%;transform:scaleX(0)}
+  #autoplay-carousel .dots [aria-current] i{animation:car-fill 4s linear forwards}
+  #autoplay-carousel .paused .dots [aria-current] i{animation-play-state:paused}
+  @keyframes car-fill{to{transform:scaleX(1)}}
+  #autoplay-carousel .pp{width:48px;height:48px;display:grid;place-items:center;border:0;border-radius:50%;background:#eeece8;color:#161616;cursor:pointer}
+  #autoplay-carousel .pp svg{width:16px;height:16px}
+  #autoplay-carousel .pp .play,#autoplay-carousel .paused .pp .pause{display:none}
+  #autoplay-carousel .paused .pp .play{display:block}
+  @media (prefers-reduced-motion: reduce){ #autoplay-carousel .track,#autoplay-carousel .slide{transition:none} }
+
+  /* ---------- 16. SVG line drawing ---------- */
+  #line-drawing .demo{--demo-h-m:330px;background:#fbfaf7;display:grid;place-items:center;padding:24px}
+  #line-drawing .hero{text-align:center}
+  #line-drawing h3{margin:0 0 74px;font-size:48px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  #line-drawing .circ{position:relative;white-space:nowrap}
+  #line-drawing .circ svg{position:absolute;left:-.42em;top:50%;width:calc(100% + .84em);translate:0 -52%;overflow:visible}
+  #line-drawing .ctaw{position:relative;display:inline-block}
+  #line-drawing .cta{height:54px;padding:0 30px;border:0;border-radius:27px;background:#161616;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+  #line-drawing .arrow{position:absolute;left:-44px;top:-34px;width:70px;height:70px;overflow:visible}
+  #line-drawing .note{position:absolute;left:22px;top:-62px;font:600 30px 'Caveat',cursive;color:#2f6bff;white-space:nowrap;rotate:-5deg;clip-path:inset(0 100% 0 0)}
+  #line-drawing path{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+  #line-drawing .circ path{stroke:var(--acc);stroke-width:3.5}
+  #line-drawing .arrow path{stroke:#2f6bff}
+  #line-drawing .on path{stroke-dashoffset:0;transition:stroke-dashoffset var(--t,.8s) cubic-bezier(.6,0,.2,1) var(--d,0s)}
+  #line-drawing .on .circ path{--d:.15s;--t:.9s}
+  #line-drawing .on .arrow .shaft{--d:1.05s;--t:.55s}
+  #line-drawing .on .arrow .head{--d:1.55s;--t:.18s}
+  #line-drawing .on .note{clip-path:inset(0 0 0 0);transition:clip-path .6s cubic-bezier(.6,0,.2,1) 1.6s}
+  #line-drawing .nt path,#line-drawing .nt .note{transition:none!important}
+  @media (prefers-reduced-motion: reduce){ #line-drawing path{stroke-dashoffset:0!important;transition:none!important} #line-drawing .note{clip-path:none!important;transition:none!important} }
+
+  /* reduced-motion note: keep it off the controls at the bottom of these demos */
+  @media (prefers-reduced-motion: reduce){
+    #dynamic-island .rm-note,#scripted-demo .rm-note,#autoplay-carousel .rm-note{top:14px;bottom:auto;max-width:calc(100% - 130px)}
+    #dynamic-island .sbar{display:none}
+    #fly-to-cart .demo .shop{padding-bottom:46px}
+  }
+
   /* ---------- 8. Marquee ---------- */
   #marquee .demo{background:#161616;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:26px}
   #marquee .row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
@@ -284,6 +466,20 @@
 
   /* ---------- mobile (≤760px): stacked layouts, sticky graphic at the top of the frame ---------- */
   @media (max-width:760px){
+    #fly-to-cart .shop{padding:16px 14px 18px;gap:14px}
+    #fly-to-cart .items{gap:8px}
+    #fly-to-cart .item{padding:8px;border-radius:12px}
+    #fly-to-cart .item b{font-size:12.5px}
+    #fly-to-cart .add{height:36px;font-size:13px}
+    #scripted-demo .msg{font-size:13.5px}
+    #scripted-demo .steps li{padding:5px 10px;font-size:12px}
+    #marker-highlight h3{font-size:31px}
+    #marker-highlight p{font-size:16px}
+    #autoplay-carousel .slide{padding:20px}
+    #autoplay-carousel .slide b{font-size:22px}
+    #line-drawing h3{font-size:32px;margin-bottom:70px}
+    #dynamic-island .picks button{padding:9px 12px;font-size:13.5px}
+    #dynamic-island .sbar{left:20px;right:20px}
     .pattern>.demo>.replay{padding:10px 14px}
     .pattern>.demo>.hint{max-width:calc(100% - 140px)}
 
@@ -539,6 +735,41 @@
     <div class="kw"><button>shape morph</button><button>morphing button loading to success</button><button>hamburger to close icon morph</button><button>blob morph animation</button></div>
   </article>
 
+  <!-- 7b -->
+  <article class="pattern" id="dynamic-island">
+    <h2>Dynamic Island</h2>
+    <p class="vi"><b>A status pill that reshapes itself around what is happening.</b> One small black pill near the top of the screen stretches into a compact strip, a full card or a tiny badge depending on the live activity. The shape springs to its new size while the content cross-fades with a slight blur, so it reads as one object changing rather than a popup appearing. Pick an activity, tap the pill to expand the music, or answer the call.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: no morph.</span>
+      <div class="screen">
+        <div class="sbar"><span>9:41</span></div>
+        <div class="island" data-s="idle" role="group" aria-label="Dynamic Island">
+          <button type="button" class="tap" aria-label="Dynamic Island: idle"></button>
+          <span class="v v-music" aria-hidden="true"><span class="art"></span><span class="eq"><b></b><b></b><b></b><b></b></span></span>
+          <span class="v v-mx" aria-hidden="true">
+            <span class="mx-top"><span class="art"></span><span><b>Midnight City</b><small>M83</small></span><span class="eq"><b></b><b></b><b></b><b></b></span></span>
+            <span class="prog">1:32<span></span>-2:31</span>
+          </span>
+          <span class="v v-timer" aria-hidden="true"><span class="ring"></span><b class="tm">4:59</b></span>
+          <span class="v v-oncall" aria-hidden="true"><i></i><b class="ct">0:00</b></span>
+          <span class="v v-call"><span class="av" aria-hidden="true">L</span><span class="who"><small>Incoming call</small><strong>Lin</strong></span>
+            <button type="button" tabindex="-1" data-a="no" aria-label="Decline"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg></button><button type="button" tabindex="-1" data-a="yes" aria-label="Accept"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg></button></span>
+        </div>
+        <div class="taphint">tap the pill</div>
+        <div class="picks" role="group" aria-label="Live activity">
+          <button type="button" data-go="idle" aria-pressed="true">Idle</button><button type="button" data-go="music" aria-pressed="false">Music</button><button type="button" data-go="timer" aria-pressed="false">Timer</button><button type="button" data-go="call" aria-pressed="false">Call</button>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>a background activity (music, a timer, an upload, a call, a running AI agent) should stay glanceable without a modal or a toast that disappears, and expanding it in place gives quick controls.</p>
+      <p class="avoid"><b>Avoid when</b>the information needs reading or several decisions: an expanded pill is a glance, not a page. Do not stack several activities in it at once.</p>
+      <p class="tip"><b>Tip</b>morph the container with a spring and fade the content with a short blur and a small delay; content laid out at its final size and revealed by the growing shape never reflows mid-animation.</p>
+    </div>
+    <div class="kw"><button>dynamic island</button><button>morphing status pill</button><button>live activity pill expands into a card</button><button>spring container morph with blur cross-fade</button><button>notch UI</button></div>
+  </article>
+
   <!-- 8 -->
   <article class="pattern" id="marquee">
     <h2>Marquee / Ticker</h2>
@@ -634,6 +865,121 @@
     </div>
     <div class="kw"><button>micro-interactions</button><button>animated like button with particle burst</button><button>springy toggle switch</button><button>animated checkmark draw</button><button>copy button success state</button></div>
   </article>
+  <!-- 12 -->
+  <article class="pattern" id="fly-to-cart">
+    <h2>Fly to target</h2>
+    <p class="vi"><b>The item travels to where it went.</b> When users add something, a copy of it flies along a curved path into the cart, folder or dock icon, which then bumps and updates its count. The motion answers "where did it go?" without a message. Tap Add on a product.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: no flight.</span>
+      <div class="shop">
+        <div class="top"><b>Store</b><span class="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><span class="badge" aria-live="polite" aria-label="Items in cart">0</span></span></div>
+        <div class="items"><div class="item"><div class="img" style="--c1:#ffb08e;--c2:#ff5a1f"></div><b>Aero Buds</b><small>$129</small><button type="button" class="add">Add</button></div><div class="item"><div class="img" style="--c1:#c4b5fd;--c2:#5b3df5"></div><b>Lumen Lamp</b><small>$89</small><button type="button" class="add">Add</button></div><div class="item"><div class="img" style="--c1:#86efac;--c2:#1a7f4b"></div><b>Orbit Mug</b><small>$24</small><button type="button" class="add">Add</button></div></div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>something moves into a container that is not where the user is looking: add to cart, save to a collection, move to a folder, download to the dock.</p>
+      <p class="avoid"><b>Avoid when</b>users add many items in a row (bulk actions, quantity steppers): repeated flights slow them down. Update the count only.</p>
+      <p class="tip"><b>Tip</b>animate the horizontal and vertical movement on two nested elements with different easings (ease-in on one axis, ease-out on the other) and the straight line becomes an arc.</p>
+    </div>
+    <div class="kw"><button>add to cart fly animation</button><button>fly-to-target</button><button>item flies along a curved arc into the cart icon</button><button>cart badge bump</button><button>FLIP animation</button></div>
+  </article>
+
+  <!-- 13 -->
+  <article class="pattern" id="scripted-demo">
+    <h2>Scripted product demo</h2>
+    <p class="vi"><b>A product demo built from real UI instead of a video.</b> A mock of the interface plays a short script: a fake cursor moves, selects, clicks, and the UI responds, with numbered steps underneath. It stays sharp at any size, loads faster than a video, and its text can be translated or edited. It plays twice when it comes into view.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: the cursor jumps between steps.</span>
+      <div class="win">
+        <div class="wbar"><i></i><i></i><i></i>Messages</div>
+        <div class="chat">
+          <div class="msg in">Hi! The ceramic set is ready. Total is <span class="sel"><span class="hl"></span><span class="tx">¥2,380</span></span>, ships Friday.</div>
+          <div class="msg out">Great, thank you!</div>
+        </div>
+      </div>
+      <div class="tools" aria-hidden="true"><span>Copy</span><span class="conv">Convert</span><span>Translate</span></div>
+      <div class="result" aria-hidden="true"><small>¥2,380 is about</small><b>$16.40</b><span>USD · converted in place</span></div>
+      <div class="cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 2l15 9.5-6.5 1.4L8.4 19z" fill="#161616" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      <ol class="steps"><li>Select</li><li>Convert</li><li>Result</li></ol>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>a landing page has to show what a feature does in a few seconds: a short loop of the real interaction explains it better than a paragraph or a static screenshot.</p>
+      <p class="avoid"><b>Avoid when</b>users need to learn to do it themselves: use an interactive walkthrough instead. Keep the loop short and let it stop; a demo that loops forever needs a pause button.</p>
+      <p class="tip"><b>Tip</b>compute the cursor's targets from the real elements' positions at run time, so the script still lands on the right word when the layout changes on a phone.</p>
+    </div>
+    <div class="kw"><button>scripted product demo</button><button>animated fake cursor walkthrough</button><button>HTML/CSS product demo instead of video</button><button>auto-playing feature demo with step indicator</button></div>
+  </article>
+
+  <!-- 14 -->
+  <article class="pattern" id="marker-highlight">
+    <h2>Marker highlight</h2>
+    <p class="vi"><b>Key words get highlighted as if with a pen.</b> When the text comes into view, a marker stroke sweeps behind a word, a half-height highlight fills under a phrase, or an underline draws across, one after another. It points the eye to the two or three words that matter.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: highlights appear without the sweep.</span>
+      <div class="copy">
+        <small>Smart Selection</small>
+        <h3>Select it and <mark class="mk g">understand</mark> it.</h3>
+        <p>Highlight a message in another language to <mark class="mk y">read the translation</mark>, or a price to <mark class="mk u">see it in your currency</mark>, right where it is.</p>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>a headline or paragraph has one idea that readers must not miss: a benefit, a price, a key term.</p>
+      <p class="avoid"><b>Avoid when</b>everything is highlighted: three marks in a section is already a lot. Avoid low-contrast marker colors behind body text.</p>
+      <p class="tip"><b>Tip</b>animate background-size from 0% to 100% on an inline element with box-decoration-break: clone, so the highlight also works when the phrase wraps onto two lines.</p>
+    </div>
+    <div class="kw"><button>marker highlight animation</button><button>highlighter swipe behind text</button><button>animated text highlight on scroll</button><button>animated underline draw</button></div>
+  </article>
+
+  <!-- 15 -->
+  <article class="pattern" id="autoplay-carousel">
+    <h2>Autoplay carousel with progress</h2>
+    <p class="vi"><b>Slides that advance on a timer you can see.</b> The current dot stretches into a pill that fills up while the slide is shown; when it is full, the next slide slides in. A pause button stops the timer. Tap a dot or a neighbouring slide to jump.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: slides do not advance on their own.</span>
+      <div class="car" role="region" aria-roledescription="carousel" aria-label="Feature highlights">
+        <div class="track"><div class="slide on" role="group" aria-roledescription="slide" aria-label="1 of 4" style="--a:#2f6bff;--b:#7c5cff"><b>Copy, pin, lock.</b><span>Everything you copy is one keystroke away.</span></div><div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 4" style="--a:#ff5a1f;--b:#ff9a5c"><b>Type @ to filter.</b><span>Find the link you copied last week.</span></div><div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 4" style="--a:#0f9f6e;--b:#3ee6a8"><b>Paste in order.</b><span>Queue three items and paste them one by one.</span></div><div class="slide" role="group" aria-roledescription="slide" aria-label="4 of 4" style="--a:#5b3df5;--b:#c084fc"><b>Ask your AI.</b><span>Agents can search your clipboard too.</span></div></div>
+      </div>
+      <div class="ctrl">
+        <div class="dots" role="group" aria-label="Choose slide"><button type="button" aria-label="Slide 1"><i></i></button><button type="button" aria-label="Slide 2"><i></i></button><button type="button" aria-label="Slide 3"><i></i></button><button type="button" aria-label="Slide 4"><i></i></button></div>
+        <button type="button" class="pp" aria-label="Pause autoplay"><svg class="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg class="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11a.8.8 0 0 0 1.2.7l9-5.5a.8.8 0 0 0 0-1.4l-9-5.5A.8.8 0 0 0 4 2.5z"/></svg></button>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>a few equal features or screenshots share one spot on a landing page and should all get seen without users having to click.</p>
+      <p class="avoid"><b>Avoid when</b>the slides hold important content or links users must read: many will never see slide 3. Anything that moves on its own for more than 5 seconds needs a pause control.</p>
+      <p class="tip"><b>Tip</b>drive the timer with the progress bar's own CSS animation and advance on animationend: pausing the animation then pauses the carousel, with no separate timer to keep in sync.</p>
+    </div>
+    <div class="kw"><button>autoplay carousel with progress indicator</button><button>dots that stretch into a progress pill</button><button>Apple-style slideshow with pause button</button><button>timed slider with peeking neighbours</button></div>
+  </article>
+
+  <!-- 16 -->
+  <article class="pattern" id="line-drawing">
+    <h2>SVG line drawing</h2>
+    <p class="vi"><b>Lines that draw themselves.</b> A hand-drawn circle, an arrow and a scribbled note appear stroke by stroke, as if someone just annotated the page. It adds a human, informal touch and points to the one thing to look at, usually the main button.</p>
+    <div class="demo">
+      <button class="replay">↻ Replay</button>
+      <span class="rm-note">Reduced motion: drawings appear complete.</span>
+      <div class="hero">
+        <h3>Copy once. Paste <span class="circ">anywhere<svg viewBox="0 0 260 80" aria-hidden="true"><path pathLength="1" d="M196 10C120-2 18 8 10 40c-6 30 130 40 216 26 36-8 32-46-36-54-40-5-98-3-124 4"/></svg></span>.</h3>
+        <div class="ctaw">
+          <span class="note" aria-hidden="true">free forever</span>
+          <svg class="arrow" viewBox="0 0 70 70" aria-hidden="true"><path class="shaft" pathLength="1" d="M66 14C30 6 6 24 10 44c3 14 20 20 36 16"/><path class="head" pathLength="1" d="M37 52l10 8-11 6"/></svg>
+          <button type="button" class="cta">Download for Mac</button>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="use"><b>Use when</b>a friendly, personal brand wants to point at one element (a price, a CTA, a new feature) or to show a signature, a logo or a route being drawn.</p>
+      <p class="avoid"><b>Avoid when</b>the page is formal or dense: scribbles look careless next to tables and legal text. Do not annotate more than one thing per screen.</p>
+      <p class="tip"><b>Tip</b>give each path pathLength="1", set stroke-dasharray: 1 and animate stroke-dashoffset from 1 to 0; the same CSS then works for any path length.</p>
+    </div>
+    <div class="kw"><button>SVG line drawing animation</button><button>stroke-dashoffset draw-on</button><button>hand-drawn arrow pointing to CTA</button><button>animated scribble circle around a word</button><button>handwritten note reveal</button></div>
+  </article>
+
 </main>
 
 <script src="assets/dict.js"></script>
@@ -707,6 +1053,44 @@ replay.parallax = () => toTop('parallax');
   burger.addEventListener('click', () => { bt.forEach(clearTimeout); setX(!burger.classList.contains('x')); });
   replay.morph = () => { run(); bt.forEach(clearTimeout); setX(false); bt = [setTimeout(() => setX(true), 600), setTimeout(() => setX(false), 1800)]; };
   onView($('#morph .demo'), replay.morph);
+}
+
+// 7b Dynamic Island
+{
+  const root = $('#dynamic-island'), isl = $('.island', root), tap = $('.tap', root), picks = $$('.picks button', root), hint = $('.taphint', root);
+  const tm = $('.tm', root), ct = $('.ct', root), ring = $('.ring', root);
+  const LABEL = { idle: 'idle', music: 'now playing, tap to expand', 'music-x': 'now playing, expanded, tap to collapse', timer: 'timer running', call: 'incoming call from Lin', oncall: 'on a call' };
+  let clock = 0, secs = 0, auto = [], touched = false;
+  const tick = () => {
+    if (root.querySelector('.demo').classList.contains('is-off')) return;
+    secs++;
+    if (isl.dataset.s === 'timer') { const left = Math.max(0, 299 - secs); tm.textContent = `${left / 60 | 0}:${String(left % 60).padStart(2, '0')}`; ring.style.setProperty('--p', left / 300 * 100 + '%'); }
+    if (isl.dataset.s === 'oncall') ct.textContent = `${secs / 60 | 0}:${String(secs % 60).padStart(2, '0')}`;
+  };
+  const go = s => {
+    isl.dataset.s = s; tap.setAttribute('aria-label', 'Dynamic Island: ' + LABEL[s]);
+    const grp = s.startsWith('music') ? 'music' : s === 'oncall' ? 'call' : s;
+    picks.forEach(b => b.setAttribute('aria-pressed', b.dataset.go === grp));
+    $$('[data-a]', root).forEach(b => b.tabIndex = s === 'call' ? 0 : -1);
+    hint.style.opacity = s === 'music' ? 1 : 0;
+    clearInterval(clock); secs = 0;
+    tm.textContent = '4:59'; ct.textContent = '0:00'; ring.style.removeProperty('--p');
+    if (s === 'timer' || s === 'oncall') clock = setInterval(tick, 1000);
+  };
+  const stopAuto = () => { touched = true; auto.forEach(clearTimeout); auto = []; };
+  picks.forEach(b => b.addEventListener('click', () => { stopAuto(); go(b.dataset.go); }));
+  isl.addEventListener('click', e => {
+    const a = e.target.closest('[data-a]');
+    stopAuto();
+    if (a) { e.stopPropagation(); go(a.dataset.a === 'yes' ? 'oncall' : 'idle'); return; }
+    if (isl.dataset.s === 'music') go('music-x'); else if (isl.dataset.s === 'music-x') go('music');
+  });
+  const tour = () => {
+    auto.forEach(clearTimeout); auto = []; go('idle');
+    [[700, 'music'], [2300, 'music-x'], [4700, 'music'], [5900, 'timer'], [8100, 'call']].forEach(([t, s]) => auto.push(setTimeout(() => go(s), reduce ? t / 2 : t)));
+  };
+  replay['dynamic-island'] = () => { touched = false; tour(); };
+  onView($('#dynamic-island .demo'), () => { if (!touched) tour(); }); // never take over once the user has picked something
 }
 
 // 9 Text reveal
@@ -803,6 +1187,89 @@ $$('#marquee .row').forEach(r => {
   r.addEventListener('click', t);
   r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
 });
+
+// 12 Fly to target
+{
+  const root = $('#fly-to-cart'), demo = $('.demo', root), cart = $('.cart', root), badge = $('.badge', root);
+  let n = 0;
+  const bump = () => {
+    badge.textContent = ++n;
+    if (reduce) return;
+    cart.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.2)' }, { transform: 'scale(.94)' }, { transform: 'scale(1)' }], { duration: 450, easing: 'ease-out' });
+    badge.animate([{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  };
+  const add = btn => {
+    btn.classList.add('ok'); btn.textContent = 'Added ✓';
+    clearTimeout(btn._t); btn._t = setTimeout(() => { btn.classList.remove('ok'); btn.textContent = 'Add'; }, 1400);
+    if (reduce) { bump(); return; }
+    const img = $('.img', btn.closest('.item')), d = demo.getBoundingClientRect(), a = img.getBoundingClientRect(), c = cart.getBoundingClientRect();
+    const fx = document.createElement('div'), fy = document.createElement('div');
+    fx.className = 'fx'; fy.className = 'fy';
+    fy.style.cssText = `width:${a.width}px;height:${a.height}px;background:${getComputedStyle(img).backgroundImage}`;
+    fx.append(fy); demo.append(fx);
+    const x0 = a.left - d.left, y0 = a.top - d.top, x1 = c.left - d.left + c.width / 2 - a.width / 2, y1 = c.top - d.top + c.height / 2 - a.height / 2, dur = 750;
+    // two axes, two easings: x starts slow, y starts fast, so the path bows into an arc
+    fx.animate([{ transform: `translateX(${x0}px)` }, { transform: `translateX(${x1}px)` }], { duration: dur, easing: 'cubic-bezier(.45,0,.9,.55)', fill: 'forwards' });
+    fy.animate([{ transform: `translateY(${y0}px) scale(1)`, borderRadius: '10px' }, { transform: `translateY(${y1}px) scale(.1)`, borderRadius: '50%' }],
+      { duration: dur, easing: 'cubic-bezier(0,.5,.4,1)', fill: 'forwards' }).onfinish = () => { fx.remove(); bump(); };
+  };
+  $$('.add', root).forEach(b => b.addEventListener('click', () => add(b)));
+  replay['fly-to-cart'] = () => { n = 0; badge.textContent = 0; $$('.fx', demo).forEach(e => e.remove()); setTimeout(() => add($('.add', root)), 300); };
+  onView(demo, replay['fly-to-cart']);
+}
+
+// 13 Scripted product demo
+{
+  const root = $('#scripted-demo'), demo = $('.demo', root), cur = $('.cursor', root), sel = $('.sel', root), tx = $('.tx', root),
+    tools = $('.tools', root), conv = $('.conv', root), res = $('.result', root), steps = $$('.steps li', root);
+  let timers = [], loops = 0;
+  const rel = (el, fx = .5, fy = .5) => { const d = demo.getBoundingClientRect(), r = el.getBoundingClientRect(); return [r.left - d.left + r.width * fx, r.top - d.top + r.height * fy]; };
+  const move = ([x, y], ms) => { cur.style.transitionDuration = (reduce ? 0 : ms) + 'ms'; cur.style.transform = `translate(${x}px,${y}px)`; };
+  const step = i => steps.forEach((s, k) => s.classList.toggle('on', k === i - 1));
+  const rest = () => { const d = demo.getBoundingClientRect(); return [d.width * .84, d.height * .7]; };
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const run = () => {
+    timers.forEach(clearTimeout); timers = [];
+    root.classList.remove('s-sel', 's-tools', 's-click', 's-res'); step(0);
+    const [sx, sy] = rel(sel, .5, 0), [bx, by] = rel(sel, .5, 1);
+    tools.style.left = sx + 'px'; tools.style.top = sy - 8 + 'px';
+    res.style.left = bx + 'px'; res.style.top = by + 10 + 'px';
+    move(rest(), 0);
+    at(400, () => { step(1); move(rel(tx, 0, .6), 800); });
+    at(1300, () => { root.classList.add('s-sel'); move(rel(tx, 1, .6), 650); });
+    at(2050, () => root.classList.add('s-tools'));
+    at(2500, () => { step(2); move(rel(conv, .5, .6), 650); });
+    at(3250, () => root.classList.add('s-click'));
+    at(3550, () => { root.classList.remove('s-tools'); root.classList.add('s-res'); step(3); move(rest(), 900); });
+    at(7000, () => { if (++loops < 2 && !demo.classList.contains('is-off')) run(); });
+  };
+  replay['scripted-demo'] = () => { loops = 0; run(); };
+  onView(demo, replay['scripted-demo']);
+}
+
+// 14 Marker highlight + 16 Line drawing: restart CSS transitions from zero
+const redraw = demo => { demo.classList.remove('on'); demo.classList.add('nt'); void demo.offsetWidth; demo.classList.remove('nt'); demo.classList.add('on'); };
+['marker-highlight', 'line-drawing'].forEach(id => { const demo = $(`#${id} .demo`); replay[id] = () => redraw(demo); onView(demo, replay[id]); });
+
+// 15 Autoplay carousel: the dot's fill animation is the timer
+{
+  const root = $('#autoplay-carousel'), demo = $('.demo', root), track = $('.track', root), slides = $$('.slide', root), dots = $$('.dots button', root), pp = $('.pp', root);
+  let i = 0;
+  const show = k => {
+    i = (k + slides.length) % slides.length;
+    track.style.setProperty('--i', i);
+    slides.forEach((s, j) => { s.classList.toggle('on', j === i); s.setAttribute('aria-hidden', j !== i); });
+    dots.forEach(d => d.removeAttribute('aria-current'));
+    void track.offsetWidth; // restart the fill even when the same dot is chosen again
+    dots[i].setAttribute('aria-current', 'true');
+  };
+  const pause = p => { demo.classList.toggle('paused', p); pp.setAttribute('aria-label', p ? 'Play autoplay' : 'Pause autoplay'); };
+  dots.forEach((d, j) => { d.addEventListener('click', () => show(j)); $('i', d).addEventListener('animationend', () => show(i + 1)); });
+  slides.forEach((s, j) => s.addEventListener('click', () => show(j)));
+  pp.addEventListener('click', () => pause(!demo.classList.contains('paused')));
+  replay['autoplay-carousel'] = () => { pause(reduce); show(0); };
+  replay['autoplay-carousel']();
+}
 
 Object.entries(replay).forEach(([id, fn]) => Dict.replay(id, fn));
 </script>
